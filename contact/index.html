@@ -344,7 +344,38 @@
 <body>
 
 <header>
-undefined
+<nav>
+  <div class="nav-logo">
+    <!-- Magic wand + star SVG — fidèle au concept du logo Wanderful -->
+    <div class="logo-wand">
+      <svg width="34" height="40" viewBox="0 0 34 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Wand body — clean diagonal stick -->
+        <path d="M20 11 L5 38" stroke="#3D1766" stroke-width="2.6" stroke-linecap="round"/>
+        <!-- Grip wrap at bottom -->
+        <path d="M7.5 33.5 L4.5 38.5" stroke="#7B3FBD" stroke-width="3.8" stroke-linecap="round"/>
+        <!-- 4-point sparkle star at tip -->
+        <path d="M20 1 L21.4 6.6 L27 5 L21.4 8.4 L23 14 L20 9.6 L17 14 L18.6 8.4 L13 5 L18.6 6.6Z"
+          fill="#E2D4F8" stroke="#9B60D4" stroke-width="0.9" stroke-linejoin="round"/>
+        <!-- Tiny sparkle dots -->
+        <circle cx="8"  cy="5"  r="1.4" fill="#F4D6E3" opacity=".9"/>
+        <circle cx="29" cy="9"  r="1.0" fill="#D6E6F5" opacity=".9"/>
+        <circle cx="28" cy="22" r="0.8" fill="#CFC3E8" opacity=".7"/>
+      </svg>
+    </div>
+    <!-- Texte : Wande en sombre + rful en violet, sous-titre Marketing Agency -->
+    <div>
+      <div style="display:flex;align-items:baseline;gap:0;">
+        <span class="logo-wande">Wande</span><span class="logo-rful">rful</span>
+      </div>
+      <span class="logo-sub">Marketing Agency</span>
+    </div>
+  </div>
+  <ul>
+    <li><a href="#a-propos">À propos</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="/contact" class="nav-cta">Contactez-nous →</a></li>
+  </ul>
+</nav>
 </header>
 
 <div class="page-wrap">
