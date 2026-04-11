@@ -281,6 +281,40 @@ h1 .line2{
   color:var(--ts);opacity:.5;font-size:.63rem;letter-spacing:.15em;text-transform:uppercase;
 }
 .sbar{width:32px;height:1px;background:linear-gradient(90deg,rgba(176,127,224,.5),transparent);}
+
+/* ── NOTRE HISTOIRE ── */
+.histoire-section{
+  padding:100px 56px;
+  background:linear-gradient(180deg,#D9D6F2 0%,#EDE9FF 50%,#D9D6F2 100%);
+  position:relative;overflow:hidden;
+}
+.histoire-section::before{
+  content:'';position:absolute;
+  top:-100px;right:-100px;
+  width:500px;height:500px;border-radius:50%;
+  background:radial-gradient(circle,rgba(244,214,227,.5) 0%,transparent 70%);
+  pointer-events:none;
+}
+.histoire-inner{max-width:1100px;margin:0 auto;}
+.histoire-header{text-align:center;margin-bottom:60px;}
+.histoire-header h2{font-size:2.6rem;font-weight:800;color:var(--p2);margin:12px 0 20px;line-height:1.15;}
+.histoire-header h2 em{font-style:italic;color:var(--p1);}
+.histoire-intro{font-size:1.05rem;color:var(--ts);opacity:.8;max-width:680px;margin:0 auto;line-height:1.7;}
+.histoire-content{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;}
+.histoire-video{border-radius:18px;overflow:hidden;box-shadow:0 20px 60px rgba(61,23,102,.2);aspect-ratio:16/9;}
+.histoire-video iframe{width:100%;height:100%;display:block;}
+.histoire-side{display:flex;flex-direction:column;gap:32px;}
+.histoire-stats{display:flex;flex-direction:column;gap:20px;}
+.stat-item{display:flex;flex-direction:column;gap:4px;padding-left:20px;border-left:3px solid var(--p1);}
+.stat-num{font-size:1.8rem;font-weight:800;color:var(--p2);line-height:1;}
+.stat-label{font-size:.85rem;color:var(--ts);opacity:.65;font-weight:500;letter-spacing:.04em;}
+.histoire-valeurs{display:flex;flex-wrap:wrap;gap:12px;}
+.valeur-tag{background:rgba(123,63,189,.1);color:var(--p1);padding:8px 18px;border-radius:100px;font-size:.85rem;font-weight:600;letter-spacing:.05em;border:1px solid rgba(123,63,189,.2);}
+@media(max-width:768px){
+  .histoire-section{padding:70px 24px;}
+  .histoire-content{grid-template-columns:1fr;}
+  .histoire-header h2{font-size:1.9rem;}
+}
 </style>
 </head>
 <body>
@@ -642,6 +676,47 @@ h1 .line2{
   </div>
 
 </section>
+
+
+<!-- ════════════════════════════════════════
+     NOTRE HISTOIRE SECTION
+════════════════════════════════════════ -->
+<section class="histoire-section" id="a-propos">
+  <div class="histoire-inner">
+    <div class="histoire-header">
+      <span class="section-label">Notre histoire</span>
+      <h2>Une agence née d'une <em>conviction</em></h2>
+      <p class="histoire-intro">Forte d'un Master HEC en marketing, Wanderful est née d'une idée simple : les PME suisses méritent un marketing digital ambitieux, sans la complexité ni les tarifs réservés aux grandes entreprises. Fondée à Yvonand, en plein cœur de la Suisse romande, nous accompagnons les entrepreneurs locaux avec des stratégies concrètes, mesurables et adaptées à leur réalité.</p>
+    </div>
+    <div class="histoire-content">
+      <div class="histoire-video">
+        <iframe src="https://www.youtube.com/embed/GenAXqZLNLQ" title="Wanderful Marketing - Notre histoire" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div class="histoire-side">
+        <div class="histoire-stats">
+          <div class="stat-item">
+            <span class="stat-num">Master HEC</span>
+            <span class="stat-label">Formation en marketing</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">24h</span>
+            <span class="stat-label">Délai de réponse garanti</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-num">100%</span>
+            <span class="stat-label">Dédié aux PME suisses</span>
+          </div>
+        </div>
+        <div class="histoire-valeurs">
+          <span class="valeur-tag">✦ Proximité</span>
+          <span class="valeur-tag">✦ Créativité</span>
+          <span class="valeur-tag">✦ Résultats</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 
 <!-- ════════════════════════════════════════
      AUDIT GRATUIT SECTION
