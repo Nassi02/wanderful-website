@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Wanderful — Agence de marketing digital</title>
+
+<script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --p1: #7B3FBD;
+  --p2: #3D1766;
+  --p3: #5A2898;
+  --p4: #B07FE0;
+  --p5: #D4B0F8;
+  --cy: #7EC8DC;
+  --bg-dark: #D9D6F2;
+  --bg-mid:  #CFC3E8;
+}
+
+html,body{height:100%;overflow-x:hidden;}
+body{font-family:'Outfit',sans-serif;cursor:none;background:#D9D6F2;}
+
+/* ── CURSOR ── */
+#cur{
+  position:fixed;width:12px;height:12px;border-radius:50%;z-index:9999;
+  pointer-events:none;transform:translate(-50%,-50%);
+  background:var(--p4);
+  box-shadow:0 0 0 2px rgba(176,127,224,.25),0 0 16px 6px rgba(176,127,224,.5);
+  transition:width .15s,height .15s,background .15s;
+}
+#cur.big{width:30px;height:30px;background:var(--cy);
+  box-shadow:0 0 0 2px rgba(126,200,220,.25),0 0 20px 8px rgba(126,200,220,.5);}
+#cur-ring{
+  position:fixed;width:40px;height:40px;border-radius:50%;z-index:9998;
+  pointer-events:none;transform:translate(-50%,-50%);
+  border:1.5px solid rgba(176,127,224,.4);
+  transition:left .09s ease-out,top .09s ease-out;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 56px;
+  background:linear-gradient(180deg,rgba(217,214,242,.96) 0%,rgba(217,214,242,.0) 100%);
+  backdrop-filter:blur(8px);
+}
+.nav-logo{display:flex;align-items:center;gap:4px;}
+
+/* Wand icon */
+.logo-wand{position:relative;display:flex;align-items:flex-end;margin-right:2px;}
+.logo-wand svg{display:block;}
+
+/* "Wande" in script style + "rful" in bold caps — like the real logo */
+.logo-wande{
+  font-family:'Outfit',sans-serif;
+  font-size:1.55rem;font-weight:800;
+  color:var(--p2);letter-spacing:-.02em;
+  line-height:1;
+}
+.logo-rful{
+  font-family:'Outfit',sans-serif;
+  font-size:1.55rem;font-weight:800;
+  color:var(--p1);letter-spacing:-.02em;
+  line-height:1;
+}
+.logo-sub{
+  display:block;font-size:.55rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ts);opacity:.55;margin-top:1px;
+  line-height:1;
+}
+nav ul{list-style:none;display:flex;gap:30px;align-items:center;}
+nav a{color:var(--ts);text-decoration:none;font-size:.82rem;
+  font-weight:500;letter-spacing:.07em;text-transform:uppercase;transition:color .2s;}
+nav a:hover{color:var(--p1);}
+.nav-cta{
+  padding:10px 22px;border-radius:8px;
+  background:linear-gradient(135deg,var(--p1),var(--p3));
+  color:#fff !important;font-weight:600 !important;
+  text-transform:none !important;letter-spacing:.03em !important;
+  box-shadow:0 4px 20px rgba(123,63,189,.5);
+  transition:box-shadow .2s,transform .15s !important;
+}
+.nav-cta:hover{box-shadow:0 6px 28px rgba(123,63,189,.7)!important;transform:translateY(-1px);}
+
+/* ── HERO — full screen ── */
+.hero{
+  position:relative;min-height:100vh;overflow:hidden;
+  background:
+    radial-gradient(ellipse 70% 60% at 80% 50%, #F4D6E3 0%, transparent 55%),
+    radial-gradient(ellipse 60% 55% at 20% 30%, #D6E6F5 0%, transparent 55%),
+    radial-gradient(ellipse 80% 70% at 50% 80%, #CFC3E8 0%, transparent 65%),
+    #D9D6F2;
+}
+
+/* ── SPLINE — fills right ~65% of hero ── */
+.spline-bg{
+  position:absolute;
+  right:-2%;top:0;
+  width:68%;height:100%;
+  z-index:1;
+}
+
+spline-viewer{
+  width:100%;height:100%;display:block;
+  /* screen blend removes the black bg entirely */
+  mix-blend-mode: screen;
+  /* tint: brighten the dark robot → sepia → shift hue to lavender/lilac */
+  filter: brightness(2.2) sepia(0.7) hue-rotate(215deg) saturate(2.2) contrast(0.75);
+}
+
+/* Pastel colour wash — soft lavender + blush overlay */
+.spline-tint{
+  position:absolute;inset:0;z-index:2;pointer-events:none;
+  background:linear-gradient(
+    130deg,
+    rgba(217,214,242,.55) 0%,
+    rgba(244,214,227,.40) 45%,
+    rgba(214,230,245,.45) 100%
+  );
+  mix-blend-mode: color;
+}
+
+/* Gradient mask — left edge blends into bg so text reads cleanly */
+.hero-mask{
+  position:absolute;inset:0;z-index:3;pointer-events:none;
+  background:linear-gradient(
+    90deg,
+    #D9D6F2 0%,
+    rgba(217,214,242,.96) 28%,
+    rgba(217,214,242,.78) 40%,
+    rgba(217,214,242,.28) 56%,
+    transparent 70%
+  );
+}
+/* Top + bottom fade — pastel only, no black */
+.hero-mask::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,
+    rgba(217,214,242,.55) 0%,
+    transparent 18%,
+    transparent 78%,
+    rgba(207,195,232,.45) 100%);
+}
+
+/* Ambient glow behind robot */
+.robot-glow{
+  position:absolute;
+  right:10%;top:50%;transform:translateY(-50%);
+  width:420px;height:420px;border-radius:50%;z-index:0;
+  background:radial-gradient(circle,
+    rgba(207,195,232,.6) 0%,
+    rgba(244,214,227,.4) 40%,
+    transparent 70%);
+  filter:blur(40px);
+  animation:glow-pulse 5s ease-in-out infinite;
+}
+@keyframes glow-pulse{0%,100%{opacity:.7;transform:translateY(-50%) scale(1);}50%{opacity:1;transform:translateY(-50%) scale(1.08);}}
+
+/* Covers "Built with Spline" badge at bottom-right of viewer */
+.spline-cover{
+  position:absolute;bottom:0;right:0;
+  width:280px;height:64px;z-index:9999;
+  pointer-events:none;
+  background:#D9D6F2;
+}
+
+/* Loading state */
+.spline-loader{
+  position:absolute;inset:0;z-index:20;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  background:transparent;transition:opacity .8s;
+}
+.spline-loader.hide{opacity:0;pointer-events:none;}
+.loader-ring{
+  width:44px;height:44px;border-radius:50%;
+  border:3px solid rgba(176,127,224,.2);border-top-color:var(--p4);
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loader-text{font-size:.75rem;font-weight:500;color:rgba(176,127,224,.6);letter-spacing:.1em;text-transform:uppercase;}
+
+/* ── HERO CONTENT — overlaid on left ── */
+.hero-content{
+  position:relative;z-index:10;
+  min-height:100vh;display:flex;align-items:center;
+  padding:110px 56px 80px;
+  max-width:580px;
+}
+
+.hero-inner{width:100%;}
+
+.badge{
+  display:inline-flex;align-items:center;gap:8px;margin-bottom:28px;
+  background:rgba(123,63,189,.1);
+  border:1px solid rgba(123,63,189,.25);
+  border-radius:6px;padding:6px 14px;
+  font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--p1);
+}
+.badge-dot{width:6px;height:6px;border-radius:50%;
+  background:var(--cy);box-shadow:0 0 8px var(--cy);
+  animation:bdot 2s ease-in-out infinite;}
+@keyframes bdot{0%,100%{opacity:1;}50%{opacity:.2;}}
+
+h1{
+  font-size:clamp(2.8rem,4.2vw,4.2rem);
+  font-weight:800;line-height:1.06;letter-spacing:.02em;
+  color:var(--p1);margin-bottom:6px;
+}
+h1 .line2{
+  display:block;font-weight:300;
+  font-size:clamp(1.5rem,2.3vw,2.2rem);
+  color:var(--ts);letter-spacing:.06em;margin-top:10px;
+}
+
+.desc{
+  font-size:1rem;line-height:1.78;
+  color:var(--ts);
+  margin-top:22px;margin-bottom:40px;
+  font-weight:400;max-width:410px;
+}
+.desc b{color:var(--p1);font-weight:600;}
+
+.btns{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+.b-main{
+  display:inline-flex;align-items:center;gap:10px;cursor:none;
+  padding:14px 28px;border-radius:8px;text-decoration:none;
+  background:linear-gradient(135deg,var(--p1) 0%,var(--p3) 100%);
+  color:#fff;font-family:'Outfit',sans-serif;
+  font-weight:700;font-size:.9rem;letter-spacing:.04em;
+  box-shadow:0 6px 24px rgba(123,63,189,.5);
+  transition:box-shadow .25s,transform .2s;
+}
+.b-main:hover{box-shadow:0 8px 32px rgba(123,63,189,.7);transform:translateY(-2px);}
+.b-main svg{transition:transform .25s;}
+.b-main:hover svg{transform:translateX(3px);}
+.b-sec{
+  display:inline-flex;align-items:center;gap:8px;cursor:none;
+  font-size:.88rem;color:var(--ts);
+  text-decoration:none;font-weight:500;transition:color .2s;
+}
+.b-sec:hover{color:var(--p1);}
+.b-sec .arr{transition:transform .2s;}
+.b-sec:hover .arr{transform:translateX(4px);}
+
+/* Marquee */
+.marquee-wrap{
+  margin-top:52px;overflow:hidden;
+  border-top:1px solid rgba(176,127,224,.15);
+  padding:12px 0;width:100%;
+}
+.marquee{
+  display:flex;animation:mq 24s linear infinite;
+  white-space:nowrap;width:max-content;
+}
+.marquee span{
+  font-size:.7rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ts);padding:0 22px;opacity:.7;
+}
+.marquee .star{color:var(--p1);opacity:1 !important;font-size:.85rem;}
+@keyframes mq{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* pills removed */
+.dp-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+/* ── PARTICLE CANVAS ── */
+#ptcl{position:fixed;inset:0;z-index:0;pointer-events:none;}
+
+/* ── SCROLL CUE ── */
+.scroll-cue{
+  position:absolute;bottom:28px;left:56px;z-index:10;
+  display:flex;align-items:center;gap:10px;
+  color:var(--ts);opacity:.5;font-size:.63rem;letter-spacing:.15em;text-transform:uppercase;
+}
+.sbar{width:32px;height:1px;background:linear-gradient(90deg,rgba(176,127,224,.5),transparent);}
+</style>
+</head>
+<body>
+
+<canvas id="ptcl"></canvas>
+<div id="cur"></div>
+<div id="cur-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <!-- Magic wand + star SVG — fidèle au concept du logo Wanderful -->
+    <div class="logo-wand">
+      <svg width="34" height="40" viewBox="0 0 34 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Wand body — clean diagonal stick -->
+        <path d="M20 11 L5 38" stroke="#3D1766" stroke-width="2.6" stroke-linecap="round"/>
+        <!-- Grip wrap at bottom -->
+        <path d="M7.5 33.5 L4.5 38.5" stroke="#7B3FBD" stroke-width="3.8" stroke-linecap="round"/>
+        <!-- 4-point sparkle star at tip -->
+        <path d="M20 1 L21.4 6.6 L27 5 L21.4 8.4 L23 14 L20 9.6 L17 14 L18.6 8.4 L13 5 L18.6 6.6Z"
+          fill="#E2D4F8" stroke="#9B60D4" stroke-width="0.9" stroke-linejoin="round"/>
+        <!-- Tiny sparkle dots -->
+        <circle cx="8"  cy="5"  r="1.4" fill="#F4D6E3" opacity=".9"/>
+        <circle cx="29" cy="9"  r="1.0" fill="#D6E6F5" opacity=".9"/>
+        <circle cx="28" cy="22" r="0.8" fill="#CFC3E8" opacity=".7"/>
+      </svg>
+    </div>
+    <!-- Texte : Wande en sombre + rful en violet, sous-titre Marketing Agency -->
+    <div>
+      <div style="display:flex;align-items:baseline;gap:0;">
+        <span class="logo-wande">Wande</span><span class="logo-rful">rful</span>
+      </div>
+      <span class="logo-sub">Marketing Agency</span>
+    </div>
+  </div>
+  <ul>
+    <li><a href="#a-propos">À propos</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="/contact" class="nav-cta">Contactez-nous →</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+
+  <!-- Ambient glow -->
+  <div class="robot-glow"></div>
+
+  <!-- Spline 3D Robot — background right -->
+  <div class="spline-bg">
+    <div class="spline-loader" id="loader">
+      <div class="loader-ring"></div>
+      <div class="loader-text">Robot en cours…</div>
+    </div>
+    <spline-viewer
+      id="spline"
+      url="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+    ></spline-viewer>
+    <!-- Purple tint overlay -->
+    <div class="spline-tint"></div>
+    <!-- Covers the "Built with Spline" watermark badge -->
+    <div class="spline-cover"></div>
+  </div>
+
+  <!-- Gradient masks for text legibility -->
+  <div class="hero-mask"></div>
+
+  <!-- Text content -->
+  <div class="hero-content">
+    <div class="hero-inner">
+      <div class="badge">
+        <span class="badge-dot"></span>
+        Agence certifiée Google Ads · Yvonand, Suisse
+      </div>
+
+      <h1>
+        Digitalisez<br>votre succès
+        <span class="line2">Stratégie · IA · Performance</span>
+      </h1>
+
+      <p class="desc">
+        Wanderful conçoit des stratégies sur mesure pour exploiter
+        <b>l'intelligence artificielle</b>, optimiser votre marketing digital
+        et <b>booster votre croissance</b>.
+      </p>
+
+      <div class="btns">
+        <a href="#services" class="b-main">
+          Nos expertises
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <path d="M2.5 7.5h10M9 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <a href="/contact" class="b-sec">Nous contacter <span class="arr">→</span></a>
+      </div>
+
+      <div class="marquee-wrap">
+        <div class="marquee">
+          <span>Casting Spells for Endless Visibility</span><span class="star"> ☆ </span>
+          <span>Google Ads · IA · Branding</span><span class="star"> ☆ </span>
+          <span>Vidéos & Drone · Sites Web</span><span class="star"> ☆ </span>
+          <span>HEC Lausanne</span><span class="star"> ☆ </span>
+          <span>PME Suisses · Croissance digitale</span><span class="star"> ☆ </span>
+          <span>Casting Spells for Endless Visibility</span><span class="star"> ☆ </span>
+          <span>Google Ads · IA · Branding</span><span class="star"> ☆ </span>
+          <span>Vidéos & Drone · Sites Web</span><span class="star"> ☆ </span>
+          <span>HEC Lausanne</span><span class="star"> ☆ </span>
+          <span>PME Suisses · Croissance digitale</span><span class="star"> ☆ </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-cue">
+    <div class="sbar"></div>Scroll
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════
+     CLIENTS SECTION
+════════════════════════════════════════ -->
+<section class="clients-section">
+  <p class="clients-label">Ils nous font confiance</p>
+  <div class="clients-logos">
+
+    <!-- Carewell logo (SVG vectoriel haute qualité) -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 195 50" role="img" aria-label="Carewell">
+      <!-- Icon: 4 leaf/petal shapes forming a cross -->
+      <g transform="translate(24,25)">
+        <!-- Top petal -->
+        <path d="M0,0 C5,-4 7,-13 0,-17 C-7,-13 -5,-4 0,0Z" fill="#3DC9C3"/>
+        <!-- Bottom petal -->
+        <path d="M0,0 C5,4 7,13 0,17 C-7,13 -5,4 0,0Z" fill="#3DC9C3"/>
+        <!-- Left petal -->
+        <path d="M0,0 C-4,-5 -13,-7 -17,0 C-13,7 -4,5 0,0Z" fill="#3DC9C3"/>
+        <!-- Right petal -->
+        <path d="M0,0 C4,-5 13,-7 17,0 C13,7 4,5 0,0Z" fill="#3DC9C3"/>
+      </g>
+      <!-- Carewell text -->
+      <text x="50" y="32" font-family="'DM Sans','Inter','Helvetica Neue',sans-serif"
+            font-size="22" font-weight="500" fill="#1B2A38" letter-spacing="-0.2">Carewell</text>
+    </svg>
+
+  </div>
+</section>
+
+<style>
+/* ════ CLIENTS SECTION ════ */
+.clients-section{
+  background:#fff;
+  padding:44px 56px;
+  text-align:center;
+  border-top:1px solid rgba(207,195,232,.2);
+  border-bottom:1px solid rgba(207,195,232,.2);
+}
+.clients-label{
+  font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+  color:rgba(123,63,189,.45);margin-bottom:28px;
+}
+.clients-logos{
+  display:flex;justify-content:center;align-items:center;gap:60px;flex-wrap:wrap;
+}
+.clients-logos svg{
+  height:38px;width:auto;
+  opacity:.65;
+  transition:opacity .3s ease;
+}
+.clients-logos svg:hover{opacity:1;}
+@media(max-width:600px){
+  .clients-section{padding:32px 20px;}
+  .clients-logos svg{height:30px;}
+}
+</style>
+
+<!-- ════════════════════════════════════════
+     SERVICES SECTION
+════════════════════════════════════════ -->
+<section id="services" class="services-section">
+
+  <div class="svc-header">
+    <span class="svc-eyebrow">✦ Nos expertises</span>
+    <h2>Ce qu'on fait <em>pour vous</em></h2>
+    <p>Stratégie, contenu, vidéo, drone, web — tout ce dont vous avez besoin pour dominer le digital, sous un seul toit.</p>
+  </div>
+
+  <div class="svc-grid">
+
+    <div class="svc-card" data-color="#D9D6F2">
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#EDE0FF"/><path d="M16 32l4-8 4 4 4-10 4 14" stroke="#7B3FBD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="34" cy="16" r="3" fill="#7B3FBD"/></svg>
+      </div>
+      <div class="svc-num">01</div>
+      <h3>Google Ads</h3>
+      <p class="svc-short">Campagnes qui convertissent, ROI maximisé.</p>
+      <div class="svc-expand">
+        <p>Agence certifiée Google Ads, nous gérons vos campagnes Search, Shopping, Display et Performance Max via l'API Google Ads pour des résultats mesurables.</p>
+        <ul>
+          <li>Campagnes Search & Shopping</li>
+          <li>Performance Max multi-canaux</li>
+          <li>Reporting & optimisation continue</li>
+        </ul>
+      </div>
+      
+    </div>
+
+    <div class="svc-card" data-color="#CFC3E8">
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#EDE0FF"/><path d="M18 28c2-6 10-10 14-4" stroke="#7B3FBD" stroke-width="2.2" stroke-linecap="round"/><circle cx="24" cy="20" r="4" stroke="#7B3FBD" stroke-width="2"/><path d="M14 34c1-3 5-5 10-5s9 2 10 5" stroke="#B07FE0" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="svc-num">02</div>
+      <h3>Intelligence Artificielle</h3>
+      <p class="svc-short">L'IA au cœur de votre stratégie marketing.</p>
+      <div class="svc-expand">
+        <p>Analyse de données, génération de contenu optimisé, personnalisation marketing — nous exploitons le plein potentiel de l'IA pour booster votre visibilité.</p>
+        <ul>
+          <li>Automatisation marketing IA</li>
+          <li>Génération de contenu optimisé</li>
+          <li>Analyse prédictive & insights</li>
+        </ul>
+      </div>
+      
+    </div>
+
+    <div class="svc-card" data-color="#F4D6E3">
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#FDE8F0"/><rect x="14" y="18" width="20" height="14" rx="3" stroke="#B07FE0" stroke-width="2"/><path d="M19 18v-3a5 5 0 0 1 10 0v3" stroke="#7B3FBD" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="25" r="2" fill="#7B3FBD"/></svg>
+      </div>
+      <div class="svc-num">03</div>
+      <h3>Stratégie Digitale</h3>
+      <p class="svc-short">Une roadmap claire pour atteindre vos objectifs.</p>
+      <div class="svc-expand">
+        <p>Audit complet de votre présence digitale, définition de vos personas, création d'une stratégie sur mesure avec des KPIs mesurables et un plan d'action concret.</p>
+        <ul>
+          <li>Audit digital complet</li>
+          <li>Définition de personas & funnel</li>
+          <li>Roadmap & KPIs sur mesure</li>
+        </ul>
+      </div>
+      
+    </div>
+
+    <div class="svc-card" data-color="#D6E6F5">
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#E0F0FC"/><path d="M16 30V20l8-4 8 4v10l-8 4-8-4z" stroke="#7B3FBD" stroke-width="2" stroke-linejoin="round"/><path d="M16 20l8 4 8-4M24 24v10" stroke="#B07FE0" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="svc-num">04</div>
+      <h3>Branding & Identité</h3>
+      <p class="svc-short">Une marque qui vous ressemble et qui marque les esprits.</p>
+      <div class="svc-expand">
+        <p>Création ou refonte de votre identité visuelle, charte graphique, positionnement de marque — pour que votre image reflète parfaitement vos valeurs et attire vos clients idéaux.</p>
+        <ul>
+          <li>Logo & charte graphique</li>
+          <li>Positionnement de marque</li>
+          <li>Supports de communication</li>
+        </ul>
+      </div>
+      
+    </div>
+
+    <div class="svc-card" data-color="#CFC3E8">
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#EDE0FF"/><path d="M14 34c2-8 6-14 10-14s8 6 10 14" stroke="#7B3FBD" stroke-width="2" stroke-linecap="round"/><path d="M18 26c1-4 3-7 6-7s5 3 6 7" stroke="#B07FE0" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="18" r="2.5" fill="#7B3FBD"/></svg>
+      </div>
+      <div class="svc-num">05</div>
+      <h3>Création de Contenu</h3>
+      <p class="svc-short">Du contenu qui engage, convertit et fidélise.</p>
+      <div class="svc-expand">
+        <p>Copywriting, posts réseaux sociaux, newsletters, articles de blog optimisés SEO — du contenu authentique et percutant qui parle à votre audience cible.</p>
+        <ul>
+          <li>Social media & copywriting</li>
+          <li>Articles SEO & newsletters</li>
+          <li>Calendrier éditorial</li>
+        </ul>
+      </div>
+      
+    </div>
+
+    <div class="svc-card" data-color="#D9D6F2">
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#EDE0FF"/><circle cx="24" cy="24" r="7" stroke="#7B3FBD" stroke-width="2"/><path d="M24 11v4M24 33v4M11 24h4M33 24h4" stroke="#B07FE0" stroke-width="2" stroke-linecap="round"/><path d="M15.5 15.5l2.8 2.8M29.7 29.7l2.8 2.8M15.5 32.5l2.8-2.8M29.7 18.3l2.8-2.8" stroke="#CFC3E8" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="svc-num">06</div>
+      <h3>SEO & Visibilité</h3>
+      <p class="svc-short">Première page Google, durablement.</p>
+      <div class="svc-expand">
+        <p>Optimisation on-page et off-page, stratégie de backlinks, audit technique — pour que vos clients vous trouvent naturellement sur Google, sans payer chaque clic.</p>
+        <ul>
+          <li>Audit & optimisation SEO</li>
+          <li>Stratégie de contenu organique</li>
+          <li>Netlinking & autorité de domaine</li>
+        </ul>
+      </div>
+      
+    </div>
+
+    <div class="svc-card" data-color="#F4D6E3">
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#FDE8F0"/><rect x="12" y="17" width="20" height="14" rx="3" stroke="#B07FE0" stroke-width="2"/><path d="M32 21l5-3v12l-5-3" stroke="#7B3FBD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="24" r="3" stroke="#7B3FBD" stroke-width="1.8"/></svg>
+      </div>
+      <div class="svc-num">07</div>
+      <h3>Vidéos Publicitaires</h3>
+      <p class="svc-short">Des vidéos qui captivent, racontent et convertissent.</p>
+      <div class="svc-expand">
+        <p>Conception, tournage et montage de vidéos publicitaires professionnelles pour vos réseaux sociaux, campagnes Google et landing pages — pour un impact visuel fort.</p>
+        <ul>
+          <li>Spots publicitaires & réseaux sociaux</li>
+          <li>Vidéos produit & corporate</li>
+          <li>Montage & motion design</li>
+        </ul>
+      </div>
+      
+    </div>
+
+    <div class="svc-card" data-color="#D6E6F5">
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#E0F0FC"/><path d="M24 14c0 0-2 3-6 3s-6-3-6-3v7c0 5 5 9 12 10 7-1 12-5 12-10v-7s-2 3-6 3-6-3-6-3z" stroke="#7B3FBD" stroke-width="1.8" stroke-linejoin="round"/><circle cx="24" cy="18" r="2" fill="#B07FE0"/><path d="M20 30l2 2 6-6" stroke="#7B3FBD" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="svc-num">08</div>
+      <h3>Prises de Vue Drone</h3>
+      <p class="svc-short">Des perspectives aériennes à couper le souffle.</p>
+      <div class="svc-expand">
+        <p>Nos pilotes certifiés capturent vos bâtiments, événements, paysages ou chantiers avec un drone professionnel — pour des visuels uniques qui marquent les esprits.</p>
+        <ul>
+          <li>Photos & vidéos aériennes HD</li>
+          <li>Événements, biens immobiliers & industrie</li>
+          <li>Pilotes FOCA certifiés, Suisse romande</li>
+        </ul>
+      </div>
+      
+    </div>
+
+    <div class="svc-card" data-color="#CFC3E8">
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#EDE0FF"/><rect x="11" y="15" width="26" height="18" rx="3" stroke="#7B3FBD" stroke-width="2"/><path d="M18 33v3M30 33v3M15 36h18" stroke="#B07FE0" stroke-width="2" stroke-linecap="round"/><path d="M15 22h6M15 26h10" stroke="#CFC3E8" stroke-width="2" stroke-linecap="round"/><rect x="25" y="20" width="8" height="7" rx="1.5" fill="#B07FE0" opacity=".5"/></svg>
+      </div>
+      <div class="svc-num">09</div>
+      <h3>Création de Sites Web</h3>
+      <p class="svc-short">Votre vitrine digitale, rapide, belle et efficace.</p>
+      <div class="svc-expand">
+        <p>Sites vitrines, e-commerce, landing pages ou refonte — nous créons des sites web sur mesure, optimisés mobile et SEO, qui transforment vos visiteurs en clients.</p>
+        <ul>
+          <li>Sites vitrine & e-commerce</li>
+          <li>Landing pages à fort taux de conversion</li>
+          <li>Performance, SEO & design responsive</li>
+        </ul>
+      </div>
+      
+    </div>
+
+  </div>
+
+  <!-- CTA bottom -->
+  <div class="svc-bottom-cta">
+    <p>Vous ne savez pas par où commencer ?</p>
+    <a href="/contact" class="b-main" style="cursor:default;">
+      Parlons de votre projet
+      <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M9 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+
+</section>
+
+<!-- ════════════════════════════════════════
+     AUDIT GRATUIT SECTION
+════════════════════════════════════════ -->
+<section class="audit-section" id="audit">
+  <div class="audit-glow"></div>
+  <div class="audit-inner">
+
+    <div class="audit-badge">
+      <span class="audit-badge-dot"></span>
+      Offre limitée · 100% gratuit · Sans engagement
+    </div>
+
+    <h2 class="audit-title">
+      On analyse votre présence digitale<br>
+      <em>gratuitement.</em>
+    </h2>
+
+    <p class="audit-desc">
+      En 30 minutes, nos experts passent au crible votre site web, vos campagnes Google Ads, votre SEO et vos réseaux sociaux — et vous livrent un rapport clair avec les <strong>3 actions prioritaires</strong> pour booster votre croissance.
+    </p>
+
+    <div class="audit-perks">
+      <div class="audit-perk">
+        <div class="perk-icon">
+          <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" fill="#EDE0FF"/><path d="M10 16l4 4 8-8" stroke="#7B3FBD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span>Audit SEO & site web</span>
+      </div>
+      <div class="audit-perk">
+        <div class="perk-icon">
+          <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" fill="#EDE0FF"/><path d="M10 16l4 4 8-8" stroke="#7B3FBD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span>Analyse Google Ads</span>
+      </div>
+      <div class="audit-perk">
+        <div class="perk-icon">
+          <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" fill="#EDE0FF"/><path d="M10 16l4 4 8-8" stroke="#7B3FBD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span>Rapport & recommandations</span>
+      </div>
+      <div class="audit-perk">
+        <div class="perk-icon">
+          <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" fill="#EDE0FF"/><path d="M10 16l4 4 8-8" stroke="#7B3FBD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <span>Zéro engagement</span>
+      </div>
+    </div>
+
+    <a href="/contact" class="audit-cta">
+      <span class="audit-cta-sparkle">✦</span>
+      Demander mon audit gratuit
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+
+    <p class="audit-note">Réponse sous 24h · Disponible pour les PME de Suisse romande</p>
+
+  </div>
+</section>
+
+<style>
+/* ════ SERVICES SECTION ════ */
+.services-section{
+  position:relative;z-index:2;
+  background:linear-gradient(180deg,#D9D6F2 0%,#F4F2FF 40%,#EDE8FF 100%);
+  padding:100px 56px 80px;
+}
+
+.svc-header{
+  text-align:center;max-width:600px;margin:0 auto 64px;
+}
+.svc-eyebrow{
+  font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--p1);display:block;margin-bottom:16px;
+}
+.svc-header h2{
+  font-family:'Outfit',sans-serif;
+  font-size:clamp(2rem,3.5vw,3rem);font-weight:800;
+  color:var(--p2);letter-spacing:-.02em;line-height:1.1;margin-bottom:14px;
+}
+.svc-header h2 em{
+  font-style:italic;font-weight:300;color:var(--p1);
+}
+.svc-header p{
+  font-size:1rem;color:var(--ts);line-height:1.7;font-weight:400;
+}
+
+/* Grid */
+.svc-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+  max-width:1100px;margin:0 auto;
+}
+
+/* Card */
+.svc-card{
+  background:#fff;
+  border:1px solid rgba(207,195,232,.4);
+  border-radius:18px;
+  padding:28px 26px 24px;
+  cursor:pointer;
+  position:relative;overflow:hidden;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1),
+             box-shadow .35s ease,
+             background .35s ease;
+  /* Start slightly below, invisible — JS will trigger */
+  opacity:0;transform:translateY(30px) scale(0.96);
+}
+.svc-card.visible{
+  opacity:1;transform:translateY(0) scale(1);
+}
+.svc-card:hover{
+  transform:translateY(-6px) scale(1.03) !important;
+  box-shadow:0 20px 50px rgba(123,63,189,.15),0 4px 16px rgba(123,63,189,.08);
+  background:#FAF7FF;
+  border-color:rgba(123,63,189,.3);
+}
+/* Colour strip at top on hover */
+.svc-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--p1),var(--cy));
+  transform:scaleX(0);transform-origin:left;
+  transition:transform .35s ease;border-radius:18px 18px 0 0;
+}
+.svc-card:hover::before{transform:scaleX(1);}
+
+/* Icon */
+.svc-icon{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:16px;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+.svc-icon svg{width:48px;height:48px;}
+.svc-card:hover .svc-icon{transform:scale(1.15) rotate(-4deg);}
+
+/* Number */
+.svc-num{
+  position:absolute;top:22px;right:24px;
+  font-size:.7rem;font-weight:700;letter-spacing:.1em;
+  color:rgba(123,63,189,.2);
+}
+.svc-card:hover .svc-num{color:rgba(123,63,189,.45);}
+
+h3{
+  font-size:1.08rem;font-weight:700;color:var(--p2);
+  margin-bottom:8px;letter-spacing:-.01em;
+}
+.svc-short{
+  font-size:.88rem;color:var(--ts);line-height:1.55;font-weight:400;
+}
+
+/* Expand content — hidden by default */
+.svc-expand{
+  max-height:0;overflow:hidden;
+  transition:max-height .4s ease, opacity .3s ease, margin .3s ease;
+  opacity:0;margin-top:0;
+}
+.svc-card:hover .svc-expand{
+  max-height:200px;opacity:1;margin-top:14px;
+}
+.svc-expand p{
+  font-size:.82rem;color:var(--ts);line-height:1.6;margin-bottom:10px;
+}
+.svc-expand ul{
+  list-style:none;display:flex;flex-direction:column;gap:4px;
+}
+.svc-expand ul li{
+  font-size:.78rem;color:var(--p2);font-weight:500;
+  padding-left:14px;position:relative;
+}
+.svc-expand ul li::before{
+  content:'✦';position:absolute;left:0;
+  font-size:.55rem;color:var(--p1);top:2px;
+}
+
+/* CTA inside card */
+.svc-cta{
+  display:inline-block;
+  margin-top:14px;font-size:.78rem;font-weight:700;
+  color:var(--p1);letter-spacing:.04em;
+  text-decoration:none;
+  opacity:0;transform:translateY(4px);
+  transition:opacity .25s ease .1s,transform .25s ease .1s;
+}
+.svc-card:hover .svc-cta{opacity:1;transform:translateY(0);}
+
+/* Stagger animation delays */
+.svc-card:nth-child(1){transition-delay:.05s;}
+.svc-card:nth-child(2){transition-delay:.12s;}
+.svc-card:nth-child(3){transition-delay:.19s;}
+.svc-card:nth-child(4){transition-delay:.26s;}
+.svc-card:nth-child(5){transition-delay:.33s;}
+.svc-card:nth-child(6){transition-delay:.40s;}
+.svc-card:nth-child(7){transition-delay:.47s;}
+.svc-card:nth-child(8){transition-delay:.54s;}
+.svc-card:nth-child(9){transition-delay:.61s;}
+
+/* Bottom CTA */
+.svc-bottom-cta{
+  text-align:center;margin-top:60px;
+  display:flex;flex-direction:column;align-items:center;gap:18px;
+}
+.svc-bottom-cta p{
+  font-size:1rem;color:var(--ts);font-weight:400;
+}
+</style>
+
+<style>
+/* ════ AUDIT GRATUIT SECTION ════ */
+.audit-section{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,#3D1766 0%,#5A2898 45%,#7B3FBD 100%);
+  padding:100px 56px 90px;
+  text-align:center;
+}
+
+/* Soft ambient glow blobs */
+.audit-glow{
+  position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 60% 70% at 20% 50%, rgba(244,214,227,.18) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 80% 40%, rgba(214,230,245,.15) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 80% at 50% 100%, rgba(126,200,220,.12) 0%, transparent 55%);
+}
+
+.audit-inner{
+  position:relative;z-index:2;
+  max-width:720px;margin:0 auto;
+}
+
+/* Badge */
+.audit-badge{
+  display:inline-flex;align-items:center;gap:8px;margin-bottom:32px;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.2);
+  border-radius:6px;padding:7px 16px;
+  font-size:.68rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;
+  color:rgba(255,255,255,.85);
+}
+.audit-badge-dot{
+  width:7px;height:7px;border-radius:50%;flex-shrink:0;
+  background:#D4B0F8;box-shadow:0 0 8px #D4B0F8;
+  animation:bdot 2s ease-in-out infinite;
+}
+
+/* Title */
+.audit-title{
+  font-family:'Outfit',sans-serif;
+  font-size:clamp(2rem,3.8vw,3.2rem);
+  font-weight:800;line-height:1.12;letter-spacing:-.02em;
+  color:#fff;margin-bottom:22px;
+}
+.audit-title em{
+  font-style:italic;font-weight:300;
+  color:#D4B0F8;
+}
+
+/* Description */
+.audit-desc{
+  font-size:1.05rem;line-height:1.75;
+  color:rgba(255,255,255,.75);
+  margin-bottom:44px;font-weight:400;
+}
+.audit-desc strong{color:#fff;font-weight:600;}
+
+/* Perks row */
+.audit-perks{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:16px 28px;
+  margin-bottom:44px;
+}
+.audit-perk{
+  display:flex;align-items:center;gap:10px;
+  font-size:.85rem;color:rgba(255,255,255,.85);font-weight:500;
+}
+.perk-icon{width:28px;height:28px;flex-shrink:0;}
+.perk-icon svg{width:28px;height:28px;}
+
+/* CTA button */
+.audit-cta{
+  display:inline-flex;align-items:center;gap:12px;
+  padding:18px 40px;border-radius:12px;
+  background:#fff;
+  color:var(--p2);
+  font-family:'Outfit',sans-serif;
+  font-size:1rem;font-weight:700;letter-spacing:.03em;
+  text-decoration:none;cursor:pointer;
+  box-shadow:0 8px 40px rgba(0,0,0,.25),0 0 0 0 rgba(255,255,255,.3);
+  transition:transform .25s cubic-bezier(.34,1.56,.64,1),
+             box-shadow .25s ease;
+}
+.audit-cta:hover{
+  transform:translateY(-3px) scale(1.03);
+  box-shadow:0 14px 50px rgba(0,0,0,.3),0 0 0 6px rgba(255,255,255,.15);
+}
+.audit-cta-sparkle{
+  font-size:.9rem;color:var(--p1);
+  animation:spin-slow 4s linear infinite;
+  display:inline-block;
+}
+@keyframes spin-slow{from{transform:rotate(0);}to{transform:rotate(360deg);}}
+
+/* Note */
+.audit-note{
+  margin-top:20px;font-size:.75rem;
+  color:rgba(255,255,255,.45);letter-spacing:.06em;
+}
+
+</style>
+
+<script>
+/* ── SERVICES SCROLL REVEAL + LINKS ── */
+const svcLinks = [
+  'services/google-ads.html',
+  'services/intelligence-artificielle.html',
+  'services/strategie-digitale.html',
+  'services/branding.html',
+  'services/creation-contenu.html',
+  'services/seo.html',
+  'services/videos-publicitaires.html',
+  'services/drone.html',
+  'services/creation-sites-web.html'
+];
+const cards = document.querySelectorAll('.svc-card');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15 });
+cards.forEach((c, i) => {
+  observer.observe(c);
+  // Add "Découvrir →" link
+  if(svcLinks[i]) {
+    const lnk = document.createElement('a');
+    lnk.href = svcLinks[i];
+    lnk.className = 'svc-cta';
+    lnk.innerHTML = 'Découvrir →';
+    c.appendChild(lnk);
+    // Make whole card clickable
+    c.style.cursor = 'pointer';
+    c.addEventListener('click', (e) => {
+      if(!e.target.closest('a')) window.location.href = svcLinks[i];
+    });
+  }
+});
+</script>
+
+<script>
+/* ── SPLINE LOAD ── */
+const splineEl=document.getElementById('spline');
+const loader=document.getElementById('loader');
+splineEl.addEventListener('load',()=>setTimeout(()=>loader.classList.add('hide'),500));
+setTimeout(()=>loader.classList.add('hide'),9000);
+
+/* ── PARTICLES ── */
+const cv=document.getElementById('ptcl'),ctx=cv.getContext('2d');
+let W,H;
+function rsz(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
+rsz();window.addEventListener('resize',rsz);
+const cols=[[123,63,189],[126,200,220],[176,127,224],[90,40,152]];
+const pts=Array.from({length:55},()=>({
+  x:Math.random()*W||Math.random()*1400,
+  y:Math.random()*H||Math.random()*900,
+  vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18,
+  r:Math.random()*1.3+.4,
+  c:cols[Math.floor(Math.random()*cols.length)],
+  a:Math.random()*.22+.06,ph:Math.random()*Math.PI*2
+}));
+let mx=700,my=400;
+function draw(){
+  cv.width=W;
+  pts.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;p.ph+=.01;
+    if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+    const dx=p.x-mx,dy=p.y-my,d=Math.hypot(dx,dy);
+    if(d<100){const f=(100-d)/100*.25;p.vx+=dx/d*f;p.vy+=dy/d*f;}
+    p.vx*=.997;p.vy*=.997;
+    const sp=Math.hypot(p.vx,p.vy);if(sp>1){p.vx=p.vx/sp;p.vy=p.vy/sp;}
+    const a=p.a*(.6+.4*Math.sin(p.ph));
+    ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${p.c},${a})`;ctx.fill();
+  });
+  for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){
+    const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.hypot(dx,dy);
+    if(d<88){
+      ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);
+      ctx.strokeStyle=`rgba(176,127,224,${(1-d/88)*.08})`;ctx.lineWidth=.5;ctx.stroke();
+    }
+  }
+  requestAnimationFrame(draw);
+}
+draw();
+
+/* ── CURSOR ── */
+const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
+let cx=0,cy=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  cx=e.clientX;cy=e.clientY;
+  cur.style.left=cx+'px';cur.style.top=cy+'px';
+  mx=cx;my=cy;
+});
+(function lp(){rx+=(cx-rx)*.1;ry+=(cy-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(lp);})();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cur.classList.add('big'));
+  el.addEventListener('mouseleave',()=>cur.classList.remove('big'));
+});
+
+/* ── SCROLL PARALLAX ── */
+window.addEventListener('scroll',()=>{
+  const s=window.scrollY;
+  document.querySelector('.spline-bg').style.transform=`translateY(${s*.08}px)`;
+  document.querySelector('.hero-content').style.transform=`translateY(${s*.05}px)`;
+});
+</script>
+
+<style>
+/* ════════════════════════════════════
+   RESPONSIVE — mobile
+════════════════════════════════════ */
+
+/* ── NAV ── */
+@media(max-width:860px){
+  nav{padding:14px 20px;}
+  nav ul{gap:14px;}
+  nav a{font-size:.75rem;letter-spacing:.04em;}
+}
+@media(max-width:600px){
+  nav ul li:not(:last-child){display:none;}
+  nav{padding:12px 16px;}
+  .nav-cta{padding:8px 16px;font-size:.8rem !important;}
+}
+
+/* ── HERO ── */
+@media(max-width:860px){
+  .spline-bg{width:55%;right:-5%;opacity:.65;}
+  .hero-content{padding:100px 24px 60px;max-width:100%;}
+  .scroll-cue{left:24px;}
+}
+@media(max-width:600px){
+  .spline-bg{display:none;}
+  .hero{background:
+    radial-gradient(ellipse 90% 60% at 50% 30%,#F4D6E3 0%,transparent 55%),
+    radial-gradient(ellipse 80% 55% at 20% 70%,#D6E6F5 0%,transparent 55%),
+    #D9D6F2;}
+  .hero-mask{background:rgba(217,214,242,.15);}
+  .robot-glow{display:none;}
+  .hero-content{padding:88px 20px 56px;max-width:100%;}
+  h1{font-size:2.4rem;}
+  h1 .line2{font-size:1.25rem;margin-top:8px;}
+  .desc{font-size:.95rem;max-width:100%;}
+  .btns{flex-direction:column;align-items:flex-start;gap:14px;}
+  .b-main{width:100%;justify-content:center;}
+  .scroll-cue{display:none;}
+  .marquee-wrap{margin-top:32px;}
+}
+@media(max-width:380px){
+  h1{font-size:2rem;}
+  .hero-content{padding:80px 16px 48px;}
+}
+
+/* ── SERVICES ── */
+@media(max-width:860px){
+  .services-section{padding:80px 20px 60px;}
+  .svc-grid{grid-template-columns:repeat(2,1fr);}
+  .svc-header{margin-bottom:48px;}
+}
+@media(max-width:600px){
+  .services-section{padding:60px 16px 48px;}
+  .svc-grid{grid-template-columns:1fr;}
+  .svc-header{margin-bottom:36px;}
+  .svc-header h2{font-size:1.8rem;}
+  .svc-header p{font-size:.92rem;}
+  .svc-card{padding:22px 20px 18px;}
+  .svc-bottom-cta{margin-top:36px;}
+  .svc-bottom-cta .b-main{width:100%;justify-content:center;}
+}
+
+/* ── AUDIT ── */
+@media(max-width:860px){
+  .audit-section{padding:80px 24px 70px;}
+  .audit-perks{gap:12px 20px;}
+}
+@media(max-width:600px){
+  .audit-section{padding:60px 16px 50px;}
+  .audit-title{font-size:clamp(1.7rem,5vw,2.4rem);}
+  .audit-desc{font-size:.95rem;}
+  .audit-perks{flex-direction:column;align-items:flex-start;gap:12px;}
+  .audit-cta{width:100%;justify-content:center;padding:16px 24px;font-size:.95rem;}
+  .audit-note{font-size:.7rem;}
+}
+</style>
+
+</body>
+</html>
