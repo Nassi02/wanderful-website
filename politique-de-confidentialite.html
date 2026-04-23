@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Politique de confidentialité — Wanderful Marketing</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+    :root{
+      --p1: #7B3FBD;
+      --p2: #3D1766;
+      --p3: #5A2898;
+      --p4: #B07FE0;
+      --bg: #D9D6F2;
+    }
+    html,body{height:100%;overflow-x:hidden;}
+    body{font-family:'Outfit',sans-serif;background:#D9D6F2;color:#3D1766;}
+
+    /* NAV */
+    nav{
+      position:fixed;top:0;left:0;right:0;z-index:200;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:18px 56px;
+      background:linear-gradient(180deg,rgba(217,214,242,.96) 0%,rgba(217,214,242,.0) 100%);
+      backdrop-filter:blur(8px);
+    }
+    .nav-logo{display:flex;align-items:center;gap:4px;}
+    .logo-wand{position:relative;display:flex;align-items:flex-end;margin-right:2px;}
+    .logo-wande{font-family:'Outfit',sans-serif;font-size:1.55rem;font-weight:800;color:var(--p2);letter-spacing:-.02em;line-height:1;}
+    .logo-rful{font-family:'Outfit',sans-serif;font-size:1.55rem;font-weight:800;color:var(--p1);letter-spacing:-.02em;line-height:1;}
+    .logo-sub{display:block;font-size:.55rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--p2);opacity:.55;margin-top:1px;line-height:1;}
+    nav ul{list-style:none;display:flex;gap:30px;align-items:center;}
+    nav a{color:var(--p2);text-decoration:none;font-size:.82rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;transition:color .2s;}
+    nav a:hover{color:var(--p1);}
+    .nav-cta{padding:10px 22px;border-radius:8px;background:linear-gradient(135deg,var(--p1),var(--p3));color:#fff !important;font-weight:600 !important;text-transform:none !important;letter-spacing:.03em !important;box-shadow:0 4px 20px rgba(123,63,189,.5);transition:box-shadow .2s,transform .15s !important;}
+    .nav-cta:hover{box-shadow:0 6px 28px rgba(123,63,189,.7)!important;transform:translateY(-1px);}
+
+    /* CONTENT */
+    .legal-page{
+      max-width:800px;
+      margin:0 auto;
+      padding:140px 40px 80px;
+    }
+    .legal-badge{
+      display:inline-flex;align-items:center;gap:8px;margin-bottom:24px;
+      background:rgba(123,63,189,.1);border:1px solid rgba(123,63,189,.25);
+      border-radius:6px;padding:6px 14px;
+      font-size:.7rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--p1);
+    }
+    .legal-page h1{
+      font-size:2.4rem;font-weight:800;color:var(--p2);
+      line-height:1.15;margin-bottom:12px;
+    }
+    .legal-page .last-updated{
+      font-size:.8rem;color:var(--p2);opacity:.55;
+      margin-bottom:48px;font-weight:500;
+    }
+    .legal-page h2{
+      font-size:1.15rem;font-weight:700;color:var(--p2);
+      margin:36px 0 12px;padding-bottom:8px;
+      border-bottom:2px solid rgba(123,63,189,.15);
+    }
+    .legal-page p{
+      font-size:.95rem;line-height:1.8;color:var(--p2);
+      opacity:.8;margin-bottom:14px;
+    }
+    .legal-page ul{
+      list-style:none;margin:12px 0 18px;display:flex;flex-direction:column;gap:8px;
+    }
+    .legal-page ul li{
+      font-size:.93rem;line-height:1.7;color:var(--p2);opacity:.8;
+      padding-left:20px;position:relative;
+    }
+    .legal-page ul li::before{
+      content:'✦';position:absolute;left:0;font-size:.55rem;color:var(--p1);top:4px;
+    }
+    .legal-page a{color:var(--p1);text-decoration:underline;}
+    .legal-page strong{color:var(--p2);font-weight:600;opacity:1;}
+
+    .contact-box{
+      background:#fff;border-radius:16px;padding:28px;
+      margin-top:40px;border-left:4px solid var(--p1);
+      box-shadow:0 4px 20px rgba(123,63,189,.08);
+    }
+    .contact-box p{margin-bottom:6px;opacity:1;}
+    .contact-box strong{color:var(--p1);}
+
+    /* FOOTER */
+    footer{
+      background:var(--p2);
+      padding:40px 56px;
+      text-align:center;
+    }
+    .footer-inner{max-width:900px;margin:0 auto;}
+    .footer-logo{display:flex;align-items:center;justify-content:center;gap:6px;margin-bottom:20px;}
+    .footer-logo span.wande{font-size:1.2rem;font-weight:800;color:#fff;letter-spacing:-.02em;}
+    .footer-logo span.rful{font-size:1.2rem;font-weight:800;color:var(--p4);letter-spacing:-.02em;}
+    .footer-links{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;margin-bottom:20px;}
+    .footer-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.78rem;font-weight:500;letter-spacing:.06em;transition:color .2s;}
+    .footer-links a:hover{color:#fff;}
+    .footer-divider{width:60px;height:1px;background:rgba(255,255,255,.15);margin:20px auto;}
+    .footer-copy{font-size:.72rem;color:rgba(255,255,255,.35);letter-spacing:.06em;}
+
+    @media(max-width:600px){
+      nav{padding:12px 16px;}
+      nav ul li:not(:last-child){display:none;}
+      .legal-page{padding:110px 20px 60px;}
+      .legal-page h1{font-size:1.8rem;}
+      footer{padding:32px 20px;}
+      .footer-links{gap:16px;}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="logo-wand">
+      <svg width="34" height="40" viewBox="0 0 34 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 11 L5 38" stroke="#3D1766" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M7.5 33.5 L4.5 38.5" stroke="#7B3FBD" stroke-width="3.8" stroke-linecap="round"/>
+        <path d="M20 1 L21.4 6.6 L27 5 L21.4 8.4 L23 14 L20 9.6 L17 14 L18.6 8.4 L13 5 L18.6 6.6Z" fill="#E2D4F8" stroke="#9B60D4" stroke-width="0.9" stroke-linejoin="round"/>
+        <circle cx="8" cy="5" r="1.4" fill="#F4D6E3" opacity=".9"/>
+        <circle cx="29" cy="9" r="1.0" fill="#D6E6F5" opacity=".9"/>
+        <circle cx="28" cy="22" r="0.8" fill="#CFC3E8" opacity=".7"/>
+      </svg>
+    </div>
+    <div>
+      <div style="display:flex;align-items:baseline;gap:0;">
+        <span class="logo-wande">Wande</span><span class="logo-rful">rful</span>
+      </div>
+      <span class="logo-sub">Marketing Agency</span>
+    </div>
+  </div>
+  <ul>
+    <li><a href="/#a-propos">À propos</a></li>
+    <li><a href="/#services">Services</a></li>
+    <li><a href="/contact" class="nav-cta">Contactez-nous →</a></li>
+  </ul>
+</nav>
+
+<!-- CONTENT -->
+<div class="legal-page">
+  <div class="legal-badge">Protection des données</div>
+  <h1>Politique de confidentialité</h1>
+  <p class="last-updated">Dernière mise à jour : avril 2026</p>
+
+  <h2>1. Responsable du traitement</h2>
+  <p>La présente politique de confidentialité est établie par :</p>
+  <ul>
+    <li><strong>Raison sociale :</strong> Wanderful Marketing</li>
+    <li><strong>Adresse :</strong> Yvonand, Vaud, Suisse</li>
+    <li><strong>E-mail :</strong> <a href="mailto:marketingwanderful@gmail.com">marketingwanderful@gmail.com</a></li>
+    <li><strong>Téléphone :</strong> +41 78 808 27 97</li>
+  </ul>
+  <p>Wanderful Marketing est responsable du traitement des données personnelles collectées via le site <a href="https://wanderful-marketing.com">wanderful-marketing.com</a>, conformément à la Loi fédérale suisse sur la protection des données (nLPD, en vigueur depuis le 1er septembre 2023).</p>
+
+  <h2>2. Données collectées</h2>
+  <p>Nous collectons les données personnelles suivantes, uniquement lorsque vous nous les communiquez volontairement :</p>
+  <ul>
+    <li>Nom et prénom</li>
+    <li>Adresse e-mail</li>
+    <li>Numéro de téléphone (optionnel)</li>
+    <li>Nom de votre entreprise (optionnel)</li>
+    <li>Message libre saisi dans le formulaire de contact</li>
+  </ul>
+  <p>Des données techniques peuvent également être collectées automatiquement lors de votre navigation (adresse IP, type de navigateur, pages visitées, durée de visite), à des fins statistiques et de sécurité.</p>
+
+  <h2>3. Finalités du traitement</h2>
+  <p>Vos données sont utilisées pour :</p>
+  <ul>
+    <li>Répondre à vos demandes de contact ou de devis</li>
+    <li>Vous envoyer des informations relatives à nos services (si vous y avez consenti)</li>
+    <li>Améliorer notre site web et notre offre de services</li>
+    <li>Respecter nos obligations légales</li>
+  </ul>
+
+  <h2>4. Base légale du traitement</h2>
+  <p>Le traitement de vos données repose sur :</p>
+  <ul>
+    <li><strong>Votre consentement</strong> — pour l'envoi de communications marketing</li>
+    <li><strong>L'exécution d'un contrat ou de mesures précontractuelles</strong> — pour répondre à vos demandes</li>
+    <li><strong>Notre intérêt légitime</strong> — pour l'amélioration de nos services et la sécurité du site</li>
+  </ul>
+
+  <h2>5. Partage des données</h2>
+  <p>Wanderful Marketing ne vend, ne loue ni ne partage vos données personnelles avec des tiers à des fins commerciales. Vos données peuvent être transmises à des prestataires techniques (hébergement, e-mail) uniquement dans la mesure nécessaire à la fourniture de nos services, et sous contrat de confidentialité.</p>
+  <p>Nous utilisons les services suivants susceptibles de traiter des données :</p>
+  <ul>
+    <li><strong>GitHub Pages</strong> — hébergement du site (GitHub, Inc., USA)</li>
+    <li><strong>Google Analytics / Google Ads</strong> — mesure d'audience et publicité</li>
+  </ul>
+
+  <h2>6. Conservation des données</h2>
+  <p>Vos données personnelles sont conservées le temps nécessaire à la réalisation des finalités pour lesquelles elles ont été collectées, et au maximum :</p>
+  <ul>
+    <li><strong>3 ans</strong> à compter du dernier contact pour les données de prospects</li>
+    <li><strong>10 ans</strong> pour les données liées à des contrats (obligation légale)</li>
+  </ul>
+
+  <h2>7. Vos droits</h2>
+  <p>Conformément à la nLPD, vous disposez des droits suivants sur vos données :</p>
+  <ul>
+    <li><strong>Droit d'accès</strong> — obtenir une copie de vos données</li>
+    <li><strong>Droit de rectification</strong> — corriger des données inexactes</li>
+    <li><strong>Droit à l'effacement</strong> — supprimer vos données dans les cas prévus par la loi</li>
+    <li><strong>Droit à la portabilité</strong> — recevoir vos données dans un format structuré</li>
+    <li><strong>Droit d'opposition</strong> — vous opposer à certains traitements</li>
+  </ul>
+  <p>Pour exercer ces droits, contactez-nous à l'adresse ci-dessous. Nous répondons dans un délai de 30 jours.</p>
+
+  <h2>8. Cookies</h2>
+  <p>Notre site peut utiliser des cookies techniques indispensables à son fonctionnement, ainsi que des cookies d'analyse (Google Analytics) permettant de comprendre comment les visiteurs utilisent le site. Vous pouvez désactiver les cookies dans les paramètres de votre navigateur.</p>
+
+  <h2>9. Sécurité</h2>
+  <p>Nous mettons en œuvre des mesures techniques et organisationnelles appropriées pour protéger vos données contre tout accès non autorisé, perte ou divulgation.</p>
+
+  <h2>10. Modifications</h2>
+  <p>Nous nous réservons le droit de modifier la présente politique à tout moment. La version en vigueur est toujours disponible sur cette page. Nous vous informerons de tout changement significatif.</p>
+
+  <h2>11. Contact & réclamations</h2>
+  <p>Pour toute question relative à la protection de vos données :</p>
+  <div class="contact-box">
+    <p><strong>Wanderful Marketing</strong></p>
+    <p>Yvonand, Vaud, Suisse</p>
+    <p>E-mail : <a href="mailto:marketingwanderful@gmail.com">marketingwanderful@gmail.com</a></p>
+    <p>Téléphone : <a href="tel:+41788082797">+41 78 808 27 97</a></p>
+  </div>
+  <p style="margin-top:20px;">En cas de litige non résolu, vous pouvez vous adresser au Préposé fédéral à la protection des données et à la transparence (PFPDT) : <a href="https://www.edoeb.admin.ch" target="_blank">www.edoeb.admin.ch</a>.</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <svg width="22" height="26" viewBox="0 0 34 40" fill="none">
+        <path d="M20 11 L5 38" stroke="rgba(255,255,255,.7)" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M7.5 33.5 L4.5 38.5" stroke="#B07FE0" stroke-width="3.8" stroke-linecap="round"/>
+        <path d="M20 1 L21.4 6.6 L27 5 L21.4 8.4 L23 14 L20 9.6 L17 14 L18.6 8.4 L13 5 L18.6 6.6Z" fill="#D4B0F8" stroke="#B07FE0" stroke-width="0.9" stroke-linejoin="round"/>
+      </svg>
+      <span class="wande">Wande</span><span class="rful">rful</span>
+    </div>
+    <div class="footer-links">
+      <a href="/">Accueil</a>
+      <a href="/#services">Services</a>
+      <a href="/contact">Contact</a>
+      <a href="/mentions-legales.html">Mentions légales</a>
+      <a href="/politique-de-confidentialite.html" style="color:#fff;font-weight:600;">Politique de confidentialité</a>
+    </div>
+    <div class="footer-divider"></div>
+    <p class="footer-copy">© 2026 Wanderful Marketing · Yvonand, Suisse · Tous droits réservés</p>
+  </div>
+</footer>
+
+</body>
+</html>
