@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Wanderful â Agence de marketing digital</title>
+<title>Wanderful — Agence de marketing digital</title>
 
 <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.82/build/spline-viewer.js"></script>
 
@@ -26,7 +26,7 @@
 html,body{height:100%;overflow-x:hidden;}
 body{font-family:'Outfit',sans-serif;cursor:none;background:#D9D6F2;}
 
-/* ââ CURSOR ââ */
+/* ── CURSOR ── */
 #cur{
   position:fixed;width:12px;height:12px;border-radius:50%;z-index:9999;
   pointer-events:none;transform:translate(-50%,-50%);
@@ -43,7 +43,7 @@ body{font-family:'Outfit',sans-serif;cursor:none;background:#D9D6F2;}
   transition:left .09s ease-out,top .09s ease-out;
 }
 
-/* ââ NAV ââ */
+/* ── NAV ── */
 nav{
   position:fixed;top:0;left:0;right:0;z-index:200;
   display:flex;align-items:center;justify-content:space-between;
@@ -57,7 +57,7 @@ nav{
 .logo-wand{position:relative;display:flex;align-items:flex-end;margin-right:2px;}
 .logo-wand svg{display:block;}
 
-/* "Wande" in script style + "rful" in bold caps â like the real logo */
+/* "Wande" in script style + "rful" in bold caps — like the real logo */
 .logo-wande{
   font-family:'Outfit',sans-serif;
   font-size:1.55rem;font-weight:800;
@@ -90,7 +90,7 @@ nav a:hover{color:var(--p1);}
 }
 .nav-cta:hover{box-shadow:0 6px 28px rgba(123,63,189,.7)!important;transform:translateY(-1px);}
 
-/* ââ HERO â full screen ââ */
+/* ── HERO — full screen ── */
 .hero{
   position:relative;min-height:100vh;overflow:hidden;
   background:
@@ -100,7 +100,7 @@ nav a:hover{color:var(--p1);}
     #D9D6F2;
 }
 
-/* ââ SPLINE â fills right ~65% of hero ââ */
+/* ── SPLINE — fills right ~65% of hero ── */
 .spline-bg{
   position:absolute;
   right:-2%;top:0;
@@ -112,11 +112,11 @@ spline-viewer{
   width:100%;height:100%;display:block;
   /* screen blend removes the black bg entirely */
   mix-blend-mode: screen;
-  /* tint: brighten the dark robot â sepia â shift hue to lavender/lilac */
+  /* tint: brighten the dark robot → sepia → shift hue to lavender/lilac */
   filter: brightness(2.2) sepia(0.7) hue-rotate(215deg) saturate(2.2) contrast(0.75);
 }
 
-/* Pastel colour wash â soft lavender + blush overlay */
+/* Pastel colour wash — soft lavender + blush overlay */
 .spline-tint{
   position:absolute;inset:0;z-index:2;pointer-events:none;
   background:linear-gradient(
@@ -128,7 +128,7 @@ spline-viewer{
   mix-blend-mode: color;
 }
 
-/* Gradient mask â left edge blends into bg so text reads cleanly */
+/* Gradient mask — left edge blends into bg so text reads cleanly */
 .hero-mask{
   position:absolute;inset:0;z-index:3;pointer-events:none;
   background:linear-gradient(
@@ -140,7 +140,7 @@ spline-viewer{
     transparent 70%
   );
 }
-/* Top + bottom fade â pastel only, no black */
+/* Top + bottom fade — pastel only, no black */
 .hero-mask::before{
   content:'';position:absolute;inset:0;
   background:linear-gradient(180deg,
@@ -187,7 +187,7 @@ spline-viewer{
 @keyframes spin{to{transform:rotate(360deg);}}
 .loader-text{font-size:.75rem;font-weight:500;color:rgba(176,127,224,.6);letter-spacing:.1em;text-transform:uppercase;}
 
-/* ââ HERO CONTENT â overlaid on left ââ */
+/* ── HERO CONTENT — overlaid on left ── */
 .hero-content{
   position:relative;z-index:10;
   min-height:100vh;display:flex;align-items:center;
@@ -271,10 +271,10 @@ h1 .line2{
 /* pills removed */
 .dp-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 
-/* ââ PARTICLE CANVAS ââ */
+/* ── PARTICLE CANVAS ── */
 #ptcl{position:fixed;inset:0;z-index:0;pointer-events:none;}
 
-/* ââ SCROLL CUE ââ */
+/* ── SCROLL CUE ── */
 .scroll-cue{
   position:absolute;bottom:28px;left:56px;z-index:10;
   display:flex;align-items:center;gap:10px;
@@ -282,7 +282,7 @@ h1 .line2{
 }
 .sbar{width:32px;height:1px;background:linear-gradient(90deg,rgba(176,127,224,.5),transparent);}
 
-/* ââ NOTRE HISTOIRE ââ */
+/* ── NOTRE HISTOIRE ── */
 .histoire-section{
   padding:100px 56px;
   background:linear-gradient(180deg,#D9D6F2 0%,#EDE9FF 50%,#D9D6F2 100%);
@@ -326,10 +326,10 @@ h1 .line2{
 <!-- NAV -->
 <nav>
   <div class="nav-logo">
-    <!-- Magic wand + star SVG â fidÃ¨le au concept du logo Wanderful -->
+    <!-- Magic wand + star SVG — fidèle au concept du logo Wanderful -->
     <div class="logo-wand">
       <svg width="34" height="40" viewBox="0 0 34 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <!-- Wand body â clean diagonal stick -->
+        <!-- Wand body — clean diagonal stick -->
         <path d="M20 11 L5 38" stroke="#3D1766" stroke-width="2.6" stroke-linecap="round"/>
         <!-- Grip wrap at bottom -->
         <path d="M7.5 33.5 L4.5 38.5" stroke="#7B3FBD" stroke-width="3.8" stroke-linecap="round"/>
@@ -351,9 +351,9 @@ h1 .line2{
     </div>
   </div>
   <ul>
-    <li><a href="#a-propos">Ã propos</a></li>
+    <li><a href="#a-propos">À propos</a></li>
     <li><a href="#services">Services</a></li>
-    <li><a href="/contact" class="nav-cta">Contactez-nous â</a></li>
+    <li><a href="/contact" class="nav-cta">Contactez-nous →</a></li>
   </ul>
 </nav>
 
@@ -363,11 +363,11 @@ h1 .line2{
   <!-- Ambient glow -->
   <div class="robot-glow"></div>
 
-  <!-- Spline 3D Robot â background right -->
+  <!-- Spline 3D Robot — background right -->
   <div class="spline-bg">
     <div class="spline-loader" id="loader">
       <div class="loader-ring"></div>
-      <div class="loader-text">Robot en coursâ¦</div>
+      <div class="loader-text">Robot en cours…</div>
     </div>
     <spline-viewer
       id="spline"
@@ -387,16 +387,16 @@ h1 .line2{
     <div class="hero-inner">
       <div class="badge">
         <span class="badge-dot"></span>
-        Agence certifiÃ©e Google Ads Â· Yvonand, Suisse
+        Agence certifiée Google Ads · Yvonand, Suisse
       </div>
 
       <h1>
-        Digitalisez<br>votre succÃ¨s
-        <span class="line2">StratÃ©gie Â· IA Â· Performance</span>
+        Digitalisez<br>votre succès
+        <span class="line2">Stratégie · IA · Performance</span>
       </h1>
 
       <p class="desc">
-        Wanderful conÃ§oit des stratÃ©gies sur mesure pour exploiter
+        Wanderful conçoit des stratégies sur mesure pour exploiter
         <b>l'intelligence artificielle</b>, optimiser votre marketing digital
         et <b>booster votre croissance</b>.
       </p>
@@ -408,21 +408,21 @@ h1 .line2{
             <path d="M2.5 7.5h10M9 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </a>
-        <a href="/contact" class="b-sec">Nous contacter <span class="arr">â</span></a>
+        <a href="/contact" class="b-sec">Nous contacter <span class="arr">→</span></a>
       </div>
 
       <div class="marquee-wrap">
         <div class="marquee">
-          <span>Casting Spells for Endless Visibility</span><span class="star"> â </span>
-          <span>Google Ads Â· IA Â· Branding</span><span class="star"> â </span>
-          <span>VidÃ©os & Drone Â· Sites Web</span><span class="star"> â </span>
-          <span>HEC Lausanne</span><span class="star"> â </span>
-          <span>PME Suisses Â· Croissance digitale</span><span class="star"> â </span>
-          <span>Casting Spells for Endless Visibility</span><span class="star"> â </span>
-          <span>Google Ads Â· IA Â· Branding</span><span class="star"> â </span>
-          <span>VidÃ©os & Drone Â· Sites Web</span><span class="star"> â </span>
-          <span>HEC Lausanne</span><span class="star"> â </span>
-          <span>PME Suisses Â· Croissance digitale</span><span class="star"> â </span>
+          <span>Casting Spells for Endless Visibility</span><span class="star"> ☆ </span>
+          <span>Google Ads · IA · Branding</span><span class="star"> ☆ </span>
+          <span>Vidéos & Drone · Sites Web</span><span class="star"> ☆ </span>
+          <span>HEC Lausanne</span><span class="star"> ☆ </span>
+          <span>PME Suisses · Croissance digitale</span><span class="star"> ☆ </span>
+          <span>Casting Spells for Endless Visibility</span><span class="star"> ☆ </span>
+          <span>Google Ads · IA · Branding</span><span class="star"> ☆ </span>
+          <span>Vidéos & Drone · Sites Web</span><span class="star"> ☆ </span>
+          <span>HEC Lausanne</span><span class="star"> ☆ </span>
+          <span>PME Suisses · Croissance digitale</span><span class="star"> ☆ </span>
         </div>
       </div>
     </div>
@@ -433,14 +433,14 @@ h1 .line2{
   </div>
 </section>
 
-<!-- ââââââââââââââââââââââââââââââââââââââââ
+<!-- ════════════════════════════════════════
      CLIENTS SECTION
-ââââââââââââââââââââââââââââââââââââââââ -->
+════════════════════════════════════════ -->
 <section class="clients-section">
   <p class="clients-label">Ils nous font confiance</p>
   <div class="clients-logos">
 
-    <!-- Carewell logo (SVG vectoriel haute qualitÃ©) -->
+    <!-- Carewell logo (SVG vectoriel haute qualité) -->
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 195 50" role="img" aria-label="Carewell">
       <!-- Icon: 4 leaf/petal shapes forming a cross -->
       <g transform="translate(24,25)">
@@ -462,7 +462,7 @@ h1 .line2{
 </section>
 
 <style>
-/* ââââ CLIENTS SECTION ââââ */
+/* ════ CLIENTS SECTION ════ */
 .clients-section{
   background:#fff;
   padding:44px 56px;
@@ -489,15 +489,15 @@ h1 .line2{
 }
 </style>
 
-<!-- ââââââââââââââââââââââââââââââââââââââââ
+<!-- ════════════════════════════════════════
      SERVICES SECTION
-ââââââââââââââââââââââââââââââââââââââââ -->
+════════════════════════════════════════ -->
 <section id="services" class="services-section">
 
   <div class="svc-header">
-    <span class="svc-eyebrow">â¦ Nos expertises</span>
+    <span class="svc-eyebrow">✦ Nos expertises</span>
     <h2>Ce qu'on fait <em>pour vous</em></h2>
-    <p>StratÃ©gie, contenu, vidÃ©o, drone, web â tout ce dont vous avez besoin pour dominer le digital, sous un seul toit.</p>
+    <p>Stratégie, contenu, vidéo, drone, web — tout ce dont vous avez besoin pour dominer le digital, sous un seul toit.</p>
   </div>
 
   <div class="svc-grid">
@@ -508,9 +508,9 @@ h1 .line2{
       </div>
       <div class="svc-num">01</div>
       <h3>Google Ads</h3>
-      <p class="svc-short">Campagnes qui convertissent, ROI maximisÃ©.</p>
+      <p class="svc-short">Campagnes qui convertissent, ROI maximisé.</p>
       <div class="svc-expand">
-        <p>Agence certifiÃ©e Google Ads, nous gÃ©rons vos campagnes Search, Shopping, Display et Performance Max via l'API Google Ads pour des rÃ©sultats mesurables.</p>
+        <p>Agence certifiée Google Ads, nous gérons vos campagnes Search, Shopping, Display et Performance Max via l'API Google Ads pour des résultats mesurables.</p>
         <ul>
           <li>Campagnes Search & Shopping</li>
           <li>Performance Max multi-canaux</li>
@@ -526,13 +526,13 @@ h1 .line2{
       </div>
       <div class="svc-num">02</div>
       <h3>Intelligence Artificielle</h3>
-      <p class="svc-short">L'IA au cÅur de votre stratÃ©gie marketing.</p>
+      <p class="svc-short">L'IA au cœur de votre stratégie marketing.</p>
       <div class="svc-expand">
-        <p>Analyse de donnÃ©es, gÃ©nÃ©ration de contenu optimisÃ©, personnalisation marketing â nous exploitons le plein potentiel de l'IA pour booster votre visibilitÃ©.</p>
+        <p>Analyse de données, génération de contenu optimisé, personnalisation marketing — nous exploitons le plein potentiel de l'IA pour booster votre visibilité.</p>
         <ul>
           <li>Automatisation marketing IA</li>
-          <li>GÃ©nÃ©ration de contenu optimisÃ©</li>
-          <li>Analyse prÃ©dictive & insights</li>
+          <li>Génération de contenu optimisé</li>
+          <li>Analyse prédictive & insights</li>
         </ul>
       </div>
       
@@ -543,13 +543,13 @@ h1 .line2{
         <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#FDE8F0"/><rect x="14" y="18" width="20" height="14" rx="3" stroke="#B07FE0" stroke-width="2"/><path d="M19 18v-3a5 5 0 0 1 10 0v3" stroke="#7B3FBD" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="25" r="2" fill="#7B3FBD"/></svg>
       </div>
       <div class="svc-num">03</div>
-      <h3>StratÃ©gie Digitale</h3>
+      <h3>Stratégie Digitale</h3>
       <p class="svc-short">Une roadmap claire pour atteindre vos objectifs.</p>
       <div class="svc-expand">
-        <p>Audit complet de votre prÃ©sence digitale, dÃ©finition de vos personas, crÃ©ation d'une stratÃ©gie sur mesure avec des KPIs mesurables et un plan d'action concret.</p>
+        <p>Audit complet de votre présence digitale, définition de vos personas, création d'une stratégie sur mesure avec des KPIs mesurables et un plan d'action concret.</p>
         <ul>
           <li>Audit digital complet</li>
-          <li>DÃ©finition de personas & funnel</li>
+          <li>Définition de personas & funnel</li>
           <li>Roadmap & KPIs sur mesure</li>
         </ul>
       </div>
@@ -561,10 +561,10 @@ h1 .line2{
         <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#E0F0FC"/><path d="M16 30V20l8-4 8 4v10l-8 4-8-4z" stroke="#7B3FBD" stroke-width="2" stroke-linejoin="round"/><path d="M16 20l8 4 8-4M24 24v10" stroke="#B07FE0" stroke-width="2" stroke-linecap="round"/></svg>
       </div>
       <div class="svc-num">04</div>
-      <h3>Branding & IdentitÃ©</h3>
+      <h3>Branding & Identité</h3>
       <p class="svc-short">Une marque qui vous ressemble et qui marque les esprits.</p>
       <div class="svc-expand">
-        <p>CrÃ©ation ou refonte de votre identitÃ© visuelle, charte graphique, positionnement de marque â pour que votre image reflÃ¨te parfaitement vos valeurs et attire vos clients idÃ©aux.</p>
+        <p>Création ou refonte de votre identité visuelle, charte graphique, positionnement de marque — pour que votre image reflète parfaitement vos valeurs et attire vos clients idéaux.</p>
         <ul>
           <li>Logo & charte graphique</li>
           <li>Positionnement de marque</li>
@@ -579,14 +579,14 @@ h1 .line2{
         <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#EDE0FF"/><path d="M14 34c2-8 6-14 10-14s8 6 10 14" stroke="#7B3FBD" stroke-width="2" stroke-linecap="round"/><path d="M18 26c1-4 3-7 6-7s5 3 6 7" stroke="#B07FE0" stroke-width="2" stroke-linecap="round"/><circle cx="24" cy="18" r="2.5" fill="#7B3FBD"/></svg>
       </div>
       <div class="svc-num">05</div>
-      <h3>CrÃ©ation de Contenu</h3>
-      <p class="svc-short">Du contenu qui engage, convertit et fidÃ©lise.</p>
+      <h3>Création de Contenu</h3>
+      <p class="svc-short">Du contenu qui engage, convertit et fidélise.</p>
       <div class="svc-expand">
-        <p>Copywriting, posts rÃ©seaux sociaux, newsletters, articles de blog optimisÃ©s SEO â du contenu authentique et percutant qui parle Ã  votre audience cible.</p>
+        <p>Copywriting, posts réseaux sociaux, newsletters, articles de blog optimisés SEO — du contenu authentique et percutant qui parle à votre audience cible.</p>
         <ul>
           <li>Social media & copywriting</li>
           <li>Articles SEO & newsletters</li>
-          <li>Calendrier Ã©ditorial</li>
+          <li>Calendrier éditorial</li>
         </ul>
       </div>
       
@@ -597,14 +597,14 @@ h1 .line2{
         <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#EDE0FF"/><circle cx="24" cy="24" r="7" stroke="#7B3FBD" stroke-width="2"/><path d="M24 11v4M24 33v4M11 24h4M33 24h4" stroke="#B07FE0" stroke-width="2" stroke-linecap="round"/><path d="M15.5 15.5l2.8 2.8M29.7 29.7l2.8 2.8M15.5 32.5l2.8-2.8M29.7 18.3l2.8-2.8" stroke="#CFC3E8" stroke-width="2" stroke-linecap="round"/></svg>
       </div>
       <div class="svc-num">06</div>
-      <h3>SEO & VisibilitÃ©</h3>
-      <p class="svc-short">PremiÃ¨re page Google, durablement.</p>
+      <h3>SEO & Visibilité</h3>
+      <p class="svc-short">Première page Google, durablement.</p>
       <div class="svc-expand">
-        <p>Optimisation on-page et off-page, stratÃ©gie de backlinks, audit technique â pour que vos clients vous trouvent naturellement sur Google, sans payer chaque clic.</p>
+        <p>Optimisation on-page et off-page, stratégie de backlinks, audit technique — pour que vos clients vous trouvent naturellement sur Google, sans payer chaque clic.</p>
         <ul>
           <li>Audit & optimisation SEO</li>
-          <li>StratÃ©gie de contenu organique</li>
-          <li>Netlinking & autoritÃ© de domaine</li>
+          <li>Stratégie de contenu organique</li>
+          <li>Netlinking & autorité de domaine</li>
         </ul>
       </div>
       
@@ -615,13 +615,13 @@ h1 .line2{
         <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#FDE8F0"/><rect x="12" y="17" width="20" height="14" rx="3" stroke="#B07FE0" stroke-width="2"/><path d="M32 21l5-3v12l-5-3" stroke="#7B3FBD" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="20" cy="24" r="3" stroke="#7B3FBD" stroke-width="1.8"/></svg>
       </div>
       <div class="svc-num">07</div>
-      <h3>VidÃ©os Publicitaires</h3>
-      <p class="svc-short">Des vidÃ©os qui captivent, racontent et convertissent.</p>
+      <h3>Vidéos Publicitaires</h3>
+      <p class="svc-short">Des vidéos qui captivent, racontent et convertissent.</p>
       <div class="svc-expand">
-        <p>Conception, tournage et montage de vidÃ©os publicitaires professionnelles pour vos rÃ©seaux sociaux, campagnes Google et landing pages â pour un impact visuel fort.</p>
+        <p>Conception, tournage et montage de vidéos publicitaires professionnelles pour vos réseaux sociaux, campagnes Google et landing pages — pour un impact visuel fort.</p>
         <ul>
-          <li>Spots publicitaires & rÃ©seaux sociaux</li>
-          <li>VidÃ©os produit & corporate</li>
+          <li>Spots publicitaires & réseaux sociaux</li>
+          <li>Vidéos produit & corporate</li>
           <li>Montage & motion design</li>
         </ul>
       </div>
@@ -634,13 +634,13 @@ h1 .line2{
       </div>
       <div class="svc-num">08</div>
       <h3>Prises de Vue Drone</h3>
-      <p class="svc-short">Des perspectives aÃ©riennes Ã  couper le souffle.</p>
+      <p class="svc-short">Des perspectives aériennes à couper le souffle.</p>
       <div class="svc-expand">
-        <p>Nos pilotes certifiÃ©s capturent vos bÃ¢timents, Ã©vÃ©nements, paysages ou chantiers avec un drone professionnel â pour des visuels uniques qui marquent les esprits.</p>
+        <p>Nos pilotes certifiés capturent vos bâtiments, événements, paysages ou chantiers avec un drone professionnel — pour des visuels uniques qui marquent les esprits.</p>
         <ul>
-          <li>Photos & vidÃ©os aÃ©riennes HD</li>
-          <li>ÃvÃ©nements, biens immobiliers & industrie</li>
-          <li>Pilotes FOCA certifiÃ©s, Suisse romande</li>
+          <li>Photos & vidéos aériennes HD</li>
+          <li>Événements, biens immobiliers & industrie</li>
+          <li>Pilotes FOCA certifiés, Suisse romande</li>
         </ul>
       </div>
       
@@ -651,13 +651,13 @@ h1 .line2{
         <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#EDE0FF"/><rect x="11" y="15" width="26" height="18" rx="3" stroke="#7B3FBD" stroke-width="2"/><path d="M18 33v3M30 33v3M15 36h18" stroke="#B07FE0" stroke-width="2" stroke-linecap="round"/><path d="M15 22h6M15 26h10" stroke="#CFC3E8" stroke-width="2" stroke-linecap="round"/><rect x="25" y="20" width="8" height="7" rx="1.5" fill="#B07FE0" opacity=".5"/></svg>
       </div>
       <div class="svc-num">09</div>
-      <h3>CrÃ©ation de Sites Web</h3>
+      <h3>Création de Sites Web</h3>
       <p class="svc-short">Votre vitrine digitale, rapide, belle et efficace.</p>
       <div class="svc-expand">
-        <p>Sites vitrines, e-commerce, landing pages ou refonte â nous crÃ©ons des sites web sur mesure, optimisÃ©s mobile et SEO, qui transforment vos visiteurs en clients.</p>
+        <p>Sites vitrines, e-commerce, landing pages ou refonte — nous créons des sites web sur mesure, optimisés mobile et SEO, qui transforment vos visiteurs en clients.</p>
         <ul>
           <li>Sites vitrine & e-commerce</li>
-          <li>Landing pages Ã  fort taux de conversion</li>
+          <li>Landing pages à fort taux de conversion</li>
           <li>Performance, SEO & design responsive</li>
         </ul>
       </div>
@@ -668,7 +668,7 @@ h1 .line2{
 
   <!-- CTA bottom -->
   <div class="svc-bottom-cta">
-    <p>Vous ne savez pas par oÃ¹ commencer ?</p>
+    <p>Vous ne savez pas par où commencer ?</p>
     <a href="/contact" class="b-main" style="cursor:default;">
       Parlons de votre projet
       <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M9 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -678,15 +678,15 @@ h1 .line2{
 </section>
 
 
-<!-- ââââââââââââââââââââââââââââââââââââââââ
+<!-- ════════════════════════════════════════
      NOTRE HISTOIRE SECTION
-ââââââââââââââââââââââââââââââââââââââââ -->
+════════════════════════════════════════ -->
 <section class="histoire-section" id="a-propos">
   <div class="histoire-inner">
     <div class="histoire-header">
       <span class="section-label">Notre histoire</span>
-      <h2>Une agence nÃ©e d'une <em>conviction</em></h2>
-      <p class="histoire-intro">Forte d'un Master HEC en marketing, Wanderful est nÃ©e d'une idÃ©e simple : les PME suisses mÃ©ritent un marketing digital ambitieux, sans la complexitÃ© ni les tarifs rÃ©servÃ©s aux grandes entreprises. FondÃ©e Ã  Yvonand, en plein cÅur de la Suisse romande, nous accompagnons les entrepreneurs locaux avec des stratÃ©gies concrÃ¨tes, mesurables et adaptÃ©es Ã  leur rÃ©alitÃ©.</p>
+      <h2>Une agence née d'une <em>conviction</em></h2>
+      <p class="histoire-intro">Forte d'un Master HEC en marketing, Wanderful est née d'une idée simple : les PME suisses méritent un marketing digital ambitieux, sans la complexité ni les tarifs réservés aux grandes entreprises. Fondée à Yvonand, en plein cœur de la Suisse romande, nous accompagnons les entrepreneurs locaux avec des stratégies concrètes, mesurables et adaptées à leur réalité.</p>
     </div>
     <div class="histoire-content">
       <div class="histoire-video">
@@ -700,17 +700,17 @@ h1 .line2{
           </div>
           <div class="stat-item">
             <span class="stat-num">24h</span>
-            <span class="stat-label">DÃ©lai de rÃ©ponse garanti</span>
+            <span class="stat-label">Délai de réponse garanti</span>
           </div>
           <div class="stat-item">
             <span class="stat-num">100%</span>
-            <span class="stat-label">DÃ©diÃ© aux PME suisses</span>
+            <span class="stat-label">Dédié aux PME suisses</span>
           </div>
         </div>
         <div class="histoire-valeurs">
-          <span class="valeur-tag">â¦ ProximitÃ©</span>
-          <span class="valeur-tag">â¦ CrÃ©ativitÃ©</span>
-          <span class="valeur-tag">â¦ RÃ©sultats</span>
+          <span class="valeur-tag">✦ Proximité</span>
+          <span class="valeur-tag">✦ Créativité</span>
+          <span class="valeur-tag">✦ Résultats</span>
         </div>
       </div>
     </div>
@@ -718,21 +718,21 @@ h1 .line2{
 </section>
 
 
-<!-- ââââââââââââââââââââââââââââââââââââââââ API TOOL SECTION ââââââââââââââââââââââââââââââââââââââââ -->
+<!-- ════════════════════════════════════════ API TOOL SECTION ════════════════════════════════════════ -->
 <section class="api-tool-section" id="google-ads-api">
   <div class="api-tool-inner">
-    <span class="api-eyebrow">â¦ Notre technologie</span>
+    <span class="api-eyebrow">✦ Notre technologie</span>
     <h2 class="api-title">Notre outil interne <em>Google Ads API</em></h2>
     <p class="api-desc">
-      Wanderful Marketing a dÃ©veloppÃ© un outil propriÃ©taire basÃ© sur l'<strong>API Google Ads (v18+)</strong> pour gÃ©rer programmatiquement les comptes publicitaires de ses clients via un compte Manager (MCC). Cet outil constitue le cÅur de notre offre de services.
+      Wanderful Marketing a développé un outil propriétaire basé sur l'<strong>API Google Ads (v18+)</strong> pour gérer programmatiquement les comptes publicitaires de ses clients via un compte Manager (MCC). Cet outil constitue le cœur de notre offre de services.
     </p>
     <div class="api-cards-grid">
-      <div class="api-tool-card"><div class="api-tool-icon">ð</div><h4>AccÃ¨s via compte MCC</h4><p>Centralisation de la gestion des comptes clients via l'API Google Ads, avec un token dÃ©veloppeur rattachÃ© au MCC Wanderful.</p></div>
-      <div class="api-tool-card"><div class="api-tool-icon">ð¡</div><h4>Extraction de donnÃ©es en temps rÃ©el</h4><p>Collecte automatisÃ©e des mÃ©triques clÃ©s : impressions, clics, conversions, CPA, ROAS sur tous les comptes clients.</p></div>
-      <div class="api-tool-card"><div class="api-tool-icon">ð</div><h4>Rapports clients automatisÃ©s</h4><p>GÃ©nÃ©ration de rapports de performance personnalisÃ©s remplaÃ§ant la collecte manuelle de donnÃ©es.</p></div>
-      <div class="api-tool-card"><div class="api-tool-icon">âï¸</div><h4>Gestion programmatique des campagnes</h4><p>Ajustements des enchÃ¨res, ciblages et budgets via l'API couplÃ©e Ã  l'intelligence artificielle.</p></div>
-      <div class="api-tool-card"><div class="api-tool-icon">ð¡ï¸</div><h4>ConformitÃ© &amp; SÃ©curitÃ©</h4><p>Authentification OAuth 2.0, token dÃ©veloppeur sur MCC, accÃ¨s sÃ©curisÃ© aux donnÃ©es publicitaires clients.</p></div>
-      <div class="api-tool-card"><div class="api-tool-icon">ð</div><h4>Tableaux de bord consolidÃ©s</h4><p>Vue centralisÃ©e multi-comptes pour le suivi des performances de l'ensemble du portefeuille clients.</p></div>
+      <div class="api-tool-card"><div class="api-tool-icon">🔗</div><h4>Accès via compte MCC</h4><p>Centralisation de la gestion des comptes clients via l'API Google Ads, avec un token développeur rattaché au MCC Wanderful.</p></div>
+      <div class="api-tool-card"><div class="api-tool-icon">📡</div><h4>Extraction de données en temps réel</h4><p>Collecte automatisée des métriques clés : impressions, clics, conversions, CPA, ROAS sur tous les comptes clients.</p></div>
+      <div class="api-tool-card"><div class="api-tool-icon">📋</div><h4>Rapports clients automatisés</h4><p>Génération de rapports de performance personnalisés remplaçant la collecte manuelle de données.</p></div>
+      <div class="api-tool-card"><div class="api-tool-icon">⚙️</div><h4>Gestion programmatique des campagnes</h4><p>Ajustements des enchères, ciblages et budgets via l'API couplée à l'intelligence artificielle.</p></div>
+      <div class="api-tool-card"><div class="api-tool-icon">🛡️</div><h4>Conformité &amp; Sécurité</h4><p>Authentification OAuth 2.0, token développeur sur MCC, accès sécurisé aux données publicitaires clients.</p></div>
+      <div class="api-tool-card"><div class="api-tool-icon">📊</div><h4>Tableaux de bord consolidés</h4><p>Vue centralisée multi-comptes pour le suivi des performances de l'ensemble du portefeuille clients.</p></div>
     </div>
   </div>
 </section>
@@ -752,25 +752,25 @@ h1 .line2{
 @media(max-width:600px){.api-tool-section{padding:50px 16px;}.api-cards-grid{grid-template-columns:1fr;}.api-title{font-size:1.8rem;}}
 </style>
 
-<!-- ââââââââââââââââââââââââââââââââââââââââ
+<!-- ════════════════════════════════════════
      AUDIT GRATUIT SECTION
-ââââââââââââââââââââââââââââââââââââââââ -->
+════════════════════════════════════════ -->
 <section class="audit-section" id="audit">
   <div class="audit-glow"></div>
   <div class="audit-inner">
 
     <div class="audit-badge">
       <span class="audit-badge-dot"></span>
-      Offre limitÃ©e Â· 100% gratuit Â· Sans engagement
+      Offre limitée · 100% gratuit · Sans engagement
     </div>
 
     <h2 class="audit-title">
-      On analyse votre prÃ©sence digitale<br>
+      On analyse votre présence digitale<br>
       <em>gratuitement.</em>
     </h2>
 
     <p class="audit-desc">
-      En 30 minutes, nos experts passent au crible votre site web, vos campagnes Google Ads, votre SEO et vos rÃ©seaux sociaux â et vous livrent un rapport clair avec les <strong>3 actions prioritaires</strong> pour booster votre croissance.
+      En 30 minutes, nos experts passent au crible votre site web, vos campagnes Google Ads, votre SEO et vos réseaux sociaux — et vous livrent un rapport clair avec les <strong>3 actions prioritaires</strong> pour booster votre croissance.
     </p>
 
     <div class="audit-perks">
@@ -796,23 +796,23 @@ h1 .line2{
         <div class="perk-icon">
           <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="14" fill="#EDE0FF"/><path d="M10 16l4 4 8-8" stroke="#7B3FBD" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </div>
-        <span>ZÃ©ro engagement</span>
+        <span>Zéro engagement</span>
       </div>
     </div>
 
     <a href="/contact" class="audit-cta">
-      <span class="audit-cta-sparkle">â¦</span>
+      <span class="audit-cta-sparkle">✦</span>
       Demander mon audit gratuit
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </a>
 
-    <p class="audit-note">RÃ©ponse sous 24h Â· Disponible pour les PME de Suisse romande</p>
+    <p class="audit-note">Réponse sous 24h · Disponible pour les PME de Suisse romande</p>
 
   </div>
 </section>
 
 <style>
-/* ââââ SERVICES SECTION ââââ */
+/* ════ SERVICES SECTION ════ */
 .services-section{
   position:relative;z-index:2;
   background:linear-gradient(180deg,#D9D6F2 0%,#F4F2FF 40%,#EDE8FF 100%);
@@ -857,7 +857,7 @@ h1 .line2{
   transition:transform .35s cubic-bezier(.34,1.56,.64,1),
              box-shadow .35s ease,
              background .35s ease;
-  /* Start slightly below, invisible â JS will trigger */
+  /* Start slightly below, invisible — JS will trigger */
   opacity:0;transform:translateY(30px) scale(0.96);
 }
 .svc-card.visible{
@@ -904,7 +904,7 @@ h3{
   font-size:.88rem;color:var(--ts);line-height:1.55;font-weight:400;
 }
 
-/* Expand content â hidden by default */
+/* Expand content — hidden by default */
 .svc-expand{
   max-height:0;overflow:hidden;
   transition:max-height .4s ease, opacity .3s ease, margin .3s ease;
@@ -924,7 +924,7 @@ h3{
   padding-left:14px;position:relative;
 }
 .svc-expand ul li::before{
-  content:'â¦';position:absolute;left:0;
+  content:'✦';position:absolute;left:0;
   font-size:.55rem;color:var(--p1);top:2px;
 }
 
@@ -961,7 +961,7 @@ h3{
 </style>
 
 <style>
-/* ââââ AUDIT GRATUIT SECTION ââââ */
+/* ════ AUDIT GRATUIT SECTION ════ */
 .audit-section{
   position:relative;overflow:hidden;
   background:linear-gradient(135deg,#3D1766 0%,#5A2898 45%,#7B3FBD 100%);
@@ -1063,7 +1063,7 @@ h3{
 </style>
 
 <script>
-/* ââ SERVICES SCROLL REVEAL + LINKS ââ */
+/* ── SERVICES SCROLL REVEAL + LINKS ── */
 const svcLinks = [
   'services/google-ads.html',
   'services/intelligence-artificielle.html',
@@ -1085,12 +1085,12 @@ const observer = new IntersectionObserver((entries) => {
 }, { threshold: 0.15 });
 cards.forEach((c, i) => {
   observer.observe(c);
-  // Add "DÃ©couvrir â" link
+  // Add "Découvrir →" link
   if(svcLinks[i]) {
     const lnk = document.createElement('a');
     lnk.href = svcLinks[i];
     lnk.className = 'svc-cta';
-    lnk.innerHTML = 'DÃ©couvrir â';
+    lnk.innerHTML = 'Découvrir →';
     c.appendChild(lnk);
     // Make whole card clickable
     c.style.cursor = 'pointer';
@@ -1102,13 +1102,13 @@ cards.forEach((c, i) => {
 </script>
 
 <script>
-/* ââ SPLINE LOAD ââ */
+/* ── SPLINE LOAD ── */
 const splineEl=document.getElementById('spline');
 const loader=document.getElementById('loader');
 splineEl.addEventListener('load',()=>setTimeout(()=>loader.classList.add('hide'),500));
 setTimeout(()=>loader.classList.add('hide'),9000);
 
-/* ââ PARTICLES ââ */
+/* ── PARTICLES ── */
 const cv=document.getElementById('ptcl'),ctx=cv.getContext('2d');
 let W,H;
 function rsz(){W=cv.width=window.innerWidth;H=cv.height=window.innerHeight;}
@@ -1147,7 +1147,7 @@ function draw(){
 }
 draw();
 
-/* ââ CURSOR ââ */
+/* ── CURSOR ── */
 const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
 let cx=0,cy=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{
@@ -1161,7 +1161,7 @@ document.querySelectorAll('a,button').forEach(el=>{
   el.addEventListener('mouseleave',()=>cur.classList.remove('big'));
 });
 
-/* ââ SCROLL PARALLAX ââ */
+/* ── SCROLL PARALLAX ── */
 window.addEventListener('scroll',()=>{
   const s=window.scrollY;
   document.querySelector('.spline-bg').style.transform=`translateY(${s*.08}px)`;
@@ -1170,11 +1170,11 @@ window.addEventListener('scroll',()=>{
 </script>
 
 <style>
-/* ââââââââââââââââââââââââââââââââââââ
-   RESPONSIVE â mobile
-ââââââââââââââââââââââââââââââââââââ */
+/* ════════════════════════════════════
+   RESPONSIVE — mobile
+════════════════════════════════════ */
 
-/* ââ NAV ââ */
+/* ── NAV ── */
 @media(max-width:860px){
   nav{padding:14px 20px;}
   nav ul{gap:14px;}
@@ -1186,7 +1186,7 @@ window.addEventListener('scroll',()=>{
   .nav-cta{padding:8px 16px;font-size:.8rem !important;}
 }
 
-/* ââ HERO ââ */
+/* ── HERO ── */
 @media(max-width:860px){
   .spline-bg{width:55%;right:-5%;opacity:.65;}
   .hero-content{padding:100px 24px 60px;max-width:100%;}
@@ -1214,7 +1214,7 @@ window.addEventListener('scroll',()=>{
   .hero-content{padding:80px 16px 48px;}
 }
 
-/* ââ SERVICES ââ */
+/* ── SERVICES ── */
 @media(max-width:860px){
   .services-section{padding:80px 20px 60px;}
   .svc-grid{grid-template-columns:repeat(2,1fr);}
@@ -1231,7 +1231,7 @@ window.addEventListener('scroll',()=>{
   .svc-bottom-cta .b-main{width:100%;justify-content:center;}
 }
 
-/* ââ AUDIT ââ */
+/* ── AUDIT ── */
 @media(max-width:860px){
   .audit-section{padding:80px 24px 70px;}
   .audit-perks{gap:12px 20px;}
@@ -1244,6 +1244,43 @@ window.addEventListener('scroll',()=>{
   .audit-cta{width:100%;justify-content:center;padding:16px 24px;font-size:.95rem;}
   .audit-note{font-size:.7rem;}
 }
+</style>
+
+
+<!-- PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP FOOTER PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <svg width="22" height="26" viewBox="0 0 34 40" fill="none">
+        <path d="M20 11 L5 38" stroke="rgba(255,255,255,.7)" stroke-width="2.6" stroke-linecap="round"/>
+        <path d="M7.5 33.5 L4.5 38.5" stroke="#B07FE0" stroke-width="3.8" stroke-linecap="round"/>
+        <path d="M20 1 L21.4 6.6 L27 5 L21.4 8.4 L23 14 L20 9.6 L17 14 L18.6 8.4 L13 5 L18.6 6.6Z" fill="#D4B0F8" stroke="#B07FE0" stroke-width="0.9" stroke-linejoin="round"/>
+      </svg>
+      <span class="f-wande">Wande</span><span class="f-rful">rful</span>
+    </div>
+    <div class="footer-links">
+      <a href="/">Accueil</a>
+      <a href="/#services">Services</a>
+      <a href="/contact">Contact</a>
+      <a href="/mentions-legales.html">Mentions l�gales</a>
+      <a href="/politique-de-confidentialite.html">Politique de confidentialit�</a>
+    </div>
+    <div class="footer-divider"></div>
+    <p class="footer-copy">� 2026 Wanderful Marketing � Yvonand, Suisse � Tous droits r�serv�s</p>
+  </div>
+</footer>
+<style>
+.site-footer{background:#3D1766;padding:40px 56px;text-align:center;}
+.footer-inner{max-width:900px;margin:0 auto;}
+.footer-logo{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:20px;}
+.f-wande{font-size:1.2rem;font-weight:800;color:#fff;letter-spacing:-.02em;}
+.f-rful{font-size:1.2rem;font-weight:800;color:#B07FE0;letter-spacing:-.02em;}
+.footer-links{display:flex;justify-content:center;gap:32px;flex-wrap:wrap;margin-bottom:20px;}
+.footer-links a{color:rgba(255,255,255,.6);text-decoration:none;font-size:.78rem;font-weight:500;letter-spacing:.06em;transition:color .2s;}
+.footer-links a:hover{color:#fff;}
+.footer-divider{width:60px;height:1px;background:rgba(255,255,255,.15);margin:20px auto;}
+.footer-copy{font-size:.72rem;color:rgba(255,255,255,.35);letter-spacing:.06em;}
+@media(max-width:600px){.site-footer{padding:32px 20px;}.footer-links{gap:16px 20px;}}
 </style>
 
 
