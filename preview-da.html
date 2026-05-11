@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Wanderful — Mockup DA Holographique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ═════════════════════════════════════════════════════════════
+   WANDERFUL — DREAMY HOLOGRAPHIC DA
+   Palette : lavandes pastel + accents iridescents
+   ═════════════════════════════════════════════════════════════ */
+:root{
+  /* Mains */
+  --bg-1:#E6D8F5;
+  --bg-2:#DDD0F3;
+  --bg-3:#F3E9FF;
+  /* Holographic accents */
+  --holo-1:#C6B7FF;
+  --holo-2:#AEB8FF;
+  --holo-3:#E2B6FF;
+  --holo-4:#BEE7FF;
+  /* Texts */
+  --t-1:#5B3FA8;
+  --t-2:#2E214B;
+  --t-soft:rgba(46,33,75,.65);
+  /* Glass */
+  --glass:rgba(255,255,255,.45);
+  --glass-strong:rgba(255,255,255,.65);
+  --glass-border:rgba(255,255,255,.7);
+  --glass-shadow:0 20px 60px -20px rgba(91,63,168,.25), inset 0 1px 0 rgba(255,255,255,.7);
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Inter',sans-serif;
+  color:var(--t-2);
+  background:var(--bg-1);
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  position:relative;
+  min-height:100vh;
+}
+
+/* ── Iridescent background layer (whole page) ── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 60% 50% at 15% 10%, rgba(226,182,255,.6) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 45% at 85% 20%, rgba(190,231,255,.55) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 55% at 50% 80%, rgba(198,183,255,.5) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 90% 90%, rgba(174,184,255,.45) 0%, transparent 60%),
+    linear-gradient(180deg,#E6D8F5 0%,#DDD0F3 50%,#F3E9FF 100%);
+  z-index:-2;
+  pointer-events:none;
+}
+
+/* ── Floating 3D blobs (decorative, persistent) ── */
+.blob{
+  position:fixed;
+  border-radius:50%;
+  filter:blur(40px);
+  opacity:.55;
+  pointer-events:none;
+  z-index:-1;
+  animation:float 18s ease-in-out infinite;
+}
+.blob.b1{width:520px;height:520px;top:-120px;left:-120px;
+  background:radial-gradient(circle at 30% 30%,#E2B6FF 0%,#C6B7FF 50%,transparent 75%);}
+.blob.b2{width:380px;height:380px;top:18%;right:-80px;
+  background:radial-gradient(circle at 40% 40%,#BEE7FF 0%,#AEB8FF 55%,transparent 75%);
+  animation-duration:22s;animation-delay:-4s;}
+.blob.b3{width:460px;height:460px;bottom:5%;left:5%;
+  background:radial-gradient(circle at 50% 50%,#C6B7FF 0%,#E2B6FF 50%,transparent 75%);
+  animation-duration:25s;animation-delay:-8s;}
+.blob.b4{width:340px;height:340px;top:55%;right:8%;
+  background:radial-gradient(circle at 35% 35%,#E2B6FF 0%,#BEE7FF 55%,transparent 75%);
+  animation-duration:20s;animation-delay:-12s;}
+@keyframes float{
+  0%,100%{transform:translate(0,0) scale(1);}
+  33%{transform:translate(40px,-30px) scale(1.05);}
+  66%{transform:translate(-30px,40px) scale(.95);}
+}
+
+/* ── Pearl/iridescent floating 3D orbs ── */
+.orb{
+  position:absolute;
+  border-radius:50%;
+  pointer-events:none;
+  z-index:1;
+}
+.orb-1{
+  width:180px;height:180px;top:80px;right:8%;
+  background:radial-gradient(circle at 32% 28%,
+    #ffffff 0%, #F3E9FF 18%, #E2B6FF 40%,
+    #C6B7FF 60%, #AEB8FF 80%, #BEE7FF 100%);
+  box-shadow:
+    inset -20px -25px 50px rgba(91,63,168,.25),
+    inset 18px 18px 40px rgba(255,255,255,.5),
+    0 30px 60px -10px rgba(174,184,255,.4);
+  animation:floatOrb 12s ease-in-out infinite;
+}
+.orb-2{
+  width:90px;height:90px;top:280px;right:30%;
+  background:radial-gradient(circle at 30% 25%,
+    #ffffff 0%, #E2B6FF 30%, #C6B7FF 65%, #AEB8FF 100%);
+  box-shadow:
+    inset -10px -12px 25px rgba(91,63,168,.2),
+    inset 8px 8px 18px rgba(255,255,255,.6),
+    0 15px 30px -5px rgba(198,183,255,.4);
+  animation:floatOrb 9s ease-in-out infinite -2s;
+}
+.orb-3{
+  width:120px;height:120px;bottom:120px;left:10%;
+  background:radial-gradient(circle at 28% 25%,
+    #ffffff 0%, #BEE7FF 25%, #C6B7FF 55%, #E2B6FF 100%);
+  box-shadow:
+    inset -14px -16px 32px rgba(91,63,168,.2),
+    inset 10px 10px 22px rgba(255,255,255,.55),
+    0 20px 40px -8px rgba(190,231,255,.4);
+  animation:floatOrb 14s ease-in-out infinite -5s;
+}
+@keyframes floatOrb{
+  0%,100%{transform:translate(0,0) rotate(0deg);}
+  50%{transform:translate(-15px,-25px) rotate(180deg);}
+}
+
+/* ════════════════════════════════════════════════════════════
+   NAV
+   ════════════════════════════════════════════════════════════ */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;justify-content:space-between;align-items:center;
+  padding:18px 56px;
+  background:rgba(243,233,255,.55);
+  backdrop-filter:blur(20px) saturate(180%);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);
+  border-bottom:1px solid rgba(255,255,255,.5);
+}
+.brand{
+  display:flex;align-items:center;
+  height:44px;
+}
+.brand img{
+  height:100%;width:auto;display:block;
+  filter:drop-shadow(0 4px 12px rgba(91,63,168,.12));
+}
+nav ul{display:flex;list-style:none;gap:36px;align-items:center;}
+nav a{
+  text-decoration:none;
+  color:var(--t-2);
+  font-size:.82rem;font-weight:600;
+  letter-spacing:.04em;text-transform:uppercase;
+  transition:color .25s ease;
+}
+nav a:hover{color:var(--t-1);}
+.nav-cta{
+  padding:10px 22px;
+  background:linear-gradient(135deg,rgba(255,255,255,.7) 0%,rgba(255,255,255,.4) 100%);
+  border:1px solid rgba(255,255,255,.8);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-radius:100px;
+  color:var(--t-1) !important;
+  font-weight:700;text-transform:none !important;letter-spacing:0 !important;
+  font-size:.85rem !important;
+  box-shadow:0 4px 16px -4px rgba(91,63,168,.2), inset 0 1px 0 rgba(255,255,255,.8);
+  transition:all .3s ease;
+}
+.nav-cta:hover{
+  transform:translateY(-1px);
+  box-shadow:0 8px 24px -4px rgba(91,63,168,.3), inset 0 1px 0 rgba(255,255,255,.9);
+  color:var(--t-1) !important;
+}
+
+/* ════════════════════════════════════════════════════════════
+   HERO
+   ════════════════════════════════════════════════════════════ */
+.hero{
+  position:relative;
+  min-height:100vh;
+  display:flex;align-items:center;
+  padding:140px 56px 80px;
+}
+.hero-content{max-width:680px;position:relative;z-index:5;}
+
+.badge{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:8px 18px;
+  background:var(--glass-strong);
+  backdrop-filter:blur(15px) saturate(180%);
+  -webkit-backdrop-filter:blur(15px) saturate(180%);
+  border:1px solid var(--glass-border);
+  border-radius:100px;
+  font-size:.7rem;font-weight:600;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--t-1);
+  box-shadow:0 4px 20px -8px rgba(91,63,168,.2);
+  margin-bottom:36px;
+}
+.badge-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:linear-gradient(135deg,#E2B6FF,#C6B7FF);
+  box-shadow:0 0 12px #C6B7FF;
+  animation:pulse 2.4s ease-in-out infinite;
+}
+@keyframes pulse{
+  0%,100%{opacity:.5;transform:scale(.85);}
+  50%{opacity:1;transform:scale(1.15);}
+}
+
+h1{
+  font-family:'Outfit',sans-serif;
+  font-size:clamp(2.8rem,6vw,5rem);
+  font-weight:800;
+  line-height:1.02;letter-spacing:-.035em;
+  color:var(--t-2);
+  margin-bottom:18px;
+}
+h1 .line2{
+  display:block;
+  font-weight:300;font-style:italic;
+  font-size:clamp(1.6rem,3.2vw,2.4rem);
+  background:linear-gradient(135deg,#5B3FA8 0%,#AEB8FF 50%,#E2B6FF 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  margin-top:8px;
+  letter-spacing:-.02em;
+}
+
+.desc{
+  font-size:1.08rem;
+  line-height:1.7;
+  color:var(--t-soft);
+  max-width:520px;
+  margin:24px 0 40px;
+  font-weight:400;
+}
+.desc strong{color:var(--t-1);font-weight:600;}
+
+.btns{display:flex;gap:18px;align-items:center;flex-wrap:wrap;}
+
+.b-main{
+  display:inline-flex;align-items:center;gap:12px;
+  padding:18px 32px;border-radius:100px;
+  background:
+    linear-gradient(135deg,
+      rgba(255,255,255,.9) 0%,
+      rgba(243,233,255,.85) 50%,
+      rgba(226,182,255,.7) 100%);
+  border:1px solid rgba(255,255,255,.9);
+  backdrop-filter:blur(20px) saturate(200%);
+  -webkit-backdrop-filter:blur(20px) saturate(200%);
+  color:var(--t-1);
+  font-family:'Outfit',sans-serif;
+  font-weight:700;font-size:.96rem;
+  letter-spacing:.01em;
+  text-decoration:none;cursor:pointer;
+  box-shadow:
+    0 8px 32px -8px rgba(174,184,255,.5),
+    0 2px 8px -2px rgba(91,63,168,.15),
+    inset 0 1px 0 rgba(255,255,255,.95);
+  transition:all .35s cubic-bezier(.34,1.4,.64,1);
+  position:relative;overflow:hidden;
+}
+.b-main::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,transparent 0%,rgba(255,255,255,.6) 50%,transparent 100%);
+  transform:translateX(-100%);transition:transform .6s ease;
+}
+.b-main:hover::before{transform:translateX(100%);}
+.b-main:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 14px 40px -10px rgba(174,184,255,.6),
+    0 4px 12px -2px rgba(91,63,168,.2),
+    inset 0 1px 0 rgba(255,255,255,1);
+}
+.b-main .arrow{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:28px;height:28px;border-radius:50%;
+  background:linear-gradient(135deg,#C6B7FF,#AEB8FF);
+  color:#fff;font-size:.85rem;
+  transition:transform .35s ease;
+}
+.b-main:hover .arrow{transform:translateX(4px);}
+
+.b-ghost{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:18px 24px;
+  color:var(--t-1);
+  font-weight:600;font-size:.94rem;
+  text-decoration:none;
+  transition:gap .25s ease;
+}
+.b-ghost:hover{gap:14px;}
+.b-ghost .arrow{font-size:1.1rem;}
+
+/* Hero floating sphere art (right side) */
+.hero-art{
+  position:absolute;
+  right:-100px;top:50%;
+  transform:translateY(-50%);
+  width:580px;height:580px;
+  pointer-events:none;
+}
+.hero-sphere{
+  position:absolute;
+  width:100%;height:100%;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 32% 28%,
+      #ffffff 0%,
+      #F3E9FF 12%,
+      #E2B6FF 28%,
+      #C6B7FF 48%,
+      #AEB8FF 68%,
+      #BEE7FF 85%,
+      #C6B7FF 100%);
+  box-shadow:
+    inset -50px -60px 120px rgba(91,63,168,.25),
+    inset 40px 40px 80px rgba(255,255,255,.6),
+    0 60px 120px -20px rgba(174,184,255,.5);
+  animation:slowSpin 30s linear infinite;
+}
+.hero-sphere::after{
+  content:'';position:absolute;
+  top:18%;left:22%;
+  width:35%;height:25%;
+  border-radius:50%;
+  background:radial-gradient(ellipse,rgba(255,255,255,.85) 0%,transparent 70%);
+  filter:blur(15px);
+}
+.hero-sphere-2{
+  position:absolute;
+  width:160px;height:160px;
+  border-radius:50%;
+  top:15%;left:-30px;
+  background:radial-gradient(circle at 28% 25%,
+    #ffffff 0%,#BEE7FF 28%,#AEB8FF 65%,#C6B7FF 100%);
+  box-shadow:
+    inset -12px -16px 30px rgba(91,63,168,.2),
+    inset 10px 10px 20px rgba(255,255,255,.6),
+    0 25px 50px -10px rgba(190,231,255,.5);
+  animation:floatOrb 8s ease-in-out infinite;
+}
+@keyframes slowSpin{
+  to{filter:hue-rotate(360deg);}
+}
+
+/* Marquee */
+.marquee-wrap{
+  margin-top:80px;
+  overflow:hidden;
+  position:relative;
+}
+.marquee-wrap::before,.marquee-wrap::after{
+  content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none;
+}
+.marquee-wrap::before{left:0;background:linear-gradient(90deg,var(--bg-1),transparent);}
+.marquee-wrap::after{right:0;background:linear-gradient(-90deg,var(--bg-1),transparent);}
+.marquee{
+  display:flex;gap:48px;
+  animation:scroll 40s linear infinite;
+  white-space:nowrap;
+}
+.marquee span{
+  font-family:'Outfit',sans-serif;
+  font-size:1rem;font-weight:500;
+  color:var(--t-1);
+  letter-spacing:.04em;
+  display:inline-flex;align-items:center;gap:48px;
+}
+.marquee .star{color:#E2B6FF;font-size:1.2rem;}
+@keyframes scroll{
+  to{transform:translateX(-50%);}
+}
+
+/* ════════════════════════════════════════════════════════════
+   CLIENTS
+   ════════════════════════════════════════════════════════════ */
+.clients{
+  position:relative;
+  padding:60px 56px;
+  text-align:center;
+  background:rgba(255,255,255,.35);
+  backdrop-filter:blur(30px);
+  -webkit-backdrop-filter:blur(30px);
+  border-top:1px solid rgba(255,255,255,.5);
+  border-bottom:1px solid rgba(255,255,255,.4);
+  margin-top:60px;
+}
+.clients-label{
+  font-size:.68rem;font-weight:700;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--t-soft);margin-bottom:28px;
+}
+.clients-logos{
+  display:flex;justify-content:center;align-items:center;
+  gap:60px;flex-wrap:wrap;
+}
+.client-logo{
+  font-family:'Outfit',sans-serif;
+  font-weight:700;font-size:1.1rem;
+  color:var(--t-1);opacity:.55;
+  letter-spacing:.04em;
+  transition:opacity .3s ease;
+}
+.client-logo:hover{opacity:1;}
+
+/* ════════════════════════════════════════════════════════════
+   SERVICES
+   ════════════════════════════════════════════════════════════ */
+.services{
+  position:relative;
+  padding:120px 56px 100px;
+}
+.svc-head{
+  text-align:center;max-width:680px;margin:0 auto 70px;
+  position:relative;z-index:5;
+}
+.eyebrow{
+  display:inline-block;
+  padding:6px 16px;
+  background:var(--glass-strong);
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
+  border:1px solid var(--glass-border);
+  border-radius:100px;
+  font-size:.65rem;font-weight:700;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--t-1);
+  margin-bottom:22px;
+  box-shadow:0 4px 16px -6px rgba(91,63,168,.15);
+}
+.svc-head h2{
+  font-family:'Outfit',sans-serif;
+  font-size:clamp(2.2rem,4.5vw,3.6rem);
+  font-weight:800;letter-spacing:-.025em;
+  line-height:1.05;color:var(--t-2);
+  margin-bottom:18px;
+}
+.svc-head h2 em{
+  font-style:italic;font-weight:300;
+  background:linear-gradient(135deg,#5B3FA8 0%,#C6B7FF 50%,#E2B6FF 100%);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.svc-head p{
+  font-size:1.05rem;color:var(--t-soft);
+  line-height:1.7;font-weight:400;
+}
+
+.svc-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:22px;
+  max-width:1180px;margin:0 auto;
+  position:relative;z-index:5;
+}
+
+.svc-card{
+  position:relative;overflow:hidden;
+  padding:30px 28px;
+  border-radius:24px;
+  background:linear-gradient(135deg,
+    rgba(255,255,255,.55) 0%,
+    rgba(255,255,255,.35) 100%);
+  backdrop-filter:blur(25px) saturate(180%);
+  -webkit-backdrop-filter:blur(25px) saturate(180%);
+  border:1px solid rgba(255,255,255,.6);
+  box-shadow:var(--glass-shadow);
+  cursor:pointer;
+  transition:all .4s cubic-bezier(.34,1.4,.64,1);
+}
+.svc-card::before{
+  content:'';position:absolute;inset:0;
+  border-radius:24px;
+  padding:1px;
+  background:linear-gradient(135deg,
+    rgba(226,182,255,.6) 0%,
+    rgba(174,184,255,.4) 33%,
+    rgba(190,231,255,.4) 66%,
+    rgba(198,183,255,.6) 100%);
+  -webkit-mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+  -webkit-mask-composite:xor;mask-composite:exclude;
+  opacity:0;transition:opacity .35s ease;
+  pointer-events:none;
+}
+.svc-card:hover{
+  transform:translateY(-6px);
+  box-shadow:
+    0 30px 70px -20px rgba(91,63,168,.3),
+    0 8px 20px -4px rgba(174,184,255,.3),
+    inset 0 1px 0 rgba(255,255,255,.9);
+  background:linear-gradient(135deg,
+    rgba(255,255,255,.7) 0%,
+    rgba(243,233,255,.5) 100%);
+}
+.svc-card:hover::before{opacity:1;}
+
+.svc-num{
+  position:absolute;top:24px;right:26px;
+  font-family:'Outfit',sans-serif;
+  font-size:.75rem;font-weight:700;
+  letter-spacing:.08em;
+  color:rgba(91,63,168,.25);
+  transition:color .35s ease;
+}
+.svc-card:hover .svc-num{color:rgba(91,63,168,.55);}
+
+.svc-icon{
+  width:56px;height:56px;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:18px;
+  background:linear-gradient(135deg,
+    rgba(255,255,255,.8) 0%,
+    rgba(226,182,255,.5) 100%);
+  border:1px solid rgba(255,255,255,.8);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.9),
+    0 8px 20px -8px rgba(198,183,255,.5);
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1);
+}
+.svc-card:hover .svc-icon{
+  transform:scale(1.1) rotate(-6deg);
+}
+.svc-icon svg{width:28px;height:28px;}
+
+.svc-card h3{
+  font-family:'Outfit',sans-serif;
+  font-size:1.15rem;font-weight:700;
+  color:var(--t-2);
+  margin-bottom:10px;letter-spacing:-.01em;
+}
+.svc-short{
+  font-size:.9rem;color:var(--t-soft);
+  line-height:1.6;font-weight:400;
+  margin-bottom:18px;
+}
+.svc-cta{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:.82rem;font-weight:700;
+  color:var(--t-1);text-decoration:none;
+  letter-spacing:.03em;
+  transition:gap .25s ease;
+}
+.svc-cta:hover{gap:12px;}
+
+.svc-bottom{
+  text-align:center;margin-top:70px;
+  display:flex;flex-direction:column;align-items:center;gap:18px;
+}
+.svc-bottom p{
+  font-size:1.05rem;color:var(--t-soft);font-weight:400;
+}
+
+/* ════════════════════════════════════════════════════════════
+   À PROPOS
+   ════════════════════════════════════════════════════════════ */
+.about{
+  position:relative;
+  padding:120px 56px;
+  text-align:center;
+}
+.about-inner{max-width:900px;margin:0 auto;position:relative;z-index:5;}
+.about h2{
+  font-family:'Outfit',sans-serif;
+  font-size:clamp(2.2rem,4.5vw,3.6rem);
+  font-weight:800;letter-spacing:-.025em;
+  line-height:1.05;color:var(--t-2);
+  margin-bottom:24px;
+}
+.about h2 em{
+  font-style:italic;font-weight:300;
+  background:linear-gradient(135deg,#5B3FA8,#E2B6FF);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.about p{
+  font-size:1.1rem;color:var(--t-soft);
+  line-height:1.8;max-width:720px;margin:0 auto 50px;
+}
+.about-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:22px;margin-top:50px;
+}
+.stat{
+  padding:36px 24px;border-radius:24px;
+  background:var(--glass);
+  backdrop-filter:blur(25px) saturate(180%);
+  -webkit-backdrop-filter:blur(25px) saturate(180%);
+  border:1px solid var(--glass-border);
+  box-shadow:var(--glass-shadow);
+}
+.stat-num{
+  font-family:'Outfit',sans-serif;
+  font-size:2.4rem;font-weight:800;
+  background:linear-gradient(135deg,#5B3FA8,#AEB8FF,#E2B6FF);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+  margin-bottom:8px;letter-spacing:-.03em;
+}
+.stat-label{
+  font-size:.78rem;font-weight:600;
+  color:var(--t-soft);letter-spacing:.08em;
+  text-transform:uppercase;
+}
+
+/* ════════════════════════════════════════════════════════════
+   API TOOL SECTION
+   ════════════════════════════════════════════════════════════ */
+.api-section{
+  position:relative;
+  padding:120px 56px;
+}
+.api-inner{
+  max-width:1100px;margin:0 auto;
+  text-align:center;position:relative;z-index:5;
+}
+.api-section h2{
+  font-family:'Outfit',sans-serif;
+  font-size:clamp(2rem,4vw,3.2rem);
+  font-weight:800;letter-spacing:-.025em;
+  line-height:1.05;color:var(--t-2);
+  margin-bottom:18px;
+}
+.api-section h2 em{
+  font-style:italic;font-weight:300;
+  background:linear-gradient(135deg,#5B3FA8,#BEE7FF);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.api-section > .api-inner > p.api-desc{
+  font-size:1.05rem;color:var(--t-soft);
+  line-height:1.7;max-width:780px;margin:0 auto 60px;
+}
+.api-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:20px;text-align:left;
+}
+.api-card{
+  padding:28px 26px;border-radius:22px;
+  background:linear-gradient(135deg,
+    rgba(255,255,255,.7) 0%,
+    rgba(255,255,255,.45) 100%);
+  backdrop-filter:blur(25px) saturate(180%);
+  -webkit-backdrop-filter:blur(25px) saturate(180%);
+  border:1px solid rgba(255,255,255,.7);
+  box-shadow:var(--glass-shadow);
+  transition:transform .3s ease, box-shadow .3s ease;
+}
+.api-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 24px 60px -16px rgba(91,63,168,.3);
+}
+.api-card-icon{
+  font-size:1.8rem;margin-bottom:14px;
+}
+.api-card h4{
+  font-family:'Outfit',sans-serif;
+  color:var(--t-1);font-size:1.05rem;
+  font-weight:700;margin-bottom:10px;
+  letter-spacing:-.01em;
+}
+.api-card p{
+  font-size:.88rem;color:var(--t-soft);
+  line-height:1.65;font-weight:400;
+}
+
+/* ════════════════════════════════════════════════════════════
+   AUDIT SECTION (refonte complète — plus de fond violet foncé !)
+   ════════════════════════════════════════════════════════════ */
+.audit{
+  position:relative;
+  padding:120px 56px;
+}
+.audit-card{
+  max-width:900px;margin:0 auto;
+  padding:80px 60px;
+  border-radius:36px;
+  text-align:center;
+  background:linear-gradient(135deg,
+    rgba(255,255,255,.6) 0%,
+    rgba(243,233,255,.5) 50%,
+    rgba(226,182,255,.4) 100%);
+  backdrop-filter:blur(30px) saturate(200%);
+  -webkit-backdrop-filter:blur(30px) saturate(200%);
+  border:1px solid rgba(255,255,255,.8);
+  box-shadow:
+    0 40px 100px -30px rgba(91,63,168,.3),
+    0 12px 30px -8px rgba(174,184,255,.25),
+    inset 0 1px 0 rgba(255,255,255,.9);
+  position:relative;overflow:hidden;
+}
+.audit-card::before{
+  content:'';position:absolute;
+  top:-40%;left:-20%;
+  width:300px;height:300px;
+  border-radius:50%;
+  background:radial-gradient(circle,#E2B6FF 0%,transparent 70%);
+  filter:blur(40px);opacity:.6;
+  animation:float 14s ease-in-out infinite;
+}
+.audit-card::after{
+  content:'';position:absolute;
+  bottom:-30%;right:-15%;
+  width:280px;height:280px;
+  border-radius:50%;
+  background:radial-gradient(circle,#BEE7FF 0%,transparent 70%);
+  filter:blur(40px);opacity:.6;
+  animation:float 16s ease-in-out infinite -5s;
+}
+.audit-inner{position:relative;z-index:2;}
+
+.audit-badge{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:8px 18px;
+  background:rgba(255,255,255,.7);
+  backdrop-filter:blur(15px);
+  -webkit-backdrop-filter:blur(15px);
+  border:1px solid rgba(255,255,255,.9);
+  border-radius:100px;
+  font-size:.7rem;font-weight:700;
+  letter-spacing:.14em;text-transform:uppercase;
+  color:var(--t-1);margin-bottom:28px;
+}
+.audit-badge-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:#C6B7FF;box-shadow:0 0 12px #C6B7FF;
+  animation:pulse 2.4s ease-in-out infinite;
+}
+
+.audit-card h2{
+  font-family:'Outfit',sans-serif;
+  font-size:clamp(2rem,4vw,3rem);
+  font-weight:800;letter-spacing:-.025em;
+  line-height:1.05;color:var(--t-2);
+  margin-bottom:22px;
+}
+.audit-card h2 em{
+  font-style:italic;font-weight:300;
+  background:linear-gradient(135deg,#5B3FA8,#C6B7FF,#E2B6FF);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.audit-desc{
+  font-size:1.05rem;line-height:1.75;
+  color:var(--t-2);opacity:.7;
+  margin-bottom:36px;font-weight:400;
+}
+.audit-desc strong{color:var(--t-1);font-weight:600;opacity:1;}
+
+.audit-perks{
+  display:flex;justify-content:center;flex-wrap:wrap;
+  gap:14px;margin-bottom:40px;
+}
+.perk{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 16px;
+  background:rgba(255,255,255,.55);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.7);
+  border-radius:100px;
+  font-size:.82rem;font-weight:600;
+  color:var(--t-1);
+}
+.perk-icon{
+  width:18px;height:18px;border-radius:50%;
+  background:linear-gradient(135deg,#C6B7FF,#AEB8FF);
+  display:inline-flex;align-items:center;justify-content:center;
+  color:#fff;font-size:.65rem;
+}
+
+.audit-note{
+  margin-top:22px;font-size:.78rem;
+  color:var(--t-soft);letter-spacing:.04em;
+}
+
+/* ════════════════════════════════════════════════════════════
+   FOOTER
+   ════════════════════════════════════════════════════════════ */
+footer{
+  position:relative;
+  padding:60px 56px 40px;
+  text-align:center;
+  background:rgba(255,255,255,.3);
+  backdrop-filter:blur(30px);
+  -webkit-backdrop-filter:blur(30px);
+  border-top:1px solid rgba(255,255,255,.5);
+}
+.footer-logo{
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-bottom:24px;
+}
+.footer-logo img{
+  height:42px;width:auto;display:block;
+  filter:drop-shadow(0 4px 12px rgba(91,63,168,.15));
+}
+.footer-links{
+  display:flex;justify-content:center;
+  gap:36px;flex-wrap:wrap;margin-bottom:24px;
+}
+.footer-links a{
+  color:var(--t-soft);text-decoration:none;
+  font-size:.8rem;font-weight:500;
+  letter-spacing:.06em;
+  transition:color .2s;
+}
+.footer-links a:hover{color:var(--t-1);}
+.footer-divider{
+  width:80px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(91,63,168,.3),transparent);
+  margin:24px auto;
+}
+.footer-copy{
+  font-size:.74rem;color:var(--t-soft);
+  letter-spacing:.06em;opacity:.7;
+}
+
+/* ════════════════════════════════════════════════════════════
+   RESPONSIVE
+   ════════════════════════════════════════════════════════════ */
+@media(max-width:980px){
+  .svc-grid,.api-grid,.about-stats{grid-template-columns:repeat(2,1fr);}
+  .hero-art{display:none;}
+}
+@media(max-width:680px){
+  nav{padding:14px 20px;}
+  nav ul{gap:18px;}
+  nav ul li:not(.nav-cta-li){display:none;}
+  .hero{padding:120px 24px 60px;}
+  .clients,.services,.about,.api-section,.audit,footer{padding-left:24px;padding-right:24px;}
+  .svc-grid,.api-grid,.about-stats{grid-template-columns:1fr;}
+  .audit-card{padding:50px 28px;border-radius:24px;}
+}
+</style>
+</head>
+<body>
+
+<!-- Floating blobs (decorative, persistent across whole page) -->
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+<div class="blob b4"></div>
+
+<!-- ═══════════════ NAV ═══════════════ -->
+<nav>
+  <a href="#" class="brand" aria-label="Wanderful Marketing">
+    <img src="assets/logo.png" alt="Wanderful Marketing">
+  </a>
+  <ul>
+    <li><a href="#a-propos">À propos</a></li>
+    <li><a href="#services">Services</a></li>
+    <li class="nav-cta-li"><a href="#contact" class="nav-cta">Contactez-nous →</a></li>
+  </ul>
+</nav>
+
+<!-- ═══════════════ HERO ═══════════════ -->
+<section class="hero">
+  <div class="hero-art">
+    <div class="hero-sphere"></div>
+    <div class="hero-sphere-2"></div>
+  </div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="hero-content">
+    <div class="badge">
+      <span class="badge-dot"></span>
+      Agence certifiée Google Ads · Yvonand, Suisse
+    </div>
+    <h1>
+      Digitalisez<br>votre succès
+      <span class="line2">Stratégie · IA · Performance</span>
+    </h1>
+    <p class="desc">
+      Wanderful conçoit des stratégies sur mesure pour exploiter
+      <strong>l'intelligence artificielle</strong>, optimiser votre marketing digital
+      et <strong>booster votre croissance</strong>.
+    </p>
+    <div class="btns">
+      <a href="#services" class="b-main">
+        Nos expertises
+        <span class="arrow">→</span>
+      </a>
+      <a href="#contact" class="b-ghost">
+        Nous contacter <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ MARQUEE ═══════════════ -->
+<div class="marquee-wrap">
+  <div class="marquee">
+    <span>Casting Spells for Endless Visibility <span class="star">☆</span> Google Ads · IA · Branding <span class="star">☆</span> Vidéos & Drone · Sites Web <span class="star">☆</span> HEC Lausanne <span class="star">☆</span> PME Suisses · Croissance digitale <span class="star">☆</span>&nbsp;</span>
+    <span>Casting Spells for Endless Visibility <span class="star">☆</span> Google Ads · IA · Branding <span class="star">☆</span> Vidéos & Drone · Sites Web <span class="star">☆</span> HEC Lausanne <span class="star">☆</span> PME Suisses · Croissance digitale <span class="star">☆</span>&nbsp;</span>
+  </div>
+</div>
+
+<!-- ═══════════════ CLIENTS ═══════════════ -->
+<section class="clients">
+  <div class="clients-label">Ils nous font confiance</div>
+  <div class="clients-logos">
+    <span class="client-logo">Carewell</span>
+    <span class="client-logo">Studio Helia</span>
+    <span class="client-logo">Maison Lumen</span>
+    <span class="client-logo">Brise & Co.</span>
+    <span class="client-logo">Vert Atelier</span>
+  </div>
+</section>
+
+<!-- ═══════════════ SERVICES ═══════════════ -->
+<section class="services" id="services">
+  <div class="svc-head">
+    <span class="eyebrow">✦ Nos expertises</span>
+    <h2>Ce qu'on <em>fait pour vous</em></h2>
+    <p>Stratégie, contenu, vidéo, drone, web — tout ce dont vous avez besoin pour dominer le digital, sous un seul toit.</p>
+  </div>
+
+  <div class="svc-grid">
+    <article class="svc-card">
+      <span class="svc-num">01</span>
+      <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5B3FA8" stroke-width="1.8" stroke-linecap="round"><path d="M3 12l4-4 4 4 4-4 6 8"/><circle cx="11" cy="8" r="1.5"/></svg></div>
+      <h3>Google Ads</h3>
+      <p class="svc-short">Campagnes qui convertissent, ROI maximisé. Agence certifiée Google Ads — Search, Shopping, Display et Performance Max.</p>
+      <a href="#" class="svc-cta">Découvrir →</a>
+    </article>
+
+    <article class="svc-card">
+      <span class="svc-num">02</span>
+      <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5B3FA8" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2"/></svg></div>
+      <h3>Intelligence Artificielle</h3>
+      <p class="svc-short">L'IA au cœur de votre marketing. Automatisation, génération de contenu et analyse prédictive pour booster votre visibilité.</p>
+      <a href="#" class="svc-cta">Découvrir →</a>
+    </article>
+
+    <article class="svc-card">
+      <span class="svc-num">03</span>
+      <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5B3FA8" stroke-width="1.8" stroke-linecap="round"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div>
+      <h3>Stratégie Digitale</h3>
+      <p class="svc-short">Une roadmap claire pour atteindre vos objectifs. Audit, personas, KPIs et plan d'action concret — sur mesure.</p>
+      <a href="#" class="svc-cta">Découvrir →</a>
+    </article>
+
+    <article class="svc-card">
+      <span class="svc-num">04</span>
+      <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5B3FA8" stroke-width="1.8" stroke-linecap="round"><path d="M12 2l2.4 6.8L21 9l-5 4.2L17.6 20 12 16.5 6.4 20 8 13.2 3 9l6.6-.2L12 2z"/></svg></div>
+      <h3>Branding & Identité</h3>
+      <p class="svc-short">Une marque qui vous ressemble. Logo, charte, positionnement — pour que votre image attire vos clients idéaux.</p>
+      <a href="#" class="svc-cta">Découvrir →</a>
+    </article>
+
+    <article class="svc-card">
+      <span class="svc-num">05</span>
+      <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5B3FA8" stroke-width="1.8" stroke-linecap="round"><path d="M21 11.5c0 4.7-4 8.5-9 8.5-1.5 0-3-.3-4.3-1L3 21l1.4-4.5C3.5 15.2 3 13.4 3 11.5 3 6.8 7 3 12 3s9 3.8 9 8.5z"/></svg></div>
+      <h3>Création de Contenu</h3>
+      <p class="svc-short">Du contenu qui engage, convertit et fidélise. Copywriting, social media, SEO — authentique et percutant.</p>
+      <a href="#" class="svc-cta">Découvrir →</a>
+    </article>
+
+    <article class="svc-card">
+      <span class="svc-num">06</span>
+      <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5B3FA8" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg></div>
+      <h3>SEO & Visibilité</h3>
+      <p class="svc-short">Première page Google, durablement. Audit technique, backlinks, on-page — pour être trouvé sans payer chaque clic.</p>
+      <a href="#" class="svc-cta">Découvrir →</a>
+    </article>
+
+    <article class="svc-card">
+      <span class="svc-num">07</span>
+      <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5B3FA8" stroke-width="1.8" stroke-linecap="round"><polygon points="3,5 17,5 17,19 3,19" fill="none"/><path d="M17 9l4-2v10l-4-2z" fill="none"/></svg></div>
+      <h3>Vidéos Publicitaires</h3>
+      <p class="svc-short">Des vidéos qui captivent et convertissent. Conception, tournage, montage — pour un impact visuel fort.</p>
+      <a href="#" class="svc-cta">Découvrir →</a>
+    </article>
+
+    <article class="svc-card">
+      <span class="svc-num">08</span>
+      <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5B3FA8" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M5 7l4 0M15 7l4 0M5 17l4 0M15 17l4 0M7 5l0 4M7 15l0 4M17 5l0 4M17 15l0 4"/></svg></div>
+      <h3>Prises de Vue Drone</h3>
+      <p class="svc-short">Perspectives aériennes à couper le souffle. Bâtiments, événements, paysages — pilotes FOCA certifiés.</p>
+      <a href="#" class="svc-cta">Découvrir →</a>
+    </article>
+
+    <article class="svc-card">
+      <span class="svc-num">09</span>
+      <div class="svc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#5B3FA8" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 8h18"/><circle cx="6" cy="6" r=".5" fill="#5B3FA8"/></svg></div>
+      <h3>Création de Sites Web</h3>
+      <p class="svc-short">Votre vitrine digitale, rapide, belle et efficace. Vitrines, e-commerce, landing pages — mobile et SEO friendly.</p>
+      <a href="#" class="svc-cta">Découvrir →</a>
+    </article>
+  </div>
+
+  <div class="svc-bottom">
+    <p>Vous ne savez pas par où commencer ?</p>
+    <a href="#contact" class="b-main">Parlons de votre projet <span class="arrow">→</span></a>
+  </div>
+</section>
+
+<!-- ═══════════════ ABOUT ═══════════════ -->
+<section class="about" id="a-propos">
+  <div class="orb orb-3"></div>
+  <div class="about-inner">
+    <span class="eyebrow">✦ Notre histoire</span>
+    <h2>Une agence née <em>d'une conviction</em></h2>
+    <p>Forte d'un Master HEC en marketing, Wanderful est née d'une idée simple : les PME suisses méritent un marketing digital ambitieux, sans la complexité ni les tarifs réservés aux grandes entreprises. Fondée à Yvonand, en plein cœur de la Suisse romande, nous accompagnons les entrepreneurs locaux avec des stratégies concrètes, mesurables et adaptées à leur réalité.</p>
+    <div class="about-stats">
+      <div class="stat">
+        <div class="stat-num">Master HEC</div>
+        <div class="stat-label">Formation en marketing</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">24h</div>
+        <div class="stat-label">Délai de réponse garanti</div>
+      </div>
+      <div class="stat">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Dédié aux PME suisses</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ API TOOL ═══════════════ -->
+<section class="api-section">
+  <div class="api-inner">
+    <span class="eyebrow">✦ Notre technologie</span>
+    <h2>Notre outil interne <em>Google Ads API</em></h2>
+    <p class="api-desc">Wanderful a développé un outil propriétaire basé sur l'API Google Ads (v18+) pour gérer programmatiquement les comptes publicitaires de ses clients via un compte Manager (MCC). Cet outil constitue le cœur de notre offre de services.</p>
+    <div class="api-grid">
+      <div class="api-card">
+        <div class="api-card-icon">🔗</div>
+        <h4>Accès via compte MCC</h4>
+        <p>Centralisation de la gestion des comptes clients via l'API Google Ads, avec un token développeur rattaché au MCC Wanderful.</p>
+      </div>
+      <div class="api-card">
+        <div class="api-card-icon">📡</div>
+        <h4>Extraction de données en temps réel</h4>
+        <p>Collecte automatisée des métriques clés : impressions, clics, conversions, CPA, ROAS sur tous les comptes clients.</p>
+      </div>
+      <div class="api-card">
+        <div class="api-card-icon">📋</div>
+        <h4>Rapports clients automatisés</h4>
+        <p>Génération de rapports de performance personnalisés remplaçant la collecte manuelle de données.</p>
+      </div>
+      <div class="api-card">
+        <div class="api-card-icon">⚙️</div>
+        <h4>Gestion programmatique des campagnes</h4>
+        <p>Ajustements des enchères, ciblages et budgets via l'API couplée à l'intelligence artificielle.</p>
+      </div>
+      <div class="api-card">
+        <div class="api-card-icon">🛡️</div>
+        <h4>Conformité & Sécurité</h4>
+        <p>Authentification OAuth 2.0, token développeur sur MCC, accès sécurisé aux données publicitaires clients.</p>
+      </div>
+      <div class="api-card">
+        <div class="api-card-icon">📊</div>
+        <h4>Tableaux de bord consolidés</h4>
+        <p>Vue centralisée multi-comptes pour le suivi des performances de l'ensemble du portefeuille clients.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ AUDIT GRATUIT ═══════════════ -->
+<section class="audit" id="contact">
+  <div class="audit-card">
+    <div class="audit-inner">
+      <div class="audit-badge">
+        <span class="audit-badge-dot"></span>
+        Offre limitée · 100% gratuit · Sans engagement
+      </div>
+      <h2>On analyse votre <em>présence digitale</em> gratuitement</h2>
+      <p class="audit-desc">
+        En <strong>30 minutes</strong>, nos experts passent au crible votre site web, vos campagnes Google Ads, votre SEO et vos réseaux sociaux — et vous livrent un rapport clair avec les <strong>3 actions prioritaires</strong> pour booster votre croissance.
+      </p>
+      <div class="audit-perks">
+        <span class="perk"><span class="perk-icon">✓</span>Audit SEO & site</span>
+        <span class="perk"><span class="perk-icon">✓</span>Analyse Google Ads</span>
+        <span class="perk"><span class="perk-icon">✓</span>Recommandations</span>
+        <span class="perk"><span class="perk-icon">✓</span>Zéro engagement</span>
+      </div>
+      <a href="#" class="b-main">✦ Demander mon audit gratuit <span class="arrow">→</span></a>
+      <p class="audit-note">Réponse sous 24h · Disponible pour les PME de Suisse romande</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════ FOOTER ═══════════════ -->
+<footer>
+  <div class="footer-logo">
+    <img src="assets/logo-footer.png" alt="Wanderful Marketing" onerror="this.src='assets/logo.png'">
+  </div>
+  <div class="footer-links">
+    <a href="#">Accueil</a>
+    <a href="#services">Services</a>
+    <a href="#contact">Contact</a>
+    <a href="#">Mentions légales</a>
+    <a href="#">Politique de confidentialité</a>
+  </div>
+  <div class="footer-divider"></div>
+  <p class="footer-copy">© 2026 Wanderful Marketing · Yvonand, Suisse · Tous droits réservés</p>
+</footer>
+
+</body>
+</html>
