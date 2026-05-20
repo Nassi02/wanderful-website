@@ -1299,5 +1299,36 @@ window.addEventListener('scroll',()=>{
 @media(max-width:600px){.site-footer{padding:32px 20px;}.footer-links{gap:16px 20px;}}
 </style>
 
+
+<style>
+/* ════════════════════════════════════
+   TOUCH DEVICE OVERRIDES (mobile)
+════════════════════════════════════ */
+@media (hover: none), (pointer: coarse) {
+  body { cursor: auto !important; }
+  #cur, #cur-ring { display: none !important; }
+
+  /* Show service card expand content by default on touch */
+  .svc-card .svc-expand {
+    max-height: 200px !important;
+    opacity: 1 !important;
+    margin-top: 14px !important;
+  }
+  /* Show "Découvrir →" link by default on touch */
+  .svc-card .svc-cta {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+  /* Remove hover transform on touch (looks weird without hover) */
+  .svc-card:hover {
+    transform: none !important;
+    box-shadow: 0 4px 16px rgba(123,63,189,.08) !important;
+  }
+  /* Show the color strip on top by default */
+  .svc-card::before { transform: scaleX(1) !important; }
+  /* Show the colored number by default */
+  .svc-num { color: rgba(123,63,189,.45) !important; }
+}
+</style>
 </body>
 </html>
