@@ -645,6 +645,42 @@ h1 .line2{
       
     </div>
 
+    <div class="svc-card" data-color="#EDE0FF">
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#EDE0FF"/><circle cx="24" cy="18" r="6" stroke="#7B3FBD" stroke-width="2"/><path d="M12 36c2-6 6-9 12-9s10 3 12 9" stroke="#7B3FBD" stroke-width="2" stroke-linecap="round"/><circle cx="36" cy="14" r="2.5" fill="#B07FE0"/><circle cx="14" cy="12" r="1.8" fill="#7EC8DC"/></svg>
+      </div>
+      <div class="svc-num">10</div>
+      <h3>Personal Branding pour Indépendants</h3>
+      <p class="svc-short">Courtiers, conseillers, consultants — votre visibilité personnelle, gérée de A à Z.</p>
+      <div class="svc-expand">
+        <p>Pour les professionnels indépendants qui veulent devenir incontournables dans leur secteur. On gère votre LinkedIn, Instagram et contenu vidéo personnel — vous restez focus sur votre métier.</p>
+        <ul>
+          <li>Stratégie LinkedIn &amp; Instagram perso</li>
+          <li>Ghostwriting &amp; ligne éditoriale</li>
+          <li>Vidéos courtes &amp; analyse mensuelle</li>
+        </ul>
+      </div>
+      
+    </div>
+
+    <div class="svc-card" data-color="#E0F0FC">
+      <div class="svc-icon">
+        <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="20" fill="#E0F0FC"/><rect x="12" y="16" width="20" height="14" rx="3" stroke="#7B3FBD" stroke-width="2"/><path d="M32 20l5-3v10l-5-3" stroke="#7B3FBD" stroke-width="2" stroke-linejoin="round"/><circle cx="18" cy="23" r="2" fill="#B07FE0"/><circle cx="24" cy="23" r="2" fill="#7EC8DC"/><circle cx="30" cy="34" r="1.5" fill="#7B3FBD"/></svg>
+      </div>
+      <div class="svc-num">11</div>
+      <h3>Vidéos SaaS &amp; Animation</h3>
+      <p class="svc-short">Explainer videos, motion design, démos animées pour expliquer votre produit en 60 secondes.</p>
+      <div class="svc-expand">
+        <p>Pour les SaaS et startups tech : on conçoit des vidéos animées qui rendent votre produit limpide et désirable, du script au motion design final.</p>
+        <ul>
+          <li>Script, storyboard &amp; voix off</li>
+          <li>Motion design 2D/3D</li>
+          <li>Multi-formats (YouTube, Insta, TikTok)</li>
+        </ul>
+      </div>
+      
+    </div>
+
   </div>
 
   <!-- CTA bottom -->
@@ -930,6 +966,8 @@ h3{
 .svc-card:nth-child(7){transition-delay:.47s;}
 .svc-card:nth-child(8){transition-delay:.54s;}
 .svc-card:nth-child(9){transition-delay:.61s;}
+.svc-card:nth-child(10){transition-delay:.68s;}
+.svc-card:nth-child(11){transition-delay:.75s;}
 
 /* Bottom CTA */
 .svc-bottom-cta{
@@ -1054,7 +1092,9 @@ const svcLinks = [
   'services/seo.html',
   'services/videos-publicitaires.html',
   'services/drone.html',
-  'services/creation-sites-web.html'
+  'services/creation-sites-web.html',
+  'services/personal-branding.html',
+  'services/videos-saas.html'
 ];
 const cards = document.querySelectorAll('.svc-card');
 const observer = new IntersectionObserver((entries) => {
