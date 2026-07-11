@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Étude de cas — Carewell × Wanderful Marketing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum:#1C0B30;
+    --plum-2:#2A1247;
+    --purple:#7B3FBD;
+    --lilac:#C9A8F0;
+    --teal:#2FCFC3;
+    --cream:#FBF8FF;
+    --panel:#F3ECFB;
+    --ink:#241833;
+    --muted:#6E6488;
+    --line:#E4D8F4;
+    --display:'Fraunces',Georgia,serif;
+    --body:'Inter',system-ui,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--body);color:var(--ink);background:var(--cream);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:inherit}
+
+  /* ---------- HERO ---------- */
+  .hero{background:var(--plum);color:#fff;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;inset:0;background:
+     radial-gradient(680px 340px at 82% -8%, rgba(123,63,189,.55), transparent 70%),
+     radial-gradient(520px 320px at 6% 108%, rgba(47,207,195,.16), transparent 70%);pointer-events:none}
+  .hero .wrap{position:relative;z-index:1;padding:34px 28px 76px}
+  .topbar{display:flex;justify-content:space-between;align-items:center;padding-bottom:64px}
+  .brand{font-family:var(--display);font-weight:600;font-size:20px;letter-spacing:.02em}
+  .brand span{color:var(--lilac)}
+  .topmeta{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--lilac)}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.32em;text-transform:uppercase;color:var(--teal);margin-bottom:26px}
+  .headline{font-family:var(--display);font-weight:500;font-size:clamp(2.4rem,6.4vw,4.5rem);line-height:1.03;letter-spacing:-.015em;max-width:16ch}
+  .headline b{font-weight:600;font-style:italic;color:var(--lilac)}
+  .headline .num{color:var(--teal);font-style:normal;font-weight:600}
+  .sub{margin-top:26px;max-width:52ch;font-size:1.06rem;color:#E9DEFA}
+  .facts{display:flex;flex-wrap:wrap;gap:34px;margin-top:44px}
+  .fact .k{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--teal)}
+  .fact .v{margin-top:5px;font-size:.98rem;color:#fff}
+
+  /* ---------- RESULT RIBBON ---------- */
+  .ribbon{background:var(--plum-2);color:#fff;border-top:1px solid rgba(201,168,240,.2)}
+  .ribbon .grid{display:grid;grid-template-columns:repeat(4,1fr)}
+  .stat{padding:30px 22px;border-left:1px solid rgba(201,168,240,.16)}
+  .stat:first-child{border-left:none}
+  .stat .n{font-family:var(--mono);font-weight:600;font-size:clamp(1.7rem,3.4vw,2.5rem);color:var(--teal);letter-spacing:-.02em;line-height:1}
+  .stat .l{margin-top:10px;font-size:.82rem;color:#D9CBF0;line-height:1.35}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:78px 0}
+  .tag{font-family:var(--mono);font-size:12px;letter-spacing:.26em;text-transform:uppercase;color:var(--purple);margin-bottom:18px}
+  h2{font-family:var(--display);font-weight:500;font-size:clamp(1.7rem,3.6vw,2.5rem);line-height:1.12;letter-spacing:-.01em;color:var(--plum);max-width:20ch}
+  h2 em{font-style:italic;color:var(--purple)}
+  .lead{margin-top:20px;max-width:62ch;font-size:1.08rem;color:#403656}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:start}
+  p+p{margin-top:14px}
+  .muted{color:var(--muted)}
+
+  .alt{background:var(--panel)}
+
+  /* discipline grid */
+  .disc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:40px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 20px 22px;transition:transform .2s ease,box-shadow .2s ease}
+  .card:hover{transform:translateY(-3px);box-shadow:0 14px 30px rgba(60,23,102,.09)}
+  .card h3{font-family:var(--display);font-weight:600;font-size:1.12rem;color:var(--plum);margin-bottom:7px}
+  .card p{font-size:.9rem;color:#524766;line-height:1.5}
+  .card .d{font-family:var(--mono);font-size:11px;color:var(--teal);letter-spacing:.1em}
+
+  /* results / pulse */
+  .pulsewrap{margin-top:38px;background:var(--plum);border-radius:20px;padding:34px 32px;color:#fff;position:relative;overflow:hidden}
+  .pulsewrap::after{content:"";position:absolute;inset:0;background:radial-gradient(420px 220px at 90% 0%,rgba(47,207,195,.18),transparent 70%);pointer-events:none}
+  .pulsewrap .z{position:relative;z-index:1}
+  .pl-head{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px}
+  .pl-title{font-family:var(--mono);font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--teal)}
+  .pl-delta{font-family:var(--display);font-weight:600;font-size:1.5rem;color:#fff}
+  .pl-delta span{color:var(--teal)}
+  svg.pulse{width:100%;height:160px;display:block;margin-top:14px}
+  .pulse path.line{fill:none;stroke:var(--teal);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+  .pl-axis{display:flex;justify-content:space-between;font-family:var(--mono);font-size:11px;color:#B9A9D6;margin-top:6px}
+
+  .highlights{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:40px}
+  .hl{border-top:2px solid var(--teal);padding-top:16px}
+  .hl h3{font-family:var(--display);font-weight:600;font-size:1.08rem;color:var(--plum);margin-bottom:8px}
+  .hl p{font-size:.92rem;color:#524766}
+
+  /* proof / cta */
+  .cta{background:var(--plum);color:#fff;text-align:center}
+  .cta h2{color:#fff;margin:0 auto;max-width:24ch}
+  .cta h2 em{color:var(--lilac)}
+  .cta .lead{margin:20px auto 0;color:#E4D8F4}
+  .btn{display:inline-block;margin-top:32px;background:var(--teal);color:#10221f;font-weight:600;font-family:var(--body);padding:15px 30px;border-radius:999px;text-decoration:none;transition:transform .15s ease,background .15s ease}
+  .btn:hover{transform:translateY(-2px);background:#4fded2}
+  .sign{margin-top:26px;font-family:var(--mono);font-size:12.5px;letter-spacing:.06em;color:var(--lilac)}
+
+  footer{background:var(--plum-2);color:#B9A9D6;font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;text-align:center;padding:26px 20px}
+
+  @media(max-width:820px){
+    .two{grid-template-columns:1fr;gap:30px}
+    .disc{grid-template-columns:1fr 1fr}
+    .highlights{grid-template-columns:1fr}
+    .ribbon .grid{grid-template-columns:1fr 1fr}
+    .stat:nth-child(3){border-left:none}
+  }
+  @media(max-width:520px){
+    .disc{grid-template-columns:1fr}
+    .ribbon .grid{grid-template-columns:1fr 1fr}
+    .topbar{flex-direction:column;gap:14px;align-items:flex-start}
+  }
+  a:focus-visible,.btn:focus-visible{outline:3px solid var(--teal);outline-offset:3px;border-radius:6px}
+  @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">Wanderful<span>.</span></div>
+      <div class="topmeta">Étude de cas · 2025–2026</div>
+    </div>
+    <div class="eyebrow">Carewell — HealthTech suisse</div>
+    <h1 class="headline">En 14 mois, un budget de startup transformé en <span class="num">2 800+</span> candidats <b>soignants</b>.</h1>
+    <p class="sub">Carewell recrute du personnel de santé partout en Suisse. Wanderful a piloté l'acquisition de bout en bout — sur deux marchés linguistiques, du premier clic à l'inscription du candidat.</p>
+    <div class="facts">
+      <div class="fact"><div class="k">Secteur</div><div class="v">Plateforme de staffing santé</div></div>
+      <div class="fact"><div class="k">Marchés</div><div class="v">Suisse romande &amp; alémanique</div></div>
+      <div class="fact"><div class="k">Durée</div><div class="v">Juillet 2025 → Août 2026</div></div>
+      <div class="fact"><div class="k">Rôle</div><div class="v">Acquisition 360°</div></div>
+    </div>
+  </div>
+</header>
+
+<!-- RESULT RIBBON -->
+<div class="ribbon">
+  <div class="wrap">
+    <div class="grid">
+      <div class="stat"><div class="n">2 800+</div><div class="l">inscriptions de soignants générées</div></div>
+      <div class="stat"><div class="n">&lt; 3 CHF</div><div class="l">coût par inscription candidat</div></div>
+      <div class="stat"><div class="n">+79 %</div><div class="l">de trafic organique en 9 mois</div></div>
+      <div class="stat"><div class="n">~18 000</div><div class="l">clics qualifiés · CTR 11 %</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CLIENT -->
+<section>
+  <div class="wrap two">
+    <div>
+      <div class="tag">Le client</div>
+      <h2>Une plateforme qui remet <em>la flexibilité</em> au cœur des soins</h2>
+    </div>
+    <div>
+      <p class="lead">Carewell met en relation infirmiers, ASSC, ASE, aides-soignants et sages-femmes avec les hôpitaux, cliniques, EMS et services d'aide à domicile de toute la Suisse. Son principe : activer d'abord le pool interne d'une institution, et n'ouvrir le vivier externe que si nécessaire — le tout gratuit pour les établissements.</p>
+      <p class="muted">Une jeune pousse ambitieuse, sur un marché en pleine tension de recrutement, qui avait besoin d'une acquisition sérieuse et mesurable plutôt que d'actions dispersées.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CHALLENGE -->
+<section class="alt">
+  <div class="wrap">
+    <div class="tag">Le défi</div>
+    <h2>Deux marchés, neuf métiers, un budget de startup</h2>
+    <p class="lead">Trois contraintes structurelles à concilier dès le départ :</p>
+    <div class="two" style="margin-top:34px">
+      <div>
+        <p><strong>Bilinguisme réel.</strong> La Suisse romande et la Suisse alémanique ne se traduisent pas — elles s'adaptent. Vocabulaire métier, institutions, habitudes de recherche : tout diffère.</p>
+        <p><strong>Granularité.</strong> Neuf métiers de la santé, neuf intentions de recherche distinctes, chacun méritant son propre ciblage.</p>
+      </div>
+      <div>
+        <p><strong>Frugalité.</strong> Obtenir des résultats sans abonnements SEO onéreux, en tirant le maximum de chaque franc de publicité.</p>
+        <p class="muted">L'objectif n'était pas la visibilité pour la visibilité : c'était de faire s'inscrire de vrais candidats soignants, au coût le plus bas possible.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPROACH -->
+<section>
+  <div class="wrap">
+    <div class="tag">L'approche</div>
+    <h2>Une couverture <em>360°</em>, opérée avec l'IA</h2>
+    <p class="lead">Un seul interlocuteur pour toute la chaîne d'acquisition — stratégie, création, technique et pilotage — au lieu d'empiler les prestataires.</p>
+    <div class="disc">
+      <div class="card"><div class="d">01</div><h3>Stratégie</h3><p>Audit digital, personas par métier, positionnement et funnel d'acquisition complet.</p></div>
+      <div class="card"><div class="d">02</div><h3>Google Ads FR &amp; DE</h3><p>Campagnes Search structurées par métier, mots-clés, extensions, optimisation du coût par inscription.</p></div>
+      <div class="card"><div class="d">03</div><h3>SEO &amp; contenu</h3><p>Pages piliers, maillage interne, SEO local par canton, blog optimisé.</p></div>
+      <div class="card"><div class="d">04</div><h3>Localisation CH-DE</h3><p>Version alémanique complète — adaptation culturelle, pas traduction.</p></div>
+      <div class="card"><div class="d">05</div><h3>Landing pages</h3><p>Pages optimisées SEO + Ads : structure, preuves, FAQ, performance.</p></div>
+      <div class="card"><div class="d">06</div><h3>Réseaux &amp; vidéo</h3><p>Instagram, marque employeur, Reels produits via un workflow IA-natif.</p></div>
+      <div class="card"><div class="d">07</div><h3>Tracking</h3><p>GA4 et suivi de conversions sur mesure pour application web (SPA).</p></div>
+      <div class="card"><div class="d">08</div><h3>Backlinks</h3><p>24 cibles institutionnelles suisses, notées et priorisées — sans outil payant.</p></div>
+      <div class="card"><div class="d">09</div><h3>Automatisation</h3><p>Flux n8n : leads, e-mails, réengagement, publication, reporting.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="alt">
+  <div class="wrap">
+    <div class="tag">Les résultats</div>
+    <h2>Ce que ça a donné, en chiffres réels</h2>
+    <p class="lead">Sur le marché romand, le dispositif publicitaire a généré des inscriptions de candidats à un coût inférieur à 3 francs — avec un taux de clic autour de 11 %, bien au-dessus des standards du secteur.</p>
+
+    <div class="pulsewrap">
+      <div class="z">
+        <div class="pl-head">
+          <div class="pl-title">Trafic organique · sessions mensuelles</div>
+          <div class="pl-delta">de ~1 200 à ~2 100&nbsp;<span>/mois</span></div>
+        </div>
+        <svg class="pulse" viewBox="0 0 800 160" preserveAspectRatio="none" aria-label="Courbe de croissance du trafic organique, de 1200 à 2100 sessions par mois">
+          <path class="line" d="M0,132 L70,126 L150,116 L230,120 L300,60 L380,66 L470,64 L540,72 L620,92 L700,80 L800,84"/>
+        </svg>
+        <div class="pl-axis"><span>Juil. 2025</span><span>Oct. 2025</span><span>Mars 2026</span></div>
+      </div>
+    </div>
+
+    <div class="highlights">
+      <div class="hl"><h3>Un tracking à toute épreuve</h3><p>Un suivi de conversions sur mesure dans Google Tag Manager, capable de mesurer précisément chaque inscription sur une application web dynamique — là où les balises standard échouent.</p></div>
+      <div class="hl"><h3>Un SEO qui vise juste</h3><p>Un plan de backlinks ciblant directement les institutions de santé suisses de référence, plutôt que de copier les liens des concurrents — un ancrage local plus pertinent.</p></div>
+      <div class="hl"><h3>Deux marchés, un moteur</h3><p>Une version alémanique traitée comme un marché à part entière : campagnes dédiées, contenu réécrit, SEO local. Un second canal d'acquisition, pas une déclinaison.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROOF / CTA -->
+<section class="cta">
+  <div class="wrap">
+    <div class="tag" style="color:var(--teal)">Ce que ça prouve</div>
+    <h2>De vrais résultats, <em>mesurés</em>, pour un vrai client.</h2>
+    <p class="lead">Pas de la visibilité abstraite : des inscriptions de candidats, un coût maîtrisé, une croissance organique construite de zéro. Voilà ce qu'une agence agile et pilotée par la donnée peut livrer.</p>
+    <a class="btn" href="#contact">Discutons de votre acquisition</a>
+    <div class="sign" id="contact">Wanderful Marketing · Yvonand, Vaud · Nassima Rizzotti</div>
+  </div>
+</section>
+
+<footer>© 2026 Wanderful Marketing Sàrl — Étude de cas Carewell</footer>
+
+</body>
+</html>
