@@ -95,6 +95,16 @@ a.port-link:hover .cs-cta{transform:translateY(-2px);background:#7b6bea;}
 .quote .who b{display:block;font-size:14.5px;}
 .quote .who span{font-size:12.5px;color:var(--muted);}
 
+/* invisible work */
+.work-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:32px;}
+.work{background:var(--glass-strong);border:1px solid rgba(255,255,255,.7);border-radius:var(--r-card);padding:24px;box-shadow:var(--shadow-soft);transition:.35s;}
+.work:hover{transform:translateY(-8px);box-shadow:var(--shadow-card);background:#fff;}
+.work .viz{background:linear-gradient(135deg,#EFEBFC,#F8F6FE);border:1px solid rgba(141,126,242,.14);border-radius:var(--r-sm);height:120px;display:block;overflow:hidden;margin-bottom:18px;}
+.work .viz svg{width:100%;height:100%;display:block;}
+.work h3{font-size:17.5px;margin-bottom:8px;}
+.work p{font-size:13.5px;color:var(--ink);font-weight:300;}
+.work .chip{display:inline-block;margin-top:14px;background:rgba(141,126,242,.12);color:var(--violet);font-size:12px;font-weight:600;padding:6px 12px;border-radius:var(--r-pill);}
+
 /* CTA */
 .cta{position:relative;border-radius:var(--r-lg);overflow:hidden;padding:66px 40px;text-align:center;background:var(--grad-main);box-shadow:var(--shadow-card);margin-top:40px;}
 .cta::after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.5),transparent 70%);right:-80px;top:-120px;}
@@ -117,11 +127,11 @@ footer.site{margin-top:70px;padding:40px 0 30px;}
   .feature{grid-template-columns:1fr;min-height:auto;}
   .feature .media{position:relative;inset:auto;height:240px;}
   .feature .media::before{background:linear-gradient(0deg,#fff,transparent 60%);}
-  .port-grid{grid-template-columns:1fr 1fr;}
+  .port-grid,.work-grid{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:560px){
   .wrap{padding:0 20px;}
-  .port-grid{grid-template-columns:1fr;}
+  .port-grid,.work-grid{grid-template-columns:1fr;}
 }
 </style>
 </head>
@@ -175,8 +185,8 @@ footer.site{margin-top:70px;padding:40px 0 30px;}
 <!-- PORTFOLIO GRID -->
 <section class="wrap section reveal">
   <div class="s-head">
-    <h2>Tous nos univers</h2>
-    <p>Vidéo, photographie, branding et social media — un aperçu de ce qu'on crée pour nos clients.</p>
+    <h2>Nos univers visuels</h2>
+    <p>Vidéo, photographie, branding et social media — ce que l'on crée et qui se voit.</p>
   </div>
   <div class="port-grid">
     <div class="port"><video src="assets/portfolio/narmonie-product-shot.mp4" autoplay muted loop playsinline></video><div class="meta"><div class="tag">Narmonie · Vidéo produit</div><h4>Shooting &amp; motion</h4></div></div>
@@ -190,6 +200,103 @@ footer.site{margin-top:70px;padding:40px 0 30px;}
   <div class="quote">
     <p>« Très bonne expérience avec Wanderful Marketing. Ils nous ont aidés à construire toute notre stratégie de branding avec création du logo, identité visuelle et stratégie digitale. Une équipe jeune, créative et à fond sur l'IA ! Je vous conseille vivement. »</p>
     <div class="who"><div class="av">PW</div><div><b>Philippe Weniger</b><span style="color:#F5A623;letter-spacing:1px;display:block;">★★★★★</span><span>Avis Google</span></div></div>
+  </div>
+</section>
+
+<!-- INVISIBLE WORK -->
+<section class="wrap section reveal">
+  <div class="s-head">
+    <div>
+      <div class="eyebrow" style="font-size:12.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--violet);margin-bottom:14px;">En coulisses</div>
+      <h2>Le travail invisible qui fait décoller une marque</h2>
+    </div>
+    <p>Le référencement, la publicité, la data, l'automatisation… Ce qu'on ne voit pas sur une photo, mais qui amène de vrais résultats.</p>
+  </div>
+  <div class="work-grid">
+
+    <div class="work">
+      <div class="viz"><svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Courbe de trafic organique qui monte">
+        <defs><linearGradient id="seoG" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#8D7EF2" stop-opacity=".28"/><stop offset="1" stop-color="#8D7EF2" stop-opacity="0"/></linearGradient></defs>
+        <path d="M20,96 L64,88 L108,74 L152,66 L196,44 L240,30 L282,20 L282,104 L20,104 Z" fill="url(#seoG)"/>
+        <path d="M20,96 L64,88 L108,74 L152,66 L196,44 L240,30 L282,20" fill="none" stroke="#8D7EF2" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="282" cy="20" r="4.5" fill="#8D7EF2"/>
+      </svg></div>
+      <h3>SEO &amp; référencement naturel</h3>
+      <p>On fait remonter votre site dans Google, durablement — pour attirer des visiteurs sans payer chaque clic.</p>
+      <span class="chip">+79 % de trafic (Carewell)</span>
+    </div>
+
+    <div class="work">
+      <div class="viz"><svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Barres de performance publicitaire et cible atteinte">
+        <rect x="34" y="70" width="34" height="38" rx="5" fill="#C9BFF7"/>
+        <rect x="88" y="56" width="34" height="52" rx="5" fill="#B4A6F3"/>
+        <rect x="142" y="40" width="34" height="68" rx="5" fill="#9E8CEF"/>
+        <rect x="196" y="26" width="34" height="82" rx="5" fill="#8D7EF2"/>
+        <circle cx="256" cy="30" r="13" fill="none" stroke="#8D7EF2" stroke-width="3"/>
+        <circle cx="256" cy="30" r="4.5" fill="#8D7EF2"/>
+      </svg></div>
+      <h3>Publicité Google Ads</h3>
+      <p>Des campagnes ciblées qui amènent de vrais prospects, en optimisant chaque franc dépensé.</p>
+      <span class="chip">Inscriptions &lt; 3 CHF · CTR 11 %</span>
+    </div>
+
+    <div class="work">
+      <div class="viz"><svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Jauge de mesure de données">
+        <g transform="translate(150,86)">
+          <path d="M-64,0 A64,64 0 0,1 64,0" fill="none" stroke="#E1DAF8" stroke-width="15" stroke-linecap="round"/>
+          <path d="M-64,0 A64,64 0 0,1 45,-45" fill="none" stroke="#8D7EF2" stroke-width="15" stroke-linecap="round"/>
+          <circle cx="0" cy="0" r="6" fill="#352B52"/>
+          <line x1="0" y1="0" x2="40" y2="-40" stroke="#352B52" stroke-width="4" stroke-linecap="round"/>
+        </g>
+      </svg></div>
+      <h3>Tracking &amp; données (GA4)</h3>
+      <p>On mesure précisément d'où viennent vos clients, pour décider avec des chiffres plutôt qu'au feeling.</p>
+      <span class="chip">Chaque conversion suivie</span>
+    </div>
+
+    <div class="work">
+      <div class="viz"><svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Flux d'automatisation entre étapes">
+        <g stroke="#B4A6F3" stroke-width="2.4">
+          <line x1="58" y1="60" x2="150" y2="32"/><line x1="58" y1="60" x2="150" y2="88"/>
+          <line x1="150" y1="32" x2="242" y2="60"/><line x1="150" y1="88" x2="242" y2="60"/>
+        </g>
+        <circle cx="58" cy="60" r="15" fill="#8D7EF2"/>
+        <circle cx="150" cy="32" r="13" fill="#fff" stroke="#8D7EF2" stroke-width="3"/>
+        <circle cx="150" cy="88" r="13" fill="#fff" stroke="#8D7EF2" stroke-width="3"/>
+        <circle cx="242" cy="60" r="15" fill="#8D7EF2"/>
+      </svg></div>
+      <h3>Automatisation &amp; IA</h3>
+      <p>Des flux automatisés — leads, e-mails, reporting — qui travaillent pour vous, même la nuit.</p>
+      <span class="chip">Opéré avec l'IA</span>
+    </div>
+
+    <div class="work">
+      <div class="viz"><svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Réseau de liens pointant vers un site central">
+        <g stroke="#B4A6F3" stroke-width="2.4">
+          <line x1="150" y1="60" x2="74" y2="28"/><line x1="150" y1="60" x2="58" y2="82"/>
+          <line x1="150" y1="60" x2="150" y2="20"/><line x1="150" y1="60" x2="238" y2="34"/><line x1="150" y1="60" x2="234" y2="90"/>
+        </g>
+        <g fill="#fff" stroke="#8D7EF2" stroke-width="3">
+          <circle cx="74" cy="28" r="9"/><circle cx="58" cy="82" r="9"/><circle cx="150" cy="20" r="9"/><circle cx="238" cy="34" r="9"/><circle cx="234" cy="90" r="9"/>
+        </g>
+        <circle cx="150" cy="60" r="17" fill="#8D7EF2"/>
+      </svg></div>
+      <h3>Backlinks &amp; autorité</h3>
+      <p>On fait pointer des sites de référence vers le vôtre pour gagner la confiance de Google.</p>
+      <span class="chip">24 cibles suisses ciblées</span>
+    </div>
+
+    <div class="work">
+      <div class="viz"><svg viewBox="0 0 300 120" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Entonnoir de conversion en trois étapes">
+        <polygon points="46,28 254,28 214,52 86,52" fill="#8D7EF2" opacity=".92"/>
+        <polygon points="92,60 208,60 182,84 118,84" fill="#9E8CEF" opacity=".92"/>
+        <polygon points="124,92 176,92 160,110 140,110" fill="#B4A6F3"/>
+      </svg></div>
+      <h3>Stratégie &amp; tunnel d'acquisition</h3>
+      <p>Un parcours pensé du premier clic à la conversion, au lieu d'actions dispersées.</p>
+      <span class="chip">Acquisition 360°</span>
+    </div>
+
   </div>
 </section>
 
