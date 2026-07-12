@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réalisations — Wanderful Marketing Agency</title>
+<meta name="description" content="Les réalisations de Wanderful Marketing Agency : projets clients, contenus, branding et études de cas — dont Carewell, plateforme suisse de staffing santé.">
+<link rel="icon" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
+<style>
+:root{
+  --violet:#8D7EF2;--lavender:#9794F2;--lilac:#AEACF2;--pearl:#CED0F2;--ice:#D8E3F2;
+  --plum:#352B52;--ink:#463b66;--muted:#6a5f88;--bg:#F5F3FC;
+  --grad-main:linear-gradient(135deg,#CED0F2 0%,#AEACF2 50%,#8D7EF2 100%);
+  --grad-text:linear-gradient(120deg,#9794F2,#8D7EF2 55%,#B98DF2);
+  --glass:rgba(255,255,255,.55);--glass-strong:rgba(255,255,255,.78);
+  --shadow-soft:0 18px 50px -22px rgba(53,43,82,.28);--shadow-card:0 30px 70px -28px rgba(141,126,242,.55);
+  --r-sm:16px;--r-card:26px;--r-lg:34px;--r-pill:999px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Poppins',sans-serif;color:var(--plum);background:var(--bg);line-height:1.65;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-weight:600;line-height:1.14;letter-spacing:-.015em}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+.wrap{max-width:1200px;margin:0 auto;padding:0 32px}
+.grad{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;color:transparent;font-style:italic;}
+
+/* ambient background */
+.bg,.bg2{position:fixed;inset:0;will-change:background-position;}
+.bg{z-index:-4;background:url('assets/wave.jpg') 0% 50%/180% 180% no-repeat;animation:bgPan 26s ease-in-out infinite alternate;}
+.bg2{z-index:-3;background:url('assets/wave.jpg') 100% 50%/220% 220% no-repeat;opacity:.55;mix-blend-mode:screen;animation:bgPan2 34s ease-in-out infinite alternate;}
+.bg-veil{position:fixed;inset:0;z-index:-2;background:linear-gradient(180deg,rgba(245,243,252,.66),rgba(245,243,252,.58) 50%,rgba(245,243,252,.66));}
+@keyframes bgPan{0%{background-position:0% 30%}100%{background-position:100% 70%}}
+@keyframes bgPan2{0%{background-position:100% 70%}100%{background-position:0% 25%}}
+@media(prefers-reduced-motion:reduce){.bg,.bg2{animation:none}*{animation:none!important;transition:none!important}}
+
+/* nav */
+header.site{position:sticky;top:0;z-index:60;padding:14px 0;}
+.nav{display:flex;align-items:center;justify-content:space-between;background:var(--glass);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid rgba(255,255,255,.6);border-radius:var(--r-pill);padding:11px 12px 11px 26px;box-shadow:var(--shadow-soft);}
+.brand img{height:42px;width:auto;display:block;}
+.menu{display:flex;gap:30px;align-items:center;}
+.menu a{font-size:14.5px;font-weight:500;color:var(--ink);opacity:.85;transition:.25s;}
+.menu a:hover,.menu a.active{opacity:1;color:var(--violet);}
+.btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14.5px;border-radius:var(--r-pill);padding:13px 26px;transition:.3s;cursor:pointer;border:none;font-family:inherit;white-space:nowrap;}
+.btn-primary{background:var(--violet);color:#fff;box-shadow:0 14px 32px -10px rgba(141,126,242,.85);}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 44px -10px rgba(141,126,242,1);}
+.btn-ghost{background:rgba(255,255,255,.5);color:var(--plum);border:1.5px solid rgba(141,126,242,.6);}
+.btn-ghost:hover{background:var(--violet);color:#fff;border-color:var(--violet);}
+
+/* page head */
+.page-head{padding:56px 0 20px;}
+.eyebrow{font-size:12.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--violet);margin-bottom:14px;}
+.page-head h1{font-size:clamp(38px,5.2vw,66px);font-weight:700;letter-spacing:-.02em;}
+.page-head p{max-width:520px;color:var(--ink);font-weight:300;font-size:17px;margin-top:20px;}
+
+.section{padding:44px 0;}
+
+/* featured case study */
+.feature{position:relative;border-radius:var(--r-lg);overflow:hidden;background:#fff;box-shadow:var(--shadow-card);display:grid;grid-template-columns:1.05fr 1fr;min-height:440px;}
+.feature .txt{padding:clamp(30px,3.6vw,54px);align-self:center;position:relative;z-index:2;}
+.feature .kicker{display:inline-flex;align-items:center;gap:8px;background:var(--grad-main);color:#fff;font-size:11.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;padding:7px 15px;border-radius:var(--r-pill);box-shadow:0 12px 28px -12px rgba(141,126,242,.9);}
+.feature h2{font-size:clamp(26px,3vw,40px);margin:18px 0 0;}
+.feature p{margin:16px 0 0;color:var(--ink);font-weight:300;max-width:440px;}
+.feature .fstats{display:flex;gap:26px;flex-wrap:wrap;margin:24px 0 28px;}
+.feature .fstats .n{font-size:26px;font-weight:700;color:var(--violet);line-height:1;}
+.feature .fstats .l{font-size:12px;color:var(--muted);margin-top:5px;}
+.feature .media{position:absolute;inset:0 0 0 55%;overflow:hidden;}
+.feature .media video,.feature .media img{width:100%;height:100%;object-fit:cover;}
+.feature .media::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#fff 0%,rgba(255,255,255,.25) 26%,transparent 50%);z-index:1;}
+
+/* portfolio grid */
+.s-head{display:flex;justify-content:space-between;align-items:flex-end;gap:30px;margin:8px 0 30px;flex-wrap:wrap;}
+.s-head h2{font-size:clamp(26px,3vw,38px);}
+.s-head p{max-width:360px;color:var(--ink);font-weight:300;font-size:15px;}
+.port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+.port{position:relative;border-radius:var(--r-card);overflow:hidden;aspect-ratio:4/5;box-shadow:var(--shadow-soft);transition:.35s;display:flex;align-items:flex-end;padding:24px;}
+.port img,.port video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;}
+.port::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(53,43,82,.66),transparent 58%);z-index:1;}
+.port:hover{transform:translateY(-6px);box-shadow:var(--shadow-card);}
+.port .meta{position:relative;z-index:2;color:#fff;}
+.port .tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;opacity:.92;}
+.port .meta h4{font-size:21px;margin-top:6px;}
+a.port-link{display:block;text-decoration:none;color:inherit;position:relative;}
+a.port-link .cs-cta{position:absolute;top:14px;right:14px;z-index:3;display:inline-flex;align-items:center;gap:6px;background:var(--violet);color:#fff;font-size:11.5px;font-weight:600;letter-spacing:.04em;padding:9px 14px;border-radius:var(--r-pill);box-shadow:0 10px 24px -8px rgba(141,126,242,.95);transition:.3s;}
+a.port-link:hover .cs-cta{transform:translateY(-2px);background:#7b6bea;}
+
+/* quote */
+.quote{margin-top:26px;background:var(--glass-strong);border:1px solid rgba(255,255,255,.7);border-radius:var(--r-card);padding:30px 34px;box-shadow:var(--shadow-soft);display:flex;gap:20px;align-items:center;flex-wrap:wrap;}
+.quote p{font-size:17px;color:var(--plum);font-weight:300;font-style:italic;flex:1;min-width:260px;}
+.quote .who{display:flex;align-items:center;gap:12px;}
+.quote .av{width:46px;height:46px;border-radius:50%;background:var(--grad-main);display:grid;place-items:center;color:#fff;font-weight:600;}
+.quote .who b{display:block;font-size:14.5px;}
+.quote .who span{font-size:12.5px;color:var(--muted);}
+
+/* CTA */
+.cta{position:relative;border-radius:var(--r-lg);overflow:hidden;padding:66px 40px;text-align:center;background:var(--grad-main);box-shadow:var(--shadow-card);margin-top:40px;}
+.cta::after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.5),transparent 70%);right:-80px;top:-120px;}
+.cta h2{position:relative;color:#fff;font-size:clamp(28px,3.6vw,44px);}
+.cta p{position:relative;color:rgba(255,255,255,.92);max-width:520px;margin:16px auto 28px;font-weight:300;}
+.cta .btn-white{position:relative;background:#fff;color:var(--violet);}
+.cta .btn-white:hover{transform:translateY(-2px);box-shadow:0 18px 40px -10px rgba(0,0,0,.28);}
+
+/* footer */
+footer.site{margin-top:70px;padding:40px 0 30px;}
+.foot-bottom{display:flex;justify-content:space-between;align-items:center;padding-top:22px;border-top:1px solid rgba(53,43,82,.12);font-size:13px;color:var(--muted);flex-wrap:wrap;gap:10px;}
+.foot-bottom .word{font-family:'Sacramento',cursive;font-size:26px;color:var(--plum);}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(28px);transition:.8s cubic-bezier(.2,.8,.2,1);}
+.reveal.in{opacity:1;transform:none;}
+
+@media(max-width:980px){
+  .menu{display:none;}
+  .feature{grid-template-columns:1fr;min-height:auto;}
+  .feature .media{position:relative;inset:auto;height:240px;}
+  .feature .media::before{background:linear-gradient(0deg,#fff,transparent 60%);}
+  .port-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:560px){
+  .wrap{padding:0 20px;}
+  .port-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="bg"></div><div class="bg2"></div><div class="bg-veil"></div>
+
+<header class="site">
+  <div class="wrap">
+    <nav class="nav">
+      <a href="index.html" class="brand"><img src="assets/logo.png" alt="Wanderful Marketing Agency"></a>
+      <div class="menu">
+        <a href="index.html">Accueil</a>
+        <a href="index.html#services">Services</a>
+        <a href="index.html#methode">Méthode</a>
+        <a href="realisations.html" class="active">Réalisations</a>
+        <a href="restaurants.html">Secteurs</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+      <a href="index.html#contact" class="btn btn-primary">Démarrons un projet</a>
+    </nav>
+  </div>
+</header>
+
+<!-- PAGE HEAD -->
+<section class="wrap page-head reveal">
+  <div class="eyebrow">Réalisations</div>
+  <h1>Des projets dont on est <span class="grad">fiers.</span></h1>
+  <p>Chaque marque a sa propre magie. Voici quelques univers que l'on a fait briller — et une étude de cas détaillée, chiffres à l'appui.</p>
+</section>
+
+<!-- FEATURED CASE STUDY -->
+<section class="wrap section reveal">
+  <div class="feature">
+    <div class="txt">
+      <span class="kicker">Étude de cas · Carewell</span>
+      <h2>2 800+ candidats soignants recrutés en 14 mois</h2>
+      <p>Acquisition 360° pour une plateforme suisse de staffing santé, sur deux marchés linguistiques — du premier clic à l'inscription du candidat.</p>
+      <div class="fstats">
+        <div><div class="n">2 800+</div><div class="l">inscriptions générées</div></div>
+        <div><div class="n">&lt; 3 CHF</div><div class="l">coût / inscription</div></div>
+        <div><div class="n">+79 %</div><div class="l">trafic organique</div></div>
+      </div>
+      <a href="carewell.html" class="btn btn-primary">Voir l'étude de cas →</a>
+    </div>
+    <div class="media">
+      <video src="assets/portfolio/carewell-soignants.mp4" autoplay muted loop playsinline></video>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO GRID -->
+<section class="wrap section reveal">
+  <div class="s-head">
+    <h2>Tous nos univers</h2>
+    <p>Vidéo, photographie, branding et social media — un aperçu de ce qu'on crée pour nos clients.</p>
+  </div>
+  <div class="port-grid">
+    <div class="port"><video src="assets/portfolio/narmonie-product-shot.mp4" autoplay muted loop playsinline></video><div class="meta"><div class="tag">Narmonie · Vidéo produit</div><h4>Shooting &amp; motion</h4></div></div>
+    <div class="port"><img src="assets/portfolio/narmonie-1.jpg" alt="Narmonie — photographie produit"><div class="meta"><div class="tag">Narmonie · Photographie</div><h4>Direction artistique</h4></div></div>
+    <a href="carewell.html" class="port-link"><div class="port"><span class="cs-cta">Étude de cas →</span><video src="assets/portfolio/carewell-soignants.mp4" autoplay muted loop playsinline></video><div class="meta"><div class="tag">Carewell · Vidéo sociale</div><h4>Contenu santé</h4></div></div></a>
+    <a href="carewell.html" class="port-link"><div class="port"><span class="cs-cta">Étude de cas →</span><img src="assets/portfolio/carewell-instagram.jpg" alt="Carewell — Instagram"><div class="meta"><div class="tag">Carewell · Social media</div><h4>Grille Instagram</h4></div></div></a>
+    <a href="carewell.html" class="port-link"><div class="port"><span class="cs-cta">Étude de cas →</span><video src="assets/portfolio/carewell-schtroumpf.mp4" autoplay muted loop playsinline></video><div class="meta"><div class="tag">Carewell · Motion design</div><h4>Vidéo animée</h4></div></div></a>
+    <div class="port"><img src="assets/portfolio/narmonie-7.jpg" alt="Narmonie — visuel"><div class="meta"><div class="tag">Narmonie · Branding</div><h4>Univers de marque</h4></div></div>
+  </div>
+
+  <div class="quote">
+    <p>« Très bonne expérience avec Wanderful Marketing. Ils nous ont aidés à construire toute notre stratégie de branding avec création du logo, identité visuelle et stratégie digitale. Une équipe jeune, créative et à fond sur l'IA ! Je vous conseille vivement. »</p>
+    <div class="who"><div class="av">PW</div><div><b>Philippe Weniger</b><span style="color:#F5A623;letter-spacing:1px;display:block;">★★★★★</span><span>Avis Google</span></div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="wrap reveal">
+  <div class="cta">
+    <h2>Envie d'un résultat comme celui-là&nbsp;?</h2>
+    <p>Parlons de votre acquisition, de votre marque et de vos objectifs. On adore les défis ambitieux.</p>
+    <a href="index.html#contact" class="btn btn-white">Démarrons un projet →</a>
+  </div>
+</section>
+
+<footer class="site wrap">
+  <div class="foot-bottom">
+    <span class="word">Wanderful</span>
+    <span>© 2026 Wanderful Marketing Agency — Tous droits réservés.</span>
+  </div>
+</footer>
+
+<script>
+const io=new IntersectionObserver((es)=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}}),{threshold:.1});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
