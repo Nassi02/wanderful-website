@@ -39,7 +39,8 @@ em{font-style:italic;background:var(--grad-text);-webkit-background-clip:text;ba
 
 /* nav */
 header.site{position:sticky;top:0;z-index:60;padding:14px 0;}
-.nav{display:flex;align-items:center;justify-content:space-between;background:var(--glass);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid rgba(255,255,255,.6);border-radius:var(--r-pill);padding:11px 12px 11px 26px;box-shadow:var(--shadow-soft);}
+.nav{position:relative;display:flex;align-items:center;justify-content:space-between;background:var(--glass);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid rgba(255,255,255,.6);border-radius:var(--r-pill);padding:11px 12px 11px 26px;box-shadow:var(--shadow-soft);}
+.nav-toggle{display:none;background:none;border:none;font-size:26px;line-height:1;color:var(--plum);cursor:pointer;padding:4px 10px;}
 .brand img{height:42px;width:auto;display:block;}
 .menu{display:flex;gap:30px;align-items:center;}
 .menu a{font-size:14.5px;font-weight:500;color:var(--ink);opacity:.85;transition:.25s;}
@@ -51,14 +52,14 @@ header.site{position:sticky;top:0;z-index:60;padding:14px 0;}
 .btn-ghost:hover{background:var(--violet);color:#fff;border-color:var(--violet);}
 
 /* back link */
-.backbar{padding:26px 0 0;}
+.backbar{padding-top:26px;}
 .backlink{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--violet);}
 .backlink:hover{gap:12px;}
 
 /* case hero */
 .eyebrow{font-size:12.5px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--violet);margin-bottom:16px;}
-.cs-hero{padding:30px 0 20px;}
-.cs-hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:54px;align-items:center;}
+.cs-hero{padding-top:30px;padding-bottom:20px;}
+.cs-hero-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:54px;align-items:start;}
 .cs-hero h1{font-size:clamp(34px,4.2vw,58px);font-weight:700;letter-spacing:-.02em;}
 .cs-hero .sub{font-size:17px;max-width:52ch;margin:24px 0 0;color:var(--ink);font-weight:300;}
 .facts{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
@@ -67,7 +68,7 @@ header.site{position:sticky;top:0;z-index:60;padding:14px 0;}
 .fact .v{margin-top:7px;font-size:14.5px;color:var(--plum);font-weight:500;}
 
 /* ribbon / stats */
-.ribbon{margin:40px 0 10px;}
+.ribbon{margin:40px auto 10px;}
 .ribbon .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
 .rstat{background:#fff;border:1px solid rgba(255,255,255,.7);border-radius:var(--r-card);padding:30px 24px;text-align:center;box-shadow:var(--shadow-soft);transition:.35s;}
 .rstat:hover{transform:translateY(-6px);box-shadow:var(--shadow-card);}
@@ -75,7 +76,7 @@ header.site{position:sticky;top:0;z-index:60;padding:14px 0;}
 .rstat .l{font-size:13px;color:var(--ink);margin-top:10px;font-weight:400;}
 
 /* sections */
-.section{padding:64px 0;}
+.section{padding-top:64px;padding-bottom:64px;}
 .tag{font-size:12.5px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--violet);margin-bottom:14px;}
 .section h2{font-size:clamp(28px,3.6vw,46px);max-width:20ch;}
 .lead{font-size:17px;color:var(--ink);font-weight:300;margin-top:18px;max-width:66ch;}
@@ -131,8 +132,11 @@ footer.site{margin-top:70px;padding:40px 0 30px;}
 .reveal.in{opacity:1;transform:none;}
 
 @media(max-width:980px){
-  .menu{display:none;}
-  .cs-hero-grid{grid-template-columns:1fr;gap:28px;}
+  .nav-toggle{display:block;}
+  .menu{display:none;position:absolute;top:64px;right:8px;left:8px;flex-direction:column;align-items:flex-start;gap:18px;background:#fff;border-radius:22px;padding:22px 26px;box-shadow:var(--shadow-card);z-index:70;}
+  .menu.open{display:flex;}
+  .menu a{font-size:16px;}
+  .cs-hero-grid{grid-template-columns:1fr;gap:30px;}
   .facts{grid-template-columns:1fr 1fr;}
   .ribbon .grid{grid-template-columns:1fr 1fr;}
   .two{grid-template-columns:1fr;gap:26px;}
@@ -140,8 +144,14 @@ footer.site{margin-top:70px;padding:40px 0 30px;}
   .highlights{grid-template-columns:1fr;}
 }
 @media(max-width:560px){
-  .wrap{padding:0 20px;}
+  .wrap{padding:0 22px;}
+  .cs-hero{padding-top:22px;padding-bottom:8px;}
+  .cs-hero h1{font-size:clamp(30px,8vw,40px);}
+  .section{padding-top:48px;padding-bottom:48px;}
   .facts,.ribbon .grid,.disc{grid-template-columns:1fr;}
+  .facts{gap:14px;}
+  .ribbon .grid{gap:14px;}
+  .panel{padding:28px 22px;}
 }
 </style>
 </head>
@@ -160,6 +170,7 @@ footer.site{margin-top:70px;padding:40px 0 30px;}
         <a href="restaurants.html">Secteurs</a>
         <a href="index.html#contact">Contact</a>
       </div>
+      <button class="nav-toggle" aria-label="Menu" onclick="this.closest('.nav').querySelector('.menu').classList.toggle('open')">☰</button>
       <a href="index.html#contact" class="btn btn-primary">Démarrons un projet</a>
     </nav>
   </div>
