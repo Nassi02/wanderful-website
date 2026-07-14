@@ -52,7 +52,7 @@ img{max-width:100%;display:block}
 
 /* ===== Nav ===== */
 header{position:sticky;top:0;z-index:60;padding:14px 0;}
-.nav{display:flex;align-items:center;justify-content:space-between;
+.nav{position:relative;display:flex;align-items:center;justify-content:space-between;
   background:var(--glass);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
   border:1px solid rgba(255,255,255,.6);border-radius:var(--r-pill);
   padding:11px 12px 11px 26px;box-shadow:var(--shadow-soft);}
@@ -61,6 +61,7 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .menu{display:flex;gap:30px;align-items:center;}
 .menu a{font-size:14.5px;font-weight:500;color:var(--ink);opacity:.85;transition:.25s;}
 .menu a:hover{opacity:1;color:var(--violet);}
+.menu-cta-btn{display:none;}
 .btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14.5px;border-radius:var(--r-pill);padding:13px 26px;transition:.3s;cursor:pointer;border:none;font-family:inherit;white-space:nowrap;}
 .btn-primary{background:var(--violet);color:#fff;box-shadow:0 14px 32px -10px rgba(141,126,242,.85);}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 44px -10px rgba(141,126,242,1);}
@@ -169,7 +170,10 @@ footer{margin-top:80px;padding:56px 0 34px;}
 
 /* responsive */
 @media(max-width:980px){
-  .menu{display:none;}
+  .nav > a.btn-primary{display:none;}
+  .menu{display:none;position:absolute;top:calc(100% + 10px);left:0;right:0;flex-direction:column;align-items:flex-start;gap:16px;background:#fff;border-radius:22px;padding:20px 22px;box-shadow:var(--shadow-card);z-index:70;}
+  .menu a{font-size:16px;opacity:1;}
+  .menu-cta-btn{display:flex;align-items:center;justify-content:center;width:100%;background:var(--violet);color:#fff!important;font-weight:600;font-size:15px;padding:14px 24px;border-radius:var(--r-pill);margin-top:4px;box-shadow:0 12px 28px -12px rgba(141,126,242,.9);}
   .nav-toggle{display:block;margin-right:6px;}
   .hero{grid-template-columns:1fr;text-align:center;padding-top:40px;min-height:auto;}
   .hero .pill{margin-left:auto;margin-right:auto;}
@@ -313,6 +317,7 @@ footer{margin-top:80px;padding:56px 0 34px;}
         <a href="realisations.html">Réalisations</a>
         <a href="restaurants.html">Secteurs</a>
         <a href="#contact">Contact</a>
+        <a href="#contact" class="menu-cta-btn">Démarrons un projet →</a>
       </div>
       <button class="nav-toggle" aria-label="Menu">☰</button>
       <a href="#contact" class="btn btn-primary">Démarrons un projet</a>
