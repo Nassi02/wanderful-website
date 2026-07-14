@@ -45,6 +45,7 @@ header.site{position:sticky;top:0;z-index:60;padding:14px 0;}
 .menu{display:flex;gap:30px;align-items:center;}
 .menu a{font-size:14.5px;font-weight:500;color:var(--ink);opacity:.85;transition:.25s;}
 .menu a:hover,.menu a.active{opacity:1;color:var(--violet);}
+.menu-cta-btn{display:none;}
 .btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14.5px;border-radius:var(--r-pill);padding:13px 26px;transition:.3s;cursor:pointer;border:none;font-family:inherit;white-space:nowrap;}
 .btn-primary{background:var(--violet);color:#fff;box-shadow:0 14px 32px -10px rgba(141,126,242,.85);}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 20px 44px -10px rgba(141,126,242,1);}
@@ -125,9 +126,11 @@ footer.site{margin-top:70px;padding-top:40px;padding-bottom:30px;}
 
 @media(max-width:980px){
   .nav-toggle{display:block;}
-  .menu{display:none;position:absolute;top:64px;right:8px;left:8px;flex-direction:column;align-items:flex-start;gap:18px;background:#fff;border-radius:22px;padding:22px 26px;box-shadow:var(--shadow-card);z-index:70;}
+  .nav > a.btn-primary{display:none;}
+  .menu{display:none;position:absolute;top:calc(100% + 10px);right:0;left:0;flex-direction:column;align-items:flex-start;gap:16px;background:#fff;border-radius:22px;padding:20px 22px;box-shadow:var(--shadow-card);z-index:70;}
   .menu.open{display:flex;}
   .menu a{font-size:16px;}
+  .menu-cta-btn{display:flex;align-items:center;justify-content:center;width:100%;background:var(--violet);color:#fff!important;font-weight:600;font-size:15px;padding:14px 24px;border-radius:var(--r-pill);margin-top:4px;box-shadow:0 12px 28px -12px rgba(141,126,242,.9);}
   .feature{grid-template-columns:1fr;min-height:auto;}
   .feature .media{display:none;}
   .feature .txt{padding:32px 28px;}
@@ -157,6 +160,7 @@ footer.site{margin-top:70px;padding-top:40px;padding-bottom:30px;}
         <a href="realisations.html" class="active">Réalisations</a>
         <a href="restaurants.html">Secteurs</a>
         <a href="index.html#contact">Contact</a>
+        <a href="index.html#contact" class="menu-cta-btn">Démarrons un projet →</a>
       </div>
       <button class="nav-toggle" aria-label="Menu" onclick="this.closest('.nav').querySelector('.menu').classList.toggle('open')">☰</button>
       <a href="index.html#contact" class="btn btn-primary">Démarrons un projet</a>
