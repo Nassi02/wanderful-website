@@ -20,6 +20,7 @@
   const LEADS_URL = "https://formspree.io/f/xqabevew";
 
   let logged = false;
+  let idleTimer = null;
 
   // Envoie la conversation TERMINÉE par email (une seule fois par visiteur).
   function logConv(done) {
@@ -32,24 +33,24 @@
         .map((m) => (m.role === "user" ? "Visiteur" : "Assistant") + " : " + m.content)
         .join("\n\n");
       const emailMatch = transcript.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-      const payload = JSON.stringify({
-        _subject: "Nouvelle conversation chatbot" + (emailMatch ? " — " + emailMatch[0] : ""),
-        email_visiteur: emailMatch ? emailMatch[0] : "(non fourni)",
-        page: location.pathname,
-        conversation: transcript,
-      });
-      // sendBeacon survit à la fermeture de l'onglet.
-      if (navigator.sendBeacon) {
-        navigator.sendBeacon(LEADS_URL, new Blob([payload], { type: "application/json" }));
-      } else {
-        fetch(LEADS_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json", Accept: "application/json" },
-          body: payload,
-          keepalive: true,
-        });
-      }
+
+      // form-urlencoded = requête "simple" : pas de préflight CORS, donc sendBeacon passe.
+      const fd = new URLSearchParams();
+      fd.append("_subject", "Nouvelle conversation chatbot" + (emailMatch ? " — " + emailMatch[0] : ""));
+      fd.append("email_visiteur", emailMatch ? emailMatch[0] : "(non fourni)");
+      fd.append("page", location.pathname);
+      fd.append("conversation", transcript);
+
+      let sent = false;
+      if (navigator.sendBeacon) sent = navigator.sendBeacon(LEADS_URL, fd);
+      if (!sent) fetch(LEADS_URL, { method: "POST", body: fd, keepalive: true });
     } catch (e) {}
+  }
+
+  // Filet de sécurité : si le visiteur laisse l'onglet ouvert, on envoie après 60 s d'inactivité.
+  function scheduleIdleSend() {
+    if (idleTimer) clearTimeout(idleTimer);
+    idleTimer = setTimeout(function () { logConv(true); }, 60000);
   }
 
   // Couleurs de marque Wanderful
@@ -276,7 +277,7 @@
       const reply = data.reply || "Désolé, une erreur est survenue. Réessayez ou passez par la page Contact.";
       addMsg(reply, "bot");
       history.push({ role: "assistant", content: reply });
-      logConv(false);
+      scheduleIdleSend();
     } catch (e) {
       typing.remove();
       addMsg("Connexion impossible pour le moment. Vous pouvez nous joindre via la page Contact.", "bot");
