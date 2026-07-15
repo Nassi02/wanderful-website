@@ -16,6 +16,42 @@
   // ⚠️ À REMPLACER par l'URL de ton Worker (ex : https://wanderful-assistant.ton-sous-domaine.workers.dev)
   const WORKER_URL = "https://wanderful-assistant.marketingwanderful.workers.dev";
 
+  // Endpoint Formspree (le même que ton formulaire de contact) → tu reçois un email.
+  const LEADS_URL = "https://formspree.io/f/xqabevew";
+
+  let logged = false;
+
+  // Envoie la conversation TERMINÉE par email (une seule fois par visiteur).
+  function logConv(done) {
+    if (!done || logged) return;
+    const userMsgs = history.filter((m) => m.role === "user");
+    if (userMsgs.length === 0) return;
+    logged = true;
+    try {
+      const transcript = history
+        .map((m) => (m.role === "user" ? "Visiteur" : "Assistant") + " : " + m.content)
+        .join("\n\n");
+      const emailMatch = transcript.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
+      const payload = JSON.stringify({
+        _subject: "Nouvelle conversation chatbot" + (emailMatch ? " — " + emailMatch[0] : ""),
+        email_visiteur: emailMatch ? emailMatch[0] : "(non fourni)",
+        page: location.pathname,
+        conversation: transcript,
+      });
+      // sendBeacon survit à la fermeture de l'onglet.
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(LEADS_URL, new Blob([payload], { type: "application/json" }));
+      } else {
+        fetch(LEADS_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Accept: "application/json" },
+          body: payload,
+          keepalive: true,
+        });
+      }
+    } catch (e) {}
+  }
+
   // Couleurs de marque Wanderful
   const C = {
     p1: "#7B3FBD", p2: "#3D1766", p3: "#5A2898",
@@ -215,6 +251,7 @@
   function closePanel() {
     panel.classList.add("wfc-hidden");
     launch.classList.remove("wfc-hidden");
+    logConv(true);
   }
 
   async function send(text) {
@@ -239,6 +276,7 @@
       const reply = data.reply || "Désolé, une erreur est survenue. Réessayez ou passez par la page Contact.";
       addMsg(reply, "bot");
       history.push({ role: "assistant", content: reply });
+      logConv(false);
     } catch (e) {
       typing.remove();
       addMsg("Connexion impossible pour le moment. Vous pouvez nous joindre via la page Contact.", "bot");
@@ -261,5 +299,11 @@
   });
   quick.addEventListener("click", (e) => {
     if (e.target.classList.contains("wfc-chip")) send(e.target.textContent);
+  });
+
+  // Enregistre la conversation quand le visiteur quitte / masque la page.
+  window.addEventListener("pagehide", () => logConv(true));
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "hidden") logConv(true);
   });
 })();
