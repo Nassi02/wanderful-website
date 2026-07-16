@@ -725,6 +725,10 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   });
 })();
 </script>
+
+<script id="espace-client-link-injector">
+(function(){try{var links=document.querySelectorAll("header a, nav a");var contact=Array.prototype.find.call(links,function(a){return /contact/i.test((a.textContent||""));});if(contact&&!document.getElementById("ec-nav-link")){var ec=contact.cloneNode(true);ec.id="ec-nav-link";ec.textContent="Espace client";ec.setAttribute("href","/espace-client/");contact.parentNode.insertBefore(ec,contact.nextSibling);}}catch(e){}})();
+</script>
 </body>
 </html>
 
