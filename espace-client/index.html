@@ -553,3 +553,45 @@ async function act(id,status){
 </body>
 </html>
 
+
+<script id="pw-btn-injector">
+(function(){
+  var cfg = window.WANDERFUL_CONFIG || {};
+  var isDemo = !cfg.SUPABASE_URL || cfg.SUPABASE_URL.indexOf('VOTRE-PROJET') > -1;
+  var _sb = null;
+  function client(){ if(!_sb && window.supabase && !isDemo){ _sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY); } return _sb; }
+  function build(){
+    var foot = document.querySelector('.side-foot');
+    if(!foot || document.getElementById('pw-btn')) return;
+    var btn = document.createElement('button');
+    btn.id = 'pw-btn';
+    btn.className = 'nav-item';
+    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" style="width:18px;height:18px;flex:0 0 18px"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg> Mon mot de passe';
+    var last = foot.querySelector('.nav-item:last-child');
+    foot.insertBefore(btn, last);
+    var ov = document.createElement('div');
+    ov.id = 'pwOv';
+    ov.style.cssText = 'position:fixed;inset:0;background:rgba(20,18,30,.45);display:none;align-items:center;justify-content:center;z-index:300;padding:20px';
+    ov.innerHTML = '<div style="background:#fff;border-radius:18px;box-shadow:0 12px 40px rgba(0,0,0,.25);width:100%;max-width:380px;padding:24px;font-family:inherit;color:#16151f"><h3 style="font-size:17px;margin:0 0 6px">Definir mon mot de passe</h3><p style="font-size:13px;color:#6b6a80;margin:0 0 14px">Choisissez le mot de passe que vous utiliserez pour vous connecter (8 caracteres minimum).</p><div id="pwM" style="font-size:13px;margin-bottom:10px"></div><input id="pwI" type="password" placeholder="Nouveau mot de passe" style="width:100%;font-size:15px;padding:11px 13px;border:1px solid #eceae4;border-radius:10px;background:#faf9f6;font-family:inherit"><div style="display:flex;gap:9px;justify-content:flex-end;margin-top:16px"><button id="pwC" style="font-size:13px;font-weight:600;padding:9px 15px;border-radius:10px;border:0;background:#f4f2ee;color:#4a4860;cursor:pointer;font-family:inherit">Annuler</button><button id="pwS" style="font-size:13px;font-weight:600;padding:9px 15px;border-radius:10px;border:0;background:#1fb57a;color:#fff;cursor:pointer;font-family:inherit">Enregistrer</button></div></div>';
+    document.body.appendChild(ov);
+    function msg(t,c){ var m=document.getElementById('pwM'); m.textContent=t; m.style.color=c; }
+    btn.onclick = function(){ msg('',''); document.getElementById('pwI').value=''; ov.style.display='flex'; document.getElementById('pwI').focus(); };
+    document.getElementById('pwC').onclick = function(){ ov.style.display='none'; };
+    document.getElementById('pwS').onclick = async function(){
+      var p = document.getElementById('pwI').value;
+      if(!p || p.length < 8){ msg('8 caracteres minimum.','#c0392b'); return; }
+      if(isDemo){ msg('Enregistre (demo).','#0f7a52'); return; }
+      var s = document.getElementById('pwS'); s.disabled = true; s.textContent = '...';
+      try{
+        var r = await client().auth.updateUser({ password: p });
+        s.disabled = false; s.textContent = 'Enregistrer';
+        if(r.error){ msg(r.error.message,'#c0392b'); return; }
+        msg('Mot de passe enregistre ! Utilisez-le pour vos prochaines connexions.','#0f7a52');
+        setTimeout(function(){ ov.style.display='none'; }, 1800);
+      }catch(e){ s.disabled=false; s.textContent='Enregistrer'; msg(String(e && e.message || e),'#c0392b'); }
+    };
+  }
+  var n = 0;
+  var iv = setInterval(function(){ n++; if(document.querySelector('.side-foot')){ build(); } if(n > 240) clearInterval(iv); }, 500);
+})();
+</script>
