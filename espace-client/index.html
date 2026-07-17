@@ -43,6 +43,10 @@
   .msg.ok{background:var(--green-soft);color:#0f7a52;display:block}
   .demo-tag{margin-top:20px;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.6}
   .demo-tag b{color:var(--accent-ink)}
+  .login-links{text-align:center;margin-top:16px;font-size:12.5px;color:var(--muted)}
+  .login-links a{color:var(--accent-ink);font-weight:600;cursor:pointer;text-decoration:none}
+  .login-links a:hover{text-decoration:underline}
+  .login-links span{margin:0 8px;color:var(--faint)}
   .hidden{display:none!important}
 
   /* ---------- APP ---------- */
@@ -135,34 +139,62 @@
       <div><b>Wanderful</b><span>Espace client</span></div>
     </div>
 
-    <div id="stepEmail">
-      <h2>Bienvenue 👋</h2>
-      <p class="sub">Connectez-vous avec votre email. Un lien de connexion sécurisé vous sera envoyé.</p>
+    <!-- Connexion par mot de passe -->
+    <div id="stepLogin">
+      <h2>Connexion</h2>
+      <p class="sub">Accédez à votre espace client.</p>
       <div id="msg1" class="msg"></div>
       <div class="field">
-        <label>Adresse email</label>
+        <label>Email</label>
         <input id="email" type="email" placeholder="vous@exemple.com" autocomplete="email">
       </div>
-      <button id="sendBtn" class="btn" onclick="sendCode()">Recevoir mon lien de connexion</button>
+      <div class="field">
+        <label>Mot de passe</label>
+        <input id="password" type="password" placeholder="••••••••" autocomplete="current-password">
+      </div>
+      <button id="loginBtn" class="btn" onclick="doLogin()">Se connecter</button>
+      <div class="login-links">
+        <a onclick="showStep('stepSignup')">Première connexion ?</a>
+        <span>·</span>
+        <a onclick="forgotPw()">Mot de passe oublié ?</a>
+      </div>
     </div>
 
-    <div id="stepLink" class="hidden">
-      <h2>Vérifiez votre boîte mail 📬</h2>
-      <p class="sub">Un lien de connexion a été envoyé à <b id="emailEcho2"></b>. Cliquez dessus pour accéder à votre espace — vous pouvez ensuite fermer cet onglet.</p>
-      <div class="msg ok" style="display:block">Pensez à vérifier vos spams si l'email tarde à arriver.</div>
-      <button class="btn ghost" onclick="location.reload()">← Recommencer</button>
-    </div>
-
-    <div id="stepCode" class="hidden">
-      <h2>Entrez votre code</h2>
-      <p class="sub">Un code à 6 chiffres a été envoyé à <b id="emailEcho"></b>.</p>
+    <!-- Première fois : définir son mot de passe -->
+    <div id="stepSignup" class="hidden">
+      <h2>Créer votre accès</h2>
+      <p class="sub">Choisissez un mot de passe. Un email de confirmation vous sera envoyé une seule fois.</p>
       <div id="msg2" class="msg"></div>
       <div class="field">
-        <label>Code de connexion</label>
-        <input id="code" class="code" inputmode="numeric" maxlength="6" placeholder="······">
+        <label>Email</label>
+        <input id="suEmail" type="email" placeholder="vous@exemple.com" autocomplete="email">
       </div>
-      <button id="verifyBtn" class="btn" onclick="verifyCode()">Se connecter</button>
-      <button class="btn ghost" onclick="backToEmail()">← Changer d'email</button>
+      <div class="field">
+        <label>Choisir un mot de passe</label>
+        <input id="suPassword" type="password" placeholder="8 caractères minimum" autocomplete="new-password">
+      </div>
+      <button id="signupBtn" class="btn" onclick="doSignup()">Créer mon accès</button>
+      <button class="btn ghost" onclick="showStep('stepLogin')">← Retour à la connexion</button>
+    </div>
+
+    <!-- Message d'info (email envoyé) -->
+    <div id="stepInfo" class="hidden">
+      <h2 id="infoTitle">Vérifiez votre boîte mail 📬</h2>
+      <p class="sub" id="infoText"></p>
+      <div class="msg ok" style="display:block">Pensez à vérifier vos spams si l'email tarde à arriver.</div>
+      <button class="btn ghost" onclick="location.reload()">← Retour</button>
+    </div>
+
+    <!-- Définir un nouveau mot de passe (après clic sur le lien) -->
+    <div id="stepReset" class="hidden">
+      <h2>Nouveau mot de passe</h2>
+      <p class="sub">Choisissez le mot de passe que vous utiliserez pour vous connecter.</p>
+      <div id="msg3" class="msg"></div>
+      <div class="field">
+        <label>Nouveau mot de passe</label>
+        <input id="newPassword" type="password" placeholder="8 caractères minimum" autocomplete="new-password">
+      </div>
+      <button id="resetBtn" class="btn" onclick="setNewPassword()">Enregistrer et se connecter</button>
     </div>
 
     <div class="demo-tag" id="demoHint"></div>
@@ -216,8 +248,8 @@ if(!DEMO && window.supabase){ sb = window.supabase.createClient(CFG.SUPABASE_URL
 
 document.getElementById('demoBanner').classList.toggle('hidden', !DEMO);
 document.getElementById('demoHint').innerHTML = DEMO
-  ? "Mode démo actif. Entrez <b>n'importe quel email</b> puis le code <b>000000</b> pour voir le portail. Pour tester la vue agence, utilisez <b>agence@wanderful.co</b>."
-  : "Pas de mot de passe : un lien de connexion sécurisé vous est envoyé par email à chaque connexion.";
+  ? "Mode démo : email au choix + mot de passe <b>demo</b>. Pour la vue agence, utilisez <b>agence@wanderful.co</b>."
+  : "Connexion sécurisée par mot de passe. Première fois ? Cliquez « Première connexion » pour le définir.";
 
 let state = { email:'', profile:null, client:null, allClients:[], section:'home' };
 
@@ -270,42 +302,78 @@ const DEMO_DATA = {
 };
 function demoDataFor(id){ return DEMO_DATA[id] || {content:[],documents:[],social:[],activity:[]}; }
 
-/* =================== AUTH =================== */
+/* =================== AUTH (email + mot de passe) =================== */
 function showMsg(id,txt,type){ const m=document.getElementById(id); m.textContent=txt; m.className='msg '+type; }
-function backToEmail(){ document.getElementById('stepCode').classList.add('hidden'); document.getElementById('stepEmail').classList.remove('hidden'); }
-
-async function sendCode(){
-  const email = document.getElementById('email').value.trim();
-  if(!email || !email.includes('@')){ showMsg('msg1','Entrez une adresse email valide.','err'); return; }
-  state.email = email;
-  const btn=document.getElementById('sendBtn'); btn.disabled=true; btn.textContent='Envoi…';
-  if(DEMO){
-    document.getElementById('emailEcho').textContent=email;
-    document.getElementById('stepEmail').classList.add('hidden');
-    document.getElementById('stepCode').classList.remove('hidden');
-    btn.disabled=false; btn.textContent='Recevoir mon code'; return;
-  }
-  const redirect = location.href.split('#')[0].split('?')[0];
-  const { error } = await sb.auth.signInWithOtp({ email, options:{ shouldCreateUser:true, emailRedirectTo: redirect } });
-  btn.disabled=false; btn.textContent='Recevoir mon lien de connexion';
-  if(error){ showMsg('msg1',error.message,'err'); return; }
-  document.getElementById('emailEcho2').textContent=email;
-  document.getElementById('stepEmail').classList.add('hidden');
-  document.getElementById('stepLink').classList.remove('hidden');
+function showStep(id){
+  ['stepLogin','stepSignup','stepInfo','stepReset'].forEach(s=>document.getElementById(s).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
 }
+function redirectUrl(){ return location.href.split('#')[0].split('?')[0]; }
 
-async function verifyCode(){
-  const code = document.getElementById('code').value.trim();
-  const btn=document.getElementById('verifyBtn'); btn.disabled=true; btn.textContent='Connexion…';
+// Connexion
+async function doLogin(){
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  if(!email || !email.includes('@')){ showMsg('msg1','Entrez une adresse email valide.','err'); return; }
+  if(!password){ showMsg('msg1','Entrez votre mot de passe.','err'); return; }
+  const btn=document.getElementById('loginBtn'); btn.disabled=true; btn.textContent='Connexion…';
   if(DEMO){
-    if(code!=='000000'){ showMsg('msg2','Code démo : 000000','err'); btn.disabled=false; btn.textContent='Se connecter'; return; }
-    const agency = state.email.toLowerCase().startsWith('agence@');
-    state.profile = { email:state.email, role: agency?'agency':'client', client_id: agency?null:'cv' };
+    if(password!=='demo'){ showMsg('msg1','Mot de passe démo : demo','err'); btn.disabled=false; btn.textContent='Se connecter'; return; }
+    const agency = email.toLowerCase().startsWith('agence@');
+    state.profile = { email, role: agency?'agency':'client', client_id: agency?null:'cv' };
     await bootApp(); return;
   }
-  const { error } = await sb.auth.verifyOtp({ email:state.email, token:code, type:'email' });
+  const { error } = await sb.auth.signInWithPassword({ email, password });
   btn.disabled=false; btn.textContent='Se connecter';
-  if(error){ showMsg('msg2','Code incorrect ou expiré.','err'); return; }
+  if(error){
+    showMsg('msg1','Email ou mot de passe incorrect. Première fois ? Utilisez « Première connexion ».','err');
+    return;
+  }
+  await loadProfileAndBoot();
+}
+
+// Première fois : créer le mot de passe
+async function doSignup(){
+  const email = document.getElementById('suEmail').value.trim();
+  const password = document.getElementById('suPassword').value;
+  if(!email || !email.includes('@')){ showMsg('msg2','Entrez une adresse email valide.','err'); return; }
+  if(!password || password.length<8){ showMsg('msg2','Mot de passe : 8 caractères minimum.','err'); return; }
+  const btn=document.getElementById('signupBtn'); btn.disabled=true; btn.textContent='Création…';
+  if(DEMO){ showMsg('msg2','En démo : connectez-vous avec le mot de passe « demo ».','ok'); btn.disabled=false; btn.textContent='Créer mon accès'; return; }
+  const { data, error } = await sb.auth.signUp({ email, password, options:{ emailRedirectTo: redirectUrl() } });
+  btn.disabled=false; btn.textContent='Créer mon accès';
+  if(error){
+    if(/already/i.test(error.message)){
+      showMsg('msg2','Ce compte existe déjà. Utilisez « Mot de passe oublié » pour définir votre mot de passe.','err');
+    } else { showMsg('msg2',error.message,'err'); }
+    return;
+  }
+  if(data.session){ await loadProfileAndBoot(); return; }
+  document.getElementById('infoTitle').textContent='Confirmez votre email 📬';
+  document.getElementById('infoText').innerHTML='Un email de confirmation a été envoyé à <b>'+email+'</b>. Cliquez sur le lien, puis revenez vous connecter avec votre mot de passe.';
+  showStep('stepInfo');
+}
+
+// Mot de passe oublié / première définition pour un compte existant
+async function forgotPw(){
+  const email = document.getElementById('email').value.trim();
+  if(!email || !email.includes('@')){ showMsg('msg1','Entrez d\'abord votre email ci-dessus.','err'); return; }
+  if(DEMO){ showMsg('msg1','En démo : mot de passe « demo ».','ok'); return; }
+  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: redirectUrl() });
+  if(error){ showMsg('msg1',error.message,'err'); return; }
+  document.getElementById('infoTitle').textContent='Email envoyé 📬';
+  document.getElementById('infoText').innerHTML='Un lien pour définir votre mot de passe a été envoyé à <b>'+email+'</b>. Cliquez dessus pour choisir votre mot de passe.';
+  showStep('stepInfo');
+}
+
+// Après clic sur le lien de réinitialisation
+async function setNewPassword(){
+  const password = document.getElementById('newPassword').value;
+  if(!password || password.length<8){ showMsg('msg3','Mot de passe : 8 caractères minimum.','err'); return; }
+  const btn=document.getElementById('resetBtn'); btn.disabled=true; btn.textContent='Enregistrement…';
+  const { error } = await sb.auth.updateUser({ password });
+  btn.disabled=false; btn.textContent='Enregistrer et se connecter';
+  if(error){ showMsg('msg3',error.message,'err'); return; }
   await loadProfileAndBoot();
 }
 
@@ -468,13 +536,17 @@ async function act(id,status){
 /* =================== SESSION RESTORE =================== */
 (async function(){
   if(!DEMO && sb){
+    let recoveryMode = location.hash.includes('type=recovery');
     sb.auth.onAuthStateChange((event, session)=>{
-      if(session && document.getElementById('appView').classList.contains('hidden')){
+      if(event==='PASSWORD_RECOVERY'){ recoveryMode = true; showStep('stepReset'); return; }
+      if(session && !recoveryMode && document.getElementById('appView').classList.contains('hidden')){
         loadProfileAndBoot();
       }
     });
+    // Si arrivée via lien de réinitialisation (type=recovery), afficher le formulaire mot de passe
+    if(location.hash.includes('type=recovery')){ showStep('stepReset'); }
     const { data:{ session } } = await sb.auth.getSession();
-    if(session){ await loadProfileAndBoot(); }
+    if(session && !location.hash.includes('type=recovery')){ await loadProfileAndBoot(); }
   }
 })();
 </script>
