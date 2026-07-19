@@ -595,3 +595,34 @@ async function act(id,status){
   var iv = setInterval(function(){ n++; if(document.querySelector('.side-foot')){ build(); } if(n > 240) clearInterval(iv); }, 500);
 })();
 </script>
+
+<script id="wanderful-theme">
+(function(){
+  var l = document.createElement('link');
+  l.rel = 'stylesheet';
+  l.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap';
+  document.head.appendChild(l);
+  var st = document.createElement('style');
+  st.textContent = ":root{--ink:#463b66!important;--ink-soft:#5b5378!important;--muted:#6a5f88!important;--faint:#9a94b8!important;--bg:#F5F3FC!important;--surface:#ffffff!important;--line:#e8e4f6!important;--accent:#8D7EF2!important;--accent-soft:#efeafe!important;--accent-ink:#6a52d8!important;--rose:#B98DF2!important;--coral:#B98DF2!important;--font:'Poppins',sans-serif!important}"
+    + "body,button,input,select,textarea{font-family:'Poppins',sans-serif!important}"
+    + ".login-wrap{background:radial-gradient(1000px 460px at 50% -8%,#e5dffb,transparent),#F5F3FC!important}"
+    + ".pill{background:#eafaf3!important}"
+    + ".wl-logo{display:block}";
+  document.head.appendChild(st);
+  function swap(){
+    var b = document.querySelector('.login .brand');
+    if(b && !b.querySelector('.wl-logo')){
+      b.innerHTML = '<img src="/assets/logo.png" alt="Wanderful Marketing" class="wl-logo" style="height:44px"><div style="font-size:12px;color:#6a5f88;margin-top:8px;font-weight:500">Espace client</div>';
+      b.style.display = 'block';
+    }
+    var sb = document.querySelector('.sb-brand');
+    if(sb && !sb.querySelector('.wl-logo')){
+      sb.innerHTML = '<img src="/assets/logo.png" alt="Wanderful Marketing" class="wl-logo" style="height:34px"><div style="font-size:11px;color:#6a5f88;margin-top:5px">Marketing Hub</div>';
+      sb.style.display = 'block';
+    }
+  }
+  swap();
+  var n = 0;
+  var iv = setInterval(function(){ n++; swap(); if(n > 30) clearInterval(iv); }, 400);
+})();
+</script>
