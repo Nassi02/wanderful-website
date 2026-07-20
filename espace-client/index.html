@@ -4,199 +4,184 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Wanderful — Espace client</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap">
 <style>
   :root{
-    --ink:#16151f;--ink-soft:#4a4860;--muted:#8b899c;
-    --bg:#f6f5f2;--surface:#fff;--line:#eceae4;
-    --accent:#6d5efc;--accent-soft:#efedff;--accent-ink:#4a3ce0;
-    --coral:#ff7a59;--coral-soft:#fff0eb;--green:#1fb57a;--green-soft:#e7f8f0;
-    --amber:#f2b230;--amber-soft:#fdf4e0;--rose:#f2569b;--sky:#3fb5f0;
-    --radius:16px;--shadow:0 1px 2px rgba(20,18,30,.04),0 8px 24px rgba(20,18,30,.06);
-    --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    --ink:#463b66;--ink-soft:#5b5378;--muted:#6a5f88;--faint:#9a94b8;
+    --bg:#F5F3FC;--surface:#ffffff;--line:#e8e4f6;
+    --accent:#8D7EF2;--accent-soft:#efeafe;--accent-ink:#6a52d8;
+    --coral:#B98DF2;--coral-soft:#f3ecff;--green:#1fb57a;--green-soft:#e7f8f0;
+    --amber:#f2b230;--amber-soft:#fdf4e0;--rose:#B98DF2;--sky:#7c9bf2;
+    --radius:16px;--shadow:0 1px 2px rgba(70,59,102,.05),0 8px 24px rgba(70,59,102,.07);
+    --grad:linear-gradient(135deg,#CED0F2 0%,#AEACF2 50%,#8D7EF2 100%);
+    --font:'Poppins',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:var(--font);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.5}
+  body{font-family:var(--font);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.55;font-size:14px}
   button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
-  .logo{width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--rose));display:grid;place-items:center;color:#fff;flex-shrink:0;box-shadow:0 6px 16px rgba(109,94,252,.35)}
+  img{max-width:100%}
+  .wl-logo{display:block;height:42px}
+  .hidden{display:none!important}
 
   /* ---------- LOGIN ---------- */
-  .login-wrap{min-height:100vh;display:grid;place-items:center;padding:24px;
-    background:radial-gradient(1200px 500px at 50% -10%,#efedff,transparent),var(--bg)}
-  .login{background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);
-    width:100%;max-width:410px;padding:34px 32px}
-  .login .brand{display:flex;align-items:center;gap:12px;margin-bottom:22px}
-  .login .brand b{font-size:17px;font-weight:700}.login .brand span{font-size:12px;color:var(--muted);display:block}
+  .login-wrap{min-height:100vh;display:grid;place-items:center;padding:24px;background:radial-gradient(1000px 460px at 50% -8%,#e5dffb,transparent),var(--bg)}
+  .login{background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);width:100%;max-width:410px;padding:34px 32px}
+  .login .brand{margin-bottom:22px}
   .login h2{font-size:20px;letter-spacing:-.3px;margin-bottom:4px}
   .login p.sub{color:var(--muted);font-size:13.5px;margin-bottom:22px}
   .field{margin-bottom:14px}
   .field label{font-size:12.5px;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:6px}
-  .field input{width:100%;font-family:inherit;font-size:15px;padding:12px 14px;border:1px solid var(--line);
-    border-radius:11px;background:#faf9f6;transition:.15s;letter-spacing:.5px}
-  .field input:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--accent-soft)}
-  .field input.code{text-align:center;font-size:24px;letter-spacing:10px;font-weight:700}
-  .btn{width:100%;background:var(--accent);color:#fff;font-size:14.5px;font-weight:650;padding:13px;
-    border-radius:11px;transition:.15s;display:flex;align-items:center;justify-content:center;gap:8px}
-  .btn:hover{background:var(--accent-ink)}.btn:disabled{opacity:.55;cursor:not-allowed}
-  .btn.ghost{background:#f4f2ee;color:var(--ink-soft);margin-top:9px}
+  .field input,.field textarea,.field select{width:100%;font-family:inherit;font-size:14.5px;padding:11px 13px;border:1px solid var(--line);border-radius:11px;background:#faf9ff;transition:.15s;color:var(--ink)}
+  .field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px var(--accent-soft)}
+  .field textarea{resize:vertical;min-height:78px}
+  .btn{width:100%;background:var(--accent);color:#fff;font-size:14.5px;font-weight:600;padding:13px;border-radius:11px;transition:.15s;display:flex;align-items:center;justify-content:center;gap:8px}
+  .btn:hover{filter:brightness(.96)}.btn:disabled{opacity:.55;cursor:not-allowed}
+  .btn.ghost{background:#f1eefb;color:var(--ink-soft);margin-top:9px}
   .msg{font-size:13px;padding:11px 13px;border-radius:10px;margin-bottom:14px;display:none}
-  .msg.err{background:var(--coral-soft);color:#c0392b;display:block}
+  .msg.err{background:#fdecef;color:#c0392b;display:block}
   .msg.ok{background:var(--green-soft);color:#0f7a52;display:block}
-  .demo-tag{margin-top:20px;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.6}
-  .demo-tag b{color:var(--accent-ink)}
   .login-links{text-align:center;margin-top:16px;font-size:12.5px;color:var(--muted)}
-  .login-links a{color:var(--accent-ink);font-weight:600;cursor:pointer;text-decoration:none}
-  .login-links a:hover{text-decoration:underline}
-  .login-links span{margin:0 8px;color:var(--faint)}
-  .hidden{display:none!important}
+  .login-links a{color:var(--accent-ink);font-weight:600;cursor:pointer}
+  .login-links a:hover{text-decoration:underline}.login-links span{margin:0 8px;color:var(--faint)}
+  .demo-tag{margin-top:20px;font-size:11.5px;color:var(--muted);text-align:center;line-height:1.6}.demo-tag b{color:var(--accent-ink)}
 
   /* ---------- APP ---------- */
-  .app{display:grid;grid-template-columns:264px 1fr;min-height:100vh}
+  .app{display:grid;grid-template-columns:266px 1fr;min-height:100vh}
   .sidebar{background:var(--surface);border-right:1px solid var(--line);padding:22px 16px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
-  .sb-brand{display:flex;align-items:center;gap:11px;padding:4px 8px 18px}
-  .sb-brand b{font-size:15px;font-weight:700}.sb-brand span{font-size:11.5px;color:var(--muted);display:block}
-  .client-card{background:linear-gradient(135deg,#f3f1ff,#fff5f1);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;align-items:center;gap:10px;margin-bottom:6px}
-  .avatar{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--coral),var(--rose));color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px;flex-shrink:0}
+  .sb-brand{padding:2px 6px 16px}
+  .client-card{background:linear-gradient(135deg,#f1eefe,#f7f1ff);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;align-items:center;gap:10px;margin-bottom:6px}
+  .avatar{width:36px;height:36px;border-radius:10px;background:var(--grad);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px;flex-shrink:0}
   .client-card .info{overflow:hidden}.client-card .info b{font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .client-card .info small{font-size:11px;color:var(--muted)}
-  .switcher{margin:0 0 14px;position:relative}
-  .switcher select{width:100%;font-family:inherit;font-size:12.5px;font-weight:600;padding:9px 11px;border:1px solid #dcd6ff;border-radius:10px;background:var(--accent-soft);color:var(--accent-ink);cursor:pointer}
-  .nav-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);font-weight:600;padding:14px 10px 6px}
+  .switcher{margin:0 0 14px}.switcher select{width:100%;font-family:inherit;font-size:12.5px;font-weight:600;padding:9px 11px;border:1px solid #dcd4fb;border-radius:10px;background:var(--accent-soft);color:var(--accent-ink);cursor:pointer}
+  .nav-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--faint);font-weight:600;padding:14px 10px 6px}
   .nav-item{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:10px;font-size:13.5px;font-weight:500;color:var(--ink-soft);width:100%;text-align:left;transition:.15s}
-  .nav-item:hover{background:#f7f6f3;color:var(--ink)}
+  .nav-item:hover{background:#f6f3fe;color:var(--ink)}
   .nav-item.active{background:var(--accent-soft);color:var(--accent-ink);font-weight:600}
   .nav-item svg{width:18px;height:18px;flex-shrink:0}
   .nav-item .badge{margin-left:auto;background:var(--coral);color:#fff;font-size:10.5px;font-weight:700;border-radius:20px;padding:1px 7px}
   .side-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
   .role-tag{font-size:11px;font-weight:700;padding:5px 10px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;margin-bottom:10px}
-  .role-tag.agency{background:var(--accent-soft);color:var(--accent-ink)}
-  .role-tag.client{background:var(--green-soft);color:var(--green)}
+  .role-tag.agency{background:var(--accent-soft);color:var(--accent-ink)}.role-tag.client{background:var(--green-soft);color:var(--green)}
 
-  .main{padding:26px 34px 60px;max-width:1180px;width:100%}
+  .main{padding:26px 34px 70px;max-width:1180px;width:100%}
   .topbar{display:flex;align-items:center;gap:16px;margin-bottom:24px}
   .topbar h2{font-size:22px;font-weight:700;letter-spacing:-.4px}
-  .topbar p{font-size:13px;color:var(--muted);margin-top:2px}
-  .spacer{flex:1}
+  .topbar p{font-size:13px;color:var(--muted);margin-top:2px}.spacer{flex:1}
   .pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:6px 12px;border-radius:20px;background:var(--green-soft);color:var(--green)}
 
   .section{display:none}.section.show{display:block;animation:fade .3s ease}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
   .sec-head{margin-bottom:18px}.sec-head h3{font-size:19px;font-weight:700;letter-spacing:-.3px}
-  .sec-head p{font-size:13.5px;color:var(--muted);margin-top:3px;max-width:640px}
+  .sec-head p{font-size:13.5px;color:var(--muted);margin-top:3px;max-width:680px}
   .section-title{font-size:14px;font-weight:700;margin:26px 0 12px}
 
   .grid{display:grid;gap:16px}.g2{grid-template-columns:repeat(2,1fr)}.g3{grid-template-columns:repeat(3,1fr)}.g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:900px){.g4{grid-template-columns:repeat(2,1fr)}.g3,.g2{grid-template-columns:1fr}}
   .card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
   .tile-ico{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;margin-bottom:12px}
-  .kpi b{font-size:26px;font-weight:750;letter-spacing:-.6px}.kpi .lbl{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .kpi b{font-size:26px;font-weight:700;letter-spacing:-.6px}.kpi .lbl{font-size:12.5px;color:var(--muted);margin-top:2px}
   .kpi .trend{font-size:11.5px;font-weight:700;margin-top:8px;display:inline-block;padding:2px 8px;border-radius:20px;background:var(--green-soft);color:var(--green)}
 
-  .row{display:flex;align-items:center;gap:13px;padding:13px 4px;border-bottom:1px solid var(--line)}
-  .row:last-child{border-bottom:none}
+  .row{display:flex;align-items:center;gap:13px;padding:13px 4px;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:none}
   .fico{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;flex-shrink:0}
   .rmain{flex:1;min-width:0}.rmain b{font-size:13.5px;font-weight:600;display:block}.rmain small{font-size:11.5px;color:var(--muted)}
   .tag{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap}
-  .t-green{background:var(--green-soft);color:var(--green)}.t-amber{background:var(--amber-soft);color:#b57e10}
-  .t-grey{background:#eef0f2;color:#6b7280}.t-accent{background:var(--accent-soft);color:var(--accent-ink)}
-  .link{color:var(--accent);font-weight:600;font-size:13px}
+  .t-green{background:var(--green-soft);color:var(--green)}.t-amber{background:var(--amber-soft);color:#b57e10}.t-grey{background:#eef0f5;color:#6b7280}.t-accent{background:var(--accent-soft);color:var(--accent-ink)}
+  .link{color:var(--accent-ink);font-weight:600;font-size:13px;cursor:pointer}
 
   .appr{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
-  .preview{width:130px;aspect-ratio:4/5;border-radius:12px;flex-shrink:0;color:#fff;display:flex;align-items:flex-end;padding:12px;font-size:12px;font-weight:600;background:linear-gradient(135deg,var(--accent),var(--rose))}
-  .appr .body{flex:1;min-width:220px}
-  .appr .meta{font-size:11.5px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;margin:6px 0 10px}
-  .caption-box{background:#faf9f6;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:13px;color:var(--ink-soft);line-height:1.5}
+  .preview{width:130px;aspect-ratio:4/5;border-radius:12px;flex-shrink:0;color:#fff;display:flex;align-items:flex-end;padding:12px;font-size:12px;font-weight:600;background:var(--grad)}
+  .appr .body{flex:1;min-width:220px}.appr .meta{font-size:11.5px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap;margin:6px 0 10px}
+  .caption-box{background:#faf9ff;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:13px;color:var(--ink-soft);line-height:1.5}
   .btn-row{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap}
-  .sbtn{font-size:13px;font-weight:600;padding:9px 15px;border-radius:10px}
-  .sbtn.ok{background:var(--green);color:#fff}.sbtn.ghost{background:#f4f2ee;color:var(--ink-soft)}
+  .sbtn{font-size:13px;font-weight:600;padding:9px 15px;border-radius:10px}.sbtn.ok{background:var(--green);color:#fff}.sbtn.ghost{background:#f1eefb;color:var(--ink-soft)}.sbtn.p{background:var(--accent);color:#fff}
   .empty{text-align:center;color:var(--muted);padding:34px 18px}
 
-  .plat{border:1px solid var(--line);border-radius:14px;padding:15px;background:var(--surface)}
-  .plat .top{display:flex;align-items:center;gap:11px;margin-bottom:6px}
+  .plat{border:1px solid var(--line);border-radius:14px;padding:15px;background:var(--surface)}.plat .top{display:flex;align-items:center;gap:11px;margin-bottom:6px}
   .pico{width:32px;height:32px;border-radius:9px;display:grid;place-items:center;color:#fff;font-weight:800;font-size:13px;flex-shrink:0}
-  .ig-bg{background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7)}.fb-bg{background:#1877f2}.tt-bg{background:#111}
-  .yt-bg{background:#f00}.li-bg{background:#0a66c2}.gg-bg{background:#4285f4}
+  .ig-bg{background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7)}.fb-bg{background:#1877f2}.tt-bg{background:#111}.yt-bg{background:#f00}.li-bg{background:#0a66c2}.gg-bg{background:#4285f4}
   .dot-on{width:8px;height:8px;border-radius:50%;background:var(--green)}.dot-off{width:8px;height:8px;border-radius:50%;background:#cfccc4}
 
-  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}
-  .cal .dow{font-size:11px;font-weight:700;color:var(--muted);text-align:center;text-transform:uppercase}
-  .cal .day{background:#faf9f6;border:1px solid var(--line);border-radius:10px;min-height:74px;padding:7px;font-size:11px}
-  .cal .day .num{color:var(--muted);font-weight:600;margin-bottom:4px}
-  .ev{font-size:10px;font-weight:600;color:#fff;border-radius:6px;padding:3px 5px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:7px}.cal .dow{font-size:11px;font-weight:700;color:var(--muted);text-align:center;text-transform:uppercase}
+  .cal .day{background:#faf9ff;border:1px solid var(--line);border-radius:10px;min-height:74px;padding:7px;font-size:11px}.cal .day .num{color:var(--muted);font-weight:600;margin-bottom:4px}
+  .ev{font-size:10px;font-weight:600;color:#fff;border-radius:6px;padding:3px 5px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;background:var(--accent)}
 
-  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13.5px;font-weight:600;padding:13px 20px;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.3s;z-index:99}
+  table{width:100%;border-collapse:collapse}th{text-align:left;font-size:11.5px;color:var(--faint);text-transform:uppercase;letter-spacing:.4px;padding:12px 14px;border-bottom:1px solid var(--line);font-weight:700}
+  td{padding:13px 14px;border-bottom:1px solid var(--line);font-size:13.5px}tr:last-child td{border-bottom:0}
+  .up{color:var(--green);font-weight:700}.down{color:#e0574f;font-weight:700}
+  .bar{height:8px;background:#eee9f8;border-radius:20px;overflow:hidden}.bar>i{display:block;height:100%;background:var(--grad);border-radius:20px}
+  .chart{display:flex;align-items:flex-end;gap:12px;height:170px;padding:10px 4px 0}.chart .b{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%;justify-content:flex-end}
+  .chart .b i{width:100%;max-width:34px;border-radius:8px 8px 0 0;background:var(--grad);display:block}.chart .b small{font-size:11px;color:var(--faint)}
+
+  .tl{position:relative;padding-left:26px}.tl::before{content:"";position:absolute;left:8px;top:6px;bottom:6px;width:2px;background:var(--line)}
+  .step{position:relative;padding-bottom:22px}.step:last-child{padding-bottom:0}
+  .step .dot{position:absolute;left:-26px;top:1px;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid var(--line)}
+  .step.done .dot{background:var(--green);border-color:var(--green)}.step.active .dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-soft)}
+  .step b{font-size:14px;font-weight:600}.step small{font-size:12px;color:var(--muted);display:block;margin-top:1px}.step .when{font-size:11px;color:var(--muted);font-weight:600}
+
+  /* ---------- ONBOARDING ---------- */
+  .ob-intro{background:linear-gradient(135deg,#efeafe,#f7f1ff);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;margin-bottom:18px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+  .ob-intro .big{font-size:30px;font-weight:700;letter-spacing:-1px;color:var(--accent-ink)}
+  .ob-intro p{font-size:13px;color:var(--ink-soft);max-width:560px}.ob-prog{flex:1;min-width:200px}.ob-prog .bar{margin-top:7px}
+  .ob-mod{border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden;background:var(--surface);box-shadow:var(--shadow)}
+  .ob-head{display:flex;align-items:center;gap:13px;padding:15px 18px;cursor:pointer}
+  .ob-num{width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent-ink);display:grid;place-items:center;font-weight:700;font-size:13.5px;flex-shrink:0}
+  .ob-head b{font-size:14.5px;font-weight:600}.ob-head small{font-size:11.5px;color:var(--muted);display:block}
+  .ob-head .chev{margin-left:auto;color:var(--muted);transition:.2s}.ob-mod.open .ob-head .chev{transform:rotate(90deg)}
+  .ob-panel{display:none;padding:4px 18px 20px;border-top:1px solid var(--line)}.ob-mod.open .ob-panel{display:block}
+  .ob-q{margin-top:16px}.ob-q>label{font-size:13px;font-weight:600;color:var(--ink);display:block;margin-bottom:6px}
+  .ob-q .hint{font-size:11.5px;color:var(--faint);font-weight:400;margin-left:4px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:20px;background:#f4f1fd;color:var(--ink-soft);border:1px solid transparent;cursor:pointer;user-select:none}
+  .chip.on{background:var(--accent-soft);color:var(--accent-ink);border-color:#d9d0fb}
+  .ob-save{position:sticky;bottom:16px;margin-top:8px;display:flex;justify-content:flex-end;gap:10px;align-items:center}
+  .ob-save .btn{width:auto;padding:12px 22px}
+
+  .pw-overlay{position:fixed;inset:0;background:rgba(70,59,102,.45);display:grid;place-items:center;z-index:200;padding:20px}
+  .pw-card{background:#fff;border-radius:18px;box-shadow:var(--shadow);width:100%;max-width:380px;padding:24px}
+  .pw-card h3{font-size:17px;margin-bottom:6px}.pw-card p{font-size:13px;color:var(--muted);margin-bottom:14px}
+  .pw-actions{display:flex;gap:9px;justify-content:flex-end;margin-top:16px}
+  .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13.5px;font-weight:600;padding:13px 20px;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.3s;z-index:250}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-  .demo-banner{background:#fff6e6;border:1px solid #f3dfa8;color:#8a6d1a;font-size:12.5px;font-weight:600;padding:8px 16px;text-align:center}
-  @media(max-width:920px){.app{grid-template-columns:1fr}.sidebar{display:none}.main{padding:20px}.g4{grid-template-columns:repeat(2,1fr)}.g3,.g2{grid-template-columns:1fr}}
+  .demo-banner{background:#fdf4e0;border:1px solid #f3dfa8;color:#8a6d1a;font-size:12.5px;font-weight:600;padding:8px 16px;text-align:center}
+  @media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{display:none}.main{padding:20px}}
 </style>
 </head>
 <body>
-<div id="demoBanner" class="demo-banner hidden">⚡ Mode démonstration — données fictives en local. Renseigne <b>config.js</b> avec tes clés Supabase pour activer la vraie connexion.</div>
+<div id="demoBanner" class="demo-banner hidden">⚡ Mode démonstration — données fictives. Renseigne <b>config.js</b> avec tes clés Supabase pour la vraie connexion.</div>
 
 <!-- ============ LOGIN ============ -->
 <div id="loginView" class="login-wrap">
   <div class="login">
-    <div class="brand">
-      <div class="logo"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></div>
-      <div><b>Wanderful</b><span>Espace client</span></div>
-    </div>
-
-    <!-- Connexion par mot de passe -->
+    <div class="brand"><img src="/assets/logo.png" alt="Wanderful Marketing" class="wl-logo" style="height:44px"><div style="font-size:12px;color:var(--muted);margin-top:8px;font-weight:500">Espace client</div></div>
     <div id="stepLogin">
-      <h2>Connexion</h2>
-      <p class="sub">Accédez à votre espace client.</p>
+      <h2>Connexion</h2><p class="sub">Accédez à votre espace client.</p>
       <div id="msg1" class="msg"></div>
-      <div class="field">
-        <label>Email</label>
-        <input id="email" type="email" placeholder="vous@exemple.com" autocomplete="email">
-      </div>
-      <div class="field">
-        <label>Mot de passe</label>
-        <input id="password" type="password" placeholder="••••••••" autocomplete="current-password">
-      </div>
+      <div class="field"><label>Email</label><input id="email" type="email" placeholder="vous@exemple.com" autocomplete="email"></div>
+      <div class="field"><label>Mot de passe</label><input id="password" type="password" placeholder="••••••••" autocomplete="current-password"></div>
       <button id="loginBtn" class="btn" onclick="doLogin()">Se connecter</button>
-      <div class="login-links">
-        <a onclick="showStep('stepSignup')">Première connexion ?</a>
-        <span>·</span>
-        <a onclick="forgotPw()">Mot de passe oublié ?</a>
-      </div>
+      <div class="login-links"><a onclick="showStep('stepSignup')">Première connexion ?</a><span>·</span><a onclick="forgotPw()">Mot de passe oublié ?</a></div>
     </div>
-
-    <!-- Première fois : définir son mot de passe -->
     <div id="stepSignup" class="hidden">
-      <h2>Créer votre accès</h2>
-      <p class="sub">Choisissez un mot de passe. Un email de confirmation vous sera envoyé une seule fois.</p>
+      <h2>Créer votre accès</h2><p class="sub">Choisissez un mot de passe. Un email de confirmation vous sera envoyé une seule fois.</p>
       <div id="msg2" class="msg"></div>
-      <div class="field">
-        <label>Email</label>
-        <input id="suEmail" type="email" placeholder="vous@exemple.com" autocomplete="email">
-      </div>
-      <div class="field">
-        <label>Choisir un mot de passe</label>
-        <input id="suPassword" type="password" placeholder="8 caractères minimum" autocomplete="new-password">
-      </div>
+      <div class="field"><label>Email</label><input id="suEmail" type="email" placeholder="vous@exemple.com" autocomplete="email"></div>
+      <div class="field"><label>Choisir un mot de passe</label><input id="suPassword" type="password" placeholder="8 caractères minimum" autocomplete="new-password"></div>
       <button id="signupBtn" class="btn" onclick="doSignup()">Créer mon accès</button>
       <button class="btn ghost" onclick="showStep('stepLogin')">← Retour à la connexion</button>
     </div>
-
-    <!-- Message d'info (email envoyé) -->
     <div id="stepInfo" class="hidden">
-      <h2 id="infoTitle">Vérifiez votre boîte mail 📬</h2>
-      <p class="sub" id="infoText"></p>
+      <h2 id="infoTitle">Vérifiez votre boîte mail 📬</h2><p class="sub" id="infoText"></p>
       <div class="msg ok" style="display:block">Pensez à vérifier vos spams si l'email tarde à arriver.</div>
       <button class="btn ghost" onclick="location.reload()">← Retour</button>
     </div>
-
-    <!-- Définir un nouveau mot de passe (après clic sur le lien) -->
     <div id="stepReset" class="hidden">
-      <h2>Nouveau mot de passe</h2>
-      <p class="sub">Choisissez le mot de passe que vous utiliserez pour vous connecter.</p>
+      <h2>Nouveau mot de passe</h2><p class="sub">Choisissez le mot de passe que vous utiliserez pour vous connecter.</p>
       <div id="msg3" class="msg"></div>
-      <div class="field">
-        <label>Nouveau mot de passe</label>
-        <input id="newPassword" type="password" placeholder="8 caractères minimum" autocomplete="new-password">
-      </div>
+      <div class="field"><label>Nouveau mot de passe</label><input id="newPassword" type="password" placeholder="8 caractères minimum" autocomplete="new-password"></div>
       <button id="resetBtn" class="btn" onclick="setNewPassword()">Enregistrer et se connecter</button>
     </div>
-
     <div class="demo-tag" id="demoHint"></div>
   </div>
 </div>
@@ -204,37 +189,23 @@
 <!-- ============ APP ============ -->
 <div id="appView" class="app hidden">
   <aside class="sidebar">
-    <div class="sb-brand">
-      <div class="logo"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></div>
-      <div><b>Wanderful</b><span>Marketing Hub</span></div>
-    </div>
-    <div class="client-card">
-      <div class="avatar" id="cAvatar">–</div>
-      <div class="info"><b id="cName">…</b><small id="cPlan"></small></div>
-    </div>
-    <div id="switcherWrap" class="switcher hidden">
-      <select id="clientSwitch" onchange="switchClient(this.value)"></select>
-    </div>
+    <div class="sb-brand"><img src="/assets/logo.png" alt="Wanderful Marketing" class="wl-logo" style="height:34px"><div style="font-size:11px;color:var(--muted);margin-top:5px">Marketing Hub</div></div>
+    <div class="client-card"><div class="avatar" id="cAvatar">–</div><div class="info"><b id="cName">…</b><small id="cPlan"></small></div></div>
+    <div id="switcherWrap" class="switcher hidden"><select id="clientSwitch" onchange="switchClient(this.value)"></select></div>
     <nav id="nav"></nav>
     <div class="side-foot">
       <span id="roleTag" class="role-tag client">Client</span>
-      <button class="nav-item" onclick="logout()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg>
-        Se déconnecter
-      </button>
+      <button class="nav-item" onclick="openPwModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> Mon mot de passe</button>
+      <button class="nav-item" onclick="logout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg> Se déconnecter</button>
     </div>
   </aside>
-
   <main class="main">
-    <div class="topbar">
-      <div><h2 id="topTitle">…</h2><p id="topSub">Voici l'état de votre projet cette semaine.</p></div>
-      <div class="spacer"></div>
-      <span class="pill">● En cours</span>
-    </div>
+    <div class="topbar"><div><h2 id="topTitle">…</h2><p id="topSub">Voici l'état de votre projet cette semaine.</p></div><div class="spacer"></div><span class="pill">● En cours</span></div>
     <div id="content"></div>
   </main>
 </div>
 
+<div id="pwModal" class="pw-overlay hidden"><div class="pw-card"><h3>Définir mon mot de passe</h3><p>Choisissez le mot de passe que vous utiliserez pour vous connecter (8 caractères minimum).</p><div id="pwMsg" class="msg"></div><div class="field"><input id="pwInput" type="password" placeholder="Nouveau mot de passe" autocomplete="new-password"></div><div class="pw-actions"><button class="sbtn ghost" onclick="closePwModal()">Annuler</button><button class="sbtn ok" id="pwSave" onclick="savePassword()">Enregistrer</button></div></div></div>
 <div id="toast" class="toast"></div>
 
 <script src="config.js"></script>
@@ -245,384 +216,357 @@ const CFG = window.WANDERFUL_CONFIG || {};
 const DEMO = !CFG.SUPABASE_URL || CFG.SUPABASE_URL.includes('VOTRE-PROJET');
 let sb = null;
 if(!DEMO && window.supabase){ sb = window.supabase.createClient(CFG.SUPABASE_URL, CFG.SUPABASE_ANON_KEY); }
-
 document.getElementById('demoBanner').classList.toggle('hidden', !DEMO);
 document.getElementById('demoHint').innerHTML = DEMO
-  ? "Mode démo : email au choix + mot de passe <b>demo</b>. Pour la vue agence, utilisez <b>agence@wanderful.co</b>."
-  : "Connexion sécurisée par mot de passe. Première fois ? Cliquez « Première connexion » pour le définir.";
+  ? "Mode démo : email au choix + mot de passe <b>demo</b>. Vue agence : <b>agence@wanderful.co</b>."
+  : "Connexion sécurisée par mot de passe. Première fois ? Cliquez « Première connexion ».";
+let state = { profile:null, client:null, allClients:[], section:'home', data:null, onb:{} };
 
-let state = { email:'', profile:null, client:null, allClients:[], section:'home' };
+/* =================== ONBOARDING QUESTIONNAIRE =================== */
+const ONB = [
+  {n:'01',t:'Votre profil & activité',s:'Les bases pour vous connaître',qs:[
+    {k:'profil_type',l:'Vous êtes…',ty:'select',opt:['Une entreprise / commerce','Un·e indépendant·e / freelance','Une profession libérale (assureur, avocat, coach…)','Un artisan / une TPE','Une association','Autre']},
+    {k:'nom',l:'Nom (marque ou personne)',ty:'text'},
+    {k:'metier',l:'Métier / secteur',ty:'text'},
+    {k:'depuis',l:'Depuis quand exercez-vous ?',ty:'text',h:'ex : 2021'},
+    {k:'stade',l:'Où en êtes-vous ?',ty:'select',opt:['Lancement / création','Croissance','Établi·e / mature','Repositionnement']},
+    {k:'modele',l:'Modèle',ty:'select',opt:['Indépendant','Salarié','Société / équipe','Autre']},
+    {k:'clients_sources',l:'D\'où viennent vos clients aujourd\'hui ?',ty:'chips',opt:['Recommandations','Bouche-à-oreille','Réseau pro / événements','Google','Réseaux sociaux','Partenariats','Publicité','Site web']},
+    {k:'presence',l:'Présence en ligne actuelle',ty:'text',h:'@compte, site, page Google, nb d\'abonnés…'},
+    {k:'zone',l:'Zone géographique ciblée',ty:'text',h:'ex : Neuchâtel & Suisse romande'}
+  ]},
+  {n:'02',t:'Votre histoire',s:'Ce qui vous rend unique et crédible',qs:[
+    {k:'histoire_pourquoi',l:'Pourquoi ce métier ? Qu\'est-ce qui vous passionne vraiment ?',ty:'textarea'},
+    {k:'histoire_declic',l:'Un moment / déclic qui a changé votre vision du métier',ty:'textarea',h:'souvent le cœur d\'une bonne histoire de marque'},
+    {k:'histoire_parcours',l:'Votre parcours en quelques lignes',ty:'textarea'},
+    {k:'histoire_fierte',l:'Ce qui vous rend le plus fier dans votre travail',ty:'textarea'},
+    {k:'histoire_gratuit',l:'Que feriez-vous même sans être payé ?',ty:'textarea'}
+  ]},
+  {n:'03',t:'Vision & mission',s:'Le « pourquoi » profond de votre marque',qs:[
+    {k:'vision_probleme',l:'En une phrase, quel problème résolvez-vous vraiment ?',ty:'textarea',h:'au-delà du produit — la vraie valeur'},
+    {k:'vision_changement',l:'Quel changement voulez-vous apporter à vos clients / votre marché ?',ty:'textarea'},
+    {k:'vision_reflexe',l:'Quand quelqu\'un a un besoin dans votre domaine, vous voulez qu\'il pense à vous pour quoi exactement ?',ty:'textarea',h:'« pour ça, je demande à… »'},
+    {k:'vision_why',l:'Votre « pourquoi » profond (au-delà de gagner de l\'argent)',ty:'textarea'}
+  ]},
+  {n:'04',t:'Offre & produits',s:'Ce que vous vendez, et ce que le client achète vraiment',qs:[
+    {k:'offre_liste',l:'Vos produits / services principaux',ty:'textarea'},
+    {k:'offre_phare',l:'Votre offre phare (celle qui marche le mieux)',ty:'text'},
+    {k:'offre_entree',l:'Un « produit d\'appel » simple / peu engageant pour attirer',ty:'text',h:'ex : un bilan gratuit, une checklist'},
+    {k:'offre_prix',l:'Positionnement prix',ty:'select',opt:['Premium / haut de gamme','Milieu de gamme','Accessible','Conseil gratuit + commissions','Sur devis']},
+    {k:'offre_vraivaleur',l:'Ce que vous vendez VRAIMENT (le bénéfice profond, pas le produit)',ty:'textarea',h:'ex : de la tranquillité, du temps, de la simplicité'}
+  ]},
+  {n:'05',t:'Diagnostic — forces & faiblesses',s:'Regard honnête sur votre situation',qs:[
+    {k:'diag_forces',l:'Vos 3 à 5 forces principales',ty:'textarea'},
+    {k:'diag_faiblesses',l:'Vos faiblesses / points à améliorer',ty:'textarea'},
+    {k:'diag_marche',l:'Ce qui a déjà bien fonctionné pour vous',ty:'textarea',h:'une campagne, un type de post, un événement'},
+    {k:'diag_atouts',l:'Vos atouts / ressources existants',ty:'textarea',h:'photos pro, communauté, notoriété locale, emplacement…'},
+    {k:'diag_digital',l:'Vos actifs digitaux actuels',ty:'textarea',h:'site, liste email, contenus, abonnés…'}
+  ]},
+  {n:'06',t:'Marché & concurrence',s:'Le terrain de jeu',qs:[
+    {k:'marche_probleme',l:'Quel est LE gros problème / la grosse frustration de votre marché ?',ty:'textarea'},
+    {k:'marche_cliches',l:'Comment les gens perçoivent-ils votre secteur ? (clichés négatifs)',ty:'textarea'},
+    {k:'marche_concurrents',l:'Vos concurrents (qui, quels types)',ty:'textarea'},
+    {k:'marche_mieux',l:'Ce qu\'ils font mal / ce que vous faites mieux',ty:'textarea'},
+    {k:'marche_contraintes',l:'Tendances ou contraintes de votre secteur',ty:'textarea',h:'réglementation, conformité, évolutions…'}
+  ]},
+  {n:'07',t:'Cibles & personas',s:'À qui vous parlez',qs:[
+    {k:'cible_ideal',l:'Décrivez votre client idéal',ty:'textarea'},
+    {k:'cible_moments',l:'Les « moments de vie » qui amènent un client vers vous',ty:'textarea',h:'ex : premier emploi, achat immobilier, naissance…'},
+    {k:'cible_segments',l:'Vos segments de clientèle',ty:'textarea',h:'par âge, situation, besoin, budget…'},
+    {k:'cible_exemples',l:'2-3 exemples concrets de clients types (mini-personas)',ty:'textarea'},
+    {k:'cible_peurs',l:'Leurs peurs / freins / objections profondes',ty:'textarea'},
+    {k:'cible_anti',l:'Le client que vous NE voulez PAS (anti-persona)',ty:'textarea'}
+  ]},
+  {n:'08',t:'Différenciation & valeurs',s:'Ce qui vous rend inoubliable',qs:[
+    {k:'diff_points',l:'Qu\'est-ce qui vous rend vraiment différent ? (3 à 5 points)',ty:'textarea'},
+    {k:'diff_valeurs',l:'Vos valeurs',ty:'chips',opt:['Transparence','Pédagogie','Humanité','Excellence','Engagement','Indépendance','Proximité','Créativité','Fiabilité','Audace']},
+    {k:'diff_valeurs_detail',l:'Précisez ce que ces valeurs veulent dire concrètement chez vous',ty:'textarea'},
+    {k:'diff_interdit',l:'Ce que vous refusez de faire (votre « territoire interdit »)',ty:'textarea'},
+    {k:'diff_promesse',l:'Votre promesse : ce que le client repart TOUJOURS avec après vous',ty:'textarea'}
+  ]},
+  {n:'09',t:'Messages & ton de voix',s:'Comment vous parlez',qs:[
+    {k:'msg_central',l:'Votre message central (une phrase)',ty:'textarea'},
+    {k:'msg_cles',l:'3 à 5 messages clés à répéter constamment',ty:'textarea'},
+    {k:'msg_ton',l:'Ton : tutoiement ou vouvoiement ?',ty:'select',opt:['Tutoiement partout','Vouvoiement partout','Tutoiement sur les réseaux, vouvoiement en officiel','À définir ensemble']},
+    {k:'msg_humour',l:'Humour : oui / non, quel style ?',ty:'text'},
+    {k:'msg_perso',l:'Personnalité de marque',ty:'chips',opt:['Pédagogue','Chaleureux','Expert','Fun / décalé','Premium','Rassurant','Direct','Inspirant','Accessible']},
+    {k:'msg_eviter',l:'Mots / expressions / sujets à éviter',ty:'textarea'}
+  ]},
+  {n:'10',t:'Parcours client & objections',s:'De l\'inconnu au client',qs:[
+    {k:'parc_decouverte',l:'Comment un prospect vous découvre-t-il aujourd\'hui ?',ty:'textarea'},
+    {k:'parc_contact',l:'Comment vous contacte-t-on (canal préféré) ?',ty:'text'},
+    {k:'parc_rdv',l:'Le déroulé d\'un premier rendez-vous',ty:'textarea'},
+    {k:'parc_objections',l:'Les objections les plus fréquentes + vos réponses',ty:'textarea',h:'« c\'est payant ? », « j\'ai déjà quelqu\'un »…'},
+    {k:'parc_moment',l:'Le « moment » où un prospect bascule et vous fait confiance',ty:'textarea'}
+  ]},
+  {n:'11',t:'Contenu & plateformes',s:'Où et comment communiquer',qs:[
+    {k:'cont_plateformes',l:'Sur quelles plateformes voulez-vous être ?',ty:'chips',opt:['Instagram','TikTok','LinkedIn','Facebook','YouTube','Google Business','Pinterest','Newsletter']},
+    {k:'cont_principale',l:'Plateforme principale visée',ty:'text'},
+    {k:'cont_camera',l:'À l\'aise face caméra ?',ty:'select',opt:['Très à l\'aise','Plutôt à l\'aise','Un peu intimidé·e','Pas du tout — plutôt écrit/visuel']},
+    {k:'cont_formats',l:'Formats préférés',ty:'chips',opt:['Reels / vidéos courtes','Carrousels','Stories','Articles / posts texte','Lives','Podcasts']},
+    {k:'cont_temps',l:'Temps dispo pour le contenu / semaine',ty:'text'},
+    {k:'cont_sujets',l:'Sujets que vous maîtrisez / idées de contenu',ty:'textarea'},
+    {k:'cont_questions',l:'Les questions que vos clients vous posent tout le temps',ty:'textarea',h:'une mine d\'or pour le contenu'}
+  ]},
+  {n:'12',t:'Preuve sociale & partenaires',s:'Crédibilité et réseau',qs:[
+    {k:'preuve_temoignages',l:'Avez-vous des témoignages / avis dispo ?',ty:'textarea'},
+    {k:'preuve_cas',l:'Cas clients marquants à raconter (anonymisés si besoin)',ty:'textarea'},
+    {k:'preuve_partenaires',l:'Partenaires potentiels / métiers complémentaires',ty:'textarea',h:'ex : immobilier, fiduciaire, relocation…'},
+    {k:'preuve_reco',l:'Vos sources de recommandation actuelles',ty:'textarea'}
+  ]},
+  {n:'13',t:'Objectifs, budget & contraintes',s:'Le cadre',qs:[
+    {k:'obj_priorite',l:'Votre priorité n°1 dans les 3 à 6 mois',ty:'textarea'},
+    {k:'obj_chiffre',l:'Un objectif chiffré si vous en avez un',ty:'text',h:'ex : 20 nouveaux clients, 5000 abonnés'},
+    {k:'obj_kpi',l:'Comment mesurez-vous le succès ?',ty:'text'},
+    {k:'obj_budget',l:'Budget marketing disponible',ty:'text',h:'ex : 800 € / mois'},
+    {k:'obj_temps',l:'Qui s\'occupe du marketing en interne, et combien de temps ?',ty:'text'},
+    {k:'obj_contraintes',l:'Contraintes (réglementaires, conformité, sujets sensibles)',ty:'textarea'},
+    {k:'obj_nonneg',l:'Vos principes non négociables',ty:'textarea',h:'ce que la stratégie ne devra jamais faire'}
+  ]},
+  {n:'14',t:'Ressources & logistique',s:'De quoi on dispose pour produire',qs:[
+    {k:'res_photos',l:'Avez-vous des photos / vidéos professionnelles ?',ty:'select',opt:['Oui, une banque complète','Quelques-unes','Non, à produire']},
+    {k:'res_charte',l:'Charte graphique / logo existants ?',ty:'select',opt:['Oui, complète','Logo seulement','Non']},
+    {k:'res_contenus',l:'Contenus existants à recycler ?',ty:'textarea'},
+    {k:'res_materiel',l:'Matériel dispo pour tourner (téléphone, appareil, micro…)',ty:'text'},
+    {k:'res_dispo',l:'Vos disponibilités pour un shooting / une session de tournage',ty:'text'}
+  ]}
+];
 
 /* =================== DEMO DATA =================== */
-const DEMO_CLIENTS = [
-  { id:'cv', name:'Café Voyageur', plan:'Forfait Social', status:'Actif', initials:'CV' },
-  { id:'nh', name:'Narmonie Habitat', plan:'Forfait Web + Social', status:'Actif', initials:'NH' }
-];
-const DEMO_DATA = {
-  cv:{
-    content:[
-      {id:'c1',platform:'instagram',type:'Post carrousel',title:'3 recettes de cafés glacés',caption:'☀️ La saison des cafés glacés est ouverte ! 3 recettes signature…',scheduled_at:'2026-07-18',status:'pending'},
-      {id:'c2',platform:'facebook',type:'Post + photo',title:'Nouvelle terrasse — ce week-end',caption:'Notre terrasse rouvre ce samedi ☕️🌿',scheduled_at:'2026-07-19',status:'pending'},
-      {id:'c3',platform:'tiktok',type:'Reel',title:'Coulisses : le latte art de Léa',caption:'POV : tu commandes un cappuccino ✨ #latteart',scheduled_at:'2026-07-21',status:'pending'},
-      {id:'c4',platform:'instagram',type:'Story',title:'Café du jour',caption:'Notre sélection du matin ☕️',scheduled_at:'2026-07-14',status:'published'}
-    ],
-    documents:[
-      {title:'Facture #024 — Juillet 2026',subtitle:'Émise le 3 juil.',amount:'1 200 €',status:'Payée',kind:'facture'},
-      {title:'Facture #025 — Août 2026',subtitle:'Échéance 31 juil.',amount:'1 200 €',status:'En attente',kind:'facture'},
-      {title:'Devis — Forfait Social annuel',subtitle:'Validé le 12 juin',amount:'',status:'Signé',kind:'devis'},
-      {title:'Contrat de prestation',subtitle:'Signé le 12 juin',amount:'',status:'Signé',kind:'contrat'}
-    ],
-    social:[
-      {platform:'instagram',handle:'@cafevoyageur',followers:1248,connected:true,auto:true},
-      {platform:'facebook',handle:'Café Voyageur',followers:862,connected:true,auto:true},
-      {platform:'tiktok',handle:'@cafevoyageur',followers:2140,connected:true,auto:true},
-      {platform:'google',handle:'Café Voyageur',followers:0,connected:true,auto:true},
-      {platform:'youtube',handle:'',followers:0,connected:false,auto:false},
-      {platform:'linkedin',handle:'',followers:0,connected:false,auto:false}
-    ],
-    activity:[
-      {message:'3 nouveaux posts à valider',color:'accent'},
-      {message:'Story « Coulisses » approuvée ✓',color:'green'},
-      {message:'Rapport mensuel disponible',color:'coral'},
-      {message:'Facture #024 émise',color:'amber'}
-    ]
-  },
-  nh:{
-    content:[
-      {id:'n1',platform:'instagram',type:'Post',title:'Avant / après — rénovation salon',caption:'Une transformation signée Narmonie 🛋️',scheduled_at:'2026-07-17',status:'pending'},
-      {id:'n2',platform:'facebook',type:'Post',title:'Portes ouvertes showroom',caption:'Venez découvrir nos nouveautés ce samedi.',scheduled_at:'2026-07-20',status:'approved'}
-    ],
-    documents:[{title:'Facture #012 — Juillet 2026',subtitle:'Échéance 25 juil.',amount:'1 850 €',status:'En attente',kind:'facture'}],
-    social:[
-      {platform:'instagram',handle:'@narmonie',followers:3120,connected:true,auto:true},
-      {platform:'facebook',handle:'Narmonie Habitat',followers:1540,connected:true,auto:false}
-    ],
-    activity:[{message:'1 post à valider',color:'accent'},{message:'Nouveau visuel showroom',color:'sky'}]
-  }
-};
-function demoDataFor(id){ return DEMO_DATA[id] || {content:[],documents:[],social:[],activity:[]}; }
+const DEMO_CLIENTS=[{id:'cv',name:'Café Voyageur',plan:'Forfait Social',status:'Actif',initials:'CV'},{id:'nh',name:'Narmonie Habitat',plan:'Forfait Web + Social',status:'Actif',initials:'NH'}];
+const DEMO_DATA={cv:{
+  content:[{id:'c1',platform:'instagram',type:'Post carrousel',title:'3 recettes de cafés glacés',caption:'☀️ La saison des cafés glacés est ouverte !',scheduled_at:'2026-07-18',status:'pending'},{id:'c2',platform:'facebook',type:'Post',title:'Nouvelle terrasse — ce week-end',caption:'Notre terrasse rouvre ce samedi ☕️🌿',scheduled_at:'2026-07-19',status:'pending'},{id:'c3',platform:'tiktok',type:'Reel',title:'Coulisses : le latte art de Léa',caption:'POV : tu commandes un cappuccino ✨',scheduled_at:'2026-07-21',status:'published'}],
+  documents:[{title:'Facture #024 — Juillet 2026',subtitle:'Émise le 3 juil.',amount:'1 200 €',status:'Payée',kind:'facture'},{title:'Facture #025 — Août 2026',subtitle:'Échéance 31 juil.',amount:'1 200 €',status:'En attente',kind:'facture'},{title:'Devis — Forfait Social annuel',subtitle:'Validé le 12 juin',amount:'',status:'Signé',kind:'devis'},{title:'Contrat de prestation',subtitle:'Signé le 12 juin',amount:'',status:'Signé',kind:'contrat'}],
+  social:[{platform:'instagram',handle:'@cafevoyageur',followers:1248,connected:true,auto:true},{platform:'facebook',handle:'Café Voyageur',followers:862,connected:true,auto:true},{platform:'tiktok',handle:'@cafevoyageur',followers:2140,connected:true,auto:true},{platform:'google',handle:'Café Voyageur',followers:0,connected:true,auto:true},{platform:'youtube',handle:'',followers:0,connected:false,auto:false},{platform:'linkedin',handle:'',followers:0,connected:false,auto:false}],
+  activity:[{message:'3 nouveaux posts à valider',color:'accent'},{message:'Story « Coulisses » approuvée ✓',color:'green'},{message:'Rapport mensuel disponible',color:'coral'},{message:'Facture #024 émise',color:'amber'}]
+},nh:{content:[{id:'n1',platform:'instagram',type:'Post',title:'Avant / après — rénovation salon',caption:'Une transformation signée Narmonie 🛋️',scheduled_at:'2026-07-17',status:'pending'}],documents:[{title:'Facture #012 — Juillet 2026',subtitle:'Échéance 25 juil.',amount:'1 850 €',status:'En attente',kind:'facture'}],social:[{platform:'instagram',handle:'@narmonie',followers:3120,connected:true,auto:true}],activity:[{message:'1 post à valider',color:'accent'}]}};
+function demoDataFor(id){return DEMO_DATA[id]||{content:[],documents:[],social:[],activity:[]};}
 
-/* =================== AUTH (email + mot de passe) =================== */
-function showMsg(id,txt,type){ const m=document.getElementById(id); m.textContent=txt; m.className='msg '+type; }
-function showStep(id){
-  ['stepLogin','stepSignup','stepInfo','stepReset'].forEach(s=>document.getElementById(s).classList.add('hidden'));
-  document.getElementById(id).classList.remove('hidden');
-}
-function redirectUrl(){ return location.href.split('#')[0].split('?')[0]; }
-
-// Connexion
+/* =================== AUTH =================== */
+function showMsg(id,t,c){const m=document.getElementById(id);m.textContent=t;m.className='msg '+c;}
+function showStep(id){['stepLogin','stepSignup','stepInfo','stepReset'].forEach(s=>document.getElementById(s).classList.add('hidden'));document.getElementById(id).classList.remove('hidden');}
+function redirectUrl(){return location.href.split('#')[0].split('?')[0];}
 async function doLogin(){
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
-  if(!email || !email.includes('@')){ showMsg('msg1','Entrez une adresse email valide.','err'); return; }
-  if(!password){ showMsg('msg1','Entrez votre mot de passe.','err'); return; }
-  const btn=document.getElementById('loginBtn'); btn.disabled=true; btn.textContent='Connexion…';
-  if(DEMO){
-    if(password!=='demo'){ showMsg('msg1','Mot de passe démo : demo','err'); btn.disabled=false; btn.textContent='Se connecter'; return; }
-    const agency = email.toLowerCase().startsWith('agence@');
-    state.profile = { email, role: agency?'agency':'client', client_id: agency?null:'cv' };
-    await bootApp(); return;
-  }
-  const { error } = await sb.auth.signInWithPassword({ email, password });
-  btn.disabled=false; btn.textContent='Se connecter';
-  if(error){
-    showMsg('msg1','Email ou mot de passe incorrect. Première fois ? Utilisez « Première connexion ».','err');
-    return;
-  }
+  const email=document.getElementById('email').value.trim(),password=document.getElementById('password').value;
+  if(!email||!email.includes('@')){showMsg('msg1','Entrez une adresse email valide.','err');return;}
+  if(!password){showMsg('msg1','Entrez votre mot de passe.','err');return;}
+  const btn=document.getElementById('loginBtn');btn.disabled=true;btn.textContent='Connexion…';
+  if(DEMO){if(password!=='demo'){showMsg('msg1','Mot de passe démo : demo','err');btn.disabled=false;btn.textContent='Se connecter';return;}const ag=email.toLowerCase().startsWith('agence@');state.profile={email,role:ag?'agency':'client',client_id:ag?null:'cv'};await bootApp();return;}
+  const {error}=await sb.auth.signInWithPassword({email,password});btn.disabled=false;btn.textContent='Se connecter';
+  if(error){showMsg('msg1','Email ou mot de passe incorrect. Première fois ? Utilisez « Première connexion ».','err');return;}
   await loadProfileAndBoot();
 }
-
-// Première fois : créer le mot de passe
 async function doSignup(){
-  const email = document.getElementById('suEmail').value.trim();
-  const password = document.getElementById('suPassword').value;
-  if(!email || !email.includes('@')){ showMsg('msg2','Entrez une adresse email valide.','err'); return; }
-  if(!password || password.length<8){ showMsg('msg2','Mot de passe : 8 caractères minimum.','err'); return; }
-  const btn=document.getElementById('signupBtn'); btn.disabled=true; btn.textContent='Création…';
-  if(DEMO){ showMsg('msg2','En démo : connectez-vous avec le mot de passe « demo ».','ok'); btn.disabled=false; btn.textContent='Créer mon accès'; return; }
-  const { data, error } = await sb.auth.signUp({ email, password, options:{ emailRedirectTo: redirectUrl() } });
-  btn.disabled=false; btn.textContent='Créer mon accès';
-  if(error){
-    if(/already/i.test(error.message)){
-      showMsg('msg2','Ce compte existe déjà. Utilisez « Mot de passe oublié » pour définir votre mot de passe.','err');
-    } else { showMsg('msg2',error.message,'err'); }
-    return;
-  }
-  if(data.session){ await loadProfileAndBoot(); return; }
-  document.getElementById('infoTitle').textContent='Confirmez votre email 📬';
-  document.getElementById('infoText').innerHTML='Un email de confirmation a été envoyé à <b>'+email+'</b>. Cliquez sur le lien, puis revenez vous connecter avec votre mot de passe.';
-  showStep('stepInfo');
+  const email=document.getElementById('suEmail').value.trim(),password=document.getElementById('suPassword').value;
+  if(!email||!email.includes('@')){showMsg('msg2','Entrez une adresse email valide.','err');return;}
+  if(!password||password.length<8){showMsg('msg2','Mot de passe : 8 caractères minimum.','err');return;}
+  const btn=document.getElementById('signupBtn');btn.disabled=true;btn.textContent='Création…';
+  if(DEMO){showMsg('msg2','En démo : connectez-vous avec le mot de passe « demo ».','ok');btn.disabled=false;btn.textContent='Créer mon accès';return;}
+  const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:redirectUrl()}});btn.disabled=false;btn.textContent='Créer mon accès';
+  if(error){showMsg('msg2',/already/i.test(error.message)?'Ce compte existe déjà. Utilisez « Mot de passe oublié » pour définir votre mot de passe.':error.message,'err');return;}
+  if(data.session){await loadProfileAndBoot();return;}
+  document.getElementById('infoTitle').textContent='Confirmez votre email 📬';document.getElementById('infoText').innerHTML='Un email de confirmation a été envoyé à <b>'+email+'</b>. Cliquez sur le lien, puis revenez vous connecter.';showStep('stepInfo');
 }
-
-// Mot de passe oublié / première définition pour un compte existant
 async function forgotPw(){
-  const email = document.getElementById('email').value.trim();
-  if(!email || !email.includes('@')){ showMsg('msg1','Entrez d\'abord votre email ci-dessus.','err'); return; }
-  if(DEMO){ showMsg('msg1','En démo : mot de passe « demo ».','ok'); return; }
-  const { error } = await sb.auth.resetPasswordForEmail(email, { redirectTo: redirectUrl() });
-  if(error){ showMsg('msg1',error.message,'err'); return; }
-  document.getElementById('infoTitle').textContent='Email envoyé 📬';
-  document.getElementById('infoText').innerHTML='Un lien pour définir votre mot de passe a été envoyé à <b>'+email+'</b>. Cliquez dessus pour choisir votre mot de passe.';
-  showStep('stepInfo');
+  const email=document.getElementById('email').value.trim();
+  if(!email||!email.includes('@')){showMsg('msg1','Entrez d\'abord votre email ci-dessus.','err');return;}
+  if(DEMO){showMsg('msg1','En démo : mot de passe « demo ».','ok');return;}
+  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:redirectUrl()});
+  if(error){showMsg('msg1',error.message,'err');return;}
+  document.getElementById('infoTitle').textContent='Email envoyé 📬';document.getElementById('infoText').innerHTML='Un lien pour définir votre mot de passe a été envoyé à <b>'+email+'</b>.';showStep('stepInfo');
 }
-
-// Après clic sur le lien de réinitialisation
 async function setNewPassword(){
-  const password = document.getElementById('newPassword').value;
-  if(!password || password.length<8){ showMsg('msg3','Mot de passe : 8 caractères minimum.','err'); return; }
-  const btn=document.getElementById('resetBtn'); btn.disabled=true; btn.textContent='Enregistrement…';
-  const { error } = await sb.auth.updateUser({ password });
-  btn.disabled=false; btn.textContent='Enregistrer et se connecter';
-  if(error){ showMsg('msg3',error.message,'err'); return; }
-  await loadProfileAndBoot();
+  const password=document.getElementById('newPassword').value;
+  if(!password||password.length<8){showMsg('msg3','Mot de passe : 8 caractères minimum.','err');return;}
+  const btn=document.getElementById('resetBtn');btn.disabled=true;btn.textContent='Enregistrement…';
+  const {error}=await sb.auth.updateUser({password});btn.disabled=false;btn.textContent='Enregistrer et se connecter';
+  if(error){showMsg('msg3',error.message,'err');return;}await loadProfileAndBoot();
 }
-
-async function logout(){ if(!DEMO && sb) await sb.auth.signOut(); location.reload(); }
+async function logout(){if(!DEMO&&sb)await sb.auth.signOut();location.reload();}
+function openPwModal(){document.getElementById('pwMsg').className='msg';document.getElementById('pwInput').value='';document.getElementById('pwModal').classList.remove('hidden');document.getElementById('pwInput').focus();}
+function closePwModal(){document.getElementById('pwModal').classList.add('hidden');}
+async function savePassword(){
+  const p=document.getElementById('pwInput').value;
+  if(!p||p.length<8){showMsg('pwMsg','8 caractères minimum.','err');return;}
+  const btn=document.getElementById('pwSave');btn.disabled=true;btn.textContent='…';
+  if(DEMO){showMsg('pwMsg','✓ Enregistré (démo).','ok');btn.disabled=false;btn.textContent='Enregistrer';setTimeout(closePwModal,1000);return;}
+  const {error}=await sb.auth.updateUser({password:p});btn.disabled=false;btn.textContent='Enregistrer';
+  if(error){showMsg('pwMsg',error.message,'err');return;}
+  showMsg('pwMsg','✓ Mot de passe enregistré !','ok');toast('✓ Mot de passe défini');setTimeout(closePwModal,1400);
+}
 
 /* =================== DATA LAYER =================== */
 async function loadProfileAndBoot(){
-  const { data:{ user } } = await sb.auth.getUser();
-  let { data:profile } = await sb.from('profiles').select('*').eq('id',user.id).single();
-  if(!profile){ profile = { email:user.email, role:'client', client_id:null }; }
-  state.profile = profile;
-  await bootApp();
+  const {data:{user}}=await sb.auth.getUser();
+  let {data:profile}=await sb.from('profiles').select('*').eq('id',user.id).single();
+  if(!profile){profile={email:user.email,role:'client',client_id:null};}
+  state.profile=profile;await bootApp();
 }
-
-async function fetchClients(){
-  if(DEMO) return DEMO_CLIENTS;
-  const { data } = await sb.from('clients').select('*').order('name');
-  return data || [];
-}
-async function fetchClient(id){
-  if(DEMO) return DEMO_CLIENTS.find(c=>c.id===id) || null;
-  const { data } = await sb.from('clients').select('*').eq('id',id).single();
-  return data;
-}
+async function fetchClients(){if(DEMO)return DEMO_CLIENTS;const {data}=await sb.from('clients').select('*').order('name');return data||[];}
+async function fetchClient(id){if(DEMO)return DEMO_CLIENTS.find(c=>c.id===id)||null;const {data}=await sb.from('clients').select('*').eq('id',id).single();return data;}
 const DEMO_KEY={content_items:'content',social_accounts:'social',documents:'documents',activity:'activity'};
-async function fetchTable(table, clientId){
-  if(DEMO){ const d=demoDataFor(clientId); return d[DEMO_KEY[table]||table]||[]; }
-  const { data } = await sb.from(table).select('*').eq('client_id',clientId);
-  return data || [];
-}
-async function updateContentStatus(item, status){
-  if(DEMO){ item.status=status; return; }
-  await sb.from('content_items').update({status}).eq('id',item.id);
-}
+async function fetchTable(table,id){if(DEMO){const d=demoDataFor(id);return d[DEMO_KEY[table]||table]||[];}const {data}=await sb.from(table).select('*').eq('client_id',id);return data||[];}
+async function fetchOnboarding(id){if(DEMO)return state._demoOnb||{};try{const {data}=await sb.from('onboarding').select('answers').eq('client_id',id).single();return (data&&data.answers)||{};}catch(e){return {};}}
+async function saveOnboarding(id,answers){if(DEMO){state._demoOnb=answers;return {};}return await sb.from('onboarding').upsert({client_id:id,answers,updated_at:new Date().toISOString()},{onConflict:'client_id'});}
+async function updateContentStatus(item,status){if(DEMO){item.status=status;return;}await sb.from('content_items').update({status}).eq('id',item.id);}
 
 /* =================== BOOT =================== */
 async function bootApp(){
-  document.getElementById('loginView').classList.add('hidden');
-  document.getElementById('appView').classList.remove('hidden');
-  const isAgency = state.profile.role==='agency';
+  document.getElementById('loginView').classList.add('hidden');document.getElementById('appView').classList.remove('hidden');
+  const isAgency=state.profile.role==='agency';
   document.getElementById('roleTag').className='role-tag '+(isAgency?'agency':'client');
-  document.getElementById('roleTag').textContent = isAgency?'⚙ Vue agence':'Client';
-
+  document.getElementById('roleTag').textContent=isAgency?'⚙ Vue agence':'Client';
   if(isAgency){
-    state.allClients = await fetchClients();
-    const sw=document.getElementById('clientSwitch');
-    sw.innerHTML = state.allClients.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+    state.allClients=await fetchClients();
+    document.getElementById('clientSwitch').innerHTML=state.allClients.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
     document.getElementById('switcherWrap').classList.remove('hidden');
-    await selectClient(state.allClients[0]?.id);
-  } else {
-    const c = await fetchClient(state.profile.client_id);
-    if(!c){ document.getElementById('content').innerHTML=`<div class="card empty">Votre compte n'est pas encore rattaché à un espace client.<br>Contactez Wanderful pour l'activer.</div>`; renderNav([]); setClientCard({name:'—',plan:'',initials:'?'}); return; }
+    await selectClient(state.allClients[0]&&state.allClients[0].id);
+  }else{
+    const c=await fetchClient(state.profile.client_id);
+    if(!c){document.getElementById('content').innerHTML=`<div class="card empty">Votre compte n'est pas encore rattaché à un espace client.<br>Contactez Wanderful pour l'activer.</div>`;renderNav([]);setClientCard({name:'—',plan:'',initials:'?'});return;}
     await selectClient(c.id);
   }
 }
-async function switchClient(id){ await selectClient(id); }
+async function switchClient(id){await selectClient(id);}
 async function selectClient(id){
-  if(!id) return;
-  state.client = await fetchClient(id);
-  const [content,documents,social,activity] = await Promise.all([
-    fetchTable('content_items',id), fetchTable('documents',id),
-    fetchTable('social_accounts',id), fetchTable('activity',id)
-  ]);
-  state.data = { content, documents, social, activity };
-  setClientCard(state.client);
-  renderNav(content);
-  go(state.section);
+  if(!id)return;
+  state.client=await fetchClient(id);
+  const [content,documents,social,activity,onb]=await Promise.all([fetchTable('content_items',id),fetchTable('documents',id),fetchTable('social_accounts',id),fetchTable('activity',id),fetchOnboarding(id)]);
+  state.data={content,documents,social,activity};state.onb=onb||{};
+  setClientCard(state.client);renderNav(content);go(state.section);
 }
-function setClientCard(c){
-  document.getElementById('cAvatar').textContent=c.initials||'?';
-  document.getElementById('cName').textContent=c.name;
-  document.getElementById('cPlan').textContent=(c.plan||'')+(c.status?' · '+c.status:'');
-  document.getElementById('topTitle').textContent='Bonjour, '+(c.name||'')+' 👋';
-}
+function setClientCard(c){document.getElementById('cAvatar').textContent=c.initials||'?';document.getElementById('cName').textContent=c.name;document.getElementById('cPlan').textContent=(c.plan||'')+(c.status?' · '+c.status:'');document.getElementById('topTitle').textContent='Bonjour, '+(c.name||'')+' 👋';}
 
-/* =================== NAV + RENDER =================== */
-const ICO={home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',
-  val:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/>',
-  cal:'<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',
-  soc:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 3v18"/>',
-  doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>'};
-const NAV=[{k:'home',t:'Accueil',i:'home'},{k:'validation',t:'Validation contenu',i:'val',badge:true},
-  {k:'calendar',t:'Calendrier éditorial',i:'cal'},{k:'social',t:'Réseaux & publication',i:'soc'},
-  {k:'documents',t:'Documents',i:'doc'}];
+/* =================== NAV =================== */
+const ICO={home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',onb:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',val:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/>',cal:'<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',soc:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 3v18"/>',stat:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',web:'<rect x="2" y="3" width="20" height="16" rx="2"/><path d="M2 8h20M6 5.5h.01M9 5.5h.01"/>',seo:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',proj:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',res:'<path d="M4 4h6l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>'};
+const NAV=[{g:'Espace projet'},{k:'home',t:'Accueil',i:'home'},{k:'onboarding',t:'Onboarding',i:'onb'},{g:'Contenu & social'},{k:'validation',t:'Validation contenu',i:'val',badge:true},{k:'calendar',t:'Calendrier éditorial',i:'cal'},{k:'social',t:'Réseaux & publication',i:'soc'},{k:'stats',t:'Statistiques',i:'stat'},{g:'Site & visibilité'},{k:'website',t:'Site web',i:'web'},{k:'seo',t:'SEO / Référencement',i:'seo'},{g:'Projet & ressources'},{k:'tracking',t:'Suivi de projet',i:'proj'},{k:'resources',t:'Ressources & fichiers',i:'res'},{k:'documents',t:'Documents',i:'doc'}];
 function renderNav(content){
   const pend=(content||[]).filter(c=>c.status==='pending').length;
-  document.getElementById('nav').innerHTML = NAV.map(n=>{
+  document.getElementById('nav').innerHTML=NAV.map(n=>{
+    if(n.g)return `<div class="nav-label">${n.g}</div>`;
     const b=n.badge&&pend?`<span class="badge">${pend}</span>`:'';
     return `<button class="nav-item ${n.k===state.section?'active':''}" onclick="go('${n.k}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO[n.i]}</svg>${n.t}${b}</button>`;
   }).join('');
 }
-function go(k){ state.section=k; renderNav(state.data?.content||[]); document.getElementById('content').innerHTML=VIEWS[k](); }
-
+function go(k){state.section=k;renderNav(state.data?state.data.content:[]);document.getElementById('content').innerHTML=(VIEWS[k]||VIEWS.home)();window.scrollTo(0,0);}
 const PICO={instagram:['ig-bg','◉'],facebook:['fb-bg','f'],tiktok:['tt-bg','♪'],youtube:['yt-bg','▶'],linkedin:['li-bg','in'],google:['gg-bg','G']};
-function pico(p){ const x=PICO[p]||['tt-bg','•']; return `<div class="pico ${x[0]}">${x[1]}</div>`; }
-function toast(m){ const t=document.getElementById('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._x); t._x=setTimeout(()=>t.classList.remove('show'),2400); }
+function pico(p){const x=PICO[p]||['tt-bg','•'];return `<div class="pico ${x[0]}">${x[1]}</div>`;}
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2400);}
+function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function fmtDate(d){if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});}
 
+/* =================== VIEWS =================== */
 const VIEWS={
   home(){
-    const d=state.data, pend=d.content.filter(c=>c.status==='pending').length;
-    const planned=d.content.length, unpaid=d.documents.filter(x=>x.status==='En attente').length;
-    const kpis=[['Contenus à valider',pend,'Action requise','var(--accent-soft)','var(--accent-ink)','val'],
-      ['Posts planifiés',planned,'ce mois','var(--coral-soft)','var(--coral)','cal'],
-      ['Réseaux reliés',d.social.filter(s=>s.connected).length,'comptes actifs','var(--green-soft)','var(--green)','soc'],
-      ['Factures en attente',unpaid,'à régler','var(--amber-soft)','#b57e10','doc']];
-    return `<div class="grid g4" style="margin-bottom:22px">${kpis.map(k=>
-      `<div class="card kpi"><div class="tile-ico" style="background:${k[3]};color:${k[4]}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO[k[5]]}</svg></div><b>${k[1]}</b><div class="lbl">${k[0]}</div><span class="trend">${k[2]}</span></div>`).join('')}</div>
-      <div class="grid" style="grid-template-columns:1.5fr 1fr;align-items:start">
-        <div><div class="section-title">Activité récente</div><div class="card">${
-          d.activity.length?d.activity.map(a=>`<div class="row"><span style="width:9px;height:9px;border-radius:50%;background:var(--${a.color||'accent'});flex-shrink:0"></span><div class="rmain"><b style="font-weight:500">${a.message}</b></div></div>`).join(''):'<div class="empty">Aucune activité.</div>'}</div></div>
-        <div><div class="section-title">Raccourcis</div>
-          <div class="card" style="cursor:pointer" onclick="go('validation')"><div class="tile-ico" style="background:var(--accent-soft);color:var(--accent-ink)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO.val}</svg></div><b style="font-weight:650">Valider mes contenus</b><div class="lbl" style="font-size:12.5px;color:var(--muted)">${pend} en attente de votre feu vert</div></div>
-        </div>
-      </div>`;
+    const d=state.data,pend=d.content.filter(c=>c.status==='pending').length,planned=d.content.length,unpaid=d.documents.filter(x=>x.status==='En attente').length,onbCount=Object.values(state.onb||{}).filter(v=>v&&(''+v).trim()&&(!Array.isArray(v)||v.length)).length;
+    const kpis=[['Contenus à valider',pend,'Action requise','val'],['Posts planifiés',planned,'ce mois','cal'],['Réseaux reliés',d.social.filter(s=>s.connected).length,'comptes actifs','soc'],['Factures en attente',unpaid,'à régler','doc']];
+    return `<div class="grid g4" style="margin-bottom:22px">${kpis.map(k=>`<div class="card kpi"><div class="tile-ico" style="background:var(--accent-soft);color:var(--accent-ink)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO[k[3]]}</svg></div><b>${k[1]}</b><div class="lbl">${k[0]}</div><span class="trend">${k[2]}</span></div>`).join('')}</div>
+    <div class="grid" style="grid-template-columns:1.5fr 1fr;align-items:start">
+      <div><div class="section-title">Activité récente</div><div class="card">${d.activity.length?d.activity.map(a=>`<div class="row"><span style="width:9px;height:9px;border-radius:50%;background:var(--${a.color||'accent'});flex-shrink:0"></span><div class="rmain"><b style="font-weight:500">${esc(a.message)}</b></div></div>`).join(''):'<div class="empty">Aucune activité.</div>'}</div></div>
+      <div><div class="section-title">Onboarding</div><div class="card" style="cursor:pointer" onclick="go('onboarding')"><div class="tile-ico" style="background:var(--accent-soft);color:var(--accent-ink)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO.onb}</svg></div><b style="font-weight:650">Compléter mon profil stratégique</b><div class="lbl" style="font-size:12.5px;color:var(--muted);margin-top:2px">${onbCount} réponse(s) enregistrée(s)</div></div></div>
+    </div>`;
+  },
+  onboarding(){
+    const totalQ=ONB.reduce((n,m)=>n+m.qs.length,0);
+    const filled=ONB.reduce((n,m)=>n+m.qs.filter(q=>{const v=state.onb[q.k];return v&&(Array.isArray(v)?v.length:(''+v).trim());}).length,0);
+    const pct=Math.round(filled/totalQ*100);
+    let html=`<div class="sec-head"><h3>Onboarding stratégique</h3><p>Plus vos réponses sont précises, plus la stratégie que Wanderful bâtira sera puissante. Répondez à votre rythme — tout est enregistré quand vous cliquez sur « Enregistrer ». « Je ne sais pas » est une réponse acceptable, on creusera ensemble.</p></div>
+      <div class="ob-intro"><div class="big">${pct}%</div><div class="ob-prog"><div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:600"><span>Progression</span><span>${filled}/${totalQ} questions</span></div><div class="bar"><i style="width:${pct}%"></i></div></div><p>💡 Ce questionnaire couvre tout ce qui sert à bâtir une stratégie complète : positionnement, cibles, messages, contenu, objectifs…</p></div>`;
+    html+=ONB.map((m,mi)=>`<div class="ob-mod ${mi===0?'open':''}"><div class="ob-head" onclick="this.parentElement.classList.toggle('open')"><div class="ob-num">${m.n}</div><div style="flex:1"><b>${m.t}</b><small>${m.s}</small></div><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div><div class="ob-panel">${m.qs.map(q=>obField(q)).join('')}</div></div>`).join('');
+    html+=`<div class="ob-save"><span id="obStatus" style="font-size:12.5px;color:var(--muted)"></span><button class="btn" id="obSaveBtn" onclick="submitOnboarding()">Enregistrer mes réponses</button></div>`;
+    return html;
   },
   validation(){
     const items=state.data.content.filter(c=>c.status==='pending');
-    if(!items.length) return `<div class="sec-head"><h3>Validation contenu</h3><p>Vos contenus avant publication.</p></div><div class="card empty">🎉 Tout est validé ! Aucun contenu en attente.</div>`;
-    return `<div class="sec-head"><h3>Validation contenu</h3><p>${items.length} contenu(s) attendent votre feu vert avant publication automatique.</p></div>`
-     + items.map(it=>`<div class="card" style="margin-bottom:14px"><div class="appr">
-        <div class="preview">${it.type}</div>
-        <div class="body">
-          <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:4px">${pico(it.platform)} ${it.platform} · ${it.type}</div>
-          <b style="font-size:15px">${it.title||''}</b>
-          <div class="meta"><span>🗓️ ${fmtDate(it.scheduled_at)}</span></div>
-          <div class="caption-box">${it.caption||''}</div>
-          <div class="btn-row">
-            <button class="sbtn ghost" onclick="act('${it.id}','changes_requested')">Demander une modif</button>
-            <button class="sbtn ok" onclick="act('${it.id}','approved')">✓ Approuver</button>
-          </div>
-        </div></div></div>`).join('');
+    if(!items.length)return `<div class="sec-head"><h3>Validation contenu</h3><p>Vos contenus avant publication.</p></div><div class="card empty">🎉 Tout est validé ! Aucun contenu en attente.</div>`;
+    return `<div class="sec-head"><h3>Validation contenu</h3><p>${items.length} contenu(s) attendent votre feu vert avant publication automatique.</p></div>`+items.map(it=>`<div class="card" style="margin-bottom:14px"><div class="appr"><div class="preview">${esc(it.type)}</div><div class="body"><div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:4px">${pico(it.platform)} ${esc(it.platform)} · ${esc(it.type)}</div><b style="font-size:15px">${esc(it.title)}</b><div class="meta"><span>🗓️ ${fmtDate(it.scheduled_at)}</span></div><div class="caption-box">${esc(it.caption)}</div><div class="btn-row"><button class="sbtn ghost" onclick="act('${it.id}','changes_requested')">Demander une modif</button><button class="sbtn ok" onclick="act('${it.id}','approved')">✓ Approuver</button></div></div></div></div>`).join('');
   },
   calendar(){
-    const evs={}; state.data.content.forEach(c=>{ if(!c.scheduled_at)return; const d=new Date(c.scheduled_at).getDate(); (evs[d]=evs[d]||[]).push(c); });
-    const days=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim']; let cells='';
-    for(let d=13;d<=26;d++){ const list=(evs[d]||[]).map(e=>`<div class="ev" style="background:var(--accent)">${e.title}</div>`).join(''); cells+=`<div class="day"><div class="num">${d}</div>${list}</div>`; }
-    return `<div class="sec-head"><h3>Calendrier éditorial</h3><p>Votre planning de publication. Les contenus validés sont programmés automatiquement.</p></div>
-      <div class="card"><div class="cal">${days.map(d=>`<div class="dow">${d}</div>`).join('')}${cells}</div></div>`;
+    const evs={};state.data.content.forEach(c=>{if(!c.scheduled_at)return;const d=new Date(c.scheduled_at).getDate();(evs[d]=evs[d]||[]).push(c);});
+    const days=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'];let cells='';
+    for(let d=13;d<=26;d++){const list=(evs[d]||[]).map(e=>`<div class="ev">${esc(e.title)}</div>`).join('');cells+=`<div class="day"><div class="num">${d}</div>${list}</div>`;}
+    return `<div class="sec-head"><h3>Calendrier éditorial</h3><p>Votre planning de publication. Les contenus validés sont programmés automatiquement.</p></div><div class="card"><div class="cal">${days.map(d=>`<div class="dow">${d}</div>`).join('')}${cells}</div></div>`;
   },
   social(){
-    return `<div class="sec-head"><h3>Réseaux & publication</h3><p>Vos comptes reliés et la publication automatique.</p></div>
-      <div class="grid g3">${state.data.social.map(s=>`<div class="plat"><div class="top">${pico(s.platform)}<div><b>${s.handle||s.platform}</b><small style="color:var(--muted);display:block">${s.followers?s.followers+' abonnés':'Non relié'}</small></div></div>
-        <div style="display:flex;align-items:center;gap:8px;margin-top:8px">${s.connected?'<span class="dot-on"></span><span style="font-size:12.5px;font-weight:600;color:var(--green)">Connecté</span>':'<span class="dot-off"></span><span style="font-size:12.5px;color:var(--muted)">Déconnecté</span>'}${s.auto?'<span style="margin-left:auto;font-size:11.5px;color:var(--muted)">Auto ✓</span>':''}</div></div>`).join('')}</div>`;
+    return `<div class="sec-head"><h3>Réseaux & publication</h3><p>Vos comptes reliés et la publication automatique.</p></div><div class="grid g3">${state.data.social.map(s=>`<div class="plat"><div class="top">${pico(s.platform)}<div><b>${esc(s.handle||s.platform)}</b><small style="color:var(--muted);display:block">${s.followers?s.followers+' abonnés':'Non relié'}</small></div></div><div style="display:flex;align-items:center;gap:8px;margin-top:8px">${s.connected?'<span class="dot-on"></span><span style="font-size:12.5px;font-weight:600;color:var(--green)">Connecté</span>':'<span class="dot-off"></span><span style="font-size:12.5px;color:var(--muted)">Déconnecté</span>'}${s.auto?'<span style="margin-left:auto;font-size:11.5px;color:var(--muted)">Auto ✓</span>':''}</div></div>`).join('')}</div>`;
+  },
+  stats(){
+    const data=[['Fév',3380],['Mar',3510],['Avr',3720],['Mai',3910],['Juin',4120],['Juil',4250]],max=4400;
+    const k=(l,v,s,t)=>`<div class="card kpi"><div class="lbl">${l}</div><b>${v}</b><span class="trend">${t}</span> <span style="font-size:11.5px;color:var(--muted)">${s}</span></div>`;
+    return `<div class="sec-head"><h3>Statistiques</h3><p>L'évolution de votre présence en ligne, en un coup d'œil.</p></div>
+      <div class="grid g4" style="margin-bottom:20px">${k('Abonnés totaux','4 250','6 mois','+31%')}${k('Portée','38,4k','ce mois','+12%')}${k('Engagement','5,8 %','taux moyen','+0,9pt')}${k('Clics site','1 190','depuis les réseaux','+18%')}</div>
+      <div class="grid g2"><div class="card"><div class="section-title" style="margin:0 0 6px">Croissance des abonnés</div><div class="chart">${data.map(d=>`<div class="b"><i style="height:${d[1]/max*100}%"></i><small>${d[0]}</small></div>`).join('')}</div></div>
+      <div class="card"><div class="section-title" style="margin:0 0 6px">Top contenus du mois</div>${[['Reel — latte art','TikTok · 21,4k vues'],['Carrousel — brunch','Instagram · 4,2k likes'],['Post — terrasse','Facebook · 3,1k portée']].map(x=>`<div class="row"><div class="fico" style="background:var(--accent-soft)">📈</div><div class="rmain"><b>${x[0]}</b><small>${x[1]}</small></div></div>`).join('')}</div></div>`;
+  },
+  website(){
+    const r=(b,s,tag,tc='t-green')=>`<div class="row"><div class="fico" style="background:var(--accent-soft)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="1.7">${ICO.web}</svg></div><div class="rmain"><b>${b}</b><small>${s}</small></div><span class="tag ${tc}">${tag}</span></div>`;
+    return `<div class="sec-head"><h3>Site web</h3><p>Votre vitrine en ligne, gérée et maintenue par Wanderful.</p></div>
+      <div class="grid g3" style="margin-bottom:20px"><div class="card kpi"><div class="lbl">Statut</div><b style="font-size:20px">En ligne</b><span class="trend">100% uptime</span></div><div class="card kpi"><div class="lbl">Visiteurs (30j)</div><b>2 840</b><span class="trend">+22%</span></div><div class="card kpi"><div class="lbl">Vitesse</div><b>94/100</b><span class="trend">Rapide</span></div></div>
+      <div class="card">${r('Accueil','Mise à jour il y a 3 j','En ligne')}${r('Menu & carte','Mise à jour il y a 1 sem.','En ligne')}${r('Réserver','Formulaire actif','En ligne')}${r('Landing « Menu d\'été »','Brouillon','En préparation','t-amber')}</div>`;
+  },
+  seo(){
+    const kws=[['café spécialité genève',3,'up'],['brunch genève',7,'up'],['meilleur cappuccino',5,'same'],['café télétravail',2,'up'],['terrasse café centre',12,'down']];
+    return `<div class="sec-head"><h3>SEO / Référencement</h3><p>Votre visibilité sur Google, suivie mois après mois.</p></div>
+      <div class="grid g3" style="margin-bottom:20px"><div class="card kpi"><div class="lbl">Position moyenne</div><b>5,8</b><span class="trend">+1,4</span></div><div class="card kpi"><div class="lbl">Clics Google (30j)</div><b>740</b><span class="trend">+26%</span></div><div class="card kpi"><div class="lbl">Impressions</div><b>18,2k</b><span class="trend">+14%</span></div></div>
+      <div class="card" style="padding:0"><table><thead><tr><th>Mot-clé</th><th>Position</th><th>Tendance</th></tr></thead><tbody>${kws.map(x=>`<tr><td style="font-weight:600">${x[0]}</td><td style="font-weight:700">#${x[1]}</td><td>${x[2]==='up'?'<span class="up">▲ hausse</span>':x[2]==='down'?'<span class="down">▼ baisse</span>':'<span style="color:var(--faint)">— stable</span>'}</td></tr>`).join('')}</tbody></table></div>`;
+  },
+  tracking(){
+    const tl=[['done','12 juin','Lancement de l\'accompagnement','Contrat signé, accès transmis, kickoff réalisé.'],['done','20 juin','Ligne éditoriale validée','Ton, thèmes et fréquence définis ensemble.'],['done','3 juil','Premiers contenus publiés','12 posts programmés, publication auto activée.'],['active','15 juil','Optimisation & validation','Contenus en attente de validation, campagne pub en préparation.'],['','24 juil','Shooting du menu d\'été','Séance photo pour alimenter le contenu d\'août.'],['','1 août','Première campagne pub','Lancement des pubs Instagram + Facebook géociblées.']];
+    return `<div class="sec-head"><h3>Suivi de projet</h3><p>Où en est votre accompagnement, étape par étape.</p></div><div class="card" style="padding:22px 22px 4px"><div class="tl">${tl.map(t=>`<div class="step ${t[0]}"><div class="dot"></div><div class="when">${t[1]}</div><b>${t[2]}</b><small>${t[3]}</small></div>`).join('')}</div></div>`;
+  },
+  resources(){
+    const files=[['Logo & identité','Marque · SVG + PNG','2,4 Mo'],['Charte graphique 2026.pdf','Marque','1,1 Mo'],['Photos menu — printemps','Photos · 42 images','86 Mo'],['Ligne éditoriale.docx','Stratégie','340 Ko'],['Templates stories','Modèles Canva','Lien']];
+    return `<div class="sec-head"><h3>Ressources & fichiers</h3><p>Tous vos éléments de marque, au même endroit.</p></div><div class="card">${files.map(f=>`<div class="row"><div class="fico" style="background:var(--accent-soft)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="1.7">${ICO.res}</svg></div><div class="rmain"><b>${f[0]}</b><small>${f[1]} · ${f[2]}</small></div><span class="link">Télécharger</span></div>`).join('')}</div>`;
   },
   documents(){
-    const col={facture:['#eef6ff','var(--sky)'],devis:['var(--accent-soft)','var(--accent-ink)'],contrat:['var(--green-soft)','var(--green)']};
-    const st={'Payée':'t-green','En attente':'t-amber','Signé':'t-green'};
-    return `<div class="sec-head"><h3>Documents</h3><p>Devis, factures et contrats liés à votre accompagnement.</p></div>
-      <div class="card">${state.data.documents.map(x=>{const c=col[x.kind]||['#f4f2ee','var(--muted)'];return `<div class="row"><div class="fico" style="background:${c[0]}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${c[1]}" stroke-width="1.7">${ICO.doc}</svg></div><div class="rmain"><b>${x.title}</b><small>${x.subtitle||''}${x.amount?' · '+x.amount:''}</small></div><span class="tag ${st[x.status]||'t-grey'}">${x.status||''}</span></div>`;}).join('')||'<div class="empty">Aucun document.</div>'}</div>`;
+    const col={facture:'var(--sky)',devis:'var(--accent-ink)',contrat:'var(--green)'};const st={'Payée':'t-green','En attente':'t-amber','Signé':'t-green'};
+    return `<div class="sec-head"><h3>Documents</h3><p>Devis, factures et contrats liés à votre accompagnement.</p></div><div class="card">${state.data.documents.map(x=>`<div class="row"><div class="fico" style="background:var(--accent-soft)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${col[x.kind]||'var(--muted)'}" stroke-width="1.7">${ICO.doc}</svg></div><div class="rmain"><b>${esc(x.title)}</b><small>${esc(x.subtitle||'')}${x.amount?' · '+esc(x.amount):''}</small></div><span class="tag ${st[x.status]||'t-grey'}">${esc(x.status||'')}</span></div>`).join('')||'<div class="empty">Aucun document.</div>'}</div>`;
   }
 };
-function fmtDate(d){ if(!d)return''; const dt=new Date(d); return dt.toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'}); }
-async function act(id,status){
-  const it=state.data.content.find(c=>c.id===id); if(!it)return;
-  await updateContentStatus(it,status);
-  toast(status==='approved'?'✓ Contenu approuvé — publication programmée':'✏️ Demande de modification envoyée');
-  go('validation');
+
+/* ---------- Onboarding field rendering + save ---------- */
+function obField(q){
+  const v=state.onb[q.k];const hint=q.h?`<span class="hint">— ${esc(q.h)}</span>`:'';
+  let input='';
+  if(q.ty==='textarea') input=`<textarea data-k="${q.k}">${esc(v||'')}</textarea>`;
+  else if(q.ty==='select'){ input=`<select data-k="${q.k}"><option value="">— choisir —</option>${q.opt.map(o=>`<option ${v===o?'selected':''}>${esc(o)}</option>`).join('')}</select>`; }
+  else if(q.ty==='chips'){ const sel=Array.isArray(v)?v:[]; input=`<div class="chips" data-k="${q.k}" data-multi="1">${q.opt.map(o=>`<span class="chip ${sel.includes(o)?'on':''}" onclick="this.classList.toggle('on')">${esc(o)}</span>`).join('')}</div>`; }
+  else input=`<input type="text" data-k="${q.k}" value="${esc(v||'')}" ${q.h?`placeholder="${esc(q.h)}"`:''}>`;
+  return `<div class="ob-q field"><label>${esc(q.l)} ${q.ty!=='text'?hint:''}</label>${input}</div>`;
 }
+function collectOnboarding(){
+  const out={};
+  document.querySelectorAll('#content [data-k]').forEach(el=>{
+    const k=el.getAttribute('data-k');
+    if(el.getAttribute('data-multi')){ out[k]=[...el.querySelectorAll('.chip.on')].map(c=>c.textContent.trim()); }
+    else { out[k]=el.value; }
+  });
+  return out;
+}
+async function submitOnboarding(){
+  if(!state.client){return;}
+  const answers=collectOnboarding();state.onb=answers;
+  const btn=document.getElementById('obSaveBtn');btn.disabled=true;btn.textContent='Enregistrement…';
+  const res=await saveOnboarding(state.client.id,answers);
+  btn.disabled=false;btn.textContent='Enregistrer mes réponses';
+  if(res&&res.error){ document.getElementById('obStatus').textContent='Erreur : '+res.error.message; toast('Erreur d\'enregistrement'); return; }
+  document.getElementById('obStatus').textContent='✓ Enregistré';toast('✓ Réponses enregistrées');
+}
+async function act(id,status){const it=state.data.content.find(c=>c.id===id);if(!it)return;await updateContentStatus(it,status);toast(status==='approved'?'✓ Contenu approuvé':'✏️ Demande de modification envoyée');go('validation');}
 
 /* =================== SESSION RESTORE =================== */
 (async function(){
-  if(!DEMO && sb){
-    let recoveryMode = location.hash.includes('type=recovery');
-    sb.auth.onAuthStateChange((event, session)=>{
-      if(event==='PASSWORD_RECOVERY'){ recoveryMode = true; showStep('stepReset'); return; }
-      if(session && !recoveryMode && document.getElementById('appView').classList.contains('hidden')){
-        loadProfileAndBoot();
-      }
+  if(!DEMO&&sb){
+    let recovery=location.hash.includes('type=recovery');
+    sb.auth.onAuthStateChange((event,session)=>{
+      if(event==='PASSWORD_RECOVERY'){recovery=true;showStep('stepReset');return;}
+      if(session&&!recovery&&document.getElementById('appView').classList.contains('hidden')){loadProfileAndBoot();}
     });
-    // Si arrivée via lien de réinitialisation (type=recovery), afficher le formulaire mot de passe
-    if(location.hash.includes('type=recovery')){ showStep('stepReset'); }
-    const { data:{ session } } = await sb.auth.getSession();
-    if(session && !location.hash.includes('type=recovery')){ await loadProfileAndBoot(); }
+    if(recovery){showStep('stepReset');}
+    const {data:{session}}=await sb.auth.getSession();
+    if(session&&!recovery){await loadProfileAndBoot();}
   }
 })();
 </script>
 </body>
 </html>
-
-
-<script id="pw-btn-injector">
-(function(){
-  var cfg = window.WANDERFUL_CONFIG || {};
-  var isDemo = !cfg.SUPABASE_URL || cfg.SUPABASE_URL.indexOf('VOTRE-PROJET') > -1;
-  var _sb = null;
-  function client(){ if(!_sb && window.supabase && !isDemo){ _sb = window.supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY); } return _sb; }
-  function build(){
-    var foot = document.querySelector('.side-foot');
-    if(!foot || document.getElementById('pw-btn')) return;
-    var btn = document.createElement('button');
-    btn.id = 'pw-btn';
-    btn.className = 'nav-item';
-    btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" style="width:18px;height:18px;flex:0 0 18px"><rect x="4" y="10" width="16" height="11" rx="2"></rect><path d="M8 10V7a4 4 0 0 1 8 0v3"></path></svg> Mon mot de passe';
-    var last = foot.querySelector('.nav-item:last-child');
-    foot.insertBefore(btn, last);
-    var ov = document.createElement('div');
-    ov.id = 'pwOv';
-    ov.style.cssText = 'position:fixed;inset:0;background:rgba(20,18,30,.45);display:none;align-items:center;justify-content:center;z-index:300;padding:20px';
-    ov.innerHTML = '<div style="background:#fff;border-radius:18px;box-shadow:0 12px 40px rgba(0,0,0,.25);width:100%;max-width:380px;padding:24px;font-family:inherit;color:#16151f"><h3 style="font-size:17px;margin:0 0 6px">Definir mon mot de passe</h3><p style="font-size:13px;color:#6b6a80;margin:0 0 14px">Choisissez le mot de passe que vous utiliserez pour vous connecter (8 caracteres minimum).</p><div id="pwM" style="font-size:13px;margin-bottom:10px"></div><input id="pwI" type="password" placeholder="Nouveau mot de passe" style="width:100%;font-size:15px;padding:11px 13px;border:1px solid #eceae4;border-radius:10px;background:#faf9f6;font-family:inherit"><div style="display:flex;gap:9px;justify-content:flex-end;margin-top:16px"><button id="pwC" style="font-size:13px;font-weight:600;padding:9px 15px;border-radius:10px;border:0;background:#f4f2ee;color:#4a4860;cursor:pointer;font-family:inherit">Annuler</button><button id="pwS" style="font-size:13px;font-weight:600;padding:9px 15px;border-radius:10px;border:0;background:#1fb57a;color:#fff;cursor:pointer;font-family:inherit">Enregistrer</button></div></div>';
-    document.body.appendChild(ov);
-    function msg(t,c){ var m=document.getElementById('pwM'); m.textContent=t; m.style.color=c; }
-    btn.onclick = function(){ msg('',''); document.getElementById('pwI').value=''; ov.style.display='flex'; document.getElementById('pwI').focus(); };
-    document.getElementById('pwC').onclick = function(){ ov.style.display='none'; };
-    document.getElementById('pwS').onclick = async function(){
-      var p = document.getElementById('pwI').value;
-      if(!p || p.length < 8){ msg('8 caracteres minimum.','#c0392b'); return; }
-      if(isDemo){ msg('Enregistre (demo).','#0f7a52'); return; }
-      var s = document.getElementById('pwS'); s.disabled = true; s.textContent = '...';
-      try{
-        var r = await client().auth.updateUser({ password: p });
-        s.disabled = false; s.textContent = 'Enregistrer';
-        if(r.error){ msg(r.error.message,'#c0392b'); return; }
-        msg('Mot de passe enregistre ! Utilisez-le pour vos prochaines connexions.','#0f7a52');
-        setTimeout(function(){ ov.style.display='none'; }, 1800);
-      }catch(e){ s.disabled=false; s.textContent='Enregistrer'; msg(String(e && e.message || e),'#c0392b'); }
-    };
-  }
-  var n = 0;
-  var iv = setInterval(function(){ n++; if(document.querySelector('.side-foot')){ build(); } if(n > 240) clearInterval(iv); }, 500);
-})();
-</script>
-
-<script id="wanderful-theme">
-(function(){
-  var l = document.createElement('link');
-  l.rel = 'stylesheet';
-  l.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap';
-  document.head.appendChild(l);
-  var st = document.createElement('style');
-  st.textContent = ":root{--ink:#463b66!important;--ink-soft:#5b5378!important;--muted:#6a5f88!important;--faint:#9a94b8!important;--bg:#F5F3FC!important;--surface:#ffffff!important;--line:#e8e4f6!important;--accent:#8D7EF2!important;--accent-soft:#efeafe!important;--accent-ink:#6a52d8!important;--rose:#B98DF2!important;--coral:#B98DF2!important;--font:'Poppins',sans-serif!important}"
-    + "body,button,input,select,textarea{font-family:'Poppins',sans-serif!important}"
-    + ".login-wrap{background:radial-gradient(1000px 460px at 50% -8%,#e5dffb,transparent),#F5F3FC!important}"
-    + ".pill{background:#eafaf3!important}"
-    + ".wl-logo{display:block}";
-  document.head.appendChild(st);
-  function swap(){
-    var b = document.querySelector('.login .brand');
-    if(b && !b.querySelector('.wl-logo')){
-      b.innerHTML = '<img src="/assets/logo.png" alt="Wanderful Marketing" class="wl-logo" style="height:44px"><div style="font-size:12px;color:#6a5f88;margin-top:8px;font-weight:500">Espace client</div>';
-      b.style.display = 'block';
-    }
-    var sb = document.querySelector('.sb-brand');
-    if(sb && !sb.querySelector('.wl-logo')){
-      sb.innerHTML = '<img src="/assets/logo.png" alt="Wanderful Marketing" class="wl-logo" style="height:34px"><div style="font-size:11px;color:#6a5f88;margin-top:5px">Marketing Hub</div>';
-      sb.style.display = 'block';
-    }
-  }
-  swap();
-  var n = 0;
-  var iv = setInterval(function(){ n++; swap(); if(n > 30) clearInterval(iv); }, 400);
-})();
-</script>
