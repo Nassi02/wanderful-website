@@ -63,6 +63,14 @@
   .side-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
   .role-tag{font-size:11px;font-weight:700;padding:5px 10px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;margin-bottom:10px}
   .role-tag.agency{background:var(--accent-soft);color:var(--accent-ink)}.role-tag.client{background:var(--green-soft);color:var(--green)}
+  .view-client,.back-agency{font-size:12.5px;font-weight:600;margin-bottom:6px}
+  .view-client{color:var(--accent-ink);background:var(--accent-soft)}
+  .view-client:hover{background:#e3e0fb}
+  .preview-badge{font-size:11px;font-weight:800;letter-spacing:.02em;color:#8a6d1a;background:#fdf4e0;border:1px solid #f3dfa8;padding:6px 10px;border-radius:8px;display:flex;align-items:center;gap:6px;margin-bottom:8px}
+  .back-agency{color:#fff;background:var(--accent);justify-content:flex-start}
+  .back-agency:hover{filter:brightness(1.05)}
+  .preview-bar{position:sticky;top:0;z-index:40;background:#fdf4e0;border:1px solid #f3dfa8;color:#8a6d1a;font-size:12.5px;font-weight:600;padding:9px 16px;border-radius:10px;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .preview-bar button{margin-left:auto;background:var(--accent);color:#fff;font-size:12px;font-weight:600;padding:6px 12px;border-radius:8px}
 
   .main{padding:26px 34px 70px;max-width:1180px;width:100%}
   .topbar{display:flex;align-items:center;gap:16px;margin-bottom:24px}
@@ -213,7 +221,7 @@
     <div id="switcherWrap" class="switcher hidden"><select id="clientSwitch" onchange="switchClient(this.value)"></select></div>
     <nav id="nav"></nav>
     <div class="side-foot">
-      <span id="roleTag" class="role-tag client">Client</span>
+      <div id="roleZone"></div>
       <button class="nav-item" onclick="openPwModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> Mon mot de passe</button>
       <button class="nav-item" onclick="logout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg> Se déconnecter</button>
     </div>
@@ -239,7 +247,7 @@ document.getElementById('demoBanner').classList.toggle('hidden', !DEMO);
 document.getElementById('demoHint').innerHTML = DEMO
   ? "Mode démo : email au choix + mot de passe <b>demo</b>. Vue agence : <b>agence@wanderful.co</b>."
   : "Connexion sécurisée par mot de passe. Première fois ? Cliquez « Première connexion ».";
-let state = { profile:null, client:null, allClients:[], section:'home', data:null, onb:{} };
+let state = { profile:null, client:null, allClients:[], section:'home', data:null, onb:{}, preview:false };
 
 /* =================== ONBOARDING QUESTIONNAIRE =================== */
 const ONB = [
@@ -452,10 +460,10 @@ async function setAllAccess(unlock){
 /* =================== BOOT =================== */
 async function bootApp(){
   document.getElementById('loginView').classList.add('hidden');document.getElementById('appView').classList.remove('hidden');
-  const isAgency=state.profile.role==='agency';
-  document.getElementById('roleTag').className='role-tag '+(isAgency?'agency':'client');
-  document.getElementById('roleTag').textContent=isAgency?'⚙ Vue agence':'Client';
-  if(isAgency){
+  const agency=state.profile.role==='agency';
+  state.preview=false;
+  updateRoleTag();
+  if(agency){
     state.allClients=await fetchClients();
     document.getElementById('clientSwitch').innerHTML=state.allClients.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
     document.getElementById('switcherWrap').classList.remove('hidden');
@@ -481,7 +489,29 @@ const ICO={home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path
 const NAV=[{g:'Espace projet'},{k:'home',t:'Accueil',i:'home'},{k:'onboarding',t:'Onboarding',i:'onb'},{g:'Contenu & social'},{k:'validation',t:'Validation contenu',i:'val',badge:true},{k:'calendar',t:'Calendrier éditorial',i:'cal'},{k:'social',t:'Réseaux & publication',i:'soc'},{k:'stats',t:'Statistiques',i:'stat'},{g:'Site & visibilité'},{k:'website',t:'Site web',i:'web'},{k:'seo',t:'SEO / Référencement',i:'seo'},{g:'Projet & ressources'},{k:'tracking',t:'Suivi de projet',i:'proj'},{k:'resources',t:'Ressources & fichiers',i:'res'},{k:'documents',t:'Documents',i:'doc'}];
 /* ---- Contrôle d'accès (cadenas) ---- */
 const LOCKABLE=['onboarding','validation','calendar','social','stats','website','seo','tracking','resources','documents'];
-function isAgencyView(){return state.profile&&state.profile.role==='agency';}
+function isAgency(){return state.profile&&state.profile.role==='agency';}
+function isAgencyView(){return isAgency()&&!state.preview;}
+function updateRoleTag(){
+  const z=document.getElementById('roleZone');if(!z)return;
+  if(!isAgency()){z.innerHTML='<span class="role-tag client">Client</span>';return;}
+  if(state.preview){
+    z.innerHTML='<div class="preview-badge">👁 Aperçu — vue client</div><button class="nav-item back-agency" onclick="togglePreview()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Revenir en vue agence</button>';
+  }else{
+    z.innerHTML='<span class="role-tag agency">⚙ Vue agence</span><button class="nav-item view-client" onclick="togglePreview()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg> Voir la vue client</button>';
+  }
+}
+function togglePreview(){
+  if(!isAgency())return;
+  state.preview=!state.preview;
+  if(state.preview && state.section==='access') state.section='home';
+  updateRoleTag();
+  renderNav(state.data?state.data.content:[]);
+  go(state.section);
+}
+function previewBar(){
+  if(!state.preview)return '';
+  return `<div class="preview-bar">👁 Vous voyez l'espace exactement comme <b>${esc(state.client?state.client.name:'ce client')}</b> le voit — cadenas compris.<button onclick="togglePreview()">← Revenir en vue agence</button></div>`;
+}
 function clientUnlocked(){const u=state.client&&state.client.unlocked;return Array.isArray(u)?u:[];}
 function isUnlocked(k){return k==='home'||k==='access'||!LOCKABLE.includes(k)||isAgencyView()||clientUnlocked().includes(k);}
 function renderNav(content){
@@ -497,7 +527,7 @@ function renderNav(content){
   }).join('');
 }
 function lockedView(){return `<div class="locked-view"><div class="lk-ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${ICO.lock}</svg></div><h3>Section verrouillée 🔒</h3><p>Cette partie de votre espace sera débloquée par votre agence <b>Wanderful</b> au fur et à mesure de votre accompagnement. Vous serez prévenu·e dès qu'elle sera disponible.</p></div>`;}
-function go(k){state.section=k;renderNav(state.data?state.data.content:[]);document.getElementById('content').innerHTML=isUnlocked(k)?(VIEWS[k]||VIEWS.home)():lockedView();window.scrollTo(0,0);}
+function go(k){state.section=k;renderNav(state.data?state.data.content:[]);document.getElementById('content').innerHTML=previewBar()+(isUnlocked(k)?(VIEWS[k]||VIEWS.home)():lockedView());window.scrollTo(0,0);}
 const PICO={instagram:['ig-bg','◉'],facebook:['fb-bg','f'],tiktok:['tt-bg','♪'],youtube:['yt-bg','▶'],linkedin:['li-bg','in'],google:['gg-bg','G']};
 function pico(p){const x=PICO[p]||['tt-bg','•'];return `<div class="pico ${x[0]}">${x[1]}</div>`;}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2400);}
