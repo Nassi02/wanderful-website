@@ -437,6 +437,36 @@ async function fetchOnboarding(id){if(DEMO)return state._demoOnb||{};try{const {
 async function saveOnboarding(id,answers){if(DEMO){state._demoOnb=answers;return {};}return await sb.from('onboarding').upsert({client_id:id,answers,updated_at:new Date().toISOString()},{onConflict:'client_id'});}
 async function updateContentStatus(item,status){if(DEMO){item.status=status;return;}await sb.from('content_items').update({status}).eq('id',item.id);}
 async function saveClientUnlocked(id,arr){if(DEMO){const c=DEMO_CLIENTS.find(x=>x.id===id);if(c)c.unlocked=arr;return {};}return await sb.from('clients').update({unlocked:arr}).eq('id',id);}
+function autoInitials(name){const w=(name||'').trim().split(/\s+/).filter(Boolean);if(!w.length)return '?';return (w.length===1?w[0].slice(0,2):w[0][0]+w[1][0]).toUpperCase();}
+async function createClient(){
+  const name=(document.getElementById('nc_name').value||'').trim();
+  const email=(document.getElementById('nc_email').value||'').trim().toLowerCase();
+  const plan=document.getElementById('nc_plan').value;
+  let initials=(document.getElementById('nc_initials').value||'').trim().toUpperCase();
+  const res=document.getElementById('ncResult');
+  if(!name){res.innerHTML='<div class="msg err">Entre le nom du client.</div>';return;}
+  if(!email||!email.includes('@')){res.innerHTML='<div class="msg err">Entre un email valide.</div>';return;}
+  if(!initials)initials=autoInitials(name);
+  const btn=document.getElementById('ncBtn');btn.disabled=true;btn.textContent='Création…';
+  let newId=null;
+  if(DEMO){newId='c_'+(DEMO_CLIENTS.length+1);DEMO_CLIENTS.push({id:newId,name,plan,status:'Actif',initials,unlocked:['onboarding'],invite_email:email});}
+  else{
+    const {data,error}=await sb.from('clients').insert({name,plan,status:'Actif',initials,unlocked:['onboarding'],invite_email:email}).select().single();
+    btn.disabled=false;btn.textContent='Créer le client';
+    if(error){res.innerHTML='<div class="msg err">Erreur : '+esc(error.message)+'</div>';return;}
+    newId=data.id;
+  }
+  if(DEMO){btn.disabled=false;btn.textContent='Créer le client';}
+  state.allClients=await fetchClients();
+  const sel=document.getElementById('clientSwitch');if(sel)sel.innerHTML=state.allClients.map(c=>`<option value="${c.id}" ${c.id===newId?'selected':''}>${esc(c.name)}</option>`).join('');
+  const link=location.origin+location.pathname;
+  res.innerHTML=`<div class="card" style="margin-top:14px;background:var(--green-soft);border:none">
+      <div style="font-weight:700;color:var(--green);margin-bottom:8px">✓ ${esc(name)} a été créé !</div>
+      <div style="font-size:13px;color:var(--ink);line-height:1.6">Envoie ce lien à <b>${esc(name)}</b> :</div>
+      <div style="display:flex;gap:8px;align-items:center;margin:8px 0"><input readonly value="${esc(link)}" onclick="this.select()" style="flex:1;font-size:12.5px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#fff"><button class="sbtn ok" onclick="navigator.clipboard&&navigator.clipboard.writeText('${esc(link)}');toast('Lien copié')">Copier</button></div>
+      <div style="font-size:12.5px;color:var(--muted);line-height:1.6">Il clique sur <b>« Première connexion »</b>, entre son email <b>${esc(email)}</b> et choisit son mot de passe. Il sera automatiquement relié à sa fiche. Ensuite, débloque ses sections depuis « Accès &amp; cadenas ».</div>
+    </div>`;
+}
 async function toggleAccess(k){
   if(!state.client)return;
   let arr=clientUnlocked().slice();
@@ -485,7 +515,7 @@ async function selectClient(id){
 function setClientCard(c){document.getElementById('cAvatar').textContent=c.initials||'?';document.getElementById('cName').textContent=c.name;document.getElementById('cPlan').textContent=(c.plan||'')+(c.status?' · '+c.status:'');document.getElementById('topTitle').textContent='Bonjour, '+(c.name||'')+' 👋';}
 
 /* =================== NAV =================== */
-const ICO={home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',onb:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',val:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/>',cal:'<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',soc:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 3v18"/>',stat:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',web:'<rect x="2" y="3" width="20" height="16" rx="2"/><path d="M2 8h20M6 5.5h.01M9 5.5h.01"/>',seo:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',proj:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',res:'<path d="M4 4h6l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',key:'<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5L21 2M17 6l3 3M14 9l2 2"/>'};
+const ICO={home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',onb:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',val:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/>',cal:'<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',soc:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 3v18"/>',stat:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',web:'<rect x="2" y="3" width="20" height="16" rx="2"/><path d="M2 8h20M6 5.5h.01M9 5.5h.01"/>',seo:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',proj:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',res:'<path d="M4 4h6l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',key:'<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5L21 2M17 6l3 3M14 9l2 2"/>',plus:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>'};
 const NAV=[{g:'Espace projet'},{k:'home',t:'Accueil',i:'home'},{k:'onboarding',t:'Onboarding',i:'onb'},{g:'Contenu & social'},{k:'validation',t:'Validation contenu',i:'val',badge:true},{k:'calendar',t:'Calendrier éditorial',i:'cal'},{k:'social',t:'Réseaux & publication',i:'soc'},{k:'stats',t:'Statistiques',i:'stat'},{g:'Site & visibilité'},{k:'website',t:'Site web',i:'web'},{k:'seo',t:'SEO / Référencement',i:'seo'},{g:'Projet & ressources'},{k:'tracking',t:'Suivi de projet',i:'proj'},{k:'resources',t:'Ressources & fichiers',i:'res'},{k:'documents',t:'Documents',i:'doc'}];
 /* ---- Contrôle d'accès (cadenas) ---- */
 const LOCKABLE=['onboarding','validation','calendar','social','stats','website','seo','tracking','resources','documents'];
@@ -517,7 +547,7 @@ function isUnlocked(k){return k==='home'||k==='access'||!LOCKABLE.includes(k)||i
 function renderNav(content){
   const pend=(content||[]).filter(c=>c.status==='pending').length;
   let items=NAV.slice();
-  if(isAgencyView()) items=[{g:'Agence'},{k:'access',t:'Accès & cadenas',i:'key'}].concat(items);
+  if(isAgencyView()) items=[{g:'Agence'},{k:'newclient',t:'Nouveau client',i:'plus'},{k:'access',t:'Accès & cadenas',i:'key'}].concat(items);
   document.getElementById('nav').innerHTML=items.map(n=>{
     if(n.g)return `<div class="nav-label">${n.g}</div>`;
     const locked=!isUnlocked(n.k);
@@ -536,7 +566,19 @@ function fmtDate(d){if(!d)return'';return new Date(d).toLocaleDateString('fr-FR'
 
 /* =================== VIEWS =================== */
 const ACCESS_META={onboarding:['Onboarding','Questionnaire stratégique','onb'],validation:['Validation contenu','Approbation des posts','val'],calendar:['Calendrier éditorial','Planning de publication','cal'],social:['Réseaux & publication','Comptes & auto-publication','soc'],stats:['Statistiques','Performances & croissance','stat'],website:['Site web','Suivi du site vitrine','web'],seo:['SEO / Référencement','Visibilité Google','seo'],tracking:['Suivi de projet','Étapes de l\'accompagnement','proj'],resources:['Ressources & fichiers','Fichiers de marque','res'],documents:['Documents','Devis, factures, contrats','doc']};
+function onbModules(){const c=state.client&&state.client.onb_custom;return (Array.isArray(c)&&c.length)?c:ONB;}
 const VIEWS={
+  newclient(){
+    return `<div class="sec-head"><h3>Ajouter un nouveau client</h3><p>Crée la fiche du client. Il recevra un lien pour définir lui-même son mot de passe et accèdera à son espace. Par défaut, seul l'Accueil et l'Onboarding sont débloqués — tu ouvres le reste depuis « Accès & cadenas ».</p></div>
+      <div class="card" style="max-width:560px">
+        <div class="field"><label>Nom du client (marque ou personne)</label><input id="nc_name" type="text" placeholder="ex : Boulangerie Martin"></div>
+        <div class="field"><label>Email du client</label><input id="nc_email" type="email" placeholder="client@exemple.com"></div>
+        <div class="field"><label>Forfait</label><select id="nc_plan"><option>Forfait Social</option><option>Forfait Web + Social</option><option>Forfait Web</option><option>Forfait Premium</option><option>Sur mesure</option></select></div>
+        <div class="field"><label>Initiales (avatar) <span class="hint">— laisse vide pour auto</span></label><input id="nc_initials" type="text" maxlength="3" placeholder="ex : BM" style="text-transform:uppercase"></div>
+        <div class="acc-actions" style="margin-top:6px"><button class="btn" id="ncBtn" onclick="createClient()">Créer le client</button></div>
+        <div id="ncResult"></div>
+      </div>`;
+  },
   access(){
     const un=clientUnlocked();
     const rows=LOCKABLE.map(k=>{const m=ACCESS_META[k],on=un.includes(k);return `<div class="acc-row"><div class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${ICO[m[2]]}</svg></div><div class="txt"><b>${m[0]}</b><small>${m[1]}</small></div><div class="sw ${on?'on':''}" onclick="toggleAccess('${k}')"><i></i></div></div>`;}).join('');
@@ -554,12 +596,14 @@ const VIEWS={
     </div>`;
   },
   onboarding(){
-    const totalQ=ONB.reduce((n,m)=>n+m.qs.length,0);
-    const filled=ONB.reduce((n,m)=>n+m.qs.filter(q=>{const v=state.onb[q.k];return v&&(Array.isArray(v)?v.length:(''+v).trim());}).length,0);
+    const MODS=onbModules();
+    const totalQ=MODS.reduce((n,m)=>n+m.qs.length,0);
+    const filled=MODS.reduce((n,m)=>n+m.qs.filter(q=>{const v=state.onb[q.k];return v&&(Array.isArray(v)?v.length:(''+v).trim());}).length,0);
     const pct=Math.round(filled/totalQ*100);
-    let html=`<div class="sec-head"><h3>Onboarding stratégique</h3><p>Plus vos réponses sont précises, plus la stratégie que Wanderful bâtira sera puissante. Répondez à votre rythme — tout est enregistré quand vous cliquez sur « Enregistrer ». « Je ne sais pas » est une réponse acceptable, on creusera ensemble.</p></div>
+    const custom=MODS!==ONB;
+    let html=`<div class="sec-head"><h3>Onboarding stratégique</h3><p>${custom?'Questionnaire personnalisé. ':''}Plus vos réponses sont précises, plus la stratégie que Wanderful bâtira sera puissante. Répondez à votre rythme — tout est enregistré quand vous cliquez sur « Enregistrer ». « Je ne sais pas » est une réponse acceptable, on creusera ensemble.</p></div>
       <div class="ob-intro"><div class="big">${pct}%</div><div class="ob-prog"><div style="display:flex;justify-content:space-between;font-size:12.5px;font-weight:600"><span>Progression</span><span>${filled}/${totalQ} questions</span></div><div class="bar"><i style="width:${pct}%"></i></div></div><p>💡 Ce questionnaire couvre tout ce qui sert à bâtir une stratégie complète : positionnement, cibles, messages, contenu, objectifs…</p></div>`;
-    html+=ONB.map((m,mi)=>`<div class="ob-mod ${mi===0?'open':''}"><div class="ob-head" onclick="this.parentElement.classList.toggle('open')"><div class="ob-num">${m.n}</div><div style="flex:1"><b>${m.t}</b><small>${m.s}</small></div><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div><div class="ob-panel">${m.qs.map(q=>obField(q)).join('')}</div></div>`).join('');
+    html+=MODS.map((m,mi)=>`<div class="ob-mod ${mi===0?'open':''}"><div class="ob-head" onclick="this.parentElement.classList.toggle('open')"><div class="ob-num">${m.n}</div><div style="flex:1"><b>${m.t}</b><small>${m.s}</small></div><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div><div class="ob-panel">${m.qs.map(q=>obField(q)).join('')}</div></div>`).join('');
     html+=`<div class="ob-save"><span id="obStatus" style="font-size:12.5px;color:var(--muted)"></span><button class="btn" id="obSaveBtn" onclick="submitOnboarding()">Enregistrer mes réponses</button></div>`;
     return html;
   },
