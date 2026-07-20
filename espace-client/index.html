@@ -145,6 +145,25 @@
   .toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;font-size:13.5px;font-weight:600;padding:13px 20px;border-radius:12px;box-shadow:0 12px 30px rgba(0,0,0,.25);opacity:0;pointer-events:none;transition:.3s;z-index:250}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   .demo-banner{background:#fdf4e0;border:1px solid #f3dfa8;color:#8a6d1a;font-size:12.5px;font-weight:600;padding:8px 16px;text-align:center}
+  /* ---- Cadenas / accès ---- */
+  .nav-item.locked{color:var(--faint);cursor:default}
+  .nav-item.locked:hover{background:#f6f3fe}
+  .nav-item .lock{margin-left:auto;opacity:.6}
+  .nav-item .lock svg{width:14px;height:14px}
+  .locked-view{max-width:520px;margin:40px auto;text-align:center}
+  .locked-view .lk-ico{width:64px;height:64px;border-radius:18px;background:var(--accent-soft);color:var(--accent-ink);display:grid;place-items:center;margin:0 auto 18px}
+  .locked-view h3{font-size:20px;margin:0 0 8px}
+  .locked-view p{color:var(--muted);font-size:14px;line-height:1.6}
+  .acc-row{display:flex;align-items:center;gap:14px;padding:13px 4px;border-bottom:1px solid var(--line)}
+  .acc-row:last-child{border-bottom:none}
+  .acc-row .ico{width:34px;height:34px;border-radius:9px;background:var(--accent-soft);color:var(--accent-ink);display:grid;place-items:center;flex-shrink:0}
+  .acc-row .txt{flex:1}.acc-row .txt b{font-size:13.5px}.acc-row .txt small{display:block;color:var(--muted);font-size:11.5px}
+  .sw{position:relative;width:44px;height:25px;border-radius:20px;background:#d8d3e8;transition:.2s;flex-shrink:0;cursor:pointer}
+  .sw.on{background:var(--green)}
+  .sw i{position:absolute;top:3px;left:3px;width:19px;height:19px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .sw.on i{left:22px}
+  .acc-actions{display:flex;gap:10px;margin:16px 0 4px}
+  .acc-actions .sbtn{flex:1}
   @media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{display:none}.main{padding:20px}}
 </style>
 </head>
@@ -333,7 +352,7 @@ const ONB = [
 ];
 
 /* =================== DEMO DATA =================== */
-const DEMO_CLIENTS=[{id:'cv',name:'Café Voyageur',plan:'Forfait Social',status:'Actif',initials:'CV'},{id:'nh',name:'Narmonie Habitat',plan:'Forfait Web + Social',status:'Actif',initials:'NH'}];
+const DEMO_CLIENTS=[{id:'cv',name:'Café Voyageur',plan:'Forfait Social',status:'Actif',initials:'CV',unlocked:['onboarding','validation','calendar','social']},{id:'nh',name:'Narmonie Habitat',plan:'Forfait Web + Social',status:'Actif',initials:'NH',unlocked:['onboarding']}];
 const DEMO_DATA={cv:{
   content:[{id:'c1',platform:'instagram',type:'Post carrousel',title:'3 recettes de cafés glacés',caption:'☀️ La saison des cafés glacés est ouverte !',scheduled_at:'2026-07-18',status:'pending'},{id:'c2',platform:'facebook',type:'Post',title:'Nouvelle terrasse — ce week-end',caption:'Notre terrasse rouvre ce samedi ☕️🌿',scheduled_at:'2026-07-19',status:'pending'},{id:'c3',platform:'tiktok',type:'Reel',title:'Coulisses : le latte art de Léa',caption:'POV : tu commandes un cappuccino ✨',scheduled_at:'2026-07-21',status:'published'}],
   documents:[{title:'Facture #024 — Juillet 2026',subtitle:'Émise le 3 juil.',amount:'1 200 €',status:'Payée',kind:'facture'},{title:'Facture #025 — Août 2026',subtitle:'Échéance 31 juil.',amount:'1 200 €',status:'En attente',kind:'facture'},{title:'Devis — Forfait Social annuel',subtitle:'Validé le 12 juin',amount:'',status:'Signé',kind:'devis'},{title:'Contrat de prestation',subtitle:'Signé le 12 juin',amount:'',status:'Signé',kind:'contrat'}],
@@ -409,6 +428,26 @@ async function fetchTable(table,id){if(DEMO){const d=demoDataFor(id);return d[DE
 async function fetchOnboarding(id){if(DEMO)return state._demoOnb||{};try{const {data}=await sb.from('onboarding').select('answers').eq('client_id',id).single();return (data&&data.answers)||{};}catch(e){return {};}}
 async function saveOnboarding(id,answers){if(DEMO){state._demoOnb=answers;return {};}return await sb.from('onboarding').upsert({client_id:id,answers,updated_at:new Date().toISOString()},{onConflict:'client_id'});}
 async function updateContentStatus(item,status){if(DEMO){item.status=status;return;}await sb.from('content_items').update({status}).eq('id',item.id);}
+async function saveClientUnlocked(id,arr){if(DEMO){const c=DEMO_CLIENTS.find(x=>x.id===id);if(c)c.unlocked=arr;return {};}return await sb.from('clients').update({unlocked:arr}).eq('id',id);}
+async function toggleAccess(k){
+  if(!state.client)return;
+  let arr=clientUnlocked().slice();
+  if(arr.includes(k))arr=arr.filter(x=>x!==k);else arr.push(k);
+  state.client.unlocked=arr;
+  const res=await saveClientUnlocked(state.client.id,arr);
+  if(res&&res.error){toast('Erreur : '+res.error.message);return;}
+  toast(arr.includes(k)?'🔓 '+(ACCESS_META[k]?ACCESS_META[k][0]:k)+' débloqué':'🔒 '+(ACCESS_META[k]?ACCESS_META[k][0]:k)+' verrouillé');
+  renderNav(state.data?state.data.content:[]);go('access');
+}
+async function setAllAccess(unlock){
+  if(!state.client)return;
+  const arr=unlock?LOCKABLE.slice():[];
+  state.client.unlocked=arr;
+  const res=await saveClientUnlocked(state.client.id,arr);
+  if(res&&res.error){toast('Erreur : '+res.error.message);return;}
+  toast(unlock?'🔓 Toutes les sections débloquées':'🔒 Toutes les sections verrouillées');
+  renderNav(state.data?state.data.content:[]);go('access');
+}
 
 /* =================== BOOT =================== */
 async function bootApp(){
@@ -438,17 +477,27 @@ async function selectClient(id){
 function setClientCard(c){document.getElementById('cAvatar').textContent=c.initials||'?';document.getElementById('cName').textContent=c.name;document.getElementById('cPlan').textContent=(c.plan||'')+(c.status?' · '+c.status:'');document.getElementById('topTitle').textContent='Bonjour, '+(c.name||'')+' 👋';}
 
 /* =================== NAV =================== */
-const ICO={home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',onb:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',val:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/>',cal:'<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',soc:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 3v18"/>',stat:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',web:'<rect x="2" y="3" width="20" height="16" rx="2"/><path d="M2 8h20M6 5.5h.01M9 5.5h.01"/>',seo:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',proj:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',res:'<path d="M4 4h6l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>'};
+const ICO={home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',onb:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',val:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/>',cal:'<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',soc:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 3v18"/>',stat:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',web:'<rect x="2" y="3" width="20" height="16" rx="2"/><path d="M2 8h20M6 5.5h.01M9 5.5h.01"/>',seo:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',proj:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',res:'<path d="M4 4h6l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',key:'<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5L21 2M17 6l3 3M14 9l2 2"/>'};
 const NAV=[{g:'Espace projet'},{k:'home',t:'Accueil',i:'home'},{k:'onboarding',t:'Onboarding',i:'onb'},{g:'Contenu & social'},{k:'validation',t:'Validation contenu',i:'val',badge:true},{k:'calendar',t:'Calendrier éditorial',i:'cal'},{k:'social',t:'Réseaux & publication',i:'soc'},{k:'stats',t:'Statistiques',i:'stat'},{g:'Site & visibilité'},{k:'website',t:'Site web',i:'web'},{k:'seo',t:'SEO / Référencement',i:'seo'},{g:'Projet & ressources'},{k:'tracking',t:'Suivi de projet',i:'proj'},{k:'resources',t:'Ressources & fichiers',i:'res'},{k:'documents',t:'Documents',i:'doc'}];
+/* ---- Contrôle d'accès (cadenas) ---- */
+const LOCKABLE=['onboarding','validation','calendar','social','stats','website','seo','tracking','resources','documents'];
+function isAgencyView(){return state.profile&&state.profile.role==='agency';}
+function clientUnlocked(){const u=state.client&&state.client.unlocked;return Array.isArray(u)?u:[];}
+function isUnlocked(k){return k==='home'||k==='access'||!LOCKABLE.includes(k)||isAgencyView()||clientUnlocked().includes(k);}
 function renderNav(content){
   const pend=(content||[]).filter(c=>c.status==='pending').length;
-  document.getElementById('nav').innerHTML=NAV.map(n=>{
+  let items=NAV.slice();
+  if(isAgencyView()) items=[{g:'Agence'},{k:'access',t:'Accès & cadenas',i:'key'}].concat(items);
+  document.getElementById('nav').innerHTML=items.map(n=>{
     if(n.g)return `<div class="nav-label">${n.g}</div>`;
-    const b=n.badge&&pend?`<span class="badge">${pend}</span>`:'';
-    return `<button class="nav-item ${n.k===state.section?'active':''}" onclick="go('${n.k}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO[n.i]}</svg>${n.t}${b}</button>`;
+    const locked=!isUnlocked(n.k);
+    const badge=n.badge&&pend&&!locked?`<span class="badge">${pend}</span>`:'';
+    const lk=locked?`<span class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${ICO.lock}</svg></span>`:'';
+    return `<button class="nav-item ${n.k===state.section?'active':''} ${locked?'locked':''}" onclick="go('${n.k}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO[n.i]}</svg>${n.t}${badge}${lk}</button>`;
   }).join('');
 }
-function go(k){state.section=k;renderNav(state.data?state.data.content:[]);document.getElementById('content').innerHTML=(VIEWS[k]||VIEWS.home)();window.scrollTo(0,0);}
+function lockedView(){return `<div class="locked-view"><div class="lk-ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${ICO.lock}</svg></div><h3>Section verrouillée 🔒</h3><p>Cette partie de votre espace sera débloquée par votre agence <b>Wanderful</b> au fur et à mesure de votre accompagnement. Vous serez prévenu·e dès qu'elle sera disponible.</p></div>`;}
+function go(k){state.section=k;renderNav(state.data?state.data.content:[]);document.getElementById('content').innerHTML=isUnlocked(k)?(VIEWS[k]||VIEWS.home)():lockedView();window.scrollTo(0,0);}
 const PICO={instagram:['ig-bg','◉'],facebook:['fb-bg','f'],tiktok:['tt-bg','♪'],youtube:['yt-bg','▶'],linkedin:['li-bg','in'],google:['gg-bg','G']};
 function pico(p){const x=PICO[p]||['tt-bg','•'];return `<div class="pico ${x[0]}">${x[1]}</div>`;}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2400);}
@@ -456,7 +505,15 @@ function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g
 function fmtDate(d){if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});}
 
 /* =================== VIEWS =================== */
+const ACCESS_META={onboarding:['Onboarding','Questionnaire stratégique','onb'],validation:['Validation contenu','Approbation des posts','val'],calendar:['Calendrier éditorial','Planning de publication','cal'],social:['Réseaux & publication','Comptes & auto-publication','soc'],stats:['Statistiques','Performances & croissance','stat'],website:['Site web','Suivi du site vitrine','web'],seo:['SEO / Référencement','Visibilité Google','seo'],tracking:['Suivi de projet','Étapes de l\'accompagnement','proj'],resources:['Ressources & fichiers','Fichiers de marque','res'],documents:['Documents','Devis, factures, contrats','doc']};
 const VIEWS={
+  access(){
+    const un=clientUnlocked();
+    const rows=LOCKABLE.map(k=>{const m=ACCESS_META[k],on=un.includes(k);return `<div class="acc-row"><div class="ico"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${ICO[m[2]]}</svg></div><div class="txt"><b>${m[0]}</b><small>${m[1]}</small></div><div class="sw ${on?'on':''}" onclick="toggleAccess('${k}')"><i></i></div></div>`;}).join('');
+    return `<div class="sec-head"><h3>Accès & cadenas — ${esc(state.client?state.client.name:'')}</h3><p>Activez une section pour la débloquer chez ce client. Verrouillée, elle apparaît avec un 🔒 et reste inaccessible tant que vous ne l'ouvrez pas. L'Accueil est toujours visible.</p></div>
+      <div class="card"><div class="acc-actions"><button class="sbtn ghost" onclick="setAllAccess(true)">Tout débloquer</button><button class="sbtn ghost" onclick="setAllAccess(false)">Tout verrouiller</button></div>${rows}</div>
+      <div class="card" style="margin-top:14px;background:var(--accent-soft);border:none"><div style="display:flex;gap:12px;align-items:flex-start"><div style="font-size:20px">💡</div><div style="font-size:13px;color:var(--accent-ink);line-height:1.6"><b>Astuce :</b> débloquez l'Onboarding en premier pour un nouveau client. Une fois sa stratégie prête, ouvrez le Contenu, le Calendrier, les Réseaux, puis les Stats et le SEO au fil de l'accompagnement.</div></div></div>`;
+  },
   home(){
     const d=state.data,pend=d.content.filter(c=>c.status==='pending').length,planned=d.content.length,unpaid=d.documents.filter(x=>x.status==='En attente').length,onbCount=Object.values(state.onb||{}).filter(v=>v&&(''+v).trim()&&(!Array.isArray(v)||v.length)).length;
     const kpis=[['Contenus à valider',pend,'Action requise','val'],['Posts planifiés',planned,'ce mois','cal'],['Réseaux reliés',d.social.filter(s=>s.connected).length,'comptes actifs','soc'],['Factures en attente',unpaid,'à régler','doc']];
