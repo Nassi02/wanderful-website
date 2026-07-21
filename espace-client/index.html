@@ -173,6 +173,86 @@
   .acc-actions{display:flex;gap:10px;margin:16px 0 4px}
   .acc-actions .sbtn{flex:1}
   @media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{display:none}.main{padding:20px}}
+  /* ---------- STRATÉGIE ---------- */
+  .st-hero{background:var(--grad);border-radius:20px;padding:30px 30px 26px;color:#fff;box-shadow:var(--shadow);margin-bottom:26px;position:relative;overflow:hidden}
+  .st-hero:after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.12)}
+  .st-hero-badge{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;background:rgba(255,255,255,.2);display:inline-block;padding:5px 12px;border-radius:20px;margin-bottom:16px}
+  .st-position{font-size:20px;font-weight:650;line-height:1.4;letter-spacing:-.3px;max-width:820px;position:relative}
+  .st-reflex{margin-top:16px;font-size:14.5px;font-weight:600;background:rgba(255,255,255,.16);padding:11px 15px;border-radius:12px;display:inline-block}
+  .st-slogan{margin-top:14px;font-size:13px;font-weight:500;opacity:.92;font-style:italic}
+  .st-obj{position:relative;overflow:hidden}
+  .st-obj .ph{font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:4px 10px;border-radius:20px;display:inline-block;margin-bottom:10px}
+  .st-obj h4{font-size:16px;font-weight:700;letter-spacing:-.2px;margin-bottom:7px}
+  .st-obj p{font-size:12.8px;color:var(--muted);line-height:1.55}
+  .st-obj .kpi{margin-top:12px;font-size:11.5px;font-weight:600;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:9px}
+  .st-obj .num{position:absolute;right:14px;top:8px;font-size:42px;font-weight:800;color:var(--accent-soft)}
+  .st-gold{text-align:center;border-top:3px solid var(--accent)}
+  .st-gold .lbl{font-size:11px;font-weight:800;letter-spacing:1px;color:var(--accent-ink);margin-bottom:8px}
+  .st-gold .q{font-size:12px;color:var(--faint);margin-bottom:8px}
+  .st-gold p{font-size:13px;color:var(--ink-soft);line-height:1.5;font-weight:500}
+  .st-mat .row{display:flex;align-items:center;gap:14px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .st-mat .row:last-child{border-bottom:none}
+  .st-mat .nm{width:150px;flex-shrink:0;font-size:13px;font-weight:600}
+  .st-mat .track{flex:1;height:9px;background:#efeafe;border-radius:20px;overflow:hidden}
+  .st-mat .fill{height:100%;background:var(--grad);border-radius:20px}
+  .st-mat .gl{width:96px;flex-shrink:0;text-align:right;font-size:11px;font-weight:600;color:var(--faint)}
+  .st-pil{display:flex;gap:15px;padding:15px 0;border-bottom:1px solid var(--line)}
+  .st-pil:last-child{border-bottom:none}
+  .st-pil .n{font-size:18px;font-weight:800;color:var(--accent);width:38px;flex-shrink:0}
+  .st-pil b{font-size:14.5px;font-weight:650}.st-pil p{font-size:12.8px;color:var(--muted);margin-top:3px}
+  .st-values{display:flex;flex-wrap:wrap;gap:8px;margin-top:4px}
+  .st-val{font-size:12.5px;font-weight:650;padding:8px 15px;border-radius:20px;background:var(--accent-soft);color:var(--accent-ink)}
+  .st-quote{background:var(--coral-soft);border-left:3px solid var(--coral);border-radius:0 12px 12px 0;padding:13px 16px;font-size:14px;font-weight:600;color:var(--ink);font-style:italic}
+  .st-mini{font-size:11px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--faint);margin-bottom:6px}
+  .st-stars{letter-spacing:2px;font-size:15px;color:var(--amber)}
+  .st-stars .off{color:#e6e1f4}
+  .st-prow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:7px 0}
+  .st-persona{position:relative}
+  .st-persona .pav{width:42px;height:42px;border-radius:12px;background:var(--grad);color:#fff;display:grid;place-items:center;font-weight:700;font-size:15px;margin-bottom:11px}
+  .st-persona .pprio{position:absolute;right:16px;top:16px;font-size:10.5px;font-weight:700;padding:3px 9px;border-radius:20px}
+  .st-persona h4{font-size:15px;font-weight:700}.st-persona .ptag{font-size:12px;color:var(--accent-ink);font-weight:600;margin-bottom:10px}
+  .st-persona .pmeta{font-size:12.3px;color:var(--muted);display:flex;gap:7px;margin-top:6px}
+  .st-persona .pmeta b{color:var(--ink-soft);font-weight:600;flex-shrink:0}
+  .st-persona .pmsg{margin-top:11px;font-size:12.8px;font-weight:650;color:var(--ink);background:var(--accent-soft);padding:8px 11px;border-radius:10px}
+  .prio1{background:var(--green-soft);color:var(--green)}.prio2{background:var(--amber-soft);color:#b9820f}.prio3{background:#eee9fb;color:var(--faint)}
+  .st-swot .card{border-top:3px solid}
+  .st-swot .sqf{border-color:var(--green)}.st-swot .sqw{border-color:#e0862b}.st-swot .sqo{border-color:var(--sky)}.st-swot .sqm{border-color:var(--coral)}
+  .st-swot h4{font-size:13px;font-weight:800;letter-spacing:.4px;text-transform:uppercase;margin-bottom:10px}
+  .st-swot .sqf h4{color:var(--green)}.st-swot .sqw h4{color:#d0791f}.st-swot .sqo h4{color:var(--sky)}.st-swot .sqm h4{color:var(--coral)}
+  .st-swot ul{list-style:none}.st-swot li{font-size:12.6px;color:var(--ink-soft);padding:6px 0 6px 18px;position:relative;line-height:1.45;border-bottom:1px solid var(--line)}
+  .st-swot li:last-child{border-bottom:none}.st-swot li:before{content:"";position:absolute;left:2px;top:12px;width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.4}
+  .st-door{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
+  .st-door:last-child{border-bottom:none}
+  .st-door .dn{font-size:13px;font-weight:800;color:#fff;background:var(--accent);width:32px;height:32px;border-radius:9px;display:grid;place-items:center;flex-shrink:0}
+  .st-door b{font-size:14px}.st-door .dw{font-size:11px;font-weight:700;color:var(--accent-ink);text-transform:uppercase;letter-spacing:.3px}
+  .st-door p{font-size:12.6px;color:var(--muted);margin-top:3px}
+  .st-terr h4{font-size:14px;font-weight:650;margin-bottom:4px}.st-terr p{font-size:12.5px;color:var(--muted)}
+  .st-mix .mrow{display:flex;align-items:center;gap:12px;padding:8px 0}
+  .st-mix .mpct{width:46px;font-size:17px;font-weight:800;color:var(--accent);flex-shrink:0}
+  .st-mix .mbar{flex:1;height:22px;background:#efeafe;border-radius:8px;overflow:hidden;position:relative}
+  .st-mix .mfill{height:100%;background:var(--grad);border-radius:8px;display:flex;align-items:center;padding-left:11px;color:#fff;font-size:12px;font-weight:600;white-space:nowrap}
+  .st-mix .mrole{width:110px;flex-shrink:0;font-size:11.5px;color:var(--faint);font-weight:600;text-align:right}
+  .st-plan{display:flex;gap:0;counter-reset:s}
+  .st-step{flex:1;position:relative;padding:0 8px}
+  .st-step .sdot{width:34px;height:34px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;margin-bottom:12px;position:relative;z-index:2}
+  .st-step:not(:last-child):after{content:"";position:absolute;left:25px;top:17px;right:-9px;height:2px;background:linear-gradient(90deg,var(--accent),var(--coral));z-index:1}
+  .st-step .sm{font-size:11px;font-weight:700;color:var(--accent-ink);text-transform:uppercase;letter-spacing:.4px}
+  .st-step h4{font-size:14.5px;font-weight:700;margin:2px 0 6px}
+  .st-step p{font-size:12.4px;color:var(--muted);line-height:1.5}
+  .st-step .kp{margin-top:8px;font-size:11px;font-weight:600;color:var(--ink-soft);background:var(--bg);padding:6px 9px;border-radius:8px}
+  .st-house-roof{background:var(--grad);color:#fff;border-radius:14px 14px 4px 4px;padding:16px;text-align:center;font-size:16px;font-weight:700;box-shadow:var(--shadow)}
+  .st-mh{border-top:3px solid var(--coral)}
+  .st-mh b{font-size:13.5px;color:var(--coral);font-weight:700}.st-mh p{font-size:12.5px;color:var(--ink-soft);margin-top:5px;line-height:1.5}
+  .st-cta{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .st-cta:last-child{border-bottom:none}
+  .st-cta .clv{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;width:98px;flex-shrink:0;padding:5px 0;text-align:center;border-radius:8px}
+  .st-cta .lv0{background:#eee9fb;color:var(--faint)}.st-cta .lv1{background:var(--amber-soft);color:#b9820f}.st-cta .lv2{background:var(--green-soft);color:var(--green)}
+  .st-cta .cex{flex:1;font-size:13.5px;font-weight:600;color:var(--ink)}
+  .st-cta .cgo{font-size:11.5px;color:var(--muted);width:190px;flex-shrink:0}
+  .st-principle{background:var(--ink);color:#fff;border-radius:18px;padding:26px;text-align:center;font-size:19px;font-weight:700;letter-spacing:-.3px;line-height:1.4;margin-top:26px}
+  .st-empty{text-align:center;padding:60px 20px;color:var(--muted)}
+  @media(max-width:820px){.st-mat .nm{width:110px}.st-mat .gl{display:none}.st-plan{flex-direction:column;gap:14px}.st-step:after{display:none}.st-cta .cgo{display:none}}
+
 </style>
 </head>
 <body>
@@ -515,10 +595,10 @@ async function selectClient(id){
 function setClientCard(c){document.getElementById('cAvatar').textContent=c.initials||'?';document.getElementById('cName').textContent=c.name;document.getElementById('cPlan').textContent=(c.plan||'')+(c.status?' · '+c.status:'');document.getElementById('topTitle').textContent='Bonjour, '+(c.name||'')+' 👋';}
 
 /* =================== NAV =================== */
-const ICO={home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',onb:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',val:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/>',cal:'<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',soc:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 3v18"/>',stat:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',web:'<rect x="2" y="3" width="20" height="16" rx="2"/><path d="M2 8h20M6 5.5h.01M9 5.5h.01"/>',seo:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',proj:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',res:'<path d="M4 4h6l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',key:'<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5L21 2M17 6l3 3M14 9l2 2"/>',plus:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>'};
-const NAV=[{g:'Espace projet'},{k:'home',t:'Accueil',i:'home'},{k:'onboarding',t:'Onboarding',i:'onb'},{g:'Contenu & social'},{k:'validation',t:'Validation contenu',i:'val',badge:true},{k:'calendar',t:'Calendrier éditorial',i:'cal'},{k:'social',t:'Réseaux & publication',i:'soc'},{k:'stats',t:'Statistiques',i:'stat'},{g:'Site & visibilité'},{k:'website',t:'Site web',i:'web'},{k:'seo',t:'SEO / Référencement',i:'seo'},{g:'Projet & ressources'},{k:'tracking',t:'Suivi de projet',i:'proj'},{k:'resources',t:'Ressources & fichiers',i:'res'},{k:'documents',t:'Documents',i:'doc'}];
+const ICO={home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',onb:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',val:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/>',cal:'<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',soc:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 3v18"/>',stat:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',web:'<rect x="2" y="3" width="20" height="16" rx="2"/><path d="M2 8h20M6 5.5h.01M9 5.5h.01"/>',seo:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',proj:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',res:'<path d="M4 4h6l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',key:'<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5L21 2M17 6l3 3M14 9l2 2"/>',plus:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>'};
+const NAV=[{g:'Espace projet'},{k:'home',t:'Accueil',i:'home'},{k:'onboarding',t:'Onboarding',i:'onb'},{k:'strategy',t:'Stratégie',i:'compass'},{g:'Contenu & social'},{k:'validation',t:'Validation contenu',i:'val',badge:true},{k:'calendar',t:'Calendrier éditorial',i:'cal'},{k:'social',t:'Réseaux & publication',i:'soc'},{k:'stats',t:'Statistiques',i:'stat'},{g:'Site & visibilité'},{k:'website',t:'Site web',i:'web'},{k:'seo',t:'SEO / Référencement',i:'seo'},{g:'Projet & ressources'},{k:'tracking',t:'Suivi de projet',i:'proj'},{k:'resources',t:'Ressources & fichiers',i:'res'},{k:'documents',t:'Documents',i:'doc'}];
 /* ---- Contrôle d'accès (cadenas) ---- */
-const LOCKABLE=['onboarding','validation','calendar','social','stats','website','seo','tracking','resources','documents'];
+const LOCKABLE=['onboarding','strategy','validation','calendar','social','stats','website','seo','tracking','resources','documents'];
 function isAgency(){return state.profile&&state.profile.role==='agency';}
 function isAgencyView(){return isAgency()&&!state.preview;}
 function updateRoleTag(){
@@ -565,9 +645,64 @@ function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g
 function fmtDate(d){if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});}
 
 /* =================== VIEWS =================== */
-const ACCESS_META={onboarding:['Onboarding','Questionnaire stratégique','onb'],validation:['Validation contenu','Approbation des posts','val'],calendar:['Calendrier éditorial','Planning de publication','cal'],social:['Réseaux & publication','Comptes & auto-publication','soc'],stats:['Statistiques','Performances & croissance','stat'],website:['Site web','Suivi du site vitrine','web'],seo:['SEO / Référencement','Visibilité Google','seo'],tracking:['Suivi de projet','Étapes de l\'accompagnement','proj'],resources:['Ressources & fichiers','Fichiers de marque','res'],documents:['Documents','Devis, factures, contrats','doc']};
+const ACCESS_META={onboarding:['Onboarding','Questionnaire stratégique','onb'],strategy:['Stratégie','Stratégie de marque visuelle','compass'],validation:['Validation contenu','Approbation des posts','val'],calendar:['Calendrier éditorial','Planning de publication','cal'],social:['Réseaux & publication','Comptes & auto-publication','soc'],stats:['Statistiques','Performances & croissance','stat'],website:['Site web','Suivi du site vitrine','web'],seo:['SEO / Référencement','Visibilité Google','seo'],tracking:['Suivi de projet','Étapes de l\'accompagnement','proj'],resources:['Ressources & fichiers','Fichiers de marque','res'],documents:['Documents','Devis, factures, contrats','doc']};
 function onbModules(){const c=state.client&&state.client.onb_custom;return (Array.isArray(c)&&c.length)?c:ONB;}
 const VIEWS={
+  strategy(){
+    const s=state.client&&state.client.strategy;
+    if(!s||typeof s!=='object'){return `<div class="sec-head"><h3>Stratégie de marque</h3></div><div class="card st-empty"><div style="font-size:34px;margin-bottom:10px">🧭</div><h3 style="font-size:16px;margin-bottom:6px">Ta stratégie arrive bientôt</h3><p>Wanderful finalise ta stratégie de marque. Elle apparaîtra ici, résumée et visuelle, dès qu'elle sera prête.</p></div>`;}
+    const star=(v)=>{let o='';for(let i=1;i<=5;i++)o+=i<=v?'★':'<span class="off">★</span>';return `<span class="st-stars">${o}</span>`;};
+    const nm=esc(state.client?state.client.name:'');
+    let h=`<div class="sec-head"><h3>Stratégie de marque</h3><p>Le résumé visuel de la stratégie construite par Wanderful pour toi. Chaque contenu, chaque prise de parole s'appuie sur ces fondations.</p></div>`;
+    // HERO
+    h+=`<div class="st-hero"><div class="st-hero-badge">Stratégie Wanderful × ${nm}</div><div class="st-position">${esc(s.hero.positioning)}</div><div class="st-reflex">🎯 ${esc(s.hero.reflex)}</div><div class="st-slogan">${esc(s.hero.slogan)}</div></div>`;
+    // OBJECTIVES
+    h+=`<div class="section-title">La trajectoire — 3 objectifs</div><div class="grid g3">${s.objectives.map((o,i)=>`<div class="card st-obj"><span class="num">${i+1}</span><span class="ph">${esc(o.phase)}</span><h4>${esc(o.title)}</h4><p>${esc(o.desc)}</p><div class="kpi">🎯 ${esc(o.kpi)}</div></div>`).join('')}</div>`;
+    // GOLDEN CIRCLE
+    const g=s.golden;
+    h+=`<div class="section-title">Le Golden Circle</div><div class="grid g3">
+      <div class="card st-gold"><div class="lbl">WHY</div><div class="q">Pourquoi Gary fait ce métier</div><p>${esc(g.why)}</p></div>
+      <div class="card st-gold"><div class="lbl">HOW</div><div class="q">Comment il le fait</div><p>${esc(g.how)}</p></div>
+      <div class="card st-gold"><div class="lbl">WHAT</div><div class="q">Ce qu'il propose</div><p>${esc(g.what)}</p></div></div>`;
+    // MATURITY
+    h+=`<div class="section-title">Où en est ta marque aujourd'hui</div><div class="card st-mat">${s.maturity.map(m=>`<div class="row"><div class="nm">${esc(m.k)}</div><div class="track"><div class="fill" style="width:${m.v/5*100}%"></div></div><div class="gl">${esc(m.goal)}</div></div>`).join('')}<p style="font-size:12px;color:var(--muted);margin-top:12px;font-style:italic">Le travail ne consiste pas à améliorer Gary, mais à <b>rendre Gary visible</b>.</p></div>`;
+    // 5 PILLARS
+    h+=`<div class="section-title">Les 5 piliers de marque</div><div class="card">${s.pillars.map(p=>`<div class="st-pil"><div class="n">${esc(p.n)}</div><div><b>${esc(p.t)}</b><p>${esc(p.d)}</p></div></div>`).join('')}</div>`;
+    // BRAND DNA
+    const b=s.brand;
+    h+=`<div class="section-title">L'ADN de la marque</div><div class="grid g2">
+      <div class="card"><div class="st-mini">Mission</div><p style="font-size:14px;font-weight:600;line-height:1.5">${esc(b.mission)}</p></div>
+      <div class="card"><div class="st-mini">Vision</div><p style="font-size:14px;font-weight:600;line-height:1.5">${esc(b.vision)}</p></div></div>
+      <div class="grid g2" style="margin-top:16px">
+      <div class="card"><div class="st-mini">La promesse</div><div class="st-quote">« ${esc(b.promise)} »</div><div class="st-mini" style="margin-top:16px">Essence</div><p style="font-size:13.5px;font-weight:600;color:var(--accent-ink)">${esc(b.essence)}</p></div>
+      <div class="card"><div class="st-mini">Les valeurs</div><div class="st-values">${b.values.map(v=>`<span class="st-val">${esc(v)}</span>`).join('')}</div><div class="st-mini" style="margin-top:16px">Archétype</div><p style="font-size:13px;font-weight:600;color:var(--ink-soft)">${esc(b.archetype)}</p></div></div>`;
+    // PERSONALITY
+    h+=`<div class="section-title">Personnalité de marque</div><div class="card">${s.personality.map(p=>`<div class="st-prow"><b style="font-size:13.5px">${esc(p.k)}</b>${star(p.v)}</div>`).join('')}</div>`;
+    // PERSONAS
+    h+=`<div class="section-title">À qui on parle — 6 personas</div><div class="grid g3">${s.personas.map(p=>{const init=p.name.split(/[ &]/).filter(Boolean).slice(0,2).map(x=>x[0]).join('');return `<div class="card st-persona"><span class="pprio prio${p.prio}">Priorité ${p.prio}</span><div class="pav">${esc(init)}</div><h4>${esc(p.name)}</h4><div class="ptag">${esc(p.tag)}</div><div class="pmeta"><b>Moment :</b><span>${esc(p.moment)}</span></div><div class="pmeta"><b>Entrée :</b><span>${esc(p.entry)}</span></div><div class="pmsg">${esc(p.msg)}</div></div>`;}).join('')}</div>`;
+    // SWOT
+    const sw=s.swot,li=a=>a.map(x=>`<li>${esc(x)}</li>`).join('');
+    h+=`<div class="section-title">Analyse SWOT</div><div class="grid g2 st-swot">
+      <div class="card sqf"><h4>Forces</h4><ul>${li(sw.forces)}</ul></div>
+      <div class="card sqw"><h4>Faiblesses</h4><ul>${li(sw.faiblesses)}</ul></div>
+      <div class="card sqo"><h4>Opportunités</h4><ul>${li(sw.opportunites)}</ul></div>
+      <div class="card sqm"><h4>Menaces</h4><ul>${li(sw.menaces)}</ul></div></div>`;
+    // DOORS
+    h+=`<div class="section-title">Les 5 portes d'entrée</div><div class="card">${s.doors.map(d=>`<div class="st-door"><div class="dn">${esc(d.n)}</div><div><div class="dw">${esc(d.who)}</div><b>${esc(d.t)}</b><p>${esc(d.p)}</p></div></div>`).join('')}</div>`;
+    // TERRITORIES + MIX
+    h+=`<div class="section-title">Les territoires de contenu</div><div class="grid g4">${s.territories.map(t=>`<div class="card st-terr"><h4>${esc(t.t)}</h4><p>${esc(t.d)}</p></div>`).join('')}</div>`;
+    h+=`<div class="card st-mix" style="margin-top:16px"><div class="st-mini">L'équilibre des contenus</div>${s.contentMix.map(m=>`<div class="mrow"><div class="mpct">${m.v}%</div><div class="mbar"><div class="mfill" style="width:${m.v}%">${esc(m.k)}</div></div><div class="mrole">${esc(m.role)}</div></div>`).join('')}</div>`;
+    // PLAN 90
+    h+=`<div class="section-title">Le plan des 90 premiers jours</div><div class="card"><div class="st-plan">${s.plan90.map((p,i)=>`<div class="st-step"><div class="sdot">${i+1}</div><div class="sm">${esc(p.m)}</div><h4>${esc(p.t)}</h4><p>${esc(p.d)}</p><div class="kp">📊 ${esc(p.kpi)}</div></div>`).join('')}</div></div>`;
+    // MESSAGE HOUSE
+    const mh=s.messageHouse;
+    h+=`<div class="section-title">La maison des messages</div><div class="st-house-roof">🏠 ${esc(mh.roof)}</div><div class="grid g4" style="margin-top:14px">${mh.pillars.map(p=>`<div class="card st-mh"><b>${esc(p.t)}</b><p>${esc(p.d)}</p></div>`).join('')}</div>`;
+    // CTA LADDER
+    h+=`<div class="section-title">L'échelle d'engagement</div><div class="card">${s.cta.map((c,i)=>`<div class="st-cta"><div class="clv lv${i}">${esc(c.lvl)}</div><div class="cex">${esc(c.ex)}</div><div class="cgo">${esc(c.goal)}</div></div>`).join('')}</div>`;
+    // CLOSING
+    h+=`<div class="st-principle">${esc(s.creativePrinciple)}</div>`;
+    return h;
+  },
   newclient(){
     return `<div class="sec-head"><h3>Ajouter un nouveau client</h3><p>Crée la fiche du client. Il recevra un lien pour définir lui-même son mot de passe et accèdera à son espace. Par défaut, seul l'Accueil et l'Onboarding sont débloqués — tu ouvres le reste depuis « Accès & cadenas ».</p></div>
       <div class="card" style="max-width:560px">
