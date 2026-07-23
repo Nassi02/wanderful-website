@@ -938,6 +938,7 @@ function briefDetail(it){
     const rows=b.finalCut.map(f=>`<div class="bd-step"><span class="bd-s">${esc(f.t)}</span><span class="bd-t">${f.who?`<b>${esc(f.who)}</b> — `:''}${esc(f.line)}</span></div>`).join('');
     h+=`<div class="bd-block"><div class="bd-lbl">✂️ Version finale recommandée</div>${note}${rows}</div>`;
   }
+  if(b.motionDesign)h+=`<div class="bd-block"><div class="bd-lbl">🎞️ Motion design (segment explicatif)</div><p>${esc(b.motionDesign)}</p></div>`;
   if(b.montage&&b.montage!=='—')h+=`<div class="bd-block"><div class="bd-lbl">🎬 Montage & rythme (motion, textes, B-roll)</div><p>${esc(b.montage)}</p></div>`;
   if(b.visual)h+=`<div class="bd-block"><div class="bd-lbl">🎨 Visuel · couleurs · lumière</div><p>${esc(b.visual)}</p></div>`;
   if(b.cta)h+=`<div class="bd-block"><div class="bd-lbl">👉 Appel à l'action (CTA)</div><p>${esc(b.cta)}</p></div>`;
