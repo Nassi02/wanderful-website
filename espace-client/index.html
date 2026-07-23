@@ -919,8 +919,26 @@ function briefDetail(it){
   const lblBody=it.type==='Reel'?'🗣️ Script — ce que dire':'📱 Slides — ce que mettre';
   let h='';
   if(b.hook)h+=`<div class="bd-block"><div class="bd-lbl">🎬 Hook (accroche)</div><div class="bd-hook">${esc(b.hook)}</div></div>`;
+  if(b.screenQuestions&&b.screenQuestions.length){
+    const note=b.screenQuestionsNote?`<p style="font-size:12.5px;color:var(--muted);margin:0 0 8px">${esc(b.screenQuestionsNote)}</p>`:'';
+    const qs=b.screenQuestions.map(q=>`<div class="bd-step"><span class="bd-s">💬</span><span class="bd-t">${esc(q)}</span></div>`).join('');
+    h+=`<div class="bd-block"><div class="bd-lbl">❓ Questions qui apparaissent à l'écran</div>${note}${qs}</div>`;
+  }
   if(body)h+=`<div class="bd-block"><div class="bd-lbl">${lblBody}</div>${body}</div>`;
-  if(b.montage&&b.montage!=='—')h+=`<div class="bd-block"><div class="bd-lbl">✂️ Montage & rythme</div><p>${esc(b.montage)}</p></div>`;
+  if(b.conducteur&&b.conducteur.length){
+    const note=b.conducteurNote?`<p style="font-size:12.5px;color:var(--muted);margin:0 0 10px">${esc(b.conducteurNote)}</p>`:'';
+    const items=b.conducteur.map((c,i)=>{
+      const rel=(c.relances||[]).map(rl=>`<div class="bd-step" style="margin-top:4px;opacity:.9"><span class="bd-s" style="color:var(--muted)">↳ Relance</span><span class="bd-t"><i>${esc(rl.q)}</i>${rl.a?'<br>'+esc(rl.a):''}</span></div>`).join('');
+      return `<div style="padding:10px 0;border-top:1px solid #eceafc">${c.label?`<div style="font-weight:800;font-size:12.5px;color:#3b5bdb;margin-bottom:6px">Q${i+1} · ${esc(c.label)}</div>`:''}<div class="bd-step"><span class="bd-s">🎤 Toi</span><span class="bd-t">${esc(c.q)}</span></div><div class="bd-step"><span class="bd-s">💬 Gary</span><span class="bd-t">${esc(c.a)}</span></div>${rel}</div>`;
+    }).join('');
+    h+=`<div class="bd-block"><div class="bd-lbl">🎙️ Conducteur de tournage</div>${note}${items}</div>`;
+  }
+  if(b.finalCut&&b.finalCut.length){
+    const note=b.finalCutNote?`<p style="font-size:12.5px;color:var(--muted);margin:0 0 10px">${esc(b.finalCutNote)}</p>`:'';
+    const rows=b.finalCut.map(f=>`<div class="bd-step"><span class="bd-s">${esc(f.t)}</span><span class="bd-t">${f.who?`<b>${esc(f.who)}</b> — `:''}${esc(f.line)}</span></div>`).join('');
+    h+=`<div class="bd-block"><div class="bd-lbl">✂️ Version finale recommandée</div>${note}${rows}</div>`;
+  }
+  if(b.montage&&b.montage!=='—')h+=`<div class="bd-block"><div class="bd-lbl">🎬 Montage & rythme (motion, textes, B-roll)</div><p>${esc(b.montage)}</p></div>`;
   if(b.visual)h+=`<div class="bd-block"><div class="bd-lbl">🎨 Visuel · couleurs · lumière</div><p>${esc(b.visual)}</p></div>`;
   if(b.cta)h+=`<div class="bd-block"><div class="bd-lbl">👉 Appel à l'action (CTA)</div><p>${esc(b.cta)}</p></div>`;
   if(b.tags)h+=`<div class="bd-block"><div class="bd-lbl"># Hashtags</div><p style="color:var(--accent-ink)">${esc(b.tags)}</p></div>`;
