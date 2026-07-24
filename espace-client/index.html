@@ -76,6 +76,11 @@
   .topbar{display:flex;align-items:center;gap:16px;margin-bottom:24px}
   .topbar h2{font-size:22px;font-weight:700;letter-spacing:-.4px}
   .topbar p{font-size:13px;color:var(--muted);margin-top:2px}.spacer{flex:1}
+  .mobile-top{display:none;align-items:center;gap:12px;position:sticky;top:0;z-index:60;background:var(--bg);padding:10px 0 6px;margin:-4px 0 10px}
+  .burger{width:44px;height:44px;border-radius:12px;border:1px solid var(--line);background:var(--surface);display:grid;place-items:center;flex-shrink:0;color:var(--ink)}
+  .burger svg{width:22px;height:22px}
+  .nav-backdrop{position:fixed;inset:0;background:rgba(30,25,50,.45);z-index:110;opacity:0;pointer-events:none;transition:opacity .25s}
+  body.nav-open .nav-backdrop{opacity:1;pointer-events:auto}
   .pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:600;padding:6px 12px;border-radius:20px;background:var(--green-soft);color:var(--green)}
 
   .section{display:none}.section.show{display:block;animation:fade .3s ease}
@@ -172,7 +177,15 @@
   .sw.on i{left:22px}
   .acc-actions{display:flex;gap:10px;margin:16px 0 4px}
   .acc-actions .sbtn{flex:1}
-  @media(max-width:900px){.app{grid-template-columns:1fr}.sidebar{display:none}.main{padding:20px}}
+  @media(max-width:900px){
+    .app{grid-template-columns:1fr}
+    .sidebar{position:fixed;top:0;left:0;height:100vh;width:84%;max-width:300px;z-index:120;transform:translateX(-100%);transition:transform .25s ease;box-shadow:0 14px 44px rgba(30,25,50,.22)}
+    body.nav-open .sidebar{transform:translateX(0)}
+    .sidebar .nav-item{padding:12px 12px;font-size:14.5px}
+    .main{padding:14px}
+    .mobile-top{display:flex}
+    .topbar{margin-bottom:14px}.topbar h2{font-size:19px}
+  }
   /* ---------- STRATÉGIE ---------- */
   .st-hero{background:var(--grad);border-radius:20px;padding:30px 30px 26px;color:#fff;box-shadow:var(--shadow);margin-bottom:26px;position:relative;overflow:hidden}
   .st-hero:after{content:"";position:absolute;right:-60px;top:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.12)}
@@ -361,6 +374,7 @@
 
 <!-- ============ APP ============ -->
 <div id="appView" class="app hidden">
+  <div class="nav-backdrop" onclick="closeNav()"></div>
   <aside class="sidebar">
     <div class="sb-brand"><img src="/assets/logo.png" alt="Wanderful Marketing" class="wl-logo" style="height:34px"><div style="font-size:11px;color:var(--muted);margin-top:5px">Marketing Hub</div></div>
     <div class="client-card"><div class="avatar" id="cAvatar">–</div><div class="info"><b id="cName">…</b><small id="cPlan"></small></div></div>
@@ -373,6 +387,7 @@
     </div>
   </aside>
   <main class="main">
+    <div class="mobile-top"><button class="burger" onclick="toggleNav()" aria-label="Ouvrir le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button><img src="/assets/logo.png" alt="Wanderful Marketing" class="wl-logo" style="height:26px"></div>
     <div class="topbar"><div><h2 id="topTitle">…</h2><p id="topSub">Voici l'état de votre projet cette semaine.</p></div><div class="spacer"></div><span class="pill">● En cours</span></div>
     <div id="content"></div>
   </main>
@@ -704,7 +719,9 @@ function renderNav(content){
   }).join('');
 }
 function lockedView(){return `<div class="locked-view"><div class="lk-ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${ICO.lock}</svg></div><h3>Section verrouillée 🔒</h3><p>Cette partie de votre espace sera débloquée par votre agence <b>Wanderful</b> au fur et à mesure de votre accompagnement. Vous serez prévenu·e dès qu'elle sera disponible.</p></div>`;}
-function go(k){state.section=k;renderNav(state.data?state.data.content:[]);document.getElementById('content').innerHTML=previewBar()+(isUnlocked(k)?(VIEWS[k]||VIEWS.home)():lockedView());window.scrollTo(0,0);}
+function toggleNav(){document.body.classList.toggle('nav-open');}
+function closeNav(){document.body.classList.remove('nav-open');}
+function go(k){state.section=k;renderNav(state.data?state.data.content:[]);document.getElementById('content').innerHTML=previewBar()+(isUnlocked(k)?(VIEWS[k]||VIEWS.home)():lockedView());window.scrollTo(0,0);closeNav();}
 const PICO={instagram:['ig-bg','◉'],facebook:['fb-bg','f'],tiktok:['tt-bg','♪'],youtube:['yt-bg','▶'],linkedin:['li-bg','in'],google:['gg-bg','G']};
 function pico(p){const x=PICO[p]||['tt-bg','•'];return `<div class="pico ${x[0]}">${x[1]}</div>`;}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2400);}
