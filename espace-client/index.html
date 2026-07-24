@@ -636,6 +636,7 @@ async function setAllAccess(unlock){
 /* =================== BOOT =================== */
 async function bootApp(){
   document.getElementById('loginView').classList.add('hidden');document.getElementById('appView').classList.remove('hidden');
+  wfStartIdleWatch();
   const agency=state.profile.role==='agency';
   state.preview=false;
   updateRoleTag();
@@ -1026,6 +1027,20 @@ async function submitOnboarding(){
 }
 async function act(id,status){const it=state.data.content.find(c=>c.id===id);if(!it)return;await updateContentStatus(it,status);toast(status==='approved'?'✓ Contenu approuvé':'✏️ Demande de modification envoyée');go('validation');}
 
+/* =================== INACTIVITÉ — DÉCONNEXION AUTO =================== */
+const WF_IDLE_MS=30*60*1000; // 30 min d'inactivité
+let wfIdleTimer=null, wfLastMark=0;
+function wfMarkActivity(){try{localStorage.setItem('wf_last_activity',String(Date.now()));}catch(e){}}
+function wfIdleExpired(){const t=parseInt(localStorage.getItem('wf_last_activity')||'0',10);return t>0&&(Date.now()-t)>WF_IDLE_MS;}
+function wfActivity(){const now=Date.now();if(now-wfLastMark>5000){wfLastMark=now;wfMarkActivity();}}
+async function wfForceLogout(){try{if(!DEMO&&sb)await sb.auth.signOut();}catch(e){}try{localStorage.removeItem('wf_last_activity');}catch(e){}location.reload();}
+function wfStartIdleWatch(){
+  wfMarkActivity();
+  ['click','keydown','mousemove','touchstart','scroll'].forEach(ev=>window.addEventListener(ev,wfActivity,{passive:true}));
+  if(wfIdleTimer)clearInterval(wfIdleTimer);
+  wfIdleTimer=setInterval(()=>{if(wfIdleExpired())wfForceLogout();},30*1000);
+}
+
 /* =================== SESSION RESTORE =================== */
 (async function(){
   if(!DEMO&&sb){
@@ -1036,7 +1051,10 @@ async function act(id,status){const it=state.data.content.find(c=>c.id===id);if(
     });
     if(recovery){showStep('stepReset');}
     const {data:{session}}=await sb.auth.getSession();
-    if(session&&!recovery){await loadProfileAndBoot();}
+    if(session&&!recovery){
+      if(wfIdleExpired()){await wfForceLogout();return;}
+      await loadProfileAndBoot();
+    }
   }
 })();
 </script>
