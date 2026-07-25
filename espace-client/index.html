@@ -53,6 +53,16 @@
   .avatar{width:36px;height:36px;border-radius:10px;background:var(--grad);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px;flex-shrink:0}
   .client-card .info{overflow:hidden}.client-card .info b{font-size:13px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .client-card .info small{font-size:11px;color:var(--muted)}
+  .client-card.internal{background:linear-gradient(135deg,#e4f7ef,#f0fbf6);border-color:#c2ecda}
+  .client-card.internal .avatar{background:linear-gradient(135deg,#17a86f,#3ccf95)}
+  .client-card.internal .info small{color:#0f7d53;font-weight:600}
+  .switcher select.internal{background:var(--green-soft);border-color:#bde9d5;color:#0f7d53}
+  .int-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:#0f7d53;background:var(--green-soft);border-radius:6px;padding:3px 7px;margin-left:8px;vertical-align:middle}
+  .lg-row{display:flex;align-items:center;gap:12px;padding:11px 2px;border-bottom:1px solid var(--line)}
+  .lg-row:last-child{border-bottom:none}
+  .lg-dot{width:9px;height:9px;border-radius:50%;background:var(--green);flex-shrink:0}
+  .lg-when{font-size:13.5px;font-weight:600;color:var(--ink)}
+  .lg-ago{font-size:12px;color:var(--muted)}
   .switcher{margin:0 0 14px}.switcher select{width:100%;font-family:inherit;font-size:12.5px;font-weight:600;padding:9px 11px;border:1px solid #dcd4fb;border-radius:10px;background:var(--accent-soft);color:var(--accent-ink);cursor:pointer}
   .nav-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;color:var(--faint);font-weight:600;padding:14px 10px 6px}
   .nav-item{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:10px;font-size:13.5px;font-weight:500;color:var(--ink-soft);width:100%;text-align:left;transition:.15s}
@@ -626,7 +636,7 @@ async function createClient(){
   }
   if(DEMO){btn.disabled=false;btn.textContent='Créer le client';}
   state.allClients=await fetchClients();
-  const sel=document.getElementById('clientSwitch');if(sel)sel.innerHTML=state.allClients.map(c=>`<option value="${c.id}" ${c.id===newId?'selected':''}>${esc(c.name)}</option>`).join('');
+  renderSwitcher(newId);
   const link=location.origin+location.pathname;
   res.innerHTML=`<div class="card" style="margin-top:14px;background:var(--green-soft);border:none">
       <div style="font-weight:700;color:var(--green);margin-bottom:8px">✓ ${esc(name)} a été créé !</div>
@@ -664,7 +674,7 @@ async function bootApp(){
   updateRoleTag();
   if(agency){
     state.allClients=await fetchClients();
-    document.getElementById('clientSwitch').innerHTML=state.allClients.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
+    renderSwitcher();
     document.getElementById('switcherWrap').classList.remove('hidden');
     await selectClient(state.allClients[0]&&state.allClients[0].id);
   }else{
@@ -679,12 +689,40 @@ async function selectClient(id){
   state.client=await fetchClient(id);
   const [content,documents,social,activity,onb]=await Promise.all([fetchTable('content_items',id),fetchTable('documents',id),fetchTable('social_accounts',id),fetchTable('activity',id),fetchOnboarding(id)]);
   state.data={content,documents,social,activity};state.onb=onb||{};
+  state.logins=await fetchLogins(state.client);
   setClientCard(state.client);renderNav(content);go(state.section);
 }
-function setClientCard(c){document.getElementById('cAvatar').textContent=c.initials||'?';document.getElementById('cName').textContent=c.name;document.getElementById('cPlan').textContent=(c.plan||'')+(c.status?' · '+c.status:'');document.getElementById('topTitle').textContent='Bonjour, '+(c.name||'')+' 👋';}
+async function fetchLogins(c){
+  if(DEMO||!sb||!c||!isAgency())return [];
+  var q=sb.from('client_logins').select('*').order('logged_at',{ascending:false}).limit(200);
+  q=isInternalClient(c)?q.is('client_id',null):q.eq('client_id',c.id);
+  var r=await q;
+  return (r&&r.data)||[];
+}
+function renderSwitcher(selId){
+  var sel=document.getElementById('clientSwitch');if(!sel)return;
+  var all=state.allClients||[];
+  if(!selId&&state.client)selId=state.client.id;
+  var norm=all.filter(function(c){return !isInternalClient(c);});
+  var intr=all.filter(function(c){return isInternalClient(c);});
+  function opt(c){return '<option value="'+c.id+'"'+(c.id===selId?' selected':'')+'>'+esc(c.name)+'</option>';}
+  var h='';
+  if(norm.length)h+='<optgroup label="Clients">'+norm.map(opt).join('')+'</optgroup>';
+  if(intr.length)h+='<optgroup label="&#9679; Interne — Wanderful">'+intr.map(opt).join('')+'</optgroup>';
+  sel.innerHTML=h||all.map(opt).join('');
+}
+function setClientCard(c){
+  var card=document.querySelector('.client-card'),sel=document.getElementById('clientSwitch'),internal=isInternalClient(c);
+  if(card)card.classList.toggle('internal',internal);
+  if(sel)sel.classList.toggle('internal',internal);
+  document.getElementById('cAvatar').textContent=c.initials||'?';
+  document.getElementById('cName').textContent=c.name;
+  document.getElementById('cPlan').textContent=(internal?'Interne':(c.plan||''))+(c.status?' · '+c.status:'');
+  document.getElementById('topTitle').textContent=(internal?'Espace interne — ':'Bonjour, ')+(c.name||'')+(internal?'':' 👋');
+}
 
 /* =================== NAV =================== */
-const ICO={home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',onb:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',val:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/>',cal:'<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',soc:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 3v18"/>',stat:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',web:'<rect x="2" y="3" width="20" height="16" rx="2"/><path d="M2 8h20M6 5.5h.01M9 5.5h.01"/>',seo:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',proj:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',res:'<path d="M4 4h6l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',key:'<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5L21 2M17 6l3 3M14 9l2 2"/>',plus:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',bulb:'<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/>'};
+const ICO={home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',onb:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',val:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/>',cal:'<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',soc:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 3v18"/>',stat:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',web:'<rect x="2" y="3" width="20" height="16" rx="2"/><path d="M2 8h20M6 5.5h.01M9 5.5h.01"/>',seo:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',proj:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',res:'<path d="M4 4h6l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',key:'<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5L21 2M17 6l3 3M14 9l2 2"/>',plus:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',bulb:'<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/>',login:'<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/>'};
 const NAV=[{g:'Espace projet'},{k:'home',t:'Accueil',i:'home'},{k:'onboarding',t:'Onboarding',i:'onb'},{k:'strategy',t:'Stratégie',i:'compass'},{g:'Contenu & social'},{k:'ideas',t:'Idées de contenu',i:'bulb'},{k:'validation',t:'Validation contenu',i:'val',badge:true},{k:'calendar',t:'Calendrier éditorial',i:'cal'},{k:'social',t:'Réseaux & publication',i:'soc'},{k:'stats',t:'Statistiques',i:'stat'},{g:'Site & visibilité'},{k:'website',t:'Site web',i:'web'},{k:'seo',t:'SEO / Référencement',i:'seo'},{g:'Projet & ressources'},{k:'tracking',t:'Suivi de projet',i:'proj'},{k:'resources',t:'Ressources & fichiers',i:'res'},{k:'documents',t:'Documents',i:'doc'}];
 /* ---- Contrôle d'accès (cadenas) ---- */
 const LOCKABLE=['onboarding','strategy','ideas','validation','calendar','social','stats','website','seo','tracking','resources','documents'];
@@ -702,7 +740,7 @@ function updateRoleTag(){
 function togglePreview(){
   if(!isAgency())return;
   state.preview=!state.preview;
-  if(state.preview && state.section==='access') state.section='home';
+  if(state.preview && ['access','logins','newclient'].includes(state.section)) state.section='home';
   updateRoleTag();
   renderNav(state.data?state.data.content:[]);
   go(state.section);
@@ -716,7 +754,7 @@ function isUnlocked(k){return k==='home'||k==='access'||!LOCKABLE.includes(k)||i
 function renderNav(content){
   const pend=(content||[]).filter(c=>c.status==='pending').length;
   let items=NAV.slice();
-  if(isAgencyView()) items=[{g:'Agence'},{k:'newclient',t:'Nouveau client',i:'plus'},{k:'access',t:'Accès & cadenas',i:'key'}].concat(items);
+  if(isAgencyView()) items=[{g:'Agence'},{k:'newclient',t:'Nouveau client',i:'plus'},{k:'access',t:'Accès & cadenas',i:'key'},{k:'logins',t:'Connexions',i:'login'}].concat(items);
   document.getElementById('nav').innerHTML=items.map(n=>{
     if(n.g)return `<div class="nav-label">${n.g}</div>`;
     const locked=!isUnlocked(n.k);
@@ -734,6 +772,19 @@ function pico(p){const x=PICO[p]||['tt-bg','•'];return `<div class="pico ${x[0
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2400);}
 function esc(s){return (s==null?'':String(s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function fmtDate(d){if(!d)return'';return new Date(d).toLocaleDateString('fr-FR',{weekday:'short',day:'numeric',month:'short'});}
+function fmtDT(d){if(!d)return'';return new Date(d).toLocaleString('fr-FR',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});}
+function fmtAgo(d){
+  if(!d)return'';
+  var s=Math.floor((Date.now()-new Date(d).getTime())/1000);
+  if(s<60)return "à l'instant";
+  var m=Math.floor(s/60); if(m<60)return 'il y a '+m+' min';
+  var h=Math.floor(m/60); if(h<24)return 'il y a '+h+' h';
+  var j=Math.floor(h/24); if(j===1)return 'hier';
+  if(j<31)return 'il y a '+j+' jours';
+  var mo=Math.floor(j/30); if(mo<12)return 'il y a '+mo+' mois';
+  return 'il y a '+Math.floor(mo/12)+' an(s)';
+}
+function isInternalClient(c){return !!c && (((c.plan||'').toLowerCase().indexOf('interne')>-1) || /wanderful/i.test(c.name||''));}
 
 /* =================== VIEWS =================== */
 const ACCESS_META={onboarding:['Onboarding','Questionnaire stratégique','onb'],strategy:['Stratégie','Stratégie de marque visuelle','compass'],ideas:['Idées de contenu','Contenus scénarisés à produire','bulb'],validation:['Validation contenu','Approbation des posts','val'],calendar:['Calendrier éditorial','Planning de publication','cal'],social:['Réseaux & publication','Comptes & auto-publication','soc'],stats:['Statistiques','Performances & croissance','stat'],website:['Site web','Suivi du site vitrine','web'],seo:['SEO / Référencement','Visibilité Google','seo'],tracking:['Suivi de projet','Étapes de l\'accompagnement','proj'],resources:['Ressources & fichiers','Fichiers de marque','res'],documents:['Documents','Devis, factures, contrats','doc']};
@@ -851,6 +902,33 @@ const VIEWS={
     return `<div class="sec-head"><h3>Accès & cadenas — ${esc(state.client?state.client.name:'')}</h3><p>Activez une section pour la débloquer chez ce client. Verrouillée, elle apparaît avec un 🔒 et reste inaccessible tant que vous ne l'ouvrez pas. L'Accueil est toujours visible.</p></div>
       <div class="card"><div class="acc-actions"><button class="sbtn ghost" onclick="setAllAccess(true)">Tout débloquer</button><button class="sbtn ghost" onclick="setAllAccess(false)">Tout verrouiller</button></div>${rows}</div>
       <div class="card" style="margin-top:14px;background:var(--accent-soft);border:none"><div style="display:flex;gap:12px;align-items:flex-start"><div style="font-size:20px">💡</div><div style="font-size:13px;color:var(--accent-ink);line-height:1.6"><b>Astuce :</b> débloquez l'Onboarding en premier pour un nouveau client. Une fois sa stratégie prête, ouvrez le Contenu, le Calendrier, les Réseaux, puis les Stats et le SEO au fil de l'accompagnement.</div></div></div>`;
+  },
+  logins(){
+    var c=state.client;
+    if(!c)return '<div class="card empty">Aucun client sélectionné.</div>';
+    var internal=isInternalClient(c),rows=state.logins||[];
+    var intro=internal
+      ? "Compte interne : ce sont tes propres connexions à l'espace agence."
+      : "Chaque connexion de ce client à son espace est enregistrée ici, pas seulement la première.";
+    var head='<div class="sec-head"><h3>Connexions — '+esc(c.name)+(internal?'<span class="int-tag">interne</span>':'')+'</h3><p>'+intro+'</p></div>';
+    if(!rows.length){
+      var msg=internal
+        ? "Aucune connexion enregistrée pour l'instant."
+        : (c.invite_email
+            ? "Ce client n'a encore jamais ouvert son espace. Son adresse <b>"+esc(c.invite_email)+"</b> est bien enregistrée : il lui suffit de cliquer sur « Première connexion » pour choisir son mot de passe."
+            : "Aucune adresse e-mail n'est enregistrée pour ce client — il ne peut donc pas encore se connecter.");
+      return head+'<div class="card empty">'+msg+'</div>';
+    }
+    var last=rows[0];
+    var kpi='<div class="grid g3" style="margin-bottom:20px">'
+      +'<div class="card kpi"><b>'+rows.length+'</b><div class="lbl">Connexions enregistrées</div></div>'
+      +'<div class="card kpi"><b style="font-size:18px">'+esc(fmtAgo(last.logged_at))+'</b><div class="lbl">Dernière connexion</div><span class="trend">'+esc(fmtDT(last.logged_at))+'</span></div>'
+      +'<div class="card kpi"><b style="font-size:15px;word-break:break-all">'+esc(last.email||'—')+'</b><div class="lbl">Compte utilisé</div></div>'
+      +'</div>';
+    var list=rows.map(function(r){
+      return '<div class="lg-row"><span class="lg-dot"></span><div style="flex:1;min-width:0"><div class="lg-when">'+esc(fmtDT(r.logged_at))+'</div><div class="lg-ago">'+esc(r.email||'')+'</div></div><div class="lg-ago" style="flex-shrink:0">'+esc(fmtAgo(r.logged_at))+'</div></div>';
+    }).join('');
+    return head+kpi+'<div class="section-title">Historique complet</div><div class="card">'+list+'</div>';
   },
   home(){
     const d=state.data,pend=d.content.filter(c=>c.status==='pending').length,planned=d.content.length,unpaid=d.documents.filter(x=>x.status==='En attente').length,onbCount=Object.values(state.onb||{}).filter(v=>v&&(''+v).trim()&&(!Array.isArray(v)||v.length)).length;
