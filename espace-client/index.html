@@ -109,6 +109,13 @@
   .caption-box{background:#faf9ff;border:1px solid var(--line);border-radius:10px;padding:11px 13px;font-size:13px;color:var(--ink-soft);line-height:1.5}
   .btn-row{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap}
   .sbtn{font-size:13px;font-weight:600;padding:9px 15px;border-radius:10px}.sbtn.ok{background:var(--green);color:#fff}.sbtn.ghost{background:#f1eefb;color:var(--ink-soft)}.sbtn.p{background:var(--accent);color:#fff}
+  .sbtn.danger{background:#e0567a;color:#fff}
+  .ag-toolbar{margin-bottom:14px}
+  .ag-modal-tools{display:flex;gap:8px;margin:0 0 4px;flex-wrap:wrap}
+  .modal-form{max-width:660px}
+  .pe-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 14px}
+  .pe-actions{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:8px}
+  @media(max-width:600px){.pe-grid{grid-template-columns:1fr}}
   .empty{text-align:center;color:var(--muted);padding:34px 18px}
 
   .plat{border:1px solid var(--line);border-radius:14px;padding:15px;background:var(--surface)}.plat .top{display:flex;align-items:center;gap:11px;margin-bottom:6px}
@@ -721,7 +728,7 @@ function renderNav(content){
 function lockedView(){return `<div class="locked-view"><div class="lk-ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${ICO.lock}</svg></div><h3>Section verrouillée 🔒</h3><p>Cette partie de votre espace sera débloquée par votre agence <b>Wanderful</b> au fur et à mesure de votre accompagnement. Vous serez prévenu·e dès qu'elle sera disponible.</p></div>`;}
 function toggleNav(){document.body.classList.toggle('nav-open');}
 function closeNav(){document.body.classList.remove('nav-open');}
-function go(k){state.section=k;renderNav(state.data?state.data.content:[]);document.getElementById('content').innerHTML=previewBar()+(isUnlocked(k)?(VIEWS[k]||VIEWS.home)():lockedView());window.scrollTo(0,0);closeNav();}
+function go(k){state.section=k;renderNav(state.data?state.data.content:[]);document.getElementById('content').innerHTML=previewBar()+agencyToolbar(k)+(isUnlocked(k)?(VIEWS[k]||VIEWS.home)():lockedView());window.scrollTo(0,0);closeNav();}
 const PICO={instagram:['ig-bg','◉'],facebook:['fb-bg','f'],tiktok:['tt-bg','♪'],youtube:['yt-bg','▶'],linkedin:['li-bg','in'],google:['gg-bg','G']};
 function pico(p){const x=PICO[p]||['tt-bg','•'];return `<div class="pico ${x[0]}">${x[1]}</div>`;}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2400);}
@@ -985,6 +992,92 @@ function openContentModal(id){
     </div></div></div>`;
 }
 function closeContentModal(){const e=document.getElementById('modalRoot');if(e)e.innerHTML='';}
+/* ============ EDITEUR DE POST (vue agence) ============ */
+var POST_STATUSES=[['idea','Idee'],['produced','Produit'],['pending','A valider'],['approved','Valide'],['changes_requested','Modif demandee'],['published','Publie']];
+function peOpt(v,cur,l){return '<option value="'+v+'"'+(v===cur?' selected':'')+'>'+l+'</option>';}
+function agencyToolbar(k){
+  if(!isAgencyView()||(k!=='ideas'&&k!=='calendar'))return '';
+  return '<div class="ag-toolbar"><button class="btn" style="width:auto;padding:10px 18px" onclick="openPostEditor(null)">+ Nouveau post</button></div>';
+}
+function openPostEditor(id){
+  var editing=(id!=null&&id!=='null');
+  var it=editing?(state.data.content||[]).find(function(c){return String(c.id)===String(id);}):null;
+  if(editing&&!it)return;
+  if(!editing&&(!state||!state.client)){toast('Selectionne d\'abord un client');return;}
+  var b=(it&&it.brief)?it.brief:{};
+  var bodySteps=((b.body)||[]).filter(function(x){return x.s!=='Hook';}).map(function(x){return (x.s?x.s+' | ':'')+x.t;}).join('\n');
+  var dateVal=(it&&it.scheduled_at)?String(it.scheduled_at).slice(0,10):'';
+  var typeCur=it?it.type:'Reel', statusCur=it?it.status:'idea';
+  var H=[];
+  H.push('<div class="modal-ov" onclick="if(event.target===this)closeContentModal()"><div class="modal modal-form"><button class="modal-x" onclick="closeContentModal()">✕</button>');
+  H.push('<div class="modal-head"><h3>'+(editing?'Modifier le post':'Nouveau post')+'</h3><small>'+esc(state.client?state.client.name:'')+'</small></div>');
+  H.push('<div class="pe-grid">');
+  H.push('<div class="field"><label>Type</label><select id="pe_type">'+peOpt('Reel',typeCur,'🎥 Reel')+peOpt('Carrousel',typeCur,'🖼️ Carrousel')+'</select></div>');
+  H.push('<div class="field"><label>Statut</label><select id="pe_status">'+POST_STATUSES.map(function(s){return peOpt(s[0],statusCur,s[1]);}).join('')+'</select></div>');
+  H.push('<div class="field"><label>Semaine</label><input id="pe_week" type="number" min="1" value="'+((it&&it.week!=null)?it.week:'')+'"></div>');
+  H.push('<div class="field"><label>Date de publication</label><input id="pe_date" type="date" value="'+dateVal+'"></div>');
+  H.push('<div class="field"><label>Plateforme</label><input id="pe_platform" value="'+esc(it?(it.platform||'Instagram'):'Instagram')+'"></div>');
+  H.push('<div class="field"><label>Pilier</label><input id="pe_pillar" value="'+esc(it?(it.pillar||''):'')+'"></div>');
+  H.push('</div>');
+  H.push('<div class="field"><label>Titre</label><input id="pe_title" value="'+esc(it?(it.title||''):'')+'"></div>');
+  H.push('<div class="field"><label>🎯 Objectif</label><input id="pe_obj" value="'+esc(b.obj||'')+'"></div>');
+  H.push('<div class="field"><label>🎬 Hook (accroche)</label><input id="pe_hook" value="'+esc(b.hook||'')+'"></div>');
+  H.push('<div class="field"><label>🗣️ Script / slides <span style="color:var(--muted);font-weight:400">- une etape par ligne, format Titre | texte</span></label><textarea id="pe_body" style="min-height:120px">'+esc(bodySteps)+'</textarea></div>');
+  H.push('<div class="field"><label>🎬 Montage &amp; rythme</label><textarea id="pe_montage">'+esc(b.montage||'')+'</textarea></div>');
+  H.push('<div class="field"><label>🎨 Visuel, couleurs, lumiere</label><textarea id="pe_visual">'+esc(b.visual||'')+'</textarea></div>');
+  H.push('<div class="field"><label>👉 CTA</label><input id="pe_cta" value="'+esc(b.cta||'')+'"></div>');
+  H.push('<div class="field"><label># Hashtags</label><input id="pe_tags" value="'+esc(b.tags||'')+'"></div>');
+  H.push('<div class="field"><label>✍️ Legende</label><textarea id="pe_caption" style="min-height:100px">'+esc(it?(it.caption||''):'')+'</textarea></div>');
+  H.push('<div id="pe_msg" class="msg"></div>');
+  H.push('<div class="pe-actions">'+(editing?'<button class="sbtn danger" data-del="0" onclick="deletePost(\''+id+'\',this)">🗑️ Supprimer</button>':'<span></span>'));
+  H.push('<div style="display:flex;gap:8px"><button class="sbtn ghost" onclick="closeContentModal()">Annuler</button><button class="sbtn ok" id="pe_save" onclick="savePost('+(editing?('\''+id+'\''):'null')+')">'+(editing?'Enregistrer':'Creer le post')+'</button></div></div>');
+  H.push('</div></div>');
+  document.getElementById('modalRoot').innerHTML=H.join('');
+}
+function peParseBody(txt,hook){
+  var steps=[];
+  (txt||'').split('\n').forEach(function(line){var l=line.trim();if(!l)return;var i=l.indexOf('|');if(i>=0)steps.push({s:l.slice(0,i).trim(),t:l.slice(i+1).trim()});else steps.push({s:'',t:l});});
+  var out=[];if(hook)out.push({s:'Hook',t:hook});return out.concat(steps);
+}
+async function savePost(id){
+  var editing=(id!=null&&id!=='null');
+  var gv=function(x){var e=document.getElementById(x);return e?e.value.trim():'';};
+  var msg=document.getElementById('pe_msg');
+  var title=gv('pe_title');
+  if(!title){if(msg){msg.className='msg err';msg.textContent='Le titre est obligatoire.';}return;}
+  var hook=gv('pe_hook');
+  var brief={};
+  var obj=gv('pe_obj');if(obj)brief.obj=obj;
+  if(hook)brief.hook=hook;
+  var body=peParseBody(document.getElementById('pe_body').value,hook);if(body.length)brief.body=body;
+  var montage=gv('pe_montage');if(montage)brief.montage=montage;
+  var visual=gv('pe_visual');if(visual)brief.visual=visual;
+  var cta=gv('pe_cta');if(cta)brief.cta=cta;
+  var tags=gv('pe_tags');if(tags)brief.tags=tags;
+  if(editing){var it0=(state.data.content||[]).find(function(c){return String(c.id)===String(id);});if(it0&&it0.brief){['conducteur','conducteurNote','finalCut','finalCutNote','screenQuestions','screenQuestionsNote','motionDesign'].forEach(function(k){if(it0.brief[k]!=null&&brief[k]==null)brief[k]=it0.brief[k];});}}
+  var week=gv('pe_week'),date=gv('pe_date');
+  var row={client_id:state.client.id,type:gv('pe_type')||'Reel',title:title,status:gv('pe_status')||'idea',platform:gv('pe_platform')||null,pillar:gv('pe_pillar')||null,caption:(document.getElementById('pe_caption').value||null),week:(week?parseInt(week,10):null),scheduled_at:(date?date:null),brief:brief};
+  var btn=document.getElementById('pe_save');if(btn){btn.disabled=true;btn.textContent='...';}
+  try{
+    if(editing){
+      var r1=await sb.from('content_items').update(row).eq('id',id);if(r1.error)throw r1.error;
+      var it=(state.data.content||[]).find(function(c){return String(c.id)===String(id);});if(it)Object.assign(it,row);
+      toast('✓ Post mis a jour');
+    }else{
+      var r2=await sb.from('content_items').insert(row).select().single();if(r2.error)throw r2.error;
+      state.data.content=state.data.content||[];state.data.content.push(r2.data);
+      toast('✓ Post cree');
+    }
+    closeContentModal();go(state.section);
+  }catch(e){if(msg){msg.className='msg err';msg.textContent='Erreur : '+(e.message||e);}if(btn){btn.disabled=false;btn.textContent=editing?'Enregistrer':'Creer le post';}}
+}
+async function deletePost(id,btn){
+  if(btn&&btn.getAttribute('data-del')!=='1'){btn.setAttribute('data-del','1');btn.textContent='⚠️ Confirmer ?';return;}
+  try{var r=await sb.from('content_items').delete().eq('id',id);if(r.error)throw r.error;
+    state.data.content=(state.data.content||[]).filter(function(c){return String(c.id)!==String(id);});
+    toast('✓ Post supprime');closeContentModal();go(state.section);
+  }catch(e){toast('Erreur : '+(e.message||e));}
+}
 async function uploadContentMedia(id){
   const inp=document.getElementById('prodFile');const f=inp&&inp.files[0];if(!f)return;
   const prog=document.getElementById('prodProg');if(prog)prog.textContent='Envoi en cours…';
