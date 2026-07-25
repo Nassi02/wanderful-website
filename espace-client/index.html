@@ -658,8 +658,8 @@ async function setAllAccess(unlock){
 /* =================== BOOT =================== */
 async function bootApp(){
   document.getElementById('loginView').classList.add('hidden');document.getElementById('appView').classList.remove('hidden');
-  wfStartIdleWatch();
   const agency=state.profile.role==='agency';
+  if(agency){wfStopIdleWatch();}else{wfStartIdleWatch();}
   state.preview=false;
   updateRoleTag();
   if(agency){
@@ -1149,6 +1149,11 @@ function wfStartIdleWatch(){
   ['click','keydown','mousemove','touchstart','scroll'].forEach(ev=>window.addEventListener(ev,wfActivity,{passive:true}));
   if(wfIdleTimer)clearInterval(wfIdleTimer);
   wfIdleTimer=setInterval(()=>{if(wfIdleExpired())wfForceLogout();},30*1000);
+}
+function wfStopIdleWatch(){
+  if(wfIdleTimer){clearInterval(wfIdleTimer);wfIdleTimer=null;}
+  ['click','keydown','mousemove','touchstart','scroll'].forEach(ev=>window.removeEventListener(ev,wfActivity));
+  try{localStorage.removeItem('wf_last_activity');}catch(e){}
 }
 
 /* =================== SESSION RESTORE =================== */
