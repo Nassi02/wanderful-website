@@ -111,6 +111,26 @@
   .rmain{flex:1;min-width:0}.rmain b{font-size:13.5px;font-weight:600;display:block}.rmain small{font-size:11.5px;color:var(--muted)}
   .tag{font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap}
   .t-green{background:var(--green-soft);color:var(--green)}.t-amber{background:var(--amber-soft);color:#b57e10}.t-grey{background:#eef0f5;color:#6b7280}.t-accent{background:var(--accent-soft);color:var(--accent-ink)}
+  .t-red{background:#fdecef;color:#c0392b}.t-sky{background:#eaf0fe;color:#4767b8}
+  .doc-sub{font-size:15.5px;font-weight:750;color:var(--ink);margin:24px 0 12px;display:flex;align-items:center;gap:9px}
+  .doc-sub span{font-size:12px;font-weight:600;color:var(--muted);background:#f3f1fa;border-radius:20px;padding:3px 10px}
+  .doc-card{display:flex;align-items:center;gap:14px;padding:14px 16px;background:#fff;border:1px solid var(--line);border-left-width:3px;border-radius:14px;margin-bottom:10px;transition:.15s}
+  .doc-card:hover{box-shadow:0 4px 16px rgba(90,60,180,.07)}
+  .doc-card.paid{border-left-color:var(--green)}.doc-card.due{border-left-color:var(--amber)}
+  .doc-card.late{border-left-color:#c0392b}.doc-card.soon{border-left-color:#d8d3ec}
+  .doc-main{flex:1;min-width:0}
+  .doc-main b{display:block;font-size:14.2px;font-weight:700;color:var(--ink);line-height:1.35}
+  .doc-main small{display:block;font-size:12.2px;color:var(--muted);margin-top:4px;line-height:1.5}
+  .doc-amt{font-size:16px;font-weight:800;color:var(--ink);white-space:nowrap}
+  .doc-card.soon .doc-amt{color:var(--muted)}
+  .doc-act{display:flex;gap:7px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+  .doc-card.ag{flex-wrap:wrap}
+  .doc-card.ag .doc-main{flex:1 1 240px}
+  .doc-card.ag .doc-act{width:100%;justify-content:flex-start;margin-top:4px;padding-top:11px;border-top:1px dashed var(--line)}
+  .doc-act .sbtn{padding:8px 13px;font-size:12.5px}
+  .dopen{background:var(--accent);color:#fff}
+  .doc-note{font-size:12.2px;color:var(--ink-soft);background:#faf9ff;border-radius:10px;padding:10px 12px;margin:10px 0 0;line-height:1.55}
+  @media(max-width:700px){.doc-card{flex-wrap:wrap;gap:10px}.doc-main{flex:1 1 100%;order:2}.doc-amt{order:3}.doc-card .tag{order:4}.doc-act{order:5;width:100%;justify-content:flex-start}}
   .link{color:var(--accent-ink);font-weight:600;font-size:13px;cursor:pointer}
 
   .appr{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
@@ -931,7 +951,7 @@ const VIEWS={
     return head+kpi+'<div class="section-title">Historique complet</div><div class="card">'+list+'</div>';
   },
   home(){
-    const d=state.data,pend=d.content.filter(c=>c.status==='pending').length,planned=d.content.length,unpaid=d.documents.filter(x=>x.status==='En attente').length,onbCount=Object.values(state.onb||{}).filter(v=>v&&(''+v).trim()&&(!Array.isArray(v)||v.length)).length;
+    const d=state.data,pend=d.content.filter(c=>c.status==='pending').length,planned=d.content.length,unpaid=d.documents.filter(x=>x.kind!=='contrat'&&x.kind!=='devis'&&(docState(x)==='due'||docState(x)==='late')).length,onbCount=Object.values(state.onb||{}).filter(v=>v&&(''+v).trim()&&(!Array.isArray(v)||v.length)).length;
     const kpis=[['Contenus à valider',pend,'Action requise','val'],['Posts planifiés',planned,'ce mois','cal'],['Réseaux reliés',d.social.filter(s=>s.connected).length,'comptes actifs','soc'],['Factures en attente',unpaid,'à régler','doc']];
     return `<div class="grid g4" style="margin-bottom:22px">${kpis.map(k=>`<div class="card kpi"><div class="tile-ico" style="background:var(--accent-soft);color:var(--accent-ink)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO[k[3]]}</svg></div><b>${k[1]}</b><div class="lbl">${k[0]}</div><span class="trend">${k[2]}</span></div>`).join('')}</div>
     <div class="grid" style="grid-template-columns:1.5fr 1fr;align-items:start">
@@ -1009,11 +1029,195 @@ const VIEWS={
     return `<div class="sec-head"><h3>Ressources & fichiers</h3><p>Tous vos éléments de marque, au même endroit.</p></div><div class="card">${files.map(f=>`<div class="row"><div class="fico" style="background:var(--accent-soft)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="1.7">${ICO.res}</svg></div><div class="rmain"><b>${f[0]}</b><small>${f[1]} · ${f[2]}</small></div><span class="link">Télécharger</span></div>`).join('')}</div>`;
   },
   documents(){
-    const col={facture:'var(--sky)',devis:'var(--accent-ink)',contrat:'var(--green)'};const st={'Payée':'t-green','En attente':'t-amber','Signé':'t-green'};
-    return `<div class="sec-head"><h3>Documents</h3><p>Devis, factures et contrats liés à votre accompagnement.</p></div><div class="card">${state.data.documents.map(x=>`<div class="row"><div class="fico" style="background:var(--accent-soft)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="${col[x.kind]||'var(--muted)'}" stroke-width="1.7">${ICO.doc}</svg></div><div class="rmain"><b>${esc(x.title)}</b><small>${esc(x.subtitle||'')}${x.amount?' · '+esc(x.amount):''}</small></div><span class="tag ${st[x.status]||'t-grey'}">${esc(x.status||'')}</span></div>`).join('')||'<div class="empty">Aucun document.</div>'}</div>`;
+    var all=docsSorted();state._docIdx=all;
+    var fact=[],cont=[],soon=[];
+    all.forEach(function(x){
+      if(x.kind==='contrat'||x.kind==='devis'){cont.push(x);return;}
+      if(docState(x)==='soon'){soon.push(x);return;}
+      fact.push(x);
+    });
+    var paid=0,rest=0,late=0,next=null;
+    all.forEach(function(x){
+      if(x.kind==='contrat'||x.kind==='devis')return;
+      var n=Number(x.amount_num||0);if(isNaN(n))n=0;
+      var st=docState(x);
+      if(st==='paid'){paid+=n;return;}
+      rest+=n;if(st==='late')late+=n;
+      if(x.due_on&&(!next||String(x.due_on)<String(next.due_on)))next=x;
+    });
+    var h='<div class="sec-head"><h3>Documents</h3><p>Vos factures et contrats, au même endroit. Ouvrez le PDF en un clic, et voyez d\'un coup d\'œil ce qui est réglé et ce qui reste dû.</p></div>';
+    h+=docAgencyForm();
+    if(fact.length||soon.length){
+      h+='<div class="grid g3" style="margin-bottom:6px">';
+      h+='<div class="card kpi"><div class="lbl">Déjà réglé</div><b>'+chf(paid)+'</b><span class="trend">à jour</span></div>';
+      h+='<div class="card kpi"><div class="lbl">Reste à payer</div><b>'+chf(rest)+'</b>'+(late>0?'<span class="trend" style="background:#fdecef;color:#c0392b">dont '+chf(late)+' en retard</span>':(rest>0?'<span class="trend" style="background:var(--amber-soft);color:#b57e10">échéances à venir</span>':'<span class="trend">tout est réglé</span>'))+'</div>';
+      h+='<div class="card kpi"><div class="lbl">Prochaine échéance</div><b>'+(next?docDate(next.due_on):'—')+'</b>'+(next?'<span class="trend" style="background:var(--amber-soft);color:#b57e10">'+chf(next.amount_num||0)+'</span>':'<span class="trend">rien en attente</span>')+'</div>';
+      h+='</div>';
+    }
+    function block(title,arr,count,empty){
+      var b='<div class="doc-sub">'+title+(count?'<span>'+count+'</span>':'')+'</div>';
+      if(!arr.length)return b+'<div class="card empty">'+empty+'</div>';
+      return b+arr.map(function(x){return docCard(x,all.indexOf(x));}).join('');
+    }
+    h+=block('🧾 Factures',fact,fact.length,'Aucune facture pour le moment.');
+    if(soon.length)h+=block('📅 Échéances à venir',soon,soon.length,'');
+    h+=block('📄 Contrats & devis',cont,cont.length,'Aucun contrat ni devis enregistré.');
+    h+='<input type="file" id="docFileIn" accept="application/pdf,image/*" style="display:none" onchange="attachDocFile()">';
+    return h;
   }
 };
 
+/* =================== FACTURES & CONTRATS =================== */
+var DOC_COL={facture:'var(--sky)',devis:'var(--accent-ink)',contrat:'var(--green)'};
+var DOC_LBL={paid:'Payée',due:'En attente',late:'En retard',soon:'À venir'};
+var DOC_TAG={paid:'t-green',due:'t-amber',late:'t-red',soon:'t-grey'};
+function todayISO(){return new Date().toISOString().slice(0,10);}
+function chf(n){var v=Number(n||0);if(isNaN(v))v=0;var s=v.toFixed(2).split('.');return 'CHF '+s[0].replace(/\B(?=(\d{3})+(?!\d))/g,'’')+'.'+s[1];}
+function docDate(d){if(!d)return '';var p=String(d).slice(0,10).split('-');return p.length<3?String(d):p[2]+'.'+p[1]+'.'+p[0];}
+function docAmt(x){
+  if(x.amount_num!==null&&x.amount_num!==undefined&&x.amount_num!==''&&!isNaN(Number(x.amount_num)))return chf(x.amount_num);
+  return x.amount||'';
+}
+function docState(x){
+  var s=(x.status||'').toLowerCase();
+  if(x.kind==='contrat'||x.kind==='devis')return s.indexOf('sign')>-1?'paid':'due';
+  if(s.indexOf('pay')>-1||s.indexOf('regl')>-1||s.indexOf('réglé')>-1)return 'paid';
+  if(s.indexOf('planif')>-1||s.indexOf('venir')>-1||s.indexOf('prévu')>-1)return 'soon';
+  if(x.due_on&&String(x.due_on).slice(0,10)<todayISO())return 'late';
+  return 'due';
+}
+function docsSorted(){
+  var arr=(state.data&&state.data.documents)||[];
+  return arr.slice().sort(function(a,b){
+    var da=String(a.due_on||a.issued_on||a.signed_on||a.created_at||'');
+    var db=String(b.due_on||b.issued_on||b.signed_on||b.created_at||'');
+    return db.localeCompare(da);
+  });
+}
+function docCard(x,i){
+  var st=docState(x),isC=(x.kind==='contrat'||x.kind==='devis');
+  var lbl=isC?(x.status||'Signé'):DOC_LBL[st];
+  var tag=isC?(st==='paid'?'t-green':'t-amber'):DOC_TAG[st];
+  var meta=[];
+  if(x.reference&&x.reference.indexOf('XXX')<0)meta.push('<b style="font-weight:700;color:var(--ink-soft)">'+esc(x.reference)+'</b>');
+  if(isC){
+    if(x.period_start||x.period_end)meta.push('Période : '+docDate(x.period_start)+' → '+docDate(x.period_end));
+    if(x.signed_on)meta.push('Signé le '+docDate(x.signed_on));
+  }else{
+    if(x.issued_on)meta.push('Émise le '+docDate(x.issued_on));
+    if(st==='paid'){meta.push(x.paid_on?'Réglée le '+docDate(x.paid_on):'Réglée');}
+    else if(st==='late'&&x.due_on)meta.push('<b style="color:#c0392b;font-weight:700">En retard depuis le '+docDate(x.due_on)+'</b>');
+    else if(x.due_on)meta.push((st==='soon'?'Prévue le ':'À régler avant le ')+docDate(x.due_on));
+  }
+  if(!meta.length&&x.subtitle)meta.push(esc(x.subtitle));
+  else if(x.subtitle&&isC)meta.push(esc(x.subtitle));
+  var hasFile=!!(x.file_path||x.file_url);
+  var acts='';
+  if(hasFile)acts+='<button class="sbtn dopen" onclick="openDocument('+i+')">Ouvrir le PDF</button>';
+  else if(st!=='soon')acts+='<span class="tag t-grey">PDF bientôt dispo</span>';
+  if(isAgencyView()){
+    if(!isC&&st!=='paid')acts+='<button class="sbtn ghost" onclick="markDocPaid('+i+')">Marquer payée</button>';
+    acts+='<button class="sbtn ghost" onclick="pickDocFile('+i+')">'+(hasFile?'Remplacer':'Joindre PDF')+'</button>';
+    acts+='<button class="sbtn ghost" onclick="deleteDoc('+i+')">'+(state._delDoc===i?'Confirmer ?':'Suppr.')+'</button>';
+  }
+  var amt=docAmt(x);
+  var note=(isC&&x.notes)?'<div class="doc-note">'+esc(x.notes)+'</div>':'';
+  var body='<div class="doc-card '+st+(isAgencyView()?' ag':'')+'">'
+   +'<div class="fico" style="background:var(--accent-soft)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="'+(DOC_COL[x.kind]||'var(--muted)')+'" stroke-width="1.7">'+ICO.doc+'</svg></div>'
+   +'<div class="doc-main"><b>'+esc(x.title||'Document')+'</b><small>'+meta.join(' · ')+'</small>'+note+'</div>'
+   +(amt?'<div class="doc-amt">'+esc(amt)+'</div>':'')
+   +'<span class="tag '+tag+'">'+esc(lbl)+'</span>'
+   +'<div class="doc-act">'+acts+'</div></div>';
+  return body;
+}
+async function openDocument(i){
+  var x=state._docIdx&&state._docIdx[i];if(!x)return;
+  var w=window.open('','_blank');
+  try{
+    var url=x.file_url||'';
+    if(x.file_path&&!DEMO){
+      var r=await sb.storage.from('documents').createSignedUrl(x.file_path,3600);
+      if(r.error)throw r.error;
+      url=r.data.signedUrl;
+    }
+    if(!url){if(w)w.close();toast('Aucun fichier joint à ce document');return;}
+    if(w)w.location.href=url;else window.location.href=url;
+  }catch(e){if(w)w.close();toast('Impossible d ouvrir le fichier : '+(e.message||e));}
+}
+function docAgencyForm(){
+  if(!isAgencyView())return '';
+  var h='<div class="card" style="margin-bottom:4px">';
+  h+='<div style="font-weight:750;font-size:14.5px;margin-bottom:14px">➕ Ajouter un document pour '+esc(state.client?state.client.name:'')+'</div>';
+  h+='<div class="grid g3" style="gap:0 16px">';
+  h+='<div class="field"><label>Type</label><select id="dc_kind"><option value="facture">Facture</option><option value="contrat">Contrat</option><option value="devis">Devis</option></select></div>';
+  h+='<div class="field"><label>Référence</label><input id="dc_ref" type="text" placeholder="FAC-2026-009"></div>';
+  h+='<div class="field"><label>Statut</label><select id="dc_st"><option>En attente</option><option>Payée</option><option>Planifiée</option><option>Signé</option></select></div>';
+  h+='<div class="field" style="grid-column:1/-1"><label>Titre</label><input id="dc_title" type="text" placeholder="Acompte 20 % — Formule Croissance"></div>';
+  h+='<div class="field"><label>Montant (CHF)</label><input id="dc_amt" type="number" step="0.05" placeholder="600"></div>';
+  h+='<div class="field"><label>Date d\'émission</label><input id="dc_iss" type="date"></div>';
+  h+='<div class="field"><label>Échéance</label><input id="dc_due" type="date"></div>';
+  h+='<div class="field" style="grid-column:1/-1"><label>Fichier PDF <span class="hint">— visible par le client</span></label><input id="dc_file" type="file" accept="application/pdf,image/*"></div>';
+  h+='</div>';
+  h+='<div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap"><button class="sbtn ok" id="dcBtn" onclick="createDocument()">Enregistrer le document</button><span id="dcMsg" style="font-size:12.5px;color:var(--muted)"></span></div>';
+  return h+'</div>';
+}
+async function uploadDocFile(row,f){
+  var ext=(f.name.split('.').pop()||'pdf').toLowerCase().replace(/[^a-z0-9]/g,'');
+  var path=row.client_id+'/'+row.id+'.'+ext;
+  var up=await sb.storage.from('documents').upload(path,f,{upsert:true,contentType:f.type||'application/pdf'});
+  if(up.error)throw up.error;
+  var r=await sb.from('documents').update({file_path:path}).eq('id',row.id);
+  if(r.error)throw r.error;
+  return path;
+}
+async function createDocument(){
+  if(!state.client)return;
+  function g(id){var e=document.getElementById(id);return e?e.value:'';}
+  var kind=g('dc_kind'),ref=g('dc_ref').trim(),title=g('dc_title').trim();
+  var amt=g('dc_amt'),iss=g('dc_iss'),due=g('dc_due'),stt=g('dc_st');
+  var msg=document.getElementById('dcMsg'),btn=document.getElementById('dcBtn');
+  if(!title){if(msg)msg.textContent='Entre au moins un titre.';return;}
+  if(btn){btn.disabled=true;btn.textContent='Enregistrement…';}
+  if(msg)msg.textContent='';
+  var rec={client_id:state.client.id,kind:kind,title:title,status:stt,currency:'CHF'};
+  if(ref)rec.reference=ref;
+  if(amt!==''&&!isNaN(Number(amt))){rec.amount_num=Number(amt);rec.amount=chf(amt);}
+  if(iss)rec.issued_on=iss;
+  if(due)rec.due_on=due;
+  if(stt==='Payée')rec.paid_on=todayISO();
+  if(stt==='Signé'&&iss)rec.signed_on=iss;
+  try{
+    var row;
+    if(DEMO){rec.id='d'+Date.now();row=rec;}
+    else{var r=await sb.from('documents').insert(rec).select().single();if(r.error)throw r.error;row=r.data;}
+    var fi=document.getElementById('dc_file'),f=fi&&fi.files&&fi.files[0];
+    if(f&&!DEMO){if(msg)msg.textContent='Envoi du fichier…';row.file_path=await uploadDocFile(row,f);}
+    state.data.documents.push(row);
+    toast('✓ Document ajouté');go('documents');
+  }catch(e){if(msg)msg.textContent='Erreur : '+(e.message||e);}
+  finally{if(btn){btn.disabled=false;btn.textContent='Enregistrer le document';}}
+}
+function pickDocFile(i){state._docPick=i;var e=document.getElementById('docFileIn');if(e){e.value='';e.click();}}
+async function attachDocFile(){
+  var e=document.getElementById('docFileIn'),f=e&&e.files&&e.files[0];if(!f)return;
+  var x=state._docIdx&&state._docIdx[state._docPick];if(!x)return;
+  toast('Envoi du fichier…');
+  try{x.file_path=await uploadDocFile(x,f);toast('✓ Fichier joint');go('documents');}
+  catch(err){toast('Erreur : '+(err.message||err));}
+}
+async function markDocPaid(i){
+  var x=state._docIdx&&state._docIdx[i];if(!x)return;
+  var d=todayISO();
+  if(!DEMO){var r=await sb.from('documents').update({status:'Payée',paid_on:d}).eq('id',x.id);if(r&&r.error){toast('Erreur : '+r.error.message);return;}}
+  x.status='Payée';x.paid_on=d;toast('✓ Facture marquée payée');go('documents');
+}
+async function deleteDoc(i){
+  if(state._delDoc!==i){state._delDoc=i;go('documents');toast('Clique une 2e fois sur « Confirmer ? » pour supprimer');return;}
+  var x=state._docIdx&&state._docIdx[i];state._delDoc=null;if(!x)return;
+  if(!DEMO){var r=await sb.from('documents').delete().eq('id',x.id);if(r&&r.error){toast('Erreur : '+r.error.message);return;}}
+  state.data.documents=state.data.documents.filter(function(d){return d!==x;});
+  toast('Document supprimé');go('documents');
+}
 function statusLabel(s){return {idea:'Idée',produced:'Produit',pending:'À valider',approved:'Validé',changes_requested:'Modif demandée',published:'Publié'}[s]||s;}
 function ctBadge(t){return t==='Reel'?'<span class="ct-badge ct-reel">🎥 Reel</span>':'<span class="ct-badge ct-carr">🖼️ Carrousel</span>';}
 function briefDetail(it){
