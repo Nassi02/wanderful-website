@@ -993,7 +993,7 @@ const VIEWS={
     const byWeek={};items.forEach(it=>{const w=it.week||0;(byWeek[w]=byWeek[w]||[]).push(it);});
     let h=`<div class="sec-head"><h3>Calendrier éditorial</h3><p>Ton planning des 3 mois. Clique sur un contenu pour voir le brief, <b>déposer ton montage / carrousel</b> et écrire la légende à publier.</p></div>`;
     Object.keys(byWeek).map(Number).sort((a,b)=>a-b).forEach(w=>{
-      h+=`<div class="cal-week"><div class="cal-wlabel">Semaine ${w}</div>${byWeek[w].map(it=>`<div class="cal-item" onclick="openContentModal('${it.id}')">${ctBadge(it.type)}<div class="cal-main"><b>${esc(it.title)}</b><small>${esc(it.pillar||'')}</small></div>${it.media_url?'<span class="cal-media">📎 fichier prêt</span>':''}<span class="ct-status s-${it.status}">${statusLabel(it.status)}</span><span class="cal-date">${fmtDate(it.scheduled_at)}</span></div>`).join('')}</div>`;
+      h+=`<div class="cal-week"><div class="cal-wlabel">Semaine ${w}</div>${byWeek[w].map(it=>`<div class="cal-item" onclick="openContentModal('${it.id}')">${ctBadge(it.type)}<div class="cal-main"><b>${esc(it.title)}</b><small>${esc(it.pillar||'')}</small></div>${it.media_url?('<span class="cal-media">'+(mediaList(it).length>1?('🖼️ '+mediaList(it).length+' slides'):'📎 fichier prêt')+'</span>'):''}<span class="ct-status s-${it.status}">${statusLabel(it.status)}</span><span class="cal-date">${fmtDate(it.scheduled_at)}</span></div>`).join('')}</div>`;
     });
     return h;
   },
@@ -1252,15 +1252,63 @@ function briefDetail(it){
   if(b.tags)h+=`<div class="bd-block"><div class="bd-lbl"># Hashtags</div><p style="color:var(--accent-ink)">${esc(b.tags)}</p></div>`;
   return h;
 }
+function mediaList(it){
+  var m=it&&it.media_url;if(!m)return [];
+  if(typeof m==='string'&&m.charAt(0)==='['){try{var a=JSON.parse(m);return (Array.isArray(a)&&a.length)?a:[];}catch(e){return [m];}}
+  return [m];
+}
+function crslGo(id,d){
+  var c=document.getElementById('crsl_'+id);if(!c)return;
+  var n=parseInt(c.getAttribute('data-n'),10)||1;
+  var i=(parseInt(c.getAttribute('data-i'),10)||0)+d;
+  if(i<0)i=n-1;if(i>=n)i=0;
+  c.setAttribute('data-i',String(i));
+  var t=c.querySelector('.crsl-track');if(t)t.style.transform='translateX(-'+(i*100)+'%)';
+  var cc=document.getElementById('crslc_'+id);if(cc)cc.textContent=(i+1)+' / '+n;
+  var dots=c.querySelectorAll('[data-d]');
+  for(var k=0;k<dots.length;k++){dots[k].style.background=(k===i)?'#fff':'rgba(255,255,255,.45)';dots[k].style.width=(k===i)?'16px':'6px';}
+}
+function crslJump(id,i){
+  var c=document.getElementById('crsl_'+id);if(!c)return;
+  var cur=parseInt(c.getAttribute('data-i'),10)||0;crslGo(id,i-cur);
+}
+function crslSwipe(ev,id,phase){
+  var c=document.getElementById('crsl_'+id);if(!c)return;
+  var x=(ev.changedTouches&&ev.changedTouches[0])?ev.changedTouches[0].clientX:null;if(x===null)return;
+  if(phase==='s'){c.setAttribute('data-x',String(x));return;}
+  var sx=parseFloat(c.getAttribute('data-x'));if(isNaN(sx))return;
+  var dx=x-sx;if(Math.abs(dx)>40)crslGo(id,dx<0?1:-1);
+}
+function renderMedia(it){
+  var urls=mediaList(it);if(!urls.length)return '';
+  var isVid=String(it.media_type||'').startsWith('video');
+  if(urls.length===1){
+    return isVid?'<video controls src="'+esc(urls[0])+'" style="width:100%;border-radius:12px;max-height:440px;background:#000"></video>'
+                :'<img src="'+esc(urls[0])+'" style="width:100%;border-radius:12px;display:block">';
+  }
+  var id=String(it.id);
+  var h='<div class="crsl" id="crsl_'+id+'" data-i="0" data-n="'+urls.length+'" style="position:relative;border-radius:12px;overflow:hidden;background:#0f0f14;touch-action:pan-y"'
+      +' ontouchstart="crslSwipe(event,\''+id+'\',\'s\')" ontouchend="crslSwipe(event,\''+id+'\',\'e\')">';
+  h+='<div class="crsl-track" style="display:flex;transition:transform .3s cubic-bezier(.4,0,.2,1)">';
+  for(var i=0;i<urls.length;i++){h+='<div style="min-width:100%;flex:0 0 100%"><img src="'+esc(urls[i])+'" loading="lazy" style="width:100%;display:block"></div>';}
+  h+='</div>';
+  h+='<button type="button" aria-label="Slide précédente" onclick="crslGo(\''+id+'\',-1)" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);border:0;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center">‹</button>';
+  h+='<button type="button" aria-label="Slide suivante" onclick="crslGo(\''+id+'\',1)" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);border:0;width:34px;height:34px;border-radius:50%;background:rgba(0,0,0,.55);color:#fff;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center">›</button>';
+  h+='<div id="crslc_'+id+'" style="position:absolute;top:8px;right:10px;background:rgba(0,0,0,.6);color:#fff;font-size:11px;font-weight:600;padding:3px 9px;border-radius:10px">1 / '+urls.length+'</div>';
+  h+='<div style="position:absolute;bottom:9px;left:0;right:0;display:flex;gap:5px;justify-content:center">';
+  for(var j=0;j<urls.length;j++){h+='<span data-d="'+j+'" onclick="crslJump(\''+id+'\','+j+')" style="width:'+(j===0?'16px':'6px')+';height:6px;border-radius:3px;background:'+(j===0?'#fff':'rgba(255,255,255,.45)')+';cursor:pointer;transition:width .25s,background .25s"></span>';}
+  h+='</div></div>';
+  return h;
+}
 function openContentModal(id){
   const it=(state.data.content||[]).find(c=>String(c.id)===String(id));if(!it)return;
   const canEdit=!isAgencyView();
-  const isVid=String(it.media_type||'').startsWith('video');
-  const media=it.media_url?(isVid?`<video controls src="${esc(it.media_url)}" style="width:100%;border-radius:12px;max-height:440px;background:#000"></video>`:`<img src="${esc(it.media_url)}" style="width:100%;border-radius:12px;display:block">`):'';
+  const media=renderMedia(it);
   const prod=`<div class="bd-lbl" style="margin-bottom:8px">📤 Ta production</div>
     <div class="prod-media">${media||'<div class="prod-empty">Aucun fichier déposé pour l\'instant.</div>'}</div>
-    <input type="file" id="prodFile" accept="image/*,video/*" style="display:none" onchange="uploadContentMedia('${it.id}')">
+    <input type="file" id="prodFile" accept="image/*,video/*" multiple style="display:none" onchange="uploadContentMedia('${it.id}')">
     <button class="sbtn ok" style="width:100%;margin-top:10px" onclick="document.getElementById('prodFile').click()">${it.media_url?'🔁 Remplacer le fichier':'📎 Déposer mon montage / mon carrousel'}</button>
+    <div style="font-size:11px;color:var(--muted);margin-top:5px">Pour un carrousel : sélectionne les slides d'un coup (elles seront rangées par ordre de nom).</div>
     <div id="prodProg" style="font-size:12px;color:var(--muted);margin-top:6px"></div>
     <div class="field" style="margin-top:16px"><label>Légende à publier ${it.type==='Carrousel'?'':''}</label><textarea id="prodCaption" style="min-height:130px">${esc(it.caption||'')}</textarea></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="sbtn ghost" onclick="saveContentCaption('${it.id}')">💾 Enregistrer la légende</button><button class="sbtn ok" onclick="sendToValidation('${it.id}')">Envoyer en validation →</button></div>`;
@@ -1361,19 +1409,28 @@ async function deletePost(id,btn){
   }catch(e){toast('Erreur : '+(e.message||e));}
 }
 async function uploadContentMedia(id){
-  const inp=document.getElementById('prodFile');const f=inp&&inp.files[0];if(!f)return;
+  const inp=document.getElementById('prodFile');
+  const fs=(inp&&inp.files)?Array.prototype.slice.call(inp.files):[];if(!fs.length)return;
+  fs.sort(function(a,b){return String(a.name).localeCompare(String(b.name),'fr',{numeric:true,sensitivity:'base'});});
   const prog=document.getElementById('prodProg');if(prog)prog.textContent='Envoi en cours…';
-  if(DEMO){const it=state.data.content.find(c=>String(c.id)===String(id));if(it){it.media_url=URL.createObjectURL(f);it.media_type=f.type;it.status='produced';}toast('✓ Fichier déposé (démo)');openContentModal(id);return;}
+  if(DEMO){const it=state.data.content.find(c=>String(c.id)===String(id));if(it){var du=fs.map(function(f){return URL.createObjectURL(f);});it.media_url=du.length>1?JSON.stringify(du):du[0];it.media_type=fs[0].type;it.status='produced';}toast('✓ Fichier déposé (démo)');openContentModal(id);return;}
   try{
-    const ext=(f.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'');
-    const path=state.client.id+'/'+id+'.'+ext;
-    const up=await sb.storage.from('content').upload(path,f,{upsert:true,contentType:f.type||'application/octet-stream'});
-    if(up.error) throw up.error;
-    const pub=sb.storage.from('content').getPublicUrl(path).data.publicUrl+'?t='+Date.now();
-    const {error}=await sb.from('content_items').update({media_url:pub,media_type:f.type,status:'produced'}).eq('id',id);
+    var urls=[];
+    for(var n=0;n<fs.length;n++){
+      var f=fs[n];
+      if(prog)prog.textContent='Envoi '+(n+1)+' / '+fs.length+' — '+f.name;
+      var ext=(f.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'');
+      var path=state.client.id+'/'+id+(fs.length>1?('/'+(n+1)):'')+'.'+ext;
+      var up=await sb.storage.from('content').upload(path,f,{upsert:true,contentType:f.type||'application/octet-stream'});
+      if(up.error) throw up.error;
+      urls.push(sb.storage.from('content').getPublicUrl(path).data.publicUrl+'?t='+Date.now());
+    }
+    const val=urls.length>1?JSON.stringify(urls):urls[0];
+    const {error}=await sb.from('content_items').update({media_url:val,media_type:fs[0].type,status:'produced'}).eq('id',id);
     if(error) throw error;
-    const it=state.data.content.find(c=>String(c.id)===String(id));if(it){it.media_url=pub;it.media_type=f.type;it.status='produced';}
-    toast('✓ Fichier déposé');openContentModal(id);
+    const it=state.data.content.find(c=>String(c.id)===String(id));if(it){it.media_url=val;it.media_type=fs[0].type;it.status='produced';}
+    if(prog)prog.textContent='';
+    toast(urls.length>1?('✓ '+urls.length+' slides déposées'):'✓ Fichier déposé');openContentModal(id);
   }catch(e){if(prog)prog.textContent='Erreur : '+(e.message||e);toast('Erreur d\'envoi');}
 }
 async function saveContentCaption(id){
