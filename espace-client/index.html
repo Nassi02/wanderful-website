@@ -1304,7 +1304,7 @@ function openContentModal(id){
   const it=(state.data.content||[]).find(c=>String(c.id)===String(id));if(!it)return;
   const canEdit=!isAgencyView();
   const media=renderMedia(it);
-  const prod=`<div class="bd-lbl" style="margin-bottom:8px">📤 Ta production</div>
+  const prod=`<div class="bd-lbl" style="margin-bottom:8px">${canEdit?'📤 Ta production':'📤 Production (agence) — dépose ici le montage'}</div>
     <div class="prod-media">${media||'<div class="prod-empty">Aucun fichier déposé pour l\'instant.</div>'}</div>
     <input type="file" id="prodFile" accept="image/*,video/*" multiple style="display:none" onchange="uploadContentMedia('${it.id}')">
     <button class="sbtn ok" style="width:100%;margin-top:10px" onclick="document.getElementById('prodFile').click()">${it.media_url?'🔁 Remplacer le fichier':'📎 Déposer mon montage / mon carrousel'}</button>
@@ -1318,7 +1318,7 @@ function openContentModal(id){
     <div class="modal-head">${ctBadge(it.type)} <span class="ct-status s-${it.status}" style="margin-left:6px">${statusLabel(it.status)}</span><h3>${esc(it.title)}</h3><small>Semaine ${it.week||'—'} · ${fmtDate(it.scheduled_at)} · ${esc(it.pillar||'')}</small></div>
     <div class="modal-grid">
       <div class="modal-col"><div class="bd-lbl" style="margin-bottom:8px">📋 Le brief</div><div class="modal-brief">${it.brief&&it.brief.obj?`<div class="idea-obj">🎯 ${esc(it.brief.obj)}</div>`:''}${briefDetail(it)}</div></div>
-      <div class="modal-col">${canEdit?prod:prodLocked}</div>
+      <div class="modal-col">${prod}</div>
     </div></div></div>`;
 }
 function closeContentModal(){const e=document.getElementById('modalRoot');if(e)e.innerHTML='';}
