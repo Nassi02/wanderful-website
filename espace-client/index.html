@@ -974,7 +974,7 @@ const VIEWS={
   validation(){
     const items=state.data.content.filter(c=>c.status==='pending');
     if(!items.length)return `<div class="sec-head"><h3>Validation contenu</h3><p>Vos contenus avant publication.</p></div><div class="card empty">🎉 Tout est validé ! Aucun contenu en attente.</div>`;
-    return `<div class="sec-head"><h3>Validation contenu</h3><p>${items.length} contenu(s) attendent votre feu vert avant publication automatique.</p></div>`+items.map(it=>`<div class="card" style="margin-bottom:14px"><div class="appr"><div class="preview">${esc(it.type)}</div><div class="body"><div style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);margin-bottom:4px">${pico(it.platform)} ${esc(it.platform)} · ${esc(it.type)}</div><b style="font-size:15px">${esc(it.title)}</b><div class="meta"><span>🗓️ ${fmtDate(it.scheduled_at)}</span></div><div class="caption-box">${esc(it.caption)}</div><div class="btn-row"><button class="sbtn ghost" onclick="act('${it.id}','changes_requested')">Demander une modif</button><button class="sbtn ok" onclick="act('${it.id}','approved')">✓ Approuver</button></div></div></div></div>`).join('');
+    return `<div class="sec-head"><h3>Validation contenu</h3><p>${items.length} contenu(s) attendent votre feu vert avant publication automatique.</p></div>`+items.map(it=>`<div class="card" style="margin-bottom:14px"><div class="appr"><div class="preview">${esc(it.type)}</div><div class="body"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:5px">${netsOf(it).map(function(n){return netBadge(n);}).join('')} <span>· ${esc(it.type)}</span></div><b style="font-size:15px">${esc(it.title)}</b><div class="meta"><span>🗓️ ${fmtDate(it.scheduled_at)}</span></div>${netsOf(it).map(function(n){return '<div style="margin-top:9px">'+(netsOf(it).length>1?'<div style="font-size:11px;font-weight:700;color:#8a90a6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px">'+(n==='facebook'?'Texte Facebook':'Texte Instagram')+'</div>':'')+'<div class="caption-box">'+esc(capFor(it,n))+'</div></div>';}).join('')}<div class="btn-row"><button class="sbtn ghost" onclick="act('${it.id}','changes_requested')">Demander une modif</button><button class="sbtn ok" onclick="act('${it.id}','approved')">✓ Approuver</button></div></div></div></div>`).join('');
   },
   ideas(){
     const items=(state.data.content||[]).slice().sort((a,b)=>(new Date(a.scheduled_at))-(new Date(b.scheduled_at)));
@@ -1220,6 +1220,14 @@ async function deleteDoc(i){
 }
 function statusLabel(s){return {idea:'Idée',produced:'Produit',pending:'À valider',approved:'Validé',changes_requested:'Modif demandée',published:'Publié'}[s]||s;}
 function ctBadge(t){return t==='Reel'?'<span class="ct-badge ct-reel">🎥 Reel</span>':'<span class="ct-badge ct-carr">🖼️ Carrousel</span>';}
+function netsOf(it){var b=(it&&it.brief)||{};var n=Array.isArray(b.nets)?b.nets:null;if(n&&n.length)return n;return [String((it&&it.platform)||'instagram').toLowerCase().indexOf('face')>=0?'facebook':'instagram'];}
+function netBadge(n){var fb=(n==='facebook');return '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;background:'+(fb?'#e7f0fe':'#fdeef6')+';color:'+(fb?'#1b4bb8':'#b8317a')+'">'+(fb?'\u{1F4D8} Facebook':'\u{1F4F8} Instagram')+'</span>';}
+function capFor(it,n){var b=(it&&it.brief)||{};if(n==='facebook'&&b.caption_fb!=null&&String(b.caption_fb).trim()!=='')return b.caption_fb;return (it&&it.caption)||'';}
+function netPaint(el){var on=el.getAttribute('data-on')==='1';el.style.cssText='display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;user-select:none;border:1.5px solid '+(on?'#3b5bdb':'#dde1ec')+';background:'+(on?'#eef1fb':'#fff')+';color:'+(on?'#2a3550':'#9096a8')+';';}
+function selectedNets(){var out=[];['instagram','facebook'].forEach(function(n){var el=document.getElementById('net_'+n);if(el&&el.getAttribute('data-on')==='1')out.push(n);});return out;}
+function toggleNet(n){var el=document.getElementById('net_'+n);if(!el)return;var on=el.getAttribute('data-on')==='1';if(on&&selectedNets().length<=1){toast('Choisis au moins un reseau');return;}el.setAttribute('data-on',on?'0':'1');netPaint(el);syncNetUI();}
+function syncNetUI(){var s=selectedNets();var ig=document.getElementById('igBox'),fb=document.getElementById('fbBox');if(ig)ig.style.display=(s.indexOf('instagram')>=0)?'':'none';if(fb)fb.style.display=(s.indexOf('facebook')>=0)?'':'none';var tf=document.getElementById('prodCaptionFb'),ti=document.getElementById('prodCaption');if(tf&&ti&&!tf.value.trim())tf.value=ti.value;}
+function copyIgToFb(){var tf=document.getElementById('prodCaptionFb'),ti=document.getElementById('prodCaption');if(tf&&ti){tf.value=ti.value;toast('\u2713 Legende Instagram reprise');}}
 function briefDetail(it){
   const b=it.brief||{};
   const body=(b.body||[]).filter(x=>x.s!=='Hook').map(x=>`<div class="bd-step"><span class="bd-s">${esc(x.s)}</span><span class="bd-t">${esc(x.t)}</span></div>`).join('');
@@ -1304,14 +1312,23 @@ function openContentModal(id){
   const it=(state.data.content||[]).find(c=>String(c.id)===String(id));if(!it)return;
   const canEdit=!isAgencyView();
   const media=renderMedia(it);
+  const NETS=netsOf(it);
   const prod=`<div class="bd-lbl" style="margin-bottom:8px">${canEdit?'📤 Ta production':'📤 Production (agence) — dépose ici le montage'}</div>
     <div class="prod-media">${media||'<div class="prod-empty">Aucun fichier déposé pour l\'instant.</div>'}</div>
     <input type="file" id="prodFile" accept="image/*,video/*" multiple style="display:none" onchange="uploadContentMedia('${it.id}')">
     <button class="sbtn ok" style="width:100%;margin-top:10px" onclick="document.getElementById('prodFile').click()">${it.media_url?'🔁 Remplacer le fichier':'📎 Déposer mon montage / mon carrousel'}</button>
     <div style="font-size:11px;color:var(--muted);margin-top:5px">Pour un carrousel : sélectionne les slides d'un coup (elles seront rangées par ordre de nom).</div>
     <div id="prodProg" style="font-size:12px;color:var(--muted);margin-top:6px"></div>
-    <div class="field" style="margin-top:16px"><label>Légende à publier ${it.type==='Carrousel'?'':''}</label><textarea id="prodCaption" style="min-height:130px">${esc(it.caption||'')}</textarea></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="sbtn ghost" onclick="saveContentCaption('${it.id}')">💾 Enregistrer la légende</button><button class="sbtn ok" onclick="sendToValidation('${it.id}')">Envoyer en validation →</button></div>`;
+    <div class="field" style="margin-top:16px"><label>🌐 Réseaux de publication</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:3px">
+        <span id="net_instagram" data-on="${NETS.indexOf('instagram')>=0?'1':'0'}" onclick="toggleNet('instagram')">📸 Instagram</span>
+        <span id="net_facebook" data-on="${NETS.indexOf('facebook')>=0?'1':'0'}" onclick="toggleNet('facebook')">📘 Facebook</span>
+      </div>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px">Même visuel, légende adaptée à chaque réseau.</div>
+    </div>
+    <div class="field" id="igBox" style="margin-top:14px"><label>✍️ Légende Instagram</label><textarea id="prodCaption" style="min-height:130px">${esc(it.caption||'')}</textarea><div style="font-size:11px;color:var(--muted);margin-top:4px">Les 2 premières lignes sont décisives · les liens ne sont pas cliquables · hashtags en fin de texte.</div></div>
+    <div class="field" id="fbBox" style="margin-top:14px"><label>✍️ Légende Facebook</label><textarea id="prodCaptionFb" style="min-height:130px">${esc(capFor(it,'facebook'))}</textarea><div style="font-size:11px;color:var(--muted);margin-top:4px">Ici les liens sont cliquables, le texte long fonctionne bien, et les hashtags sont inutiles.</div><button class="sbtn ghost" style="margin-top:7px;font-size:12px" onclick="copyIgToFb()">⧉ Reprendre la légende Instagram</button></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="sbtn ghost" onclick="saveContentCaption('${it.id}')">💾 Enregistrer</button><button class="sbtn ok" onclick="sendToValidation('${it.id}')">Envoyer en validation →</button></div>`;
   const prodLocked=`<div class="prod-empty">Le dépôt de fichier se fait depuis la vue client. Utilise « Voir la vue client » pour tester.</div>`;
   const el=document.getElementById('modalRoot');
   el.innerHTML=`<div class="modal-ov" onclick="if(event.target===this)closeContentModal()"><div class="modal"><button class="modal-x" onclick="closeContentModal()">✕</button>
@@ -1320,6 +1337,8 @@ function openContentModal(id){
       <div class="modal-col"><div class="bd-lbl" style="margin-bottom:8px">📋 Le brief</div><div class="modal-brief">${it.brief&&it.brief.obj?`<div class="idea-obj">🎯 ${esc(it.brief.obj)}</div>`:''}${briefDetail(it)}</div></div>
       <div class="modal-col">${prod}</div>
     </div></div></div>`;
+  ['instagram','facebook'].forEach(function(n){var ce=document.getElementById('net_'+n);if(ce)netPaint(ce);});
+  syncNetUI();
 }
 function closeContentModal(){const e=document.getElementById('modalRoot');if(e)e.innerHTML='';}
 /* ============ EDITEUR DE POST (vue agence) ============ */
@@ -1433,16 +1452,25 @@ async function uploadContentMedia(id){
     toast(urls.length>1?('✓ '+urls.length+' slides déposées'):'✓ Fichier déposé');openContentModal(id);
   }catch(e){if(prog)prog.textContent='Erreur : '+(e.message||e);toast('Erreur d\'envoi');}
 }
+function netPayload(id){
+  const t=document.getElementById('prodCaption');const fbEl=document.getElementById('prodCaptionFb');
+  if(!t)return null;
+  const ns=selectedNets();const nets=ns.length?ns:['instagram'];
+  const it=state.data.content.find(c=>String(c.id)===String(id));
+  const nb=Object.assign({},(it&&it.brief)||{},{nets:nets,caption_fb:fbEl?fbEl.value:''});
+  return {cap:t.value,brief:nb,it:it};
+}
 async function saveContentCaption(id){
-  const t=document.getElementById('prodCaption');if(!t)return;const cap=t.value;
-  if(!DEMO){const {error}=await sb.from('content_items').update({caption:cap}).eq('id',id);if(error){toast('Erreur');return;}}
-  const it=state.data.content.find(c=>String(c.id)===String(id));if(it)it.caption=cap;
-  toast('✓ Légende enregistrée');
+  const p=netPayload(id);if(!p)return;
+  if(!DEMO){const {error}=await sb.from('content_items').update({caption:p.cap,brief:p.brief}).eq('id',id);if(error){toast('Erreur');return;}}
+  if(p.it){p.it.caption=p.cap;p.it.brief=p.brief;}
+  toast('✓ Légendes enregistrées');
 }
 async function sendToValidation(id){
-  const t=document.getElementById('prodCaption');const cap=t?t.value:undefined;
-  if(!DEMO){const {error}=await sb.from('content_items').update(cap!==undefined?{caption:cap,status:'pending'}:{status:'pending'}).eq('id',id);if(error){toast('Erreur');return;}}
-  const it=state.data.content.find(c=>String(c.id)===String(id));if(it){if(cap!==undefined)it.caption=cap;it.status='pending';}
+  const p=netPayload(id);
+  const upd=p?{caption:p.cap,brief:p.brief,status:'pending'}:{status:'pending'};
+  if(!DEMO){const {error}=await sb.from('content_items').update(upd).eq('id',id);if(error){toast('Erreur');return;}}
+  const it=state.data.content.find(c=>String(c.id)===String(id));if(it){if(p){it.caption=p.cap;it.brief=p.brief;}it.status='pending';}
   toast('✓ Envoyé en validation');closeContentModal();go('calendar');
 }
 
