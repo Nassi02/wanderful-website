@@ -772,7 +772,7 @@ function previewBar(){
 function clientUnlocked(){const u=state.client&&state.client.unlocked;return Array.isArray(u)?u:[];}
 function isUnlocked(k){return k==='home'||k==='access'||!LOCKABLE.includes(k)||isAgencyView()||clientUnlocked().includes(k);}
 function renderNav(content){
-  const pend=(content||[]).filter(c=>c.status==='pending').length;
+  const pend=(content||[]).filter(c=>c.status==='pending').length+(content||[]).filter(c=>c.status==='changes_requested').length;
   let items=NAV.slice();
   if(isAgencyView()) items=[{g:'Agence'},{k:'newclient',t:'Nouveau client',i:'plus'},{k:'access',t:'Accès & cadenas',i:'key'},{k:'logins',t:'Connexions',i:'login'}].concat(items);
   document.getElementById('nav').innerHTML=items.map(n=>{
@@ -953,7 +953,7 @@ const VIEWS={
   home(){
     const d=state.data,pend=d.content.filter(c=>c.status==='pending').length,planned=d.content.length,unpaid=d.documents.filter(x=>x.kind!=='contrat'&&x.kind!=='devis'&&(docState(x)==='due'||docState(x)==='late')).length,onbCount=Object.values(state.onb||{}).filter(v=>v&&(''+v).trim()&&(!Array.isArray(v)||v.length)).length;
     const kpis=[['Contenus à valider',pend,'Action requise','val'],['Posts planifiés',planned,'ce mois','cal'],['Réseaux reliés',d.social.filter(s=>s.connected).length,'comptes actifs','soc'],['Factures en attente',unpaid,'à régler','doc']];
-    return `<div class="grid g4" style="margin-bottom:22px">${kpis.map(k=>`<div class="card kpi"><div class="tile-ico" style="background:var(--accent-soft);color:var(--accent-ink)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO[k[3]]}</svg></div><b>${k[1]}</b><div class="lbl">${k[0]}</div><span class="trend">${k[2]}</span></div>`).join('')}</div>
+    return changeReqCard(d)+`<div class="grid g4" style="margin-bottom:22px">${kpis.map(k=>`<div class="card kpi"><div class="tile-ico" style="background:var(--accent-soft);color:var(--accent-ink)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO[k[3]]}</svg></div><b>${k[1]}</b><div class="lbl">${k[0]}</div><span class="trend">${k[2]}</span></div>`).join('')}</div>
     <div class="grid" style="grid-template-columns:1.5fr 1fr;align-items:start">
       <div><div class="section-title">Activité récente</div><div class="card">${d.activity.length?d.activity.map(a=>`<div class="row"><span style="width:9px;height:9px;border-radius:50%;background:var(--${a.color||'accent'});flex-shrink:0"></span><div class="rmain"><b style="font-weight:500">${esc(a.message)}</b></div></div>`).join(''):'<div class="empty">Aucune activité.</div>'}</div></div>
       <div><div class="section-title">Onboarding</div><div class="card" style="cursor:pointer" onclick="go('onboarding')"><div class="tile-ico" style="background:var(--accent-soft);color:var(--accent-ink)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO.onb}</svg></div><b style="font-weight:650">Compléter mon profil stratégique</b><div class="lbl" style="font-size:12.5px;color:var(--muted);margin-top:2px">${onbCount} réponse(s) enregistrée(s)</div></div></div>
@@ -973,8 +973,10 @@ const VIEWS={
   },
   validation(){
     const items=state.data.content.filter(c=>c.status==='pending');
-    if(!items.length)return `<div class="sec-head"><h3>Validation contenu</h3><p>Vos contenus avant publication.</p></div><div class="card empty">🎉 Tout est validé ! Aucun contenu en attente.</div>`;
-    return `<div class="sec-head"><h3>Validation contenu</h3><p>${items.length} contenu(s) attendent votre feu vert avant publication automatique.</p></div>`+items.map(it=>`<div class="card" style="margin-bottom:14px"><div class="appr"><div class="preview">${esc(it.type)}</div><div class="body"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:5px">${netsOf(it).map(function(n){return netBadge(n);}).join('')} <span>· ${esc(it.type)}</span></div><b style="font-size:15px">${esc(it.title)}</b><div class="meta"><span>🗓️ ${fmtDate(it.scheduled_at)}</span></div>${netsOf(it).map(function(n){return '<div style="margin-top:9px">'+(netsOf(it).length>1?'<div style="font-size:11px;font-weight:700;color:#8a90a6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px">'+(n==='facebook'?'Texte Facebook':'Texte Instagram')+'</div>':'')+'<div class="caption-box">'+esc(capFor(it,n))+'</div></div>';}).join('')}<div class="btn-row"><button class="sbtn ghost" onclick="act('${it.id}','changes_requested')">Demander une modif</button><button class="sbtn ok" onclick="act('${it.id}','approved')">✓ Approuver</button></div></div></div></div>`).join('');
+    const waiting=state.data.content.filter(c=>c.status==='changes_requested');
+    const wBlock=waiting.length?`<div class="section-title" style="margin-top:26px">⏳ En cours de correction chez Wanderful</div>`+waiting.map(it=>`<div class="card" style="margin-bottom:12px;border-left:3px solid #B98DF2"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:5px">${netsOf(it).map(function(n){return netBadge(n);}).join('')} <span>· ${esc(it.type)}</span></div><b style="font-size:15px">${esc(it.title)}</b><div class="meta"><span>🗓️ ${fmtDate(it.scheduled_at)}</span></div>${threadHtml(it,'Ta demande de modification')}<div style="font-size:12.5px;color:var(--muted);margin-top:10px">Wanderful a bien reçu ta demande. La version corrigée réapparaîtra ici pour validation.</div></div>`).join(''):'';
+    if(!items.length)return `<div class="sec-head"><h3>Validation contenu</h3><p>Vos contenus avant publication.</p></div>`+(wBlock||`<div class="card empty">🎉 Tout est validé ! Aucun contenu en attente.</div>`);
+    return `<div class="sec-head"><h3>Validation contenu</h3><p>${items.length} contenu(s) attendent votre feu vert avant publication automatique.</p></div>`+items.map(it=>`<div class="card" style="margin-bottom:14px"><div class="appr"><div class="preview">${esc(it.type)}</div><div class="body"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:5px">${netsOf(it).map(function(n){return netBadge(n);}).join('')} <span>· ${esc(it.type)}</span></div><b style="font-size:15px">${esc(it.title)}</b><div class="meta"><span>🗓️ ${fmtDate(it.scheduled_at)}</span></div>${revBanner(it)}${netsOf(it).map(function(n){return '<div style="margin-top:9px">'+(netsOf(it).length>1?'<div style="font-size:11px;font-weight:700;color:#8a90a6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px">'+(n==='facebook'?'Texte Facebook':'Texte Instagram')+'</div>':'')+'<div class="caption-box">'+esc(capFor(it,n))+'</div></div>';}).join('')}${threadHtml(it,'Historique des échanges')}<div class="btn-row"><button class="sbtn ghost" onclick="toggleReqBox('${it.id}')">✏️ Demander une modif</button><button class="sbtn ok" onclick="act('${it.id}','approved')">✓ Approuver</button></div><div id="rq_${it.id}" style="display:none;margin-top:12px;padding:14px;background:#f3ecff;border-radius:12px"><div style="font-size:12.5px;font-weight:800;color:#7a4fd0;margin-bottom:6px">✏️ Qu'est-ce qui doit changer ?</div><textarea id="rqt_${it.id}" placeholder="Ex : sur la slide 2 mon prénom est mal écrit, et j'aimerais un ton plus direct dans la légende…" style="width:100%;min-height:110px;padding:11px 13px;border:1.5px solid #e6dcf7;border-radius:10px;font:inherit;font-size:14px;resize:vertical;background:#fff;box-sizing:border-box"></textarea><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:9px"><button class="sbtn ghost" onclick="toggleReqBox('${it.id}')">Annuler</button><button class="sbtn ok" id="rqb_${it.id}" onclick="sendChangeRequest('${it.id}')">Envoyer ma demande →</button></div><div style="font-size:11.5px;color:var(--muted);margin-top:7px">Ta demande arrive tout de suite dans l'espace de Wanderful.</div></div></div></div></div>`).join('')+wBlock;
   },
   ideas(){
     const items=(state.data.content||[]).slice().sort((a,b)=>(new Date(a.scheduled_at))-(new Date(b.scheduled_at)));
@@ -1228,6 +1230,40 @@ function selectedNets(){var out=[];['instagram','facebook'].forEach(function(n){
 function toggleNet(n){var el=document.getElementById('net_'+n);if(!el)return;var on=el.getAttribute('data-on')==='1';if(on&&selectedNets().length<=1){toast('Choisis au moins un reseau');return;}el.setAttribute('data-on',on?'0':'1');netPaint(el);syncNetUI();}
 function syncNetUI(){var s=selectedNets();var ig=document.getElementById('igBox'),fb=document.getElementById('fbBox');if(ig)ig.style.display=(s.indexOf('instagram')>=0)?'':'none';if(fb)fb.style.display=(s.indexOf('facebook')>=0)?'':'none';var tf=document.getElementById('prodCaptionFb'),ti=document.getElementById('prodCaption');if(tf&&ti&&!tf.value.trim())tf.value=ti.value;}
 function copyIgToFb(){var tf=document.getElementById('prodCaptionFb'),ti=document.getElementById('prodCaption');if(tf&&ti){tf.value=ti.value;toast('\u2713 Legende Instagram reprise');}}
+function revOf(it){var b=(it&&it.brief)||{};var r=parseInt(b.rev,10);return isNaN(r)?0:r;}
+function notesOf(it){var b=(it&&it.brief)||{};return Array.isArray(b.notes)?b.notes:[];}
+function lastNote(it,by){var n=notesOf(it);for(var i=n.length-1;i>=0;i--){if(!by||n[i].by===by)return n[i];}return null;}
+function fmtWhen(x){try{var d=new Date(x);return d.toLocaleDateString('fr-CH',{day:'2-digit',month:'short'})+' à '+d.toLocaleTimeString('fr-CH',{hour:'2-digit',minute:'2-digit'});}catch(e){return '';}}
+function noteHtml(n){var cl=(n.by==='client');var who=cl?'Client':'Wanderful';var bg=cl?'#f3ecff':'#e7f8f0';var ink=cl?'#7a4fd0':'#0f8a5b';return '<div style="margin-top:8px;padding:10px 12px;background:'+bg+';border-radius:10px"><div style="font-size:11px;font-weight:700;color:'+ink+';text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px">'+(cl?'✏️ ':'✅ ')+who+' · '+fmtWhen(n.at)+'</div><div style="font-size:13.5px;color:#2a3550;white-space:pre-wrap">'+esc(n.t||'')+'</div></div>';}
+function threadHtml(it,title){var n=notesOf(it);if(!n.length)return '';return '<div style="margin-top:12px"><div style="font-size:11px;font-weight:700;color:#8a90a6;text-transform:uppercase;letter-spacing:.4px">'+esc(title||'Historique des échanges')+'</div>'+n.map(noteHtml).join('')+'</div>';}
+function revBanner(it){var r=revOf(it);if(!r)return '';var a=lastNote(it,'agency');return '<div style="margin-top:9px;padding:10px 13px;background:#e7f8f0;border-left:3px solid #1fb57a;border-radius:10px"><div style="font-size:13px;font-weight:700;color:#0f8a5b">🔁 Version '+(r+1)+' — corrigée suite à ta demande</div>'+(a?'<div style="font-size:12.5px;color:#2a3550;margin-top:3px;white-space:pre-wrap">'+esc(a.t||'')+'</div>':'')+'</div>';}
+function reqAlert(it){if(!it||it.status!=='changes_requested')return '';var n=lastNote(it,'client');return '<div style="margin-bottom:12px;padding:13px 15px;background:#f3ecff;border-left:3px solid #B98DF2;border-radius:12px"><div style="font-size:12.5px;font-weight:800;color:#7a4fd0;text-transform:uppercase;letter-spacing:.4px">✏️ Demande de modification du client</div>'+(n?'<div style="font-size:14px;color:#2a3550;margin-top:6px;white-space:pre-wrap">'+esc(n.t||'')+'</div><div style="font-size:11px;color:#8a90a6;margin-top:5px">'+fmtWhen(n.at)+'</div>':'<div style="font-size:13px;color:#8a90a6;margin-top:5px">Pas de message écrit.</div>')+'</div>';}
+function toggleReqBox(id){var b=document.getElementById('rq_'+id);if(!b)return;var open=b.style.display!=='none';b.style.display=open?'none':'';if(!open){var t=document.getElementById('rqt_'+id);if(t)t.focus();}}
+async function sendChangeRequest(id){
+  var t=document.getElementById('rqt_'+id);var txt=t?String(t.value||'').trim():'';
+  if(txt.length<3){toast('Dis-nous ce qui doit changer 🙂');if(t)t.focus();return;}
+  var it=state.data.content.find(function(c){return String(c.id)===String(id);});if(!it)return;
+  var nb=Object.assign({},it.brief||{});
+  var notes=(Array.isArray(nb.notes)?nb.notes.slice():[]);
+  notes.push({by:'client',t:txt,at:new Date().toISOString(),rev:revOf(it)});
+  nb.notes=notes;
+  var btn=document.getElementById('rqb_'+id);if(btn){btn.disabled=true;btn.textContent='Envoi…';}
+  if(!DEMO){var r=await sb.from('content_items').update({brief:nb,status:'changes_requested'}).eq('id',id);
+    if(r.error){toast('Erreur : '+r.error.message);if(btn){btn.disabled=false;btn.textContent='Envoyer ma demande →';}return;}}
+  it.brief=nb;it.status='changes_requested';
+  toast('✏️ Demande envoyée à Wanderful');go('validation');
+}
+function changeReqCard(d){
+  var list=((d&&d.content)||[]).filter(function(c){return c.status==='changes_requested';});
+  if(!list.length)return '';
+  var ag=isAgencyView();
+  var rows=list.map(function(it){
+    var n=lastNote(it,'client');
+    var act=ag?('openContentModal(&#39;'+it.id+'&#39;)'):'go(&#39;validation&#39;)';
+    return '<div class="row" style="cursor:pointer;align-items:flex-start" onclick="'+act+'"><span style="width:9px;height:9px;border-radius:50%;background:#B98DF2;flex-shrink:0;margin-top:6px"></span><div class="rmain"><b style="font-weight:650">'+esc(it.title||'')+'</b><div style="font-size:12.5px;color:#5b6178;margin-top:2px;white-space:pre-wrap">'+esc(n?(n.t||''):'(pas de message)')+'</div><div style="font-size:11px;color:#8a90a6;margin-top:3px">'+(n?fmtWhen(n.at):'')+'</div></div><span style="font-size:12px;color:#7a4fd0;font-weight:700;white-space:nowrap">'+(ag?'Corriger →':'Voir →')+'</span></div>';
+  }).join('');
+  return '<div class="card" style="margin-bottom:22px;border-left:3px solid #B98DF2"><div style="font-size:13px;font-weight:800;color:#7a4fd0;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">✏️ '+list.length+' demande(s) de modification</div><div style="font-size:12.5px;color:#8a90a6;margin-bottom:6px">'+(ag?'Clique sur un contenu pour le corriger, puis renvoie-le en validation.':'Wanderful a bien reçu ta demande et prépare une nouvelle version.')+'</div>'+rows+'</div>';
+}
 function briefDetail(it){
   const b=it.brief||{};
   const body=(b.body||[]).filter(x=>x.s!=='Hook').map(x=>`<div class="bd-step"><span class="bd-s">${esc(x.s)}</span><span class="bd-t">${esc(x.t)}</span></div>`).join('');
@@ -1313,7 +1349,7 @@ function openContentModal(id){
   const canEdit=!isAgencyView();
   const media=renderMedia(it);
   const NETS=netsOf(it);
-  const prod=`<div class="bd-lbl" style="margin-bottom:8px">${canEdit?'📤 Ta production':'📤 Production (agence) — dépose ici le montage'}</div>
+  const prod=`${reqAlert(it)}<div class="bd-lbl" style="margin-bottom:8px">${canEdit?'📤 Ta production':'📤 Production (agence) — dépose ici le montage'}</div>
     <div class="prod-media">${media||'<div class="prod-empty">Aucun fichier déposé pour l\'instant.</div>'}</div>
     <input type="file" id="prodFile" accept="image/*,video/*" multiple style="display:none" onchange="uploadContentMedia('${it.id}')">
     <button class="sbtn ok" style="width:100%;margin-top:10px" onclick="document.getElementById('prodFile').click()">${it.media_url?'🔁 Remplacer le fichier':'📎 Déposer mon montage / mon carrousel'}</button>
@@ -1328,7 +1364,9 @@ function openContentModal(id){
     </div>
     <div class="field" id="igBox" style="margin-top:14px"><label>✍️ Légende Instagram</label><textarea id="prodCaption" style="min-height:130px">${esc(it.caption||'')}</textarea><div style="font-size:11px;color:var(--muted);margin-top:4px">Les 2 premières lignes sont décisives · les liens ne sont pas cliquables · hashtags en fin de texte.</div></div>
     <div class="field" id="fbBox" style="margin-top:14px"><label>✍️ Légende Facebook</label><textarea id="prodCaptionFb" style="min-height:130px">${esc(capFor(it,'facebook'))}</textarea><div style="font-size:11px;color:var(--muted);margin-top:4px">Ici les liens sont cliquables, le texte long fonctionne bien, et les hashtags sont inutiles.</div><button class="sbtn ghost" style="margin-top:7px;font-size:12px" onclick="copyIgToFb()">⧉ Reprendre la légende Instagram</button></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="sbtn ghost" onclick="saveContentCaption('${it.id}')">💾 Enregistrer</button><button class="sbtn ok" onclick="sendToValidation('${it.id}')">Envoyer en validation →</button></div>`;
+    ${it.status==='changes_requested'?`<div class="field" style="margin-top:14px"><label>💬 Réponse au client (optionnel)</label><textarea id="prodReply" style="min-height:70px" placeholder="Ex : c'est corrigé, j'ai aussi retravaillé la slide 3."></textarea><div style="font-size:11px;color:var(--muted);margin-top:4px">Ce message s'affichera au-dessus de la nouvelle version, côté client.</div></div>`:''}
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="sbtn ghost" onclick="saveContentCaption('${it.id}')">💾 Enregistrer</button><button class="sbtn ok" onclick="sendToValidation('${it.id}')">${it.status==='changes_requested'?`🔁 Renvoyer en validation (v${revOf(it)+2}) →`:'Envoyer en validation →'}</button></div>
+    ${threadHtml(it,'Historique des échanges')}`;
   const prodLocked=`<div class="prod-empty">Le dépôt de fichier se fait depuis la vue client. Utilise « Voir la vue client » pour tester.</div>`;
   const el=document.getElementById('modalRoot');
   el.innerHTML=`<div class="modal-ov" onclick="if(event.target===this)closeContentModal()"><div class="modal"><button class="modal-x" onclick="closeContentModal()">✕</button>
@@ -1468,10 +1506,21 @@ async function saveContentCaption(id){
 }
 async function sendToValidation(id){
   const p=netPayload(id);
-  const upd=p?{caption:p.cap,brief:p.brief,status:'pending'}:{status:'pending'};
-  if(!DEMO){const {error}=await sb.from('content_items').update(upd).eq('id',id);if(error){toast('Erreur');return;}}
-  const it=state.data.content.find(c=>String(c.id)===String(id));if(it){if(p){it.caption=p.cap;it.brief=p.brief;}it.status='pending';}
-  toast('✓ Envoyé en validation');closeContentModal();go('calendar');
+  const it=state.data.content.find(c=>String(c.id)===String(id));
+  const wasReq=!!(it&&it.status==='changes_requested');
+  const nb=p?p.brief:Object.assign({},(it&&it.brief)||{});
+  if(wasReq){
+    const rp=document.getElementById('prodReply');
+    const rtxt=(rp&&String(rp.value||'').trim())||'Contenu corrigé et renvoyé pour validation.';
+    const nr=revOf(it)+1;
+    const notes=(Array.isArray(nb.notes)?nb.notes.slice():[]);
+    notes.push({by:'agency',t:rtxt,at:new Date().toISOString(),rev:nr});
+    nb.notes=notes;nb.rev=nr;
+  }
+  const upd=p?{caption:p.cap,brief:nb,status:'pending'}:{brief:nb,status:'pending'};
+  if(!DEMO){const {error}=await sb.from('content_items').update(upd).eq('id',id);if(error){toast('Erreur : '+error.message);return;}}
+  if(it){if(p){it.caption=p.cap;}it.brief=nb;it.status='pending';}
+  toast(wasReq?'🔁 Nouvelle version envoyée au client':'✓ Envoyé en validation');closeContentModal();go(wasReq?'validation':'calendar');
 }
 
 /* ---------- Onboarding field rendering + save ---------- */
