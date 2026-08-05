@@ -1355,7 +1355,7 @@ function openContentModal(id){
     <div class="prod-media">${media||'<div class="prod-empty">Aucun fichier déposé pour l\'instant.</div>'}</div>
     <input type="file" id="prodFile" accept="image/*,video/*" multiple style="display:none" onchange="uploadContentMedia('${it.id}')">
     <button class="sbtn ok" id="prodBtn" style="width:100%;margin-top:10px" onclick="document.getElementById('prodFile').click()">${it.media_url?'🔁 Remplacer le fichier':'📎 Déposer mon montage / mon carrousel'}</button>
-    <div style="font-size:11px;color:var(--muted);margin-top:5px">Pour un carrousel : sélectionne les slides d'un coup (elles seront rangées par ordre de nom).</div>
+    <div style="font-size:11px;color:var(--muted);margin-top:5px">Pour un carrousel : sélectionne les slides d'un coup (elles seront rangées par ordre de nom).<br>Taille maximale : <b>50 Mo par fichier</b>.</div>
     <div id="prodProg" style="font-size:12px;color:var(--muted);margin-top:6px"></div>
     <div class="field" style="margin-top:16px"><label>🌐 Réseaux de publication</label>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:3px">
@@ -1490,7 +1490,7 @@ function uploadXhr(path,file,onProg){
       xhr.upload.onprogress=function(e){if(e.lengthComputable&&onProg)onProg(e.loaded);};
       xhr.onload=function(){
         if(xhr.status>=200&&xhr.status<300){res(true);}
-        else if(xhr.status===413){rej(new Error('Fichier trop lourd (limite 500 Mo). Réduis la vidéo puis réessaie.'));}
+        else if(xhr.status===413||/EntityTooLarge|Payload too large|exceeded the maximum allowed size/i.test(String(xhr.responseText||''))){rej(new Error('Fichier trop lourd — la limite est de 50 Mo par fichier. Compresse ta vidéo (H.264, 1080\u00d71920, ~6 Mbps) puis réessaie.'));}
         else if(xhr.status===401||xhr.status===403){rej(new Error('Session expirée — recharge la page puis réessaie.'));}
         else {rej(new Error('Envoi refusé par le serveur (code '+xhr.status+').'));}
       };
@@ -1507,6 +1507,14 @@ async function uploadContentMedia(id){
   const prog=document.getElementById('prodProg');
   const btn=document.getElementById('prodBtn');
   const total=fs.reduce(function(a,f){return a+f.size;},0)||1;
+  const MAXUP=52428800;
+  var over=fs.filter(function(f){return f.size>MAXUP;});
+  if(over.length){
+    if(inp)inp.value='';
+    if(prog)prog.innerHTML='<div style="padding:10px 12px;border-radius:10px;background:rgba(239,68,68,.12);color:#dc2626;font-weight:700">\u26a0\ufe0f '+(over.length>1?(over.length+' fichiers dépassent 50 Mo'):('Fichier trop lourd — '+fmtMo(over[0].size)))+'<div style="font-weight:400;margin-top:4px">La limite est de <b>50 Mo par fichier</b>. Réexporte ta vidéo en H.264 / MP4, 1080\u00d71920, débit ~6 Mbps : tu passeras sous les 50 Mo sans perte visible.</div></div>';
+    toast('Fichier trop lourd (max 50 Mo)');
+    return;
+  }
   if(prog)prog.innerHTML=progHtml('Préparation de l\'envoi…',0,fmtMo(total)+' au total');
   if(DEMO){const it=state.data.content.find(c=>String(c.id)===String(id));if(it){var du=fs.map(function(f){return URL.createObjectURL(f);});it.media_url=du.length>1?JSON.stringify(du):du[0];it.media_type=fs[0].type;it.status='produced';}toast('✓ Fichier déposé (démo)');openContentModal(id);return;}
   if(btn){btn.disabled=true;btn.style.opacity='.55';btn.style.pointerEvents='none';}
