@@ -1352,7 +1352,7 @@ function openContentModal(id){
   const prod=`${reqAlert(it)}<div class="bd-lbl" style="margin-bottom:8px">${canEdit?'📤 Ta production':'📤 Production (agence) — dépose ici le montage'}</div>
     <div class="prod-media">${media||'<div class="prod-empty">Aucun fichier déposé pour l\'instant.</div>'}</div>
     <input type="file" id="prodFile" accept="image/*,video/*" multiple style="display:none" onchange="uploadContentMedia('${it.id}')">
-    <button class="sbtn ok" style="width:100%;margin-top:10px" onclick="document.getElementById('prodFile').click()">${it.media_url?'🔁 Remplacer le fichier':'📎 Déposer mon montage / mon carrousel'}</button>
+    <button class="sbtn ok" id="prodBtn" style="width:100%;margin-top:10px" onclick="document.getElementById('prodFile').click()">${it.media_url?'🔁 Remplacer le fichier':'📎 Déposer mon montage / mon carrousel'}</button>
     <div style="font-size:11px;color:var(--muted);margin-top:5px">Pour un carrousel : sélectionne les slides d'un coup (elles seront rangées par ordre de nom).</div>
     <div id="prodProg" style="font-size:12px;color:var(--muted);margin-top:6px"></div>
     <div class="field" style="margin-top:16px"><label>🌐 Réseaux de publication</label>
@@ -1465,30 +1465,80 @@ async function deletePost(id,btn){
     toast('✓ Post supprime');closeContentModal();go(state.section);
   }catch(e){toast('Erreur : '+(e.message||e));}
 }
+/* --- envoi média : barre de progression réelle + erreurs visibles --- */
+function fmtMo(b){return (b/1048576).toFixed(1).replace('.',',')+' Mo';}
+function progHtml(label,pct,sub){
+  var p=Math.max(0,Math.min(100,pct));
+  return '<div style="font-weight:700;color:var(--txt);margin-bottom:5px">'+label+'</div>'
+    +'<div style="height:9px;border-radius:99px;background:rgba(127,127,127,.22);overflow:hidden">'
+    +'<div style="height:100%;width:'+p+'%;border-radius:99px;background:linear-gradient(90deg,#22c55e,#16a34a);transition:width .25s"></div></div>'
+    +'<div style="margin-top:5px;line-height:1.5">'+sub+'</div>';
+}
+function uploadXhr(path,file,onProg){
+  return sb.auth.getSession().then(function(s){
+    var tok=(s&&s.data&&s.data.session)?s.data.session.access_token:null;
+    if(!tok) throw new Error('Session expirée — reconnecte-toi puis réessaie.');
+    return new Promise(function(res,rej){
+      var xhr=new XMLHttpRequest();
+      xhr.open('POST',CFG.SUPABASE_URL+'/storage/v1/object/content/'+path,true);
+      xhr.setRequestHeader('Authorization','Bearer '+tok);
+      xhr.setRequestHeader('apikey',CFG.SUPABASE_ANON_KEY);
+      xhr.setRequestHeader('x-upsert','true');
+      xhr.setRequestHeader('Content-Type',file.type||'application/octet-stream');
+      xhr.upload.onprogress=function(e){if(e.lengthComputable&&onProg)onProg(e.loaded);};
+      xhr.onload=function(){
+        if(xhr.status>=200&&xhr.status<300){res(true);}
+        else if(xhr.status===413){rej(new Error('Fichier trop lourd (limite 500 Mo). Réduis la vidéo puis réessaie.'));}
+        else if(xhr.status===401||xhr.status===403){rej(new Error('Session expirée — recharge la page puis réessaie.'));}
+        else {rej(new Error('Envoi refusé par le serveur (code '+xhr.status+').'));}
+      };
+      xhr.onerror=function(){rej(new Error('Connexion interrompue pendant l\'envoi.'));};
+      xhr.onabort=function(){rej(new Error('Envoi annulé.'));};
+      xhr.send(file);
+    });
+  });
+}
 async function uploadContentMedia(id){
   const inp=document.getElementById('prodFile');
   const fs=(inp&&inp.files)?Array.prototype.slice.call(inp.files):[];if(!fs.length)return;
   fs.sort(function(a,b){return String(a.name).localeCompare(String(b.name),'fr',{numeric:true,sensitivity:'base'});});
-  const prog=document.getElementById('prodProg');if(prog)prog.textContent='Envoi en cours…';
+  const prog=document.getElementById('prodProg');
+  const btn=document.getElementById('prodBtn');
+  const total=fs.reduce(function(a,f){return a+f.size;},0)||1;
+  if(prog)prog.innerHTML=progHtml('Préparation de l\'envoi…',0,fmtMo(total)+' au total');
   if(DEMO){const it=state.data.content.find(c=>String(c.id)===String(id));if(it){var du=fs.map(function(f){return URL.createObjectURL(f);});it.media_url=du.length>1?JSON.stringify(du):du[0];it.media_type=fs[0].type;it.status='produced';}toast('✓ Fichier déposé (démo)');openContentModal(id);return;}
+  if(btn){btn.disabled=true;btn.style.opacity='.55';btn.style.pointerEvents='none';}
+  var t0=Date.now();
   try{
-    var urls=[];
+    var urls=[];var done=0;
     for(var n=0;n<fs.length;n++){
       var f=fs[n];
-      if(prog)prog.textContent='Envoi '+(n+1)+' / '+fs.length+' — '+f.name;
       var ext=(f.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'');
       var path=state.client.id+'/'+id+(fs.length>1?('/'+(n+1)):'')+'.'+ext;
-      var up=await sb.storage.from('content').upload(path,f,{upsert:true,contentType:f.type||'application/octet-stream'});
-      if(up.error) throw up.error;
+      await uploadXhr(path,f,(function(base,idx){return function(loaded){
+        var sent=base+loaded;
+        var pct=Math.round(sent/total*100);
+        var el=Math.max(0.8,(Date.now()-t0)/1000);
+        var sp=sent/el;
+        var rest=sp>0?Math.round((total-sent)/sp):0;
+        var eta=rest>2?(rest>90?('~'+Math.ceil(rest/60)+' min restantes'):('~'+rest+' s restantes')):'presque fini…';
+        if(prog)prog.innerHTML=progHtml('Envoi en cours — '+pct+' %',pct,(fs.length>1?('Fichier '+(idx+1)+' / '+fs.length+' · '):'')+fmtMo(sent)+' / '+fmtMo(total)+' · '+eta+'<br>⚠️ Ne ferme pas cette fenêtre pendant l\'envoi.');
+      };})(done,n));
+      done+=f.size;
       urls.push(sb.storage.from('content').getPublicUrl(path).data.publicUrl+'?t='+Date.now());
     }
+    if(prog)prog.innerHTML=progHtml('Finalisation…',100,'Enregistrement du post…');
     const val=urls.length>1?JSON.stringify(urls):urls[0];
     const {error}=await sb.from('content_items').update({media_url:val,media_type:fs[0].type,status:'produced'}).eq('id',id);
     if(error) throw error;
     const it=state.data.content.find(c=>String(c.id)===String(id));if(it){it.media_url=val;it.media_type=fs[0].type;it.status='produced';}
-    if(prog)prog.textContent='';
+    if(prog)prog.innerHTML='';
     toast(urls.length>1?('✓ '+urls.length+' slides déposées'):'✓ Fichier déposé');openContentModal(id);
-  }catch(e){if(prog)prog.textContent='Erreur : '+(e.message||e);toast('Erreur d\'envoi');}
+  }catch(e){
+    if(prog)prog.innerHTML='<div style="padding:9px 11px;border-radius:9px;background:rgba(239,68,68,.12);color:#dc2626;font-weight:700">⚠️ '+(e&&e.message?e.message:String(e))+'<div style="font-weight:400;margin-top:3px">Clique à nouveau sur le bouton pour réessayer.</div></div>';
+    toast('Erreur d\'envoi');
+    if(btn){btn.disabled=false;btn.style.opacity='';btn.style.pointerEvents='';}
+  }
 }
 function netPayload(id){
   const t=document.getElementById('prodCaption');const fbEl=document.getElementById('prodCaptionFb');
