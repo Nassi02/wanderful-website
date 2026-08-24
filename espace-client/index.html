@@ -736,7 +736,7 @@ function renderSwitcher(selId){
 function setClientCard(c){
   var card=document.querySelector('.client-card'),sel=document.getElementById('clientSwitch'),internal=isInternalClient(c);
   if(card)card.classList.toggle('internal',internal);
-  if(sel)sel.classList.toggle('internal',internal);
+  if(sel){sel.classList.toggle('internal',internal);if(c&&c.id&&sel.value!==c.id)sel.value=c.id;}
   document.getElementById('cAvatar').textContent=c.initials||'?';
   document.getElementById('cName').textContent=c.name;
   document.getElementById('cPlan').textContent=(internal?'Interne':(c.plan||''))+(c.status?' · '+c.status:'');
