@@ -816,7 +816,7 @@ const VIEWS={
     const s=state.client&&state.client.strategy;
     if(!s||typeof s!=='object'){return `<div class="sec-head"><h3>Stratégie de marque</h3></div><div class="card st-empty"><div style="font-size:34px;margin-bottom:10px">🧭</div><h3 style="font-size:16px;margin-bottom:6px">Ta stratégie arrive bientôt</h3><p>Wanderful finalise ta stratégie de marque. Elle apparaîtra ici, résumée et visuelle, dès qu'elle sera prête.</p></div>`;}
     const star=(v)=>{let o='';for(let i=1;i<=5;i++)o+=i<=v?'★':'<span class="off">★</span>';return `<span class="st-stars">${o}</span>`;};
-    const nm=esc(state.client?state.client.name:'');
+    const nm=esc(state.client?state.client.name:'');const rawnm=state.client?state.client.name:'';
     let h=`<div class="sec-head"><h3>Stratégie de marque</h3><p>Le résumé visuel de la stratégie construite par Wanderful pour toi. Chaque contenu, chaque prise de parole s'appuie sur ces fondations.</p></div>`;
     // HERO
     h+=`<div class="st-hero"><div class="st-hero-badge">Stratégie Wanderful × ${nm}</div><div class="st-position">${esc(s.hero.positioning)}</div><div class="st-reflex">🎯 ${esc(s.hero.reflex)}</div><div class="st-slogan">${esc(s.hero.slogan)}</div></div>`;
@@ -824,18 +824,19 @@ const VIEWS={
     h+=`<div class="section-title">La trajectoire — 3 objectifs</div><div class="grid g3">${s.objectives.map((o,i)=>`<div class="card st-obj"><span class="num">${i+1}</span><span class="ph">${esc(o.phase)}</span><h4>${esc(o.title)}</h4><p>${esc(o.desc)}</p><div class="kpi">🎯 ${esc(o.kpi)}</div></div>`).join('')}</div>`;
     // GOLDEN CIRCLE
     const g=s.golden;
+    const gl=(Array.isArray(g.labels)&&g.labels.length===3)?g.labels:['Pourquoi '+rawnm+' fait ce métier','Comment '+rawnm+' le fait','Ce que '+rawnm+' propose'];
     h+=`<div class="section-title">Le Golden Circle</div><div class="grid g3">
-      <div class="card st-gold"><div class="lbl">WHY</div><div class="q">Pourquoi Gary fait ce métier</div><p>${esc(g.why)}</p></div>
-      <div class="card st-gold"><div class="lbl">HOW</div><div class="q">Comment il le fait</div><p>${esc(g.how)}</p></div>
-      <div class="card st-gold"><div class="lbl">WHAT</div><div class="q">Ce qu'il propose</div><p>${esc(g.what)}</p></div></div>`;
+      <div class="card st-gold"><div class="lbl">WHY</div><div class="q">${esc(gl[0])}</div><p>${esc(g.why)}</p></div>
+      <div class="card st-gold"><div class="lbl">HOW</div><div class="q">${esc(gl[1])}</div><p>${esc(g.how)}</p></div>
+      <div class="card st-gold"><div class="lbl">WHAT</div><div class="q">${esc(gl[2])}</div><p>${esc(g.what)}</p></div></div>`;
     // CONCURRENTS + CARTE PERCEPTUELLE
     h+=`<div class="section-title">Le marché & les concurrents</div><div class="grid g4">${s.competitors.map(c=>`<div class="card st-comp"><b>${esc(c.t)}</b><small class="cex2">${esc(c.ex)}</small><div class="cf">✓ ${esc(c.f)}</div><div class="cw">✕ ${esc(c.w)}</div></div>`).join('')}</div>`;
     const pc=s.perceptual;
     const pt=(x,y)=>[8+x/100*84, 8+(100-y)/100*84];
     let dots='';
     pc.points.forEach(p=>{const a=pt(p.x,p.y);dots+=`<circle cx="${a[0]}" cy="${a[1]}" r="1.4" fill="#9a94b8"/><text x="${a[0]}" y="${a[1]-2.6}" text-anchor="middle" font-size="2.7" fill="#6a5f88">${esc(p.l)}</text>`;});
-    const gp=pt(pc.gary.x,pc.gary.y);
-    h+=`<div class="section-title">La carte perceptuelle</div><div class="card"><p style="font-size:12.5px;color:var(--muted);margin-bottom:8px">Deux axes : <b>institutionnel ↔ humain</b> et <b>complexe ↔ pédagogique</b>. La plupart des acteurs se massent en haut à gauche. Gary vise la case libre, en bas à droite.</p><div class="st-map"><svg viewBox="0 0 100 100" width="100%">
+    const me=pc.me||pc.gary;const gp=pt(me.x,me.y);
+    h+=`<div class="section-title">La carte perceptuelle</div><div class="card"><p style="font-size:12.5px;color:var(--muted);margin-bottom:8px">${pc.intro?esc(pc.intro):('Deux axes : <b>institutionnel ↔ humain</b> et <b>complexe ↔ pédagogique</b>. La plupart des acteurs se massent en haut à gauche. '+esc(rawnm)+' vise la case libre, en bas à droite.')}</p><div class="st-map"><svg viewBox="0 0 100 100" width="100%">
       <rect x="50" y="50" width="42" height="42" fill="var(--accent-soft)" opacity="0.55"/>
       <line x1="8" y1="50" x2="92" y2="50" stroke="var(--line)" stroke-width="0.5"/>
       <line x1="50" y1="8" x2="50" y2="92" stroke="var(--line)" stroke-width="0.5"/>
@@ -844,10 +845,10 @@ const VIEWS={
       <text x="2.5" y="50" text-anchor="middle" font-size="3" font-weight="700" fill="var(--accent-ink)" transform="rotate(-90 2.5 50)">${esc(pc.xLeft)}</text>
       <text x="97.5" y="50" text-anchor="middle" font-size="3" font-weight="700" fill="var(--accent-ink)" transform="rotate(-90 97.5 50)">${esc(pc.xRight)}</text>
       ${dots}
-      <circle cx="${gp[0]}" cy="${gp[1]}" r="2.6" fill="var(--accent)"/><text x="${gp[0]}" y="${gp[1]+5.2}" text-anchor="middle" font-size="3.4" font-weight="800" fill="var(--accent-ink)">${esc(pc.gary.l)}</text>
+      <circle cx="${gp[0]}" cy="${gp[1]}" r="2.6" fill="var(--accent)"/><text x="${gp[0]}" y="${gp[1]+5.2}" text-anchor="middle" font-size="3.4" font-weight="800" fill="var(--accent-ink)">${esc(me.l)}</text>
     </svg></div><p style="font-size:12.5px;color:var(--ink-soft);margin-top:6px;font-style:italic">${esc(pc.note)}</p></div>`;
     // MATURITY
-    h+=`<div class="section-title">Où en est ta marque aujourd'hui</div><div class="card st-mat">${s.maturity.map(m=>`<div class="row"><div class="nm">${esc(m.k)}</div><div class="track"><div class="fill" style="width:${m.v/5*100}%"></div></div><div class="gl">${esc(m.goal)}</div></div>`).join('')}<p style="font-size:12px;color:var(--muted);margin-top:12px;font-style:italic">Le travail ne consiste pas à améliorer Gary, mais à <b>rendre Gary visible</b>.</p></div>`;
+    h+=`<div class="section-title">Où en est ta marque aujourd'hui</div><div class="card st-mat">${s.maturity.map(m=>`<div class="row"><div class="nm">${esc(m.k)}</div><div class="track"><div class="fill" style="width:${m.v/5*100}%"></div></div><div class="gl">${esc(m.goal)}</div></div>`).join('')}<p style="font-size:12px;color:var(--muted);margin-top:12px;font-style:italic">${s.maturityNote?esc(s.maturityNote):('Le travail ne consiste pas à améliorer '+esc(rawnm)+', mais à <b>rendre '+esc(rawnm)+' visible</b>.')}</p></div>`;
     // 5 PILLARS
     h+=`<div class="section-title">Les 5 piliers de marque</div><div class="card">${s.pillars.map(p=>`<div class="st-pil"><div class="n">${esc(p.n)}</div><div><b>${esc(p.t)}</b><p>${esc(p.d)}</p></div></div>`).join('')}</div>`;
     // BRAND DNA
@@ -863,7 +864,7 @@ const VIEWS={
     // BRAND VOICE / TON
     const vo=s.voice;
     h+=`<div class="section-title">Le ton de marque (Brand Voice)</div>
-    <div class="card"><div class="st-mini">Comment Gary sonne</div>${vo.dims.map(d=>`<div class="st-vrow"><div class="vnm">${esc(d.k)}</div><div class="vtrack"><div class="vfill" style="width:${d.v/5*100}%"></div></div></div>`).join('')}<div class="st-quote" style="margin-top:12px">${esc(vo.motto)}</div></div>
+    <div class="card"><div class="st-mini">Comment ${nm} sonne</div>${vo.dims.map(d=>`<div class="st-vrow"><div class="vnm">${esc(d.k)}</div><div class="vtrack"><div class="vfill" style="width:${d.v/5*100}%"></div></div></div>`).join('')}<div class="st-quote" style="margin-top:12px">${esc(vo.motto)}</div></div>
     <div class="grid g2" style="margin-top:16px">
       <div class="card st-do"><div class="st-mini" style="color:var(--green)">À privilégier</div><ul>${vo.do.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>
       <div class="card st-dont"><div class="st-mini" style="color:var(--coral)">À éviter</div><ul>${vo.dont.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div></div>
@@ -983,8 +984,10 @@ const VIEWS={
   ideas(){
     const items=(state.data.content||[]).slice().sort((a,b)=>(new Date(a.scheduled_at))-(new Date(b.scheduled_at)));
     if(!items.length)return `<div class="sec-head"><h3>Idées de contenu</h3><p>Les contenus scénarisés apparaîtront ici.</p></div><div class="card empty">Aucune idée de contenu pour le moment.</div>`;
-    const months=[[1,4,"Mois 1 — Découvrir Gary","Comprendre pourquoi ce compte existe, qui est Gary et comment il travaille."],[5,8,"Mois 2 — Faire confiance à Gary","Démontrer son expertise et installer des formats reconnaissables."],[9,12,"Mois 3 — Penser à Gary","Connecter son expertise aux moments de vie qui déclenchent un besoin et générer naturellement des conversations."]];
-    let h=`<div class="sec-head"><h3>Idées de contenu</h3><p>Le playbook s'articule autour de <b>24 contenus</b> : 12 carrousels + 12 Reels, soit <b>deux publications par semaine pendant douze semaines</b>. Chaque semaine suit le même ordre — un <b>carrousel</b> en début de semaine pour introduire, structurer ou approfondir un sujet, puis un <b>Reel</b> en deuxième partie de semaine pour incarner la marque et créer une relation avec Gary.</p><p style="margin-top:8px">Une grande partie des Reels repose sur un format <b>question-réponse</b> : quelqu'un, derrière la caméra, pose à Gary une vraie question que l'audience pourrait se poser, et il y répond naturellement, comme face à un client. L'objectif est d'installer un réflexe — <i>« Une question sur les assurances ? Demande à Gary. »</i> — sans en faire une règle systématique (certains sujets passent mieux en storytelling, humour, cas concret ou prise de parole directe). Chaque idée détaille le hook, le script (ou les slides), le montage, les couleurs, la lumière et la légende ; retrouve-la dans le <b>Calendrier</b> pour y déposer ton montage.</p><div style="margin-top:10px;padding:10px 14px;background:#eef1fb;border-left:3px solid #3b5bdb;border-radius:8px;font-weight:600;color:#2a3550">Les carrousels construisent la compréhension. Les Reels construisent la relation.</div></div>`;
+    const ic=(state.client&&state.client.strategy&&state.client.strategy.ideas)||{};
+    const months=(Array.isArray(ic.months)&&ic.months.length)?ic.months:[[1,4,"Mois 1","Les premières semaines."],[5,9,"Mois 2","La suite du plan."],[10,13,"Mois 3","La dernière ligne droite."]];
+    const intro=(Array.isArray(ic.intro)&&ic.intro.length)?ic.intro:["Chaque idée détaille le hook, le script (ou les slides), le montage, les couleurs, la lumière et la légende ; retrouve-la dans le <b>Calendrier</b> pour y déposer ton montage."];
+    let h=`<div class="sec-head"><h3>Idées de contenu</h3>${intro.map(function(p,i){return '<p'+(i?' style="margin-top:8px"':'')+'>'+p+'</p>';}).join('')}${ic.banner?('<div style="margin-top:10px;padding:10px 14px;background:#eef1fb;border-left:3px solid #3b5bdb;border-radius:8px;font-weight:600;color:#2a3550">'+ic.banner+'</div>'):''}</div>`;
     months.forEach(m=>{const mi=items.filter(it=>(it.week||0)>=m[0]&&(it.week||0)<=m[1]);if(!mi.length)return;
       h+=`<div class="section-title" style="margin-bottom:2px">${m[2]}</div><p style="color:var(--muted);font-size:13px;margin:0 0 12px">${m[3]}</p>`;
       h+=mi.map(it=>`<div class="idea-card"><div class="idea-head" onclick="this.closest('.idea-card').classList.toggle('open')">${ctBadge(it.type)}<div class="idea-h-main"><b>${esc(it.title)}</b><small>Semaine ${it.week||'—'} · ${esc(it.pillar||'')}</small></div><span class="ct-status s-${it.status}">${statusLabel(it.status)}</span><svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></div><div class="idea-body">${it.brief&&it.brief.obj?`<div class="idea-obj">🎯 ${esc(it.brief.obj)}</div>`:''}${briefDetail(it)}<div class="bd-block"><div class="bd-lbl">✍️ Légende suggérée</div><div class="bd-caption">${esc(it.caption||'')}</div></div></div></div>`).join('');
@@ -1223,7 +1226,7 @@ async function deleteDoc(i){
   toast('Document supprimé');go('documents');
 }
 function statusLabel(s){return {idea:'Idée',produced:'Produit',pending:'À valider',approved:'Validé',changes_requested:'Modif demandée',published:'Publié'}[s]||s;}
-function ctBadge(t){return t==='Reel'?'<span class="ct-badge ct-reel">🎥 Reel</span>':'<span class="ct-badge ct-carr">🖼️ Carrousel</span>';}
+function ctBadge(t){return t==='Reel'?'<span class="ct-badge ct-reel">🎥 Reel</span>':(t==='Motion'?'<span class="ct-badge" style="background:#efeaff;color:#5b3fd6">✨ Motion</span>':'<span class="ct-badge ct-carr">🖼️ Carrousel</span>');}
 function netsOf(it){var b=(it&&it.brief)||{};var n=Array.isArray(b.nets)?b.nets:null;if(n&&n.length)return n;return [String((it&&it.platform)||'instagram').toLowerCase().indexOf('face')>=0?'facebook':'instagram'];}
 function netBadge(n){var fb=(n==='facebook');return '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;background:'+(fb?'#e7f0fe':'#fdeef6')+';color:'+(fb?'#1b4bb8':'#b8317a')+'">'+(fb?'\u{1F4D8} Facebook':'\u{1F4F8} Instagram')+'</span>';}
 function capFor(it,n){var b=(it&&it.brief)||{};if(n==='facebook'&&b.caption_fb!=null&&String(b.caption_fb).trim()!=='')return b.caption_fb;return (it&&it.caption)||'';}
@@ -1268,6 +1271,7 @@ function changeReqCard(d){
 }
 function briefDetail(it){
   const b=it.brief||{};
+  const spk=b.speaker||((state.client&&state.client.name)?String(state.client.name).split(' ')[0]:'Client');
   const body=(b.body||[]).filter(x=>x.s!=='Hook').map(x=>`<div class="bd-step"><span class="bd-s">${esc(x.s)}</span><span class="bd-t">${esc(x.t)}</span></div>`).join('');
   const lblBody=it.type==='Reel'?'🗣️ Script — ce que dire':'📱 Slides — ce que mettre';
   let h='';
@@ -1282,7 +1286,7 @@ function briefDetail(it){
     const note=b.conducteurNote?`<p style="font-size:12.5px;color:var(--muted);margin:0 0 10px">${esc(b.conducteurNote)}</p>`:'';
     const items=b.conducteur.map((c,i)=>{
       const rel=(c.relances||[]).map(rl=>`<div class="bd-step" style="margin-top:4px;opacity:.9"><span class="bd-s" style="color:var(--muted)">↳ Relance</span><span class="bd-t"><i>${esc(rl.q)}</i>${rl.a?'<br>'+esc(rl.a):''}</span></div>`).join('');
-      return `<div style="padding:10px 0;border-top:1px solid #eceafc">${c.label?`<div style="font-weight:800;font-size:12.5px;color:#3b5bdb;margin-bottom:6px">Q${i+1} · ${esc(c.label)}</div>`:''}<div class="bd-step"><span class="bd-s">🎤 Toi</span><span class="bd-t">${esc(c.q)}</span></div><div class="bd-step"><span class="bd-s">💬 Gary</span><span class="bd-t">${esc(c.a)}</span></div>${rel}</div>`;
+      return `<div style="padding:10px 0;border-top:1px solid #eceafc">${c.label?`<div style="font-weight:800;font-size:12.5px;color:#3b5bdb;margin-bottom:6px">Q${i+1} · ${esc(c.label)}</div>`:''}<div class="bd-step"><span class="bd-s">🎤 Toi</span><span class="bd-t">${esc(c.q)}</span></div><div class="bd-step"><span class="bd-s">💬 ${esc(spk)}</span><span class="bd-t">${esc(c.a)}</span></div>${rel}</div>`;
     }).join('');
     h+=`<div class="bd-block"><div class="bd-lbl">🎙️ Conducteur de tournage</div>${note}${items}</div>`;
   }
@@ -1295,6 +1299,8 @@ function briefDetail(it){
   if(b.montage&&b.montage!=='—')h+=`<div class="bd-block"><div class="bd-lbl">🎬 Montage & rythme (motion, textes, B-roll)</div><p>${esc(b.montage)}</p></div>`;
   if(b.visual)h+=`<div class="bd-block"><div class="bd-lbl">🎨 Visuel · couleurs · lumière</div><p>${esc(b.visual)}</p></div>`;
   if(b.cta)h+=`<div class="bd-block"><div class="bd-lbl">👉 Appel à l'action (CTA)</div><p>${esc(b.cta)}</p></div>`;
+  if(b.decl)h+=`<div class="bd-block"><div class="bd-lbl">🔁 Déclinaisons sur les autres réseaux</div><p>${esc(b.decl)}</p></div>`;
+  if(b.kpi)h+=`<div class="bd-block"><div class="bd-lbl">📊 KPI primaire</div><p>${esc(b.kpi)}</p></div>`;
   if(b.tags)h+=`<div class="bd-block"><div class="bd-lbl"># Hashtags</div><p style="color:var(--accent-ink)">${esc(b.tags)}</p></div>`;
   return h;
 }
