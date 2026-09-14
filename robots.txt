@@ -1,0 +1,20 @@
+# robots.txt — wanderful-marketing.com
+User-agent: *
+Allow: /
+Disallow: /espace-client/
+Disallow: /preview-da.html
+
+# Crawlers IA — visibilite ChatGPT / Perplexity / Claude
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+Sitemap: https://wanderful-marketing.com/sitemap.xml
