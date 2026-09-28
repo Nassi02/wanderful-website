@@ -623,7 +623,7 @@ footer{margin-top:80px;padding:56px 0 34px;}
   <div class="s-head reveal" style="text-align:center;max-width:620px;margin:0 auto 44px;">
     <div class="eyebrow">Parlons de votre projet</div>
     <h2 style="margin:0 auto;">Vous avez une idée ? <span class="grad">Concrétisons-la ensemble.</span></h2>
-    <p style="margin:14px auto 0;">Agence Wanderful Marketing, basée à Yvonand — réponse sous 24h, du lundi au vendredi de 8h à 20h.</p>
+    <p style="margin:14px auto 0;">Agence Wanderful Marketing, basée à Yvonand — réponse sous 48h, du lundi au vendredi de 8h à 20h.</p>
   </div>
   <div class="contact-grid">
     <!-- Formulaire -->
@@ -812,7 +812,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     try{
       const r=await fetch(form.action,{method:'POST',headers:{Accept:'application/json'},body:fd});
       msg.style.display='block';
-      if(r.ok){msg.textContent='✅ Message envoyé ! Nous vous répondrons sous 24h.';msg.style.background='#E6F9F0';msg.style.color='#1a7a4a';form.reset();}
+      if(r.ok){msg.textContent='✅ Message envoyé ! Nous vous répondrons sous 48h.';msg.style.background='#E6F9F0';msg.style.color='#1a7a4a';form.reset();}
       else{msg.textContent='Une erreur est survenue. Réessayez ou écrivez-nous par e-mail.';msg.style.background='#FFE8E8';msg.style.color='#c0392b';}
     }catch(_){msg.style.display='block';msg.textContent='Erreur réseau. Contactez-nous directement par e-mail.';msg.style.background='#FFE8E8';msg.style.color='#c0392b';}
   });

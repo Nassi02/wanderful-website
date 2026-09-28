@@ -387,7 +387,7 @@ nav a:hover{color:var(--p1);}
     <h1>Vous avez une idée ?<br><em>Concrétisons-la ensemble.</em></h1>
     <p>Agence Wanderful Marketing, basée à Yvonand — nous accompagnons les PME suisses dans leur croissance digitale.</p>
     <div class="info-pills">
-      <span class="pill"><span class="pill-dot"></span>Réponse sous 24h</span>
+      <span class="pill"><span class="pill-dot"></span>Réponse sous 48h</span>
       <span class="pill"><span class="pill-dot" style="background:#7EC8D4"></span>Disponible 8h – 20h</span>
       <span class="pill"><span class="pill-dot" style="background:#F4A7C3"></span>PME Suisse romande</span>
     </div>
@@ -444,7 +444,7 @@ nav a:hover{color:var(--p1);}
           </div>
           <div class="info-text">
             <h3>Horaires de disponibilité</h3>
-            <p>Lundi – Vendredi : <strong>8h00 – 20h00</strong><br>Réponse garantie sous 24h ouvrables</p>
+            <p>Lundi – Vendredi : <strong>8h00 – 20h00</strong><br>Réponse garantie sous 48h ouvrables</p>
           </div>
         </div>
 
@@ -574,7 +574,7 @@ form.addEventListener('submit', async e => {
     const r = await fetch(form.action,{method:'POST',headers:{Accept:'application/json'},body:fd});
     msg.style.display='block';
     if(r.ok){
-      msg.textContent='✅ Message envoyé ! Nous vous répondrons sous 24h.';
+      msg.textContent='✅ Message envoyé ! Nous vous répondrons sous 48h.';
       msg.style.background='#E6F9F0';msg.style.color='#1a7a4a';
       form.reset();
     } else {
