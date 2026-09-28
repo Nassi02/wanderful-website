@@ -195,7 +195,7 @@ footer{margin-top:76px;padding:54px 0 34px;}
 </script>
 <style>
 /* ===== PAGE A PROPOS — refonte narrative ===== */
-.ap{--ap-gap:clamp(80px,11vw,170px);}
+.ap{--ap-gap:clamp(72px,9vw,140px);}
 .ap section{position:relative;}
 .ap .ap-wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
 .ap-label{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--violet);font-weight:600;margin-bottom:22px;}
@@ -242,9 +242,9 @@ footer{margin-top:76px;padding:54px 0 34px;}
 /* 01 — sticky */
 .ap-sticky{padding:var(--ap-gap) 0;}
 .ap-sticky-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:start;}
-.ap-sticky-vis{position:sticky;top:18vh;height:64vh;display:flex;align-items:center;justify-content:center;}
-.ap-steps p{font-size:clamp(20px,2.3vw,30px);line-height:1.35;color:var(--plum);font-weight:400;
-  margin:0 0 30px;opacity:.25;transition:opacity .5s ease,transform .5s ease;transform:translateX(-4px);}
+.ap-sticky-vis{position:sticky;top:16vh;height:56vh;display:flex;align-items:center;justify-content:center;}
+.ap-steps p{font-size:clamp(19px,2.1vw,28px);line-height:1.35;color:var(--plum);font-weight:400;
+  margin:0 0 22px;opacity:.25;transition:opacity .5s ease,transform .5s ease;transform:translateX(-4px);}
 .ap-steps p.on{opacity:1;transform:none;}
 .ap-steps p b{font-weight:600;}
 .ap-punch{font-size:clamp(28px,4.4vw,60px);line-height:1.08;font-weight:600;letter-spacing:-.03em;
@@ -285,22 +285,24 @@ footer{margin-top:76px;padding:54px 0 34px;}
   letter-spacing:.14em;color:#fff;opacity:.85;text-transform:uppercase;}
 
 /* constellation disciplines */
-.ap-orbit{position:relative;margin-top:44px;height:420px;}
-.ap-orbit-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:13px;
-  letter-spacing:.2em;font-weight:600;color:var(--plum);background:#fff;border-radius:999px;padding:14px 24px;
-  box-shadow:var(--shadow-soft);z-index:2;}
-.ap-disc{position:absolute;left:50%;top:50%;width:190px;padding:14px 16px;border-radius:var(--r-sm);
-  background:var(--glass-strong);border:1px solid rgba(141,126,242,.2);box-shadow:var(--shadow-soft);
-  transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y)));transition:opacity .35s ease,transform .35s ease;cursor:default;}
+.ap-orbit{position:relative;margin-top:44px;display:grid;grid-template-columns:1fr auto 1fr;
+  gap:16px;align-items:center;justify-items:stretch;}
+.ap-orbit-center{grid-column:2;grid-row:2;font-size:13px;letter-spacing:.2em;font-weight:600;color:var(--plum);
+  background:#fff;border-radius:999px;padding:16px 26px;box-shadow:var(--shadow-card);white-space:nowrap;}
+.ap-disc{padding:16px 18px;border-radius:var(--r-sm);background:var(--glass-strong);
+  border:1px solid rgba(141,126,242,.2);box-shadow:var(--shadow-soft);
+  transition:opacity .35s ease,transform .35s ease;}
+.ap-disc:nth-child(2){grid-column:1;grid-row:1;}
+.ap-disc:nth-child(3){grid-column:3;grid-row:1;}
+.ap-disc:nth-child(4){grid-column:3;grid-row:2;}
+.ap-disc:nth-child(5){grid-column:2;grid-row:3;}
+.ap-disc:nth-child(6){grid-column:1;grid-row:2;}
 .ap-disc h4{font-size:11px;letter-spacing:.16em;color:var(--violet);font-weight:600;margin-bottom:6px;}
 .ap-disc p{font-size:13px;line-height:1.45;color:var(--muted);font-weight:300;}
-.ap-orbit:hover .ap-disc{opacity:.38;}
-.ap-orbit .ap-disc:hover{opacity:1;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(1.04);}
-.ap-orbit svg.ap-rays{position:absolute;inset:0;opacity:.35;}
-.ap-orbit svg.ap-rays line{stroke:var(--violet);stroke-width:1;}
-.ap-formula{margin-top:52px;display:grid;gap:10px;}
+.ap-orbit:hover .ap-disc{opacity:.42;}
+.ap-orbit .ap-disc:hover{opacity:1;transform:translateY(-3px);}
+.ap-formula{margin-top:46px;display:grid;gap:10px;}
 .ap-formula span{font-size:clamp(17px,1.7vw,22px);color:var(--plum);font-weight:400;}
-
 /* MAGIE — section immersive */
 .ap-magic{background:linear-gradient(165deg,#241C3C,#352B52 55%,#2C2350);color:#fff;
   padding:clamp(100px,13vw,180px) 0;margin:var(--ap-gap) 0;border-radius:clamp(28px,4vw,52px);overflow:hidden;}
@@ -374,12 +376,11 @@ footer{margin-top:76px;padding:54px 0 34px;}
   .ap-founder-grid{grid-template-columns:1fr;gap:36px;}
   .ap-three,.ap-stats{grid-template-columns:1fr;gap:28px;}
   .ap-princ{grid-template-columns:1fr 1fr;}
-  .ap-orbit{height:auto;display:grid;gap:14px;}
-  .ap-orbit-center{position:relative;left:auto;top:auto;transform:none;justify-self:start;}
-  .ap-disc{position:relative;left:auto;top:auto;width:auto;transform:none;}
+  .ap-orbit{grid-template-columns:1fr;gap:12px;}
+  .ap-orbit-center,.ap-disc{grid-column:1!important;grid-row:auto!important;}
+  .ap-orbit-center{justify-self:start;}
   .ap-orbit:hover .ap-disc{opacity:1;}
   .ap-orbit .ap-disc:hover{transform:none;}
-  .ap-orbit svg.ap-rays{display:none;}
 }
 @media(max-width:560px){
   .ap .ap-wrap{padding:0 20px;}
@@ -532,21 +533,16 @@ footer{margin-top:76px;padding:54px 0 34px;}
           à HEC Lausanne. Une formation multidisciplinaire, prolongée par la pratique sur des mandats réels.</p>
 
         <div class="ap-orbit ap-rev" data-d="3">
-          <svg class="ap-rays" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-            <line x1="50" y1="50" x2="16" y2="16"/><line x1="50" y1="50" x2="84" y2="16"/>
-            <line x1="50" y1="50" x2="92" y2="62"/><line x1="50" y1="50" x2="50" y2="94"/>
-            <line x1="50" y1="50" x2="8" y2="62"/>
-          </svg>
           <div class="ap-orbit-center">MARKETING</div>
-          <div class="ap-disc" style="--x:-250px;--y:-150px">
+          <div class="ap-disc">
             <h4>Strategy</h4><p>Marketing stratégique, positionnement, décisions business.</p></div>
-          <div class="ap-disc" style="--x:250px;--y:-150px">
+          <div class="ap-disc">
             <h4>Behaviour</h4><p>Consumer psychology, behavioral insights, compréhension des décisions.</p></div>
-          <div class="ap-disc" style="--x:270px;--y:60px">
+          <div class="ap-disc">
             <h4>Data</h4><p>Marketing science, méthodes statistiques, analyse et expérimentation.</p></div>
-          <div class="ap-disc" style="--x:0px;--y:160px">
+          <div class="ap-disc">
             <h4>Technology</h4><p>Tracking, automatisation, IA, systèmes marketing — développés sur le terrain.</p></div>
-          <div class="ap-disc" style="--x:-270px;--y:60px">
+          <div class="ap-disc">
             <h4>Creative</h4><p>Concept, contenu, motion, brand experience.</p></div>
         </div>
 
@@ -736,10 +732,10 @@ footer{margin-top:76px;padding:54px 0 34px;}
     es.forEach(function(e){
       if (e.isIntersecting) {
         e.target.classList.add('on');
-        if (stage && parseInt(e.target.dataset.step, 10) >= 1) stage.classList.add('phase2');
+        if (stage) stage.classList.add('phase2');
       }
     });
-  }, {threshold:.9});
+  }, {threshold:0, rootMargin:'-42% 0px -42% 0px'});
   steps.forEach(function(p){ sIo.observe(p); });
 
   /* petits points de la composition */
