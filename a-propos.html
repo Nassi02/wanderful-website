@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>À propos — Nassima Rizzotti, fondatrice de Wanderful Marketing</title>
+<title>À propos — Wanderful Marketing, agence marketing et IA en Suisse</title>
   <link rel="icon" href="/favicon.ico" sizes="32x32">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#8D7EF2">
-<meta name="description" content="Qui est derrière Wanderful Marketing : Nassima Rizzotti, fondatrice de l'agence de marketing digital d'Yvonand. Parcours, méthode AI-native et outil Google Ads propriétaire.">
+<meta name="description" content="Pourquoi Wanderful Marketing existe : à l'ère de l'IA, produire ne suffit plus. Stratégie, psychologie du consommateur, data et technologie — l'approche de Nassima Rizzotti, formée à HEC Lausanne.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Sacramento&display=swap" rel="stylesheet">
@@ -149,8 +149,8 @@ footer{margin-top:76px;padding:54px 0 34px;}
 <meta property="og:locale" content="fr_CH">
 <meta property="og:site_name" content="Wanderful Marketing">
 <meta property="og:url" content="https://wanderful-marketing.com/a-propos.html">
-<meta property="og:title" content="À propos — Nassima Rizzotti, fondatrice de Wanderful Marketing">
-<meta property="og:description" content="Qui est derrière Wanderful Marketing : Nassima Rizzotti, fondatrice de l'agence de marketing digital d'Yvonand. Parcours, méthode AI-native et outil Google Ads propriétaire.">
+<meta property="og:title" content="À propos — Wanderful Marketing, agence marketing et IA en Suisse">
+<meta property="og:description" content="Pourquoi Wanderful Marketing existe : à l'ère de l'IA, produire ne suffit plus. Stratégie, psychologie du consommateur, data et technologie — l'approche de Nassima Rizzotti, formée à HEC Lausanne.">
 <meta property="og:image" content="https://wanderful-marketing.com/og-image.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <script type="application/ld+json">
@@ -161,21 +161,241 @@ footer{margin-top:76px;padding:54px 0 34px;}
   "url": "https://wanderful-marketing.com/a-propos.html",
   "name": "À propos de Wanderful Marketing",
   "inLanguage": "fr-CH",
-  "about": { "@id": "https://wanderful-marketing.com/#organization" },
+  "description": "Pourquoi Wanderful Marketing existe : à l'ère de l'IA, produire ne suffit plus. Stratégie, psychologie du consommateur, data et technologie — l'approche de Nassima Rizzotti, formée à HEC Lausanne.",
+  "about": {
+    "@id": "https://wanderful-marketing.com/#organization"
+  },
   "mainEntity": {
     "@type": "Person",
     "name": "Nassima Rizzotti",
     "jobTitle": "Fondatrice et gérante",
-    "worksFor": { "@id": "https://wanderful-marketing.com/#organization" },
-    "knowsAbout": ["Google Ads", "SEO", "marketing digital", "automatisation", "intelligence artificielle"],
-    "knowsLanguage": ["fr", "de", "en"]
+    "worksFor": {
+      "@id": "https://wanderful-marketing.com/#organization"
+    },
+    "alumniOf": {
+      "@type": "CollegeOrUniversity",
+      "name": "HEC Lausanne, Université de Lausanne"
+    },
+    "knowsAbout": [
+      "stratégie marketing",
+      "consumer psychology",
+      "marketing analytics",
+      "Google Ads",
+      "SEO",
+      "automatisation",
+      "intelligence artificielle"
+    ],
+    "knowsLanguage": [
+      "fr",
+      "de",
+      "en"
+    ]
   }
 }
 </script>
+<style>
+/* ===== PAGE A PROPOS — refonte narrative ===== */
+.ap{--ap-gap:clamp(80px,11vw,170px);}
+.ap section{position:relative;}
+.ap .ap-wrap{max-width:1180px;margin:0 auto;padding:0 32px;}
+.ap-label{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--violet);font-weight:600;margin-bottom:22px;}
+.ap-h{font-size:clamp(36px,6.4vw,82px);line-height:1.02;letter-spacing:-.03em;font-weight:600;color:var(--plum);}
+.ap-h2{font-size:clamp(30px,4.6vw,58px);line-height:1.06;letter-spacing:-.028em;font-weight:600;color:var(--plum);}
+.ap-lead{font-size:clamp(17px,1.5vw,21px);line-height:1.6;color:var(--muted);font-weight:300;max-width:60ch;}
+.ap-grad{background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+
+/* apparition */
+.ap-rev{opacity:0;transform:translateY(22px);transition:opacity .8s cubic-bezier(.22,1,.36,1),transform .8s cubic-bezier(.22,1,.36,1);}
+.ap-rev.in{opacity:1;transform:none;}
+.ap-rev[data-d="1"]{transition-delay:.09s}.ap-rev[data-d="2"]{transition-delay:.18s}
+.ap-rev[data-d="3"]{transition-delay:.27s}.ap-rev[data-d="4"]{transition-delay:.36s}
+.ap-rev[data-d="5"]{transition-delay:.45s}.ap-rev[data-d="6"]{transition-delay:.54s}
+
+/* fil conducteur */
+.ap-thread{position:fixed;left:max(18px,calc(50vw - 660px));top:0;height:100vh;width:2px;pointer-events:none;z-index:2;opacity:.9;}
+.ap-thread svg{height:100%;width:100%;overflow:visible;}
+.ap-thread path{stroke:url(#apGrad);stroke-width:2;fill:none;stroke-linecap:round;
+  stroke-dasharray:var(--len,1000);stroke-dashoffset:calc(var(--len,1000) - (var(--p,0) * var(--len,1000)));}
+@media(max-width:1100px){.ap-thread{display:none}}
+
+/* HERO */
+.ap-hero{min-height:94vh;display:flex;align-items:center;padding:120px 0 60px;overflow:hidden;}
+.ap-hero .ap-h{max-width:16ch;}
+.ap-hero-l2{display:block;margin-top:.12em;opacity:0;transform:translateY(16px);
+  transition:opacity 1s ease .75s,transform 1s cubic-bezier(.22,1,.36,1) .75s;}
+.ap-hero.in .ap-hero-l2{opacity:1;transform:none;}
+.ap-scroll{display:inline-flex;align-items:center;gap:10px;margin-top:44px;font-size:14px;letter-spacing:.06em;
+  color:var(--ink);font-weight:500;opacity:.85;}
+.ap-scroll span.a{animation:apBob 2.4s ease-in-out infinite;}
+@keyframes apBob{0%,100%{transform:translateY(0)}50%{transform:translateY(5px)}}
+
+/* nuage de tokens du hero */
+.ap-cloud{position:absolute;inset:0;pointer-events:none;}
+.ap-tok{position:absolute;font-size:11px;letter-spacing:.16em;font-weight:600;color:var(--violet);
+  background:rgba(255,255,255,.62);border:1px solid rgba(141,126,242,.22);border-radius:999px;
+  padding:7px 14px;backdrop-filter:blur(6px);opacity:0;transform:scale(.9) translateY(10px);
+  transition:opacity .7s ease,transform .9s cubic-bezier(.22,1,.36,1),filter .9s ease;}
+.ap-hero.in .ap-tok{opacity:.95;transform:none;}
+.ap-hero.blurred .ap-tok{opacity:.28;filter:blur(3px);transform:scale(.82);}
+@media(max-width:860px){.ap-cloud{display:none}}
+
+/* 01 — sticky */
+.ap-sticky{padding:var(--ap-gap) 0;}
+.ap-sticky-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:start;}
+.ap-sticky-vis{position:sticky;top:18vh;height:64vh;display:flex;align-items:center;justify-content:center;}
+.ap-steps p{font-size:clamp(20px,2.3vw,30px);line-height:1.35;color:var(--plum);font-weight:400;
+  margin:0 0 30px;opacity:.25;transition:opacity .5s ease,transform .5s ease;transform:translateX(-4px);}
+.ap-steps p.on{opacity:1;transform:none;}
+.ap-steps p b{font-weight:600;}
+.ap-punch{font-size:clamp(28px,4.4vw,60px);line-height:1.08;font-weight:600;letter-spacing:-.03em;
+  color:var(--plum);text-align:center;margin-top:clamp(60px,8vw,120px);}
+
+/* composition : outputs -> concepts */
+.ap-stage{position:relative;width:min(100%,460px);aspect-ratio:1;}
+.ap-dot{position:absolute;width:7px;height:7px;border-radius:50%;background:var(--lilac);
+  opacity:.75;transition:opacity .7s ease,transform .9s cubic-bezier(.22,1,.36,1);}
+.ap-stage.phase2 .ap-dot{opacity:0;transform:scale(.3);}
+.ap-node{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.85);
+  font-size:11px;letter-spacing:.14em;font-weight:600;color:var(--plum);white-space:nowrap;
+  background:var(--glass-strong);border:1px solid rgba(141,126,242,.25);border-radius:999px;padding:9px 16px;
+  box-shadow:var(--shadow-soft);opacity:0;transition:opacity .8s ease,transform 1s cubic-bezier(.22,1,.36,1);}
+.ap-stage.phase2 .ap-node{opacity:1;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(1);}
+.ap-core{position:absolute;left:50%;top:50%;width:92px;height:92px;margin:-46px 0 0 -46px;border-radius:50%;
+  background:var(--grad-main);opacity:0;transform:scale(.4);transition:opacity .9s ease .25s,transform 1s cubic-bezier(.22,1,.36,1) .25s;
+  box-shadow:0 0 60px -10px rgba(141,126,242,.8);}
+.ap-stage.phase2 .ap-core{opacity:.9;transform:scale(1);}
+.ap-links{position:absolute;inset:0;opacity:0;transition:opacity .9s ease .35s;}
+.ap-stage.phase2 .ap-links{opacity:.5;}
+.ap-links line{stroke:var(--violet);stroke-width:1;}
+
+/* TRANSITION */
+.ap-birth{padding:var(--ap-gap) 0;text-align:center;}
+.ap-birth .ap-h2{max-width:18ch;margin:0 auto;}
+.ap-mark{width:96px;height:96px;margin:46px auto 0;display:grid;place-items:center;border-radius:50%;
+  background:var(--grad-main);box-shadow:0 0 70px -12px rgba(141,126,242,.75);}
+.ap-mark svg{width:46px;height:46px;}
+
+/* FONDATRICE */
+.ap-founder{padding:var(--ap-gap) 0;}
+.ap-founder-grid{display:grid;grid-template-columns:38% 1fr;gap:64px;align-items:center;}
+.ap-photo{aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;position:relative;
+  background:linear-gradient(150deg,#E8E4FB,#CED0F2 55%,#B8A6F5);box-shadow:var(--shadow-card);}
+.ap-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+.ap-photo .ap-photo-hint{position:absolute;inset:auto 0 0 0;padding:18px;font-size:12px;
+  letter-spacing:.14em;color:#fff;opacity:.85;text-transform:uppercase;}
+
+/* constellation disciplines */
+.ap-orbit{position:relative;margin-top:44px;height:420px;}
+.ap-orbit-center{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font-size:13px;
+  letter-spacing:.2em;font-weight:600;color:var(--plum);background:#fff;border-radius:999px;padding:14px 24px;
+  box-shadow:var(--shadow-soft);z-index:2;}
+.ap-disc{position:absolute;left:50%;top:50%;width:190px;padding:14px 16px;border-radius:var(--r-sm);
+  background:var(--glass-strong);border:1px solid rgba(141,126,242,.2);box-shadow:var(--shadow-soft);
+  transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y)));transition:opacity .35s ease,transform .35s ease;cursor:default;}
+.ap-disc h4{font-size:11px;letter-spacing:.16em;color:var(--violet);font-weight:600;margin-bottom:6px;}
+.ap-disc p{font-size:13px;line-height:1.45;color:var(--muted);font-weight:300;}
+.ap-orbit:hover .ap-disc{opacity:.38;}
+.ap-orbit .ap-disc:hover{opacity:1;transform:translate(calc(-50% + var(--x)),calc(-50% + var(--y))) scale(1.04);}
+.ap-orbit svg.ap-rays{position:absolute;inset:0;opacity:.35;}
+.ap-orbit svg.ap-rays line{stroke:var(--violet);stroke-width:1;}
+.ap-formula{margin-top:52px;display:grid;gap:10px;}
+.ap-formula span{font-size:clamp(17px,1.7vw,22px);color:var(--plum);font-weight:400;}
+
+/* MAGIE — section immersive */
+.ap-magic{background:linear-gradient(165deg,#241C3C,#352B52 55%,#2C2350);color:#fff;
+  padding:clamp(100px,13vw,180px) 0;margin:var(--ap-gap) 0;border-radius:clamp(28px,4vw,52px);overflow:hidden;}
+.ap-magic .ap-h2,.ap-magic .ap-h{color:#fff;}
+.ap-magic .ap-lead{color:rgba(255,255,255,.72);}
+.ap-magic .ap-label{color:#C9BCFF;}
+.ap-chain{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;margin:60px 0 48px;}
+.ap-chip{font-size:12px;letter-spacing:.16em;font-weight:600;color:rgba(255,255,255,.55);
+  border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:10px 18px;transition:all .5s ease;}
+.ap-chip.lit{color:#fff;border-color:rgba(201,188,255,.75);box-shadow:0 0 26px -6px rgba(174,172,242,.75);
+  background:rgba(255,255,255,.07);}
+.ap-plus{color:rgba(255,255,255,.35);font-weight:300;}
+.ap-effect{text-align:center;font-size:clamp(20px,2.6vw,34px);font-weight:600;letter-spacing:-.01em;
+  background:linear-gradient(120deg,#CED0F2,#B98DF2 60%,#E4C9FF);-webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;opacity:0;transform:translateY(12px);transition:all .8s ease;}
+.ap-effect.in{opacity:1;transform:none;}
+.ap-wand{width:clamp(120px,16vw,190px);margin:0 auto 10px;display:block;}
+.ap-wand .w-star{transform-origin:center;animation:apTwinkle 3.6s ease-in-out infinite;}
+@keyframes apTwinkle{0%,100%{opacity:.85}50%{opacity:.35}}
+
+/* IA */
+.ap-ai{padding:var(--ap-gap) 0;}
+.ap-swap{position:relative;min-height:2.6em;}
+.ap-swap span{display:block;transition:opacity .7s ease,transform .7s cubic-bezier(.22,1,.36,1);}
+.ap-swap .s2{position:absolute;inset:0;opacity:0;transform:translateY(14px);}
+.ap-swap.on .s1{opacity:.18;transform:translateY(-12px);}
+.ap-swap.on .s2{opacity:1;transform:none;}
+.ap-three{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;margin-top:64px;}
+.ap-mini h4{font-size:12px;letter-spacing:.18em;color:var(--violet);font-weight:600;margin-bottom:10px;}
+.ap-mini p{font-size:15px;line-height:1.6;color:var(--muted);font-weight:300;}
+.ap-mini{padding-top:22px;border-top:1px solid rgba(141,126,242,.28);}
+
+/* HUMAIN */
+.ap-human{padding:var(--ap-gap) 0;text-align:center;}
+.ap-human .ap-h2{max-width:20ch;margin:0 auto 26px;}
+.ap-human .ap-lead{margin:0 auto;}
+.ap-flow{margin:56px auto 0;max-width:620px;}
+.ap-flow svg{width:100%;height:auto;}
+.ap-flow .fdot{opacity:.55;}
+
+/* PREUVE */
+.ap-proof{padding:var(--ap-gap) 0;}
+.ap-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;margin:60px 0 40px;}
+.ap-stat b{display:block;font-size:clamp(40px,6.2vw,76px);line-height:1;font-weight:600;letter-spacing:-.04em;
+  background:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.ap-stat small{display:block;margin-top:12px;font-size:14px;color:var(--muted);font-weight:300;line-height:1.5;}
+.ap-pipe{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:34px;}
+.ap-pipe span{font-size:11px;letter-spacing:.14em;font-weight:600;color:var(--violet);
+  background:rgba(141,126,242,.09);border-radius:999px;padding:8px 14px;}
+
+/* TRAVAIL */
+.ap-work{padding:var(--ap-gap) 0;}
+.ap-princ{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:56px;}
+
+/* CTA */
+.ap-cta{background:var(--grad-main);border-radius:clamp(28px,4vw,52px);padding:clamp(70px,10vw,130px) 32px;
+  text-align:center;margin:var(--ap-gap) 0 90px;position:relative;overflow:hidden;}
+.ap-cta .ap-h2{color:#fff;max-width:17ch;margin:0 auto;}
+.ap-cta .ap-lead{color:rgba(255,255,255,.85);margin:24px auto 0;max-width:52ch;}
+.ap-cta .ap-label{color:rgba(255,255,255,.8);}
+.ap-cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:40px;}
+.ap-btn{display:inline-flex;align-items:center;gap:9px;border-radius:999px;padding:16px 30px;font-weight:600;
+  font-size:15px;transition:transform .3s ease,box-shadow .3s ease;}
+.ap-btn-1{background:#fff;color:var(--plum);box-shadow:0 14px 40px -14px rgba(53,43,82,.5);}
+.ap-btn-2{border:1px solid rgba(255,255,255,.55);color:#fff;}
+.ap-btn:hover{transform:translateY(-2px);box-shadow:0 18px 44px -12px rgba(53,43,82,.55);}
+
+@media(max-width:980px){
+  .ap-sticky-grid{grid-template-columns:1fr;gap:40px;}
+  .ap-sticky-vis{position:relative;top:0;height:auto;margin-bottom:10px;}
+  .ap-founder-grid{grid-template-columns:1fr;gap:36px;}
+  .ap-three,.ap-stats{grid-template-columns:1fr;gap:28px;}
+  .ap-princ{grid-template-columns:1fr 1fr;}
+  .ap-orbit{height:auto;display:grid;gap:14px;}
+  .ap-orbit-center{position:relative;left:auto;top:auto;transform:none;justify-self:start;}
+  .ap-disc{position:relative;left:auto;top:auto;width:auto;transform:none;}
+  .ap-orbit:hover .ap-disc{opacity:1;}
+  .ap-orbit .ap-disc:hover{transform:none;}
+  .ap-orbit svg.ap-rays{display:none;}
+}
+@media(max-width:560px){
+  .ap .ap-wrap{padding:0 20px;}
+  .ap-princ{grid-template-columns:1fr;}
+  .ap-chain{gap:9px;}
+}
+@media (prefers-reduced-motion: reduce){
+  .ap *,.ap *::before,.ap *::after{animation:none!important;transition-duration:.01ms!important;}
+  .ap-rev{opacity:1!important;transform:none!important;}
+  .ap-hero-l2,.ap-tok,.ap-node,.ap-core,.ap-links,.ap-effect{opacity:1!important;transform:none!important;}
+  .ap-steps p{opacity:1!important;}
+  .ap-thread{display:none;}
+}
+</style>
 </head>
 <body>
-<div class="bg"></div><div class="bg2"></div><div class="bg-veil"></div>
-
 <header>
   <div class="wrap">
     <nav class="nav">
@@ -193,109 +413,416 @@ footer{margin-top:76px;padding:54px 0 34px;}
     </nav>
   </div>
 </header>
+<main class="ap">
 
-<section class="wrap hero">
-  <div>
-    <div class="eyebrow">À propos</div>
-    <h1>Derrière Wanderful, il y a <span class="grad">une personne.</span></h1>
-    <p class="lead">Pas un open space, pas un compte rendu de stagiaire : Nassima Rizzotti, fondatrice de l'agence,
-    qui travaille elle-même sur vos campagnes depuis Yvonand, entre Yverdon-les-Bains et Lausanne.</p>
-    <div class="cta-row">
-      <a href="contact/" class="btn btn-primary">Parlons de votre projet →</a>
-      <a href="carewell.html" class="btn btn-ghost">Voir une étude de cas</a>
+<!-- fil conducteur -->
+<div class="ap-thread" aria-hidden="true">
+  <svg viewBox="0 0 2 1000" preserveAspectRatio="none">
+    <defs><linearGradient id="apGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#CED0F2"/><stop offset="50%" stop-color="#8D7EF2"/><stop offset="100%" stop-color="#B98DF2"/>
+    </linearGradient></defs>
+    <path d="M1 0 L1 1000"/>
+  </svg>
+</div>
+
+<!-- ================= HERO ================= -->
+<section class="ap-hero" id="apHero">
+  <div class="ap-cloud" aria-hidden="true">
+    <span class="ap-tok" style="left:6%;top:18%">PROMPT</span>
+    <span class="ap-tok" style="left:78%;top:14%">IMAGE</span>
+    <span class="ap-tok" style="left:84%;top:38%">VIDEO</span>
+    <span class="ap-tok" style="left:71%;top:62%">COPY</span>
+    <span class="ap-tok" style="left:88%;top:78%">SEO</span>
+    <span class="ap-tok" style="left:10%;top:74%">ADS</span>
+    <span class="ap-tok" style="left:3%;top:47%">AUTOMATION</span>
+    <span class="ap-tok" style="left:62%;top:86%">DATA</span>
+  </div>
+  <div class="ap-wrap">
+    <div class="ap-label ap-rev">À propos de Wanderful</div>
+    <h1 class="ap-h ap-rev" data-d="1">Tout le monde peut faire du marketing maintenant.
+      <span class="ap-hero-l2 ap-grad">C'est justement le problème.</span></h1>
+    <p class="ap-lead ap-rev" data-d="3" style="margin-top:32px;">L'IA a rendu la création plus rapide,
+      plus accessible et presque infinie. Mais quand tout le monde dispose des mêmes outils,
+      savoir les utiliser ne suffit plus.</p>
+    <a href="#ap-01" class="ap-scroll ap-rev" data-d="4">Découvrir pourquoi <span class="a">↓</span></a>
+  </div>
+</section>
+
+<!-- ============ 01 — LE NOUVEAU MARKETING ============ -->
+<section class="ap-sticky" id="ap-01">
+  <div class="ap-wrap">
+    <div class="ap-label ap-rev">01 — Le nouveau marketing</div>
+    <div class="ap-sticky-grid">
+      <div class="ap-steps" id="apSteps">
+        <h2 class="ap-h2 ap-rev" style="margin-bottom:34px;">Produire n'a jamais été aussi facile.</h2>
+        <p class="ap-lead ap-rev" data-d="1" style="opacity:1;margin-bottom:48px;">Une campagne en quelques secondes.
+          Une image en quelques minutes. Des dizaines d'idées de contenus avant même le premier café.</p>
+        <p data-step="0"><b>Alors la valeur s'est déplacée.</b></p>
+        <p data-step="1">Comprendre le marché.</p>
+        <p data-step="2">Comprendre les gens.</p>
+        <p data-step="3">Choisir le bon message.</p>
+        <p data-step="4">Transformer les données en décisions.</p>
+        <p data-step="5">Construire les bons systèmes.</p>
+        <p data-step="6">Mesurer ce qui fonctionne réellement.</p>
+      </div>
+      <div class="ap-sticky-vis">
+        <div class="ap-stage" id="apStage">
+          <svg class="ap-links" viewBox="0 0 100 100" aria-hidden="true">
+            <line x1="50" y1="50" x2="50" y2="12"/><line x1="50" y1="50" x2="86" y2="38"/>
+            <line x1="50" y1="50" x2="74" y2="82"/><line x1="50" y1="50" x2="26" y2="82"/>
+            <line x1="50" y1="50" x2="14" y2="38"/>
+          </svg>
+          <div class="ap-core"></div>
+          <span class="ap-node" style="--x:0px;--y:-190px">STRATEGY</span>
+          <span class="ap-node" style="--x:172px;--y:-58px">HUMAN</span>
+          <span class="ap-node" style="--x:110px;--y:152px">CREATIVE</span>
+          <span class="ap-node" style="--x:-110px;--y:152px">DATA</span>
+          <span class="ap-node" style="--x:-172px;--y:-58px">TECHNOLOGY</span>
+        </div>
+      </div>
+    </div>
+    <p class="ap-punch ap-rev">La différence se fait <span class="ap-grad">avant le prompt.</span></p>
+  </div>
+</section>
+
+<!-- ============ TRANSITION ============ -->
+<section class="ap-birth">
+  <div class="ap-wrap">
+    <h2 class="ap-h2 ap-rev">C'est dans cet espace que <span class="ap-grad">Wanderful est née.</span></h2>
+    <p class="ap-lead ap-rev" data-d="2" style="margin:26px auto 0;text-align:center;">Entre ce que la technologie
+      peut produire et ce que les humains doivent encore décider.</p>
+    <div class="ap-mark ap-rev" data-d="3" aria-hidden="true">
+      <svg viewBox="0 0 38 44" fill="none">
+        <polygon points="19,2 21.5,9 29,9 23,13.5 25.5,21 19,16.5 12.5,21 15,13.5 9,9 16.5,9" fill="#fff" opacity=".95"/>
+        <line x1="19" y1="21" x2="8" y2="39" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
+      </svg>
     </div>
   </div>
 </section>
 
-<section class="wrap section">
-  <div class="s-head">
-    <div>
-      <div class="eyebrow">Le parcours</div>
-      <h2>Une agence née d'un constat <span class="grad">simple.</span></h2>
-    </div>
-    <p>Les PME suisses paient souvent des agences qui facturent des heures plutôt que des résultats — et qui
-    ne savent pas dire ce qu'un franc de publicité a rapporté.</p>
+<!-- ============ 02 — L'HISTOIRE ============ -->
+<section class="ap-ai" style="padding-top:0">
+  <div class="ap-wrap">
+    <div class="ap-label ap-rev">02 — L'histoire</div>
+    <h2 class="ap-h2 ap-rev" data-d="1">Pas une agence créée pour produire plus.<br>
+      <span class="ap-grad">Une agence créée pour réfléchir mieux.</span></h2>
+    <p class="ap-lead ap-rev" data-d="2" style="margin-top:30px;">Wanderful est née d'une conviction : le meilleur
+      marketing ne vient pas d'un outil isolé. Il apparaît lorsque la compréhension du consommateur, la créativité,
+      les données et la technologie travaillent ensemble.</p>
+    <p class="ap-lead ap-rev" data-d="3" style="margin-top:22px;">C'est cette approche que Nassima Rizzotti a
+      développée à HEC Lausanne avant de la confronter au terrain en créant Wanderful Marketing.</p>
   </div>
-  <div class="grid-3">
-    <div class="card">
-      <div class="ico">🎓</div>
-      <h3>Le point de départ</h3>
-      <p>Wanderful est née pendant mon Master en marketing à HEC Lausanne : monter l'agence avant
-      le diplôme, c'était la seule façon d'apprendre sur de vrais budgets. La Sàrl est inscrite au
-      Registre du commerce du canton de Vaud (CHE-336.022.963).</p>
-    </div>
-    <div class="card">
-      <div class="ico">🛠️</div>
-      <h3>Des outils construits, pas achetés</h3>
-      <p>Un outil de pilotage connecté directement à l'API Google Ads, des automatisations sur mesure :
-      ce que la plupart des agences sous-traitent, nous le développons.</p>
-    </div>
-    <div class="card">
-      <div class="ico">🇨🇭</div>
-      <h3>Français et allemand</h3>
-      <p>Des campagnes conçues pour les deux marchés linguistiques suisses, pas des traductions
-      approximatives d'un message pensé en français.</p>
+</section>
+
+<!-- ============ LA FONDATRICE ============ -->
+<section class="ap-founder">
+  <div class="ap-wrap">
+    <div class="ap-founder-grid">
+      <div class="ap-photo ap-rev" aria-hidden="true">
+        <!-- Pour ajouter la photo : placer le fichier dans assets/ puis remplacer ce bloc par
+             <img src="assets/nassima.jpg" alt="Nassima Rizzotti, fondatrice de Wanderful Marketing"> -->
+        <span class="ap-photo-hint">Nassima Rizzotti · Fondatrice</span>
+      </div>
+      <div>
+        <div class="ap-label ap-rev">La fondatrice</div>
+        <h2 class="ap-h2 ap-rev" data-d="1">Une marketeuse formée à comprendre le
+          <span class="ap-grad">« pourquoi »</span>, pas seulement le « comment ».</h2>
+        <p class="ap-lead ap-rev" data-d="2" style="margin-top:26px;">Fondatrice de Wanderful Marketing,
+          Nassima Rizzotti est diplômée en Management et poursuit une spécialisation avancée en marketing
+          à HEC Lausanne. Une formation multidisciplinaire, prolongée par la pratique sur des mandats réels.</p>
+
+        <div class="ap-orbit ap-rev" data-d="3">
+          <svg class="ap-rays" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <line x1="50" y1="50" x2="16" y2="16"/><line x1="50" y1="50" x2="84" y2="16"/>
+            <line x1="50" y1="50" x2="92" y2="62"/><line x1="50" y1="50" x2="50" y2="94"/>
+            <line x1="50" y1="50" x2="8" y2="62"/>
+          </svg>
+          <div class="ap-orbit-center">MARKETING</div>
+          <div class="ap-disc" style="--x:-250px;--y:-150px">
+            <h4>Strategy</h4><p>Marketing stratégique, positionnement, décisions business.</p></div>
+          <div class="ap-disc" style="--x:250px;--y:-150px">
+            <h4>Behaviour</h4><p>Consumer psychology, behavioral insights, compréhension des décisions.</p></div>
+          <div class="ap-disc" style="--x:270px;--y:60px">
+            <h4>Data</h4><p>Marketing science, méthodes statistiques, analyse et expérimentation.</p></div>
+          <div class="ap-disc" style="--x:0px;--y:160px">
+            <h4>Technology</h4><p>Tracking, automatisation, IA, systèmes marketing — développés sur le terrain.</p></div>
+          <div class="ap-disc" style="--x:-270px;--y:60px">
+            <h4>Creative</h4><p>Concept, contenu, motion, brand experience.</p></div>
+        </div>
+
+        <div class="ap-formula ap-rev" data-d="4">
+          <span>Une intuition créative devient une <b>hypothèse</b>.</span>
+          <span>Une campagne devient un <b>test</b>.</span>
+          <span>Les <b>données</b> décident de la suite.</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section class="wrap section">
-  <div class="s-head">
-    <div>
-      <div class="eyebrow">La méthode</div>
-      <h2>Ce que ça change <span class="grad">concrètement.</span></h2>
+<!-- ============ LA MAGIE ============ -->
+<section class="ap-magic" id="apMagic">
+  <div class="ap-wrap" style="text-align:center">
+    <svg class="ap-wand" viewBox="0 0 120 90" fill="none" aria-hidden="true">
+      <polygon class="w-star" points="60,6 64,22 80,22 67,32 72,49 60,39 48,49 53,32 40,22 56,22" fill="#E4DBFF"/>
+      <circle cx="26" cy="14" r="2.4" fill="#C9BCFF" opacity=".8"/><circle cx="96" cy="20" r="1.8" fill="#C9BCFF" opacity=".6"/>
+      <circle cx="34" cy="38" r="1.6" fill="#C9BCFF" opacity=".5"/>
+      <line x1="60" y1="49" x2="24" y2="84" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+      <line x1="33" y1="75" x2="25" y2="84" stroke="#B98DF2" stroke-width="5" stroke-linecap="round"/>
+    </svg>
+    <h2 class="ap-h ap-rev" style="max-width:none">La magie, oui.<br>
+      <span class="ap-grad">Mais jamais par hasard.</span></h2>
+    <p class="ap-lead ap-rev" data-d="2" style="margin:30px auto 0;text-align:center;">On aime appeler ça de la magie.
+      Mais derrière une campagne qui semble fonctionner comme par magie, il y a rarement un coup de chance.</p>
+
+    <div class="ap-chain" id="apChain">
+      <span class="ap-chip">INSIGHT</span><span class="ap-plus">+</span>
+      <span class="ap-chip">STRATEGY</span><span class="ap-plus">+</span>
+      <span class="ap-chip">CREATIVE</span><span class="ap-plus">+</span>
+      <span class="ap-chip">DATA</span><span class="ap-plus">+</span>
+      <span class="ap-chip">TECHNOLOGY</span><span class="ap-plus">+</span>
+      <span class="ap-chip">TESTING</span>
     </div>
+    <div class="ap-effect" id="apEffect">✦ L'effet Wanderful</div>
+    <p class="ap-h2 ap-rev" data-d="3" style="margin-top:70px;">La baguette n'est que
+      <span class="ap-grad">la partie visible.</span></p>
   </div>
-  <div class="grid-3">
-    <div class="card">
-      <div class="ico">📊</div>
-      <h3>Des chiffres, pas des impressions</h3>
-      <p>Chaque mandat est suivi dans Google Analytics et Search Console, avec un coût par résultat
-      mesuré. Si une campagne ne rapporte pas, on le dit.</p>
+</section>
+
+<!-- ============ 03 — L'IA AVEC INTENTION ============ -->
+<section class="ap-ai">
+  <div class="ap-wrap">
+    <div class="ap-label ap-rev">03 — L'IA, avec intention</div>
+    <h2 class="ap-h2 ap-rev" data-d="1">L'IA accélère.<br><span class="ap-grad">La stratégie dirige.</span></h2>
+    <p class="ap-lead ap-rev" data-d="2" style="margin-top:28px;">Chez Wanderful, l'IA n'est ni un argument marketing
+      ni un remplacement de la réflexion. Elle permet d'explorer plus vite, d'automatiser ce qui n'a pas besoin
+      d'être manuel, d'analyser davantage de données et de consacrer plus de temps aux décisions qui comptent
+      réellement.</p>
+    <div class="ap-swap ap-h2 ap-rev" data-d="3" id="apSwap" style="margin-top:64px;">
+      <span class="s1">Nous n'utilisons pas l'IA pour faire plus de contenu.</span>
+      <span class="s2 ap-grad">Nous l'utilisons pour faire du meilleur marketing.</span>
     </div>
-    <div class="card">
-      <div class="ico">⚡</div>
-      <h3>Une interlocutrice unique</h3>
-      <p>Vous parlez à la personne qui fait le travail. Réponse garantie sous 48 heures.</p>
-    </div>
-    <div class="card">
-      <div class="ico">🤖</div>
-      <h3>L'IA là où elle sert</h3>
-      <p>Automatisation des tâches répétitives et de l'analyse, pour passer le temps gagné sur
-      la stratégie — pas pour produire du contenu générique.</p>
+    <div class="ap-three">
+      <div class="ap-mini ap-rev" data-d="1"><h4>Explore</h4>
+        <p>Explorer davantage d'angles, d'hypothèses et d'opportunités.</p></div>
+      <div class="ap-mini ap-rev" data-d="2"><h4>Automate</h4>
+        <p>Automatiser les tâches répétitives et connecter les systèmes.</p></div>
+      <div class="ap-mini ap-rev" data-d="3"><h4>Analyse</h4>
+        <p>Transformer davantage de données en informations exploitables.</p></div>
     </div>
   </div>
 </section>
 
-<section class="wrap section">
-  <div class="s-head">
-    <div>
-      <div class="eyebrow">La preuve</div>
-      <h2>2 800 candidats soignants <span class="grad">en 14 mois.</span></h2>
+<!-- ============ HUMAIN + MACHINE ============ -->
+<section class="ap-human">
+  <div class="ap-wrap">
+    <h2 class="ap-h2 ap-rev">Plus les machines savent produire, plus comprendre les humains devient
+      <span class="ap-grad">précieux.</span></h2>
+    <p class="ap-lead ap-rev" data-d="2">Parce qu'au bout d'une campagne, d'une landing page ou d'un parcours
+      automatisé, il reste toujours une décision humaine : regarder, faire confiance, cliquer, réserver, acheter.</p>
+    <div class="ap-flow ap-rev" data-d="3" aria-hidden="true">
+      <svg viewBox="0 0 600 140">
+        <g class="fdot" fill="#AEACF2">
+          <circle cx="20" cy="30" r="3"/><circle cx="60" cy="72" r="3"/><circle cx="34" cy="108" r="3"/>
+          <circle cx="104" cy="44" r="3"/><circle cx="140" cy="96" r="3"/><circle cx="178" cy="60" r="3"/>
+          <circle cx="216" cy="102" r="3"/><circle cx="248" cy="38" r="3"/>
+        </g>
+        <path d="M20 30 C 180 30, 240 70, 300 70" stroke="#CED0F2" stroke-width="1.2" fill="none"/>
+        <path d="M34 108 C 190 108, 240 74, 300 70" stroke="#CED0F2" stroke-width="1.2" fill="none"/>
+        <path d="M178 60 C 230 60, 260 68, 300 70" stroke="#CED0F2" stroke-width="1.2" fill="none"/>
+        <circle cx="318" cy="70" r="9" fill="#8D7EF2"/>
+        <path d="M336 70 L 470 70" stroke="#8D7EF2" stroke-width="1.6" stroke-dasharray="4 5"/>
+        <circle cx="520" cy="70" r="26" fill="none" stroke="#8D7EF2" stroke-width="1.6"/>
+        <circle cx="520" cy="60" r="8" fill="#8D7EF2"/>
+        <path d="M506 86 a14 14 0 0 1 28 0" fill="#8D7EF2"/>
+      </svg>
     </div>
-    <p>Pour Carewell, plateforme suisse de recrutement dans la santé : plus de 2 800 inscriptions générées
-    à moins de 3 CHF l'inscription, sur les marchés francophone et germanophone, et 79 % de trafic
-    organique en plus en 9 mois.</p>
-  </div>
-  <div class="cta-row">
-    <a href="carewell.html" class="btn btn-primary">Lire l'étude de cas complète →</a>
-    <a href="realisations.html" class="btn btn-ghost">Toutes les réalisations</a>
   </div>
 </section>
 
-<section class="wrap section">
-  <div class="s-head">
-    <div>
-      <div class="eyebrow">La suite</div>
-      <h2>Un premier échange, <span class="grad">sans engagement.</span></h2>
+<!-- ============ 04 — LA PREUVE ============ -->
+<section class="ap-proof" id="apProof">
+  <div class="ap-wrap">
+    <div class="ap-label ap-rev">04 — La preuve</div>
+    <h2 class="ap-h2 ap-rev" data-d="1">Et quand tout fonctionne ensemble ?</h2>
+    <div class="ap-pipe ap-rev" data-d="2" style="margin-top:34px;">
+      <span>ADS</span><span>SEO</span><span>LANDING PAGES</span><span>TRACKING</span>
+      <span>AUTOMATION</span><span>OPTIMISATION</span>
     </div>
-    <p>Décrivez votre situation en quelques lignes : vous recevrez une réponse argumentée, même si
-    la conclusion est que vous n'avez pas besoin de nous.</p>
-  </div>
-  <div class="cta-row">
-    <a href="contact/" class="btn btn-primary">Écrire à Wanderful →</a>
+    <div class="ap-stats">
+      <div class="ap-stat ap-rev"><b data-count="2800" data-suffix="+">0</b>
+        <small>inscriptions de candidats</small></div>
+      <div class="ap-stat ap-rev" data-d="1"><b data-count="3" data-prefix="&lt; CHF ">0</b>
+        <small>par inscription</small></div>
+      <div class="ap-stat ap-rev" data-d="2"><b data-count="79" data-prefix="+" data-suffix="&nbsp;%">0</b>
+        <small>de trafic organique en 9 mois</small></div>
+    </div>
+    <p class="ap-lead ap-rev">Carewell — recrutement dans la santé en Suisse. Acquisition payante, SEO,
+      landing pages, tracking, automatisation et optimisation continue réunis dans un même système.</p>
+    <p class="ap-h2 ap-rev" data-d="2" style="margin-top:46px;font-size:clamp(24px,3.2vw,40px)">Pas de formule magique.
+      <span class="ap-grad">Un système qui fonctionne.</span></p>
+    <a href="carewell.html" class="btn btn-primary ap-rev" data-d="3" style="margin-top:34px;display:inline-flex;">Voir l'étude de cas →</a>
   </div>
 </section>
+
+<!-- ============ COMMENT ON TRAVAILLE ============ -->
+<section class="ap-work">
+  <div class="ap-wrap">
+    <h2 class="ap-h2 ap-rev">Petite structure. <span class="ap-grad">Grande implication.</span></h2>
+    <p class="ap-lead ap-rev" data-d="1" style="margin-top:24px;">Vous ne passez pas d'un commercial à un chef de
+      projet puis à un junior. La personne avec qui vous définissez la stratégie reste impliquée dans son exécution.</p>
+    <div class="ap-princ">
+      <div class="ap-mini ap-rev" data-d="1"><h4>Direct</h4>
+        <p>Vous parlez à la personne qui pense et pilote votre stratégie.</p></div>
+      <div class="ap-mini ap-rev" data-d="2"><h4>Measurable</h4>
+        <p>Ce qui peut être mesuré l'est. Ce qui ne fonctionne pas est remis en question.</p></div>
+      <div class="ap-mini ap-rev" data-d="3"><h4>Agile</h4>
+        <p>Moins de couches, moins de réunions inutiles, plus de temps sur le travail qui compte.</p></div>
+      <div class="ap-mini ap-rev" data-d="4"><h4>Curious</h4>
+        <p>Tester de nouveaux outils n'est pas une stratégie. Savoir quand les utiliser en est une.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 — CTA ============ -->
+<section class="ap-wrap">
+  <div class="ap-cta">
+    <svg class="ap-wand" viewBox="0 0 120 90" fill="none" aria-hidden="true" style="width:clamp(90px,10vw,130px);margin-bottom:18px;">
+      <polygon class="w-star" points="60,6 64,22 80,22 67,32 72,49 60,39 48,49 53,32 40,22 56,22" fill="#fff"/>
+      <line x1="60" y1="49" x2="24" y2="84" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+      <line x1="33" y1="75" x2="25" y2="84" stroke="rgba(255,255,255,.6)" stroke-width="5" stroke-linecap="round"/>
+    </svg>
+    <div class="ap-label ap-rev">05 — À vous</div>
+    <h2 class="ap-h2 ap-rev" data-d="1">Votre marketing n'a pas besoin de plus de bruit.<br>
+      Il a besoin d'une meilleure idée.</h2>
+    <p class="ap-lead ap-rev" data-d="2">Parlez-nous de votre marque, de votre problème ou simplement de ce que
+      vous aimeriez changer. Nous vous dirons franchement comment nous l'aborderions.</p>
+    <div class="ap-cta-row ap-rev" data-d="3">
+      <a href="contact/" class="ap-btn ap-btn-1">Prononcer la formule magique ✦</a>
+      <a href="realisations.html" class="ap-btn ap-btn-2">Voir nos réalisations</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* apparition generique */
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.18, rootMargin:'0px 0px -8% 0px'});
+  document.querySelectorAll('.ap-rev').forEach(function(el){ io.observe(el); });
+
+  /* hero : nuage de tokens puis flou */
+  var hero = document.getElementById('apHero');
+  if (hero) {
+    requestAnimationFrame(function(){ hero.classList.add('in'); });
+    document.querySelectorAll('.ap-tok').forEach(function(t, i){
+      t.style.transitionDelay = (0.5 + i * 0.16) + 's';
+    });
+    if (!reduce) setTimeout(function(){
+      document.querySelectorAll('.ap-tok').forEach(function(t){ t.style.transitionDelay = '0s'; });
+      hero.classList.add('blurred');
+    }, 3400);
+  }
+
+  /* 01 : etapes + bascule de la composition */
+  var steps = [].slice.call(document.querySelectorAll('#apSteps p[data-step]'));
+  var stage = document.getElementById('apStage');
+  var sIo = new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if (e.isIntersecting) {
+        e.target.classList.add('on');
+        if (stage && parseInt(e.target.dataset.step, 10) >= 1) stage.classList.add('phase2');
+      }
+    });
+  }, {threshold:.9});
+  steps.forEach(function(p){ sIo.observe(p); });
+
+  /* petits points de la composition */
+  if (stage) {
+    var frag = document.createDocumentFragment();
+    for (var i = 0; i < 46; i++) {
+      var d = document.createElement('span');
+      d.className = 'ap-dot';
+      d.style.left = (8 + Math.random() * 84) + '%';
+      d.style.top  = (8 + Math.random() * 84) + '%';
+      d.style.transitionDelay = (Math.random() * .35).toFixed(2) + 's';
+      frag.appendChild(d);
+    }
+    stage.appendChild(frag);
+  }
+
+  /* magie : illumination de la chaine */
+  var chain = document.getElementById('apChain');
+  var effect = document.getElementById('apEffect');
+  if (chain) {
+    var chips = [].slice.call(chain.querySelectorAll('.ap-chip'));
+    var mIo = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (!e.isIntersecting) return;
+        mIo.unobserve(e.target);
+        chips.forEach(function(c, i){ setTimeout(function(){ c.classList.add('lit'); }, reduce ? 0 : 260 * i); });
+        setTimeout(function(){ if (effect) effect.classList.add('in'); }, reduce ? 0 : 260 * chips.length + 200);
+      });
+    }, {threshold:.5});
+    mIo.observe(chain);
+  }
+
+  /* IA : bascule de phrase */
+  var swap = document.getElementById('apSwap');
+  if (swap) {
+    var wIo = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) { wIo.unobserve(e.target); setTimeout(function(){ swap.classList.add('on'); }, reduce ? 0 : 1100); }
+      });
+    }, {threshold:.75});
+    wIo.observe(swap);
+  }
+
+  /* chiffres : count-up */
+  function countUp(el){
+    var target = parseFloat(el.dataset.count),
+        pre = el.dataset.prefix || '', suf = el.dataset.suffix || '',
+        dur = reduce ? 0 : 1500, t0 = null;
+    function fmt(v){ return pre + (target >= 1000 ? Math.round(v).toLocaleString('fr-CH') : Math.round(v)) + suf; }
+    if (!dur) { el.innerHTML = fmt(target); return; }
+    function frame(t){
+      if (!t0) t0 = t;
+      var p = Math.min((t - t0) / dur, 1), e = 1 - Math.pow(1 - p, 3);
+      el.innerHTML = fmt(target * e);
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  var nIo = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if (e.isIntersecting) { nIo.unobserve(e.target); countUp(e.target); } });
+  }, {threshold:.6});
+  document.querySelectorAll('[data-count]').forEach(function(el){ nIo.observe(el); });
+
+  /* fil conducteur : progression au scroll */
+  var thread = document.querySelector('.ap-thread path');
+  if (thread && !reduce) {
+    var ticking = false;
+    var onScroll = function(){
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){
+        var h = document.documentElement.scrollHeight - innerHeight;
+        var p = h > 0 ? Math.min(Math.max(scrollY / h, 0), 1) : 0;
+        thread.style.setProperty('--p', p.toFixed(3));
+        thread.style.setProperty('--len', '1000');
+        ticking = false;
+      });
+    };
+    addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  }
+})();
+</script>
 
 <footer class="wrap foot">
   <div class="foot-grid">
