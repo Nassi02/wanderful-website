@@ -100,12 +100,12 @@
     <h3 style="text-align:center;margin:48px 0 24px;font-size:1.1rem;font-weight:700;color:var(--p2);">Vidéos courtes pour réseaux sociaux</h3>
     <div class="portfolio-grid x2" style="max-width:1000px;margin:0 auto;gap:24px;">
       <div class="portfolio-item tall">
-        <video src="../assets/portfolio/carewell-schtroumpf.mp4" muted loop autoplay playsinline></video>
+        <video preload="none" data-src="../assets/portfolio/carewell-schtroumpf.mp4" muted loop playsinline></video>
         <span class="video-badge">VIDEO</span>
         <div class="overlay"><div class="label">Carewell · Pharmacien</div><div class="desc">Vidéo IA dessin animé · 35s</div></div>
       </div>
       <div class="portfolio-item tall">
-        <video src="../assets/portfolio/carewell-soignants.mp4" muted loop autoplay playsinline></video>
+        <video preload="none" data-src="../assets/portfolio/carewell-soignants.mp4" muted loop playsinline></video>
         <span class="video-badge">VIDEO</span>
         <div class="overlay"><div class="label">Carewell · Soignants</div><div class="desc">Vidéo IA photoréaliste · 41s</div></div>
       </div>
@@ -134,5 +134,25 @@
 <footer class="svc-footer"><p>© 2024 Wanderful Marketing Agency · Yvonand, Suisse</p></footer>
 <script src="../services.js"></script>
 <script src="/assistant.js" defer></script>
+
+<script>
+/* Videos : chargement differe — rien ne se telecharge tant que la video n'est pas visible */
+(function(){
+  var vids = document.querySelectorAll('video[data-src]');
+  if (!vids.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      var v = e.target;
+      if (e.isIntersecting) {
+        if (!v.src) { v.src = v.dataset.src; }
+        var p = v.play(); if (p && p.catch) { p.catch(function(){}); }
+      } else if (!v.paused) {
+        v.pause();
+      }
+    });
+  }, { threshold: 0.25 });
+  vids.forEach(function(v){ io.observe(v); });
+})();
+</script>
 </body>
 </html>

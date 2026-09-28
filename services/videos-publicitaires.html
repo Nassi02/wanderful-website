@@ -97,17 +97,17 @@
     <p class="portfolio-sub">Vidéos courtes pour réseaux sociaux, product shots animés, contenus publicitaires.</p>
     <div class="portfolio-grid x3">
       <div class="portfolio-item tall">
-        <video src="../assets/portfolio/carewell-schtroumpf.mp4" muted loop autoplay playsinline></video>
+        <video preload="none" data-src="../assets/portfolio/carewell-schtroumpf.mp4" muted loop playsinline></video>
         <span class="video-badge">VIDEO</span>
         <div class="overlay"><div class="label">Carewell · Pharmacien</div><div class="desc">Format vertical · 35s</div></div>
       </div>
       <div class="portfolio-item tall">
-        <video src="../assets/portfolio/carewell-soignants.mp4" muted loop autoplay playsinline></video>
+        <video preload="none" data-src="../assets/portfolio/carewell-soignants.mp4" muted loop playsinline></video>
         <span class="video-badge">VIDEO</span>
         <div class="overlay"><div class="label">Carewell · Soignants</div><div class="desc">Format vertical · 41s</div></div>
       </div>
       <div class="portfolio-item tall">
-        <video src="../assets/portfolio/narmonie-product-shot.mp4" muted loop autoplay playsinline></video>
+        <video preload="none" data-src="../assets/portfolio/narmonie-product-shot.mp4" muted loop playsinline></video>
         <span class="video-badge">VIDEO</span>
         <div class="overlay"><div class="label">Narmonie · Product shot</div><div class="desc">Animation produit</div></div>
       </div>
@@ -125,5 +125,25 @@
 <footer class="svc-footer"><p>© 2024 Wanderful Marketing Agency · Yvonand, Suisse</p></footer>
 <script src="../services.js"></script>
 <script src="/assistant.js" defer></script>
+
+<script>
+/* Videos : chargement differe — rien ne se telecharge tant que la video n'est pas visible */
+(function(){
+  var vids = document.querySelectorAll('video[data-src]');
+  if (!vids.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      var v = e.target;
+      if (e.isIntersecting) {
+        if (!v.src) { v.src = v.dataset.src; }
+        var p = v.play(); if (p && p.catch) { p.catch(function(){}); }
+      } else if (!v.paused) {
+        v.pause();
+      }
+    });
+  }, { threshold: 0.25 });
+  vids.forEach(function(v){ io.observe(v); });
+})();
+</script>
 </body>
 </html>

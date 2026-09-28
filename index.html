@@ -428,7 +428,7 @@ footer{margin-top:80px;padding:56px 0 34px;}
     </div>
   </div>
   <div class="hero-visual reveal in">
-    <img src="assets/blob-hero.png" alt="Objet holographique 3D">
+    <img loading="lazy" decoding="async" src="assets/blob-hero.png" alt="Objet holographique 3D">
     <div class="badge b1"><div class="n">2×</div><div class="l">plus de conversions à budget égal (Carewell)</div></div>
     <div class="badge b2"><div class="n">100%</div><div class="l">sur-mesure &amp; boosté à l'IA</div></div>
   </div>
@@ -477,7 +477,7 @@ footer{margin-top:80px;padding:56px 0 34px;}
       <div class="j-orb-col">
         <div class="j-orb" id="jOrb">
           <span class="ring"></span><span class="ring r2"></span>
-          <img src="assets/blob-hero.png" alt="Sphère holographique">
+          <img loading="lazy" decoding="async" src="assets/blob-hero.png" alt="Sphère holographique">
           <div class="j-orb-num" id="jOrbNum">01</div>
         </div>
         <div class="j-counter"><b id="jCur">01</b> / 08</div>
@@ -603,12 +603,12 @@ footer{margin-top:80px;padding:56px 0 34px;}
     <p>Chaque marque a sa propre magie. Voici quelques univers que l'on a fait briller.</p>
   </div>
   <div class="port-grid">
-    <div class="port reveal"><img src="assets/portfolio/narmonie-site.jpg" alt="Narmonie — site e-commerce"><div class="meta"><div class="tag">Narmonie · Site web</div><h4>Boutique en ligne</h4></div></div>
-    <a href="carewell.html" style="display:block;text-decoration:none;color:inherit;"><div class="port reveal"><img src="assets/portfolio/carewell-da.jpg" alt="Carewell — direction artistique"><div class="meta"><div class="tag">Carewell · Direction artistique</div><h4>Identité de marque</h4></div></div></a>
-    <div class="port reveal"><img src="assets/portfolio/osio-instagram.jpg" alt="OSIO — grille Instagram restaurant"><div class="meta"><div class="tag">Restaurant · Social media</div><h4>Grille Instagram</h4></div></div>
-    <div class="port reveal"><img src="assets/portfolio/narmonie-brand2.jpg" alt="Narmonie — univers de marque"><div class="meta"><div class="tag">Narmonie · Branding</div><h4>Univers de marque</h4></div></div>
-    <div class="port reveal"><img src="assets/portfolio/narmonie-print2.jpg" alt="Narmonie — supports imprimés"><div class="meta"><div class="tag">Narmonie · Print</div><h4>Supports imprimés</h4></div></div>
-    <a href="carewell.html" style="display:block;text-decoration:none;color:inherit;"><div class="port reveal"><video src="assets/portfolio/carewell-schtroumpf.mp4" autoplay muted loop playsinline></video><div class="meta"><div class="tag">Carewell · Motion design</div><h4>Vidéo animée</h4></div></div></a>
+    <div class="port reveal"><img loading="lazy" decoding="async" src="assets/portfolio/narmonie-site.jpg" alt="Narmonie — site e-commerce"><div class="meta"><div class="tag">Narmonie · Site web</div><h4>Boutique en ligne</h4></div></div>
+    <a href="carewell.html" style="display:block;text-decoration:none;color:inherit;"><div class="port reveal"><img loading="lazy" decoding="async" src="assets/portfolio/carewell-da.jpg" alt="Carewell — direction artistique"><div class="meta"><div class="tag">Carewell · Direction artistique</div><h4>Identité de marque</h4></div></div></a>
+    <div class="port reveal"><img loading="lazy" decoding="async" src="assets/portfolio/osio-instagram.jpg" alt="OSIO — grille Instagram restaurant"><div class="meta"><div class="tag">Restaurant · Social media</div><h4>Grille Instagram</h4></div></div>
+    <div class="port reveal"><img loading="lazy" decoding="async" src="assets/portfolio/narmonie-brand2.jpg" alt="Narmonie — univers de marque"><div class="meta"><div class="tag">Narmonie · Branding</div><h4>Univers de marque</h4></div></div>
+    <div class="port reveal"><img loading="lazy" decoding="async" src="assets/portfolio/narmonie-print2.jpg" alt="Narmonie — supports imprimés"><div class="meta"><div class="tag">Narmonie · Print</div><h4>Supports imprimés</h4></div></div>
+    <a href="carewell.html" style="display:block;text-decoration:none;color:inherit;"><div class="port reveal"><video preload="none" data-src="assets/portfolio/carewell-schtroumpf.mp4" muted loop playsinline></video><div class="meta"><div class="tag">Carewell · Motion design</div><h4>Vidéo animée</h4></div></div></a>
   </div>
   <div style="text-align:center;margin-top:36px;"><a href="realisations.html" class="btn btn-primary">Voir toutes nos réalisations →</a></div>
   <div class="quote reveal">
@@ -820,6 +820,26 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 
 <script id="espace-client-link-injector">
 (function(){try{var links=document.querySelectorAll("header a, nav a");var contact=Array.prototype.find.call(links,function(a){return /contact/i.test((a.textContent||""));});if(contact&&!document.getElementById("ec-nav-link")){var ec=contact.cloneNode(true);ec.id="ec-nav-link";ec.textContent="Espace client";ec.setAttribute("href","/espace-client/");contact.parentNode.insertBefore(ec,contact.nextSibling);}}catch(e){}})();
+</script>
+
+<script>
+/* Videos : chargement differe — rien ne se telecharge tant que la video n'est pas visible */
+(function(){
+  var vids = document.querySelectorAll('video[data-src]');
+  if (!vids.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      var v = e.target;
+      if (e.isIntersecting) {
+        if (!v.src) { v.src = v.dataset.src; }
+        var p = v.play(); if (p && p.catch) { p.catch(function(){}); }
+      } else if (!v.paused) {
+        v.pause();
+      }
+    });
+  }, { threshold: 0.25 });
+  vids.forEach(function(v){ io.observe(v); });
+})();
 </script>
 </body>
 </html>

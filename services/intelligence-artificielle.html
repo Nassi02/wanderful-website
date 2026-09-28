@@ -97,17 +97,17 @@
     <p class="portfolio-sub">Vidéos générées et product shots créés en quelques heures au lieu de jours — l'IA bien utilisée fait gagner du temps sans sacrifier la qualité.</p>
     <div class="portfolio-grid x3" style="margin-bottom:24px;">
       <div class="portfolio-item tall">
-        <video src="../assets/portfolio/carewell-schtroumpf.mp4" muted loop autoplay playsinline></video>
+        <video preload="none" data-src="../assets/portfolio/carewell-schtroumpf.mp4" muted loop playsinline></video>
         <span class="video-badge">VIDEO IA</span>
         <div class="overlay"><div class="label">Vidéo dessin animé IA</div><div class="desc">Style cartoon · Carewell</div></div>
       </div>
       <div class="portfolio-item tall">
-        <video src="../assets/portfolio/carewell-soignants.mp4" muted loop autoplay playsinline></video>
+        <video preload="none" data-src="../assets/portfolio/carewell-soignants.mp4" muted loop playsinline></video>
         <span class="video-badge">VIDEO IA</span>
         <div class="overlay"><div class="label">Vidéo photoréaliste IA</div><div class="desc">Génération texte→vidéo</div></div>
       </div>
       <div class="portfolio-item tall">
-        <video src="../assets/portfolio/narmonie-product-shot.mp4" muted loop autoplay playsinline></video>
+        <video preload="none" data-src="../assets/portfolio/narmonie-product-shot.mp4" muted loop playsinline></video>
         <span class="video-badge">VIDEO IA</span>
         <div class="overlay"><div class="label">Product shot animé IA</div><div class="desc">Narmonie</div></div>
       </div>
@@ -115,9 +115,9 @@
     <p style="text-align:center;margin:24px 0 16px;font-size:.9rem;font-weight:600;color:var(--p2);opacity:.85;">Product shots générés par IA (Adobe Firefly)</p>
     <div class="portfolio-grid">
       <div class="portfolio-item"><img src="../assets/portfolio/narmonie-1.jpg" alt=""><div class="overlay"><div class="label">Narmonie · Sweet Glow</div></div></div>
-      <div class="portfolio-item"><img src="../assets/portfolio/narmonie-2.jpg" alt=""><div class="overlay"><div class="label">Narmonie · Floral Radiance</div></div></div>
-      <div class="portfolio-item"><img src="../assets/portfolio/narmonie-5.jpg" alt=""><div class="overlay"><div class="label">Narmonie</div></div></div>
-      <div class="portfolio-item"><img src="../assets/portfolio/narmonie-8.jpg" alt=""><div class="overlay"><div class="label">Narmonie</div></div></div>
+      <div class="portfolio-item"><img loading="lazy" decoding="async" src="../assets/portfolio/narmonie-2.jpg" alt=""><div class="overlay"><div class="label">Narmonie · Floral Radiance</div></div></div>
+      <div class="portfolio-item"><img loading="lazy" decoding="async" src="../assets/portfolio/narmonie-5.jpg" alt=""><div class="overlay"><div class="label">Narmonie</div></div></div>
+      <div class="portfolio-item"><img loading="lazy" decoding="async" src="../assets/portfolio/narmonie-8.jpg" alt=""><div class="overlay"><div class="label">Narmonie</div></div></div>
     </div>
   </section>
 
@@ -132,5 +132,25 @@
 <footer class="svc-footer"><p>© 2024 Wanderful Marketing Agency · Yvonand, Suisse</p></footer>
 <script src="../services.js"></script>
 <script src="/assistant.js" defer></script>
+
+<script>
+/* Videos : chargement differe — rien ne se telecharge tant que la video n'est pas visible */
+(function(){
+  var vids = document.querySelectorAll('video[data-src]');
+  if (!vids.length) return;
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      var v = e.target;
+      if (e.isIntersecting) {
+        if (!v.src) { v.src = v.dataset.src; }
+        var p = v.play(); if (p && p.catch) { p.catch(function(){}); }
+      } else if (!v.paused) {
+        v.pause();
+      }
+    });
+  }, { threshold: 0.25 });
+  vids.forEach(function(v){ io.observe(v); });
+})();
+</script>
 </body>
 </html>
