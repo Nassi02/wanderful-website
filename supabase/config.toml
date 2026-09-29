@@ -2,3 +2,6 @@
 [functions.weekly-refresh]
 # L'authentification est vérifiée dans la fonction (agence pour le manuel, horaire de Zurich pour la programmation).
 verify_jwt = false
+
+[functions.instagram]
+verify_jwt = false
