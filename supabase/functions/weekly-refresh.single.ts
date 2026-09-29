@@ -369,7 +369,7 @@ async function refreshClient(clientId: string, trigger: string) {
   let token: string | null = null;
   for (const s of sources || []) {
     try {
-      token = token || await googleToken(['https://www.googleapis.com/auth/webmasters.readonly', 'https://www.googleapis.com/auth/analytics.readonly', 'https://www.googleapis.com/auth/cloud-platform']);
+      token = token || await googleToken(['https://www.googleapis.com/auth/webmasters.readonly', 'https://www.googleapis.com/auth/analytics.readonly', 'https://www.googleapis.com/auth/cloud-platform', 'openid']);
       const rep = s.source === 'gsc' ? await collectGsc(token, s.property, s.domain, today) : s.source === 'pagespeed' ? await collectPagespeed(token, s.property, clientId, today) : await collectGa4(token, s.property, today);
       await admin.from('metric_reports').upsert({ client_id: clientId, source: s.source, period_start: rep.periods.w.start, period_end: rep.periods.w.end, status: rep.status, data: rep }, { onConflict: 'client_id,source,period_end' });
       if (rep.recos) await saveRecos(clientId, rep.recos, today);
