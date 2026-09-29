@@ -473,6 +473,26 @@
   @media(max-width:820px){.s2-sum-grid{grid-template-columns:1fr 1fr}.p90l input{width:100%}.p90l{flex:1 1 100%}}
   @media(max-width:480px){.s2-sum-grid{grid-template-columns:1fr}}
   @media(max-width:820px){.s2-dd,.p90{grid-template-columns:1fr}.s2-kv b{width:90px}}
+  /* --- ACCUEIL : Cette semaine --- */
+  .wk{margin-bottom:22px;padding:20px 22px}.wk-title{font-size:17px;font-weight:700}.wk-sub{font-size:12.8px;color:var(--muted);margin-top:2px}
+  .wk-theme{border-top:1px solid var(--line);padding:14px 0 4px;margin-top:12px}
+  .wk-h{display:flex;align-items:center;gap:8px;margin-bottom:8px}.wk-h b{font-size:14.5px}.wk-ico{font-size:16px}
+  .wk-per{font-size:12.3px;color:var(--muted);margin-bottom:8px}
+  .wk-row{display:grid;grid-template-columns:170px 1fr;gap:12px;padding:7px 0;font-size:13.3px;color:var(--ink-soft);line-height:1.55}
+  .wk-l{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--faint);padding-top:2px}
+  .wk-t{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px}
+  .wk-tt{flex:1;min-width:220px}.wk-tt b{display:block;font-size:13.5px;color:var(--ink)}.wk-tt small{font-size:12px;color:var(--muted);line-height:1.5}
+  .wk-btns{display:flex;gap:8px}
+  .wk-ign{font-size:12px;color:var(--muted)}.wk-undo{font-size:12px;color:var(--accent-ink);text-decoration:underline;margin-left:4px}
+  .wk-na{font-size:13px;color:var(--muted)}
+  .wk-more{font-size:12.8px;font-weight:600;color:var(--accent);margin-top:6px}
+  .cn{margin-bottom:22px;border:1.5px dashed var(--accent);background:#fbfaff}
+  .cn-h{display:flex;gap:12px;align-items:flex-start}.cn-h span{font-size:20px}.cn-h b{display:block;font-size:14.5px}.cn-h small{font-size:12.5px;color:var(--muted)}
+  .cn-steps{margin:12px 0 0 20px;font-size:13px;color:var(--ink-soft);line-height:1.6}.cn-steps li{margin-bottom:10px}
+  .cn-steps code{background:var(--accent-soft);color:var(--accent-ink);padding:1px 6px;border-radius:6px;font-size:12px;word-break:break-all}
+  .cn-steps .sbtn{margin-top:6px}
+  .cn-f{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0 4px}.cn-f input{flex:1;min-width:220px;font-family:inherit;font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#fff}
+  @media(max-width:820px){.wk-row{grid-template-columns:1fr;gap:2px}}
   /* --- PILOTAGE --- */
   .grid>*{min-width:0}
   .card:has(>table){overflow-x:auto}
@@ -1216,6 +1236,69 @@ function pilWebsite(){
   h+=`<div class="section-title">Pages du site vues dans les résultats Google (28 j)</div>`+(rep?`<div class="card" style="padding:0"><table><thead><tr><th>Page</th><th>Impressions</th><th>Clics</th><th>Position moy.</th></tr></thead><tbody>${rep.data.pages.map(x=>`<tr><td>${esc(x.keys[0].replace(/^https?:\/\/[^/]+/,'')||'/')}</td><td>${nf(x.impressions)}</td><td>${nf(x.clicks)}</td><td>${Math.round(x.position*10)/10}</td></tr>`).join('')}</tbody></table></div><p class="pil-note">Une page absente de cette liste n’a reçu aucune impression sur la période : cela ne signifie pas qu’elle est hors ligne.</p>`:nodata('Données non connectées','Aucune source reliée à ce projet.'));
   return h+pilSources();
 }
+/* =================== ACCUEIL : « Cette semaine » + rappel de connexion =================== */
+const SA_EMAIL='wanderful-espace-client@wanderful-ads-v3.iam.gserviceaccount.com';
+function weekMeaning(d){
+  const w=d.totals.w,wp=d.totals.wp;
+  if(d.lowVolume)return 'Le volume est encore faible : une variation d’une semaine à l’autre ne permet pas de conclure. La tendance sur 28 jours est plus fiable.';
+  const dc=w.clicks-wp.clicks;
+  if(dc>0)return 'Plus de visites depuis Google que la semaine précédente. À confirmer sur plusieurs semaines avant d’en tirer une conclusion.';
+  if(dc<0)return 'Moins de visites depuis Google que la semaine précédente. À surveiller : une seule semaine ne suffit pas à parler de baisse durable.';
+  return 'Pas de changement notable par rapport à la semaine précédente.';
+}
+async function recoDismiss(key,undo){
+  const p=state.pil,r=(p.recos||[]).find(x=>x.key===key);
+  const st=undo?'open':'dismissed';
+  if(!DEMO){const {error}=await sb.from('seo_recos').update({status:st}).eq('client_id',state.client.id).eq('key',key);if(error){toast('⚠️ '+error.message);return;}}
+  if(r)r.status=st;else(p.recos=p.recos||[]).push({key,status:st});
+  toast(undo?'Suggestion rétablie':(DEMO?'Ignorée (aperçu : non sauvegardé)':'Suggestion ignorée'));go(state.section);
+}
+function weekCard(){
+  const p=state.pil;if(!p)return '';
+  const ag=isAgencyView();
+  const rep=pilReport('gsc');
+  const theme=(ico,name,body)=>`<div class="wk-theme"><div class="wk-h"><span class="wk-ico">${ico}</span><b>${name}</b></div>${body}</div>`;
+  let seo;
+  const gs=(p.sources||[]).find(s=>s.source==='gsc');
+  if(!rep){seo=gs?(gs.status==='error'?`<p class="wk-na">⚠️ Problème de connexion : ${esc(gs.last_error||'')}</p>`:'<p class="wk-na">Connexion enregistrée — premier bilan au prochain lundi 8 h (ou via « Actualiser maintenant » dans SEO).</p>'):`<p class="wk-na">Données non connectées${ag?' — voir « À connecter » ci-dessus.':'.'}</p>`;}
+  else{
+    const d=rep.data,st=pilStatus();
+    const recos=(d.recos||[]).map(r=>Object.assign({},r,(p.recos||[]).find(x=>x.key===r.key)||{}));
+    const inPlan=k=>(p.actions||[]).some(a=>a.reco_key===k);
+    const open=recos.filter(r=>r.status!=='dismissed'),ign=recos.filter(r=>r.status==='dismissed');
+    seo=`<div class="wk-per">Semaine du ${dfr(d.periods.w.start)} au ${dfr(d.periods.w.end)} · <span class="tag ${st.c}">${st.t}</span></div>
+      <div class="wk-row"><span class="wk-l">Ce qui a changé</span><span>${esc((d.summary[0]||'').replace(/^Semaine du [^:]+: /,''))}</span></div>
+      <div class="wk-row"><span class="wk-l">Ce que ça veut dire</span><span>${esc(weekMeaning(d))}</span></div>
+      <div class="wk-row"><span class="wk-l">À faire (suggestions)</span><div class="wk-todo">${open.length?open.map(r=>`<div class="wk-t"><div class="wk-tt"><b>${esc(r.topic)}</b><small>${esc(r.change||'')}</small></div>${inPlan(r.key)||r.status==='in_plan'?'<span class="tag t-green">✓ Dans le suivi de projet</span>':(ag?`<div class="wk-btns"><button class="sbtn ok" onclick="recoToPlan('${esc(r.key)}')">✓ Je le fais</button><button class="sbtn ghost" onclick="recoDismiss('${esc(r.key)}')">Ignorer</button></div>`:'')}</div>`).join(''):'<span class="muted">Aucune action suggérée cette semaine.</span>'}
+        ${ign.length&&ag?`<div class="wk-ign">${ign.length} suggestion(s) ignorée(s) : ${ign.map(r=>`<button class="wk-undo" onclick="recoDismiss('${esc(r.key)}',1)">${esc(r.topic)} ↺</button>`).join(' ')}</div>`:''}</div></div>
+      <button class="wk-more" onclick="go('seo')">Voir le détail SEO →</button>`;
+  }
+  const has=t=>(p.sources||[]).some(s=>s.source===t);
+  return `<div class="card wk"><div class="wk-top"><div><div class="wk-title">Cette semaine</div><div class="wk-sub">Ce qui a changé dans les données, ce que ça veut dire et ce qu’il est conseillé de faire. Les actions validées rejoignent le Suivi de projet.</div></div></div>
+    ${theme('🔎','SEO — recherche Google',seo)}
+    ${theme('📱','Réseaux sociaux','<p class="wk-na">Données non connectées.</p>')}
+    ${theme('📊','Trafic du site (Analytics)',has('ga4')?'':'<p class="wk-na">Données non connectées.</p>')}</div>`;
+}
+function connectCard(){
+  const p=state.pil;if(!p||!isAgencyView()||p.unavailable)return '';
+  if((p.sources||[]).some(s=>s.source==='gsc'))return '';
+  const nm=esc(state.client.name);
+  const msg=`Bonjour,\n\nPour activer le suivi SEO de votre espace client, merci d’ajouter cette adresse dans votre Google Search Console :\n${SA_EMAIL}\n\n1. Ouvrez https://search.google.com/search-console\n2. Choisissez votre site, puis Paramètres → Utilisateurs et autorisations\n3. Cliquez « Ajouter un utilisateur », collez l’adresse ci-dessus, autorisation « Restreint »\n\nCet accès est en lecture seule. Merci !`;
+  state._connectMsg=msg;
+  return `<div class="card cn"><div class="cn-h"><span>🔌</span><div><b>À connecter : Search Console de ${nm}</b><small>Tant que ce n’est pas fait, ce projet n’a pas de bilan SEO hebdomadaire.</small></div></div>
+    <ol class="cn-steps"><li><b>Le client donne l’accès</b> à <code>${SA_EMAIL}</code> (autorisation « Restreint ») dans sa Search Console. <button class="sbtn ghost" onclick="navigator.clipboard.writeText(state._connectMsg).then(()=>toast('Message copié'),()=>toast('Copie impossible'))">Copier le message à envoyer au client</button></li>
+    <li><b>Tu indiques sa propriété</b>, puis tu testes :<div class="cn-f"><input id="cnProp" placeholder="sc-domain:exemple.ch  ou  https://www.exemple.ch/"><button class="sbtn ok" onclick="connectGsc()">Enregistrer et tester</button></div><small class="muted">Propriété de domaine : <code>sc-domain:</code> + domaine. Propriété d’URL : l’adresse exacte avec https:// et le / final.</small></li></ol></div>`;
+}
+async function connectGsc(){
+  const prop=(document.getElementById('cnProp').value||'').trim();
+  if(!/^(sc-domain:[a-z0-9.-]+\.[a-z]{2,}|https?:\/\/[^\s]+\/)$/i.test(prop)){toast('Format attendu : sc-domain:exemple.ch ou https://www.exemple.ch/');return;}
+  if(DEMO){toast('Aperçu : connexion non enregistrée');return;}
+  const domain=prop.replace(/^sc-domain:/,'').replace(/^https?:\/\//,'').replace(/\/.*$/,'');
+  const {error}=await sb.from('data_sources').insert({client_id:state.client.id,source:'gsc',property:prop,domain});
+  if(error){toast('⚠️ '+error.message);return;}
+  toast('Enregistré — test de la connexion…');
+  await pilRefresh();
+}
 const VIEWS={
   cockpit(){
     const c=state.client||{};
@@ -1236,6 +1319,8 @@ const VIEWS={
     if(late)push('#b9820f','🕗',late+' contenu(s) ont dépassé leur date sans être publiés','calendar');
     const un=clientUnlocked(),miss=LOCKABLE.filter(function(k){return un.indexOf(k)<0;});
     if(miss.length)push('#6F6988','🔒',miss.length+' section(s) encore verrouillées chez '+nm+' : '+esc(miss.map(function(k){return ACCESS_META[k][0];}).join(', ')),'access');
+    if(state.pil&&!state.pil.unavailable&&!(state.pil.sources||[]).some(function(s){return s.source==='gsc';}))push('#7561E8','🔌','Search Console non connectée pour '+nm+' : pas de bilan SEO hebdomadaire','home');
+    if(state.pil&&(state.pil.sources||[]).some(function(s){return s.status==='error';}))push('#dc2626','⚠️','Problème de connexion des données de '+nm+' (voir SEO / Référencement)','seo');
     if(!c.invite_email&&!isInternalClient(c))push('#dc2626','✉️','Aucune adresse e-mail enregistrée : '+nm+' ne peut pas créer son accès','newclient');
     (ck.waiting||[]).forEach(function(w){push('#7561E8','🙋',esc(w.t)+(w.why?' — '+esc(w.why):''),w.tab||'');});
     // ---- chantiers ----
@@ -1454,13 +1539,13 @@ const VIEWS={
     return head+kpi+'<div class="section-title">Historique complet</div><div class="card">'+list+'</div>';
   },
   home(){
-    const d=state.data,pend=d.content.filter(c=>c.status==='pending').length,planned=d.content.length,unpaid=d.documents.filter(x=>x.kind!=='contrat'&&x.kind!=='devis'&&(docState(x)==='due'||docState(x)==='late')).length,onbCount=Object.values(state.onb||{}).filter(v=>v&&(''+v).trim()&&(!Array.isArray(v)||v.length)).length;
+    const d=state.data,pend=d.content.filter(c=>c.status==='pending').length,_now=new Date(),planned=d.content.filter(c=>{if(!c.scheduled_at)return false;const t=new Date(c.scheduled_at);return t.getFullYear()===_now.getFullYear()&&t.getMonth()===_now.getMonth();}).length,unpaid=d.documents.filter(x=>x.kind!=='contrat'&&x.kind!=='devis'&&(docState(x)==='due'||docState(x)==='late')).length,onbCount=Object.values(state.onb||{}).filter(v=>v&&(''+v).trim()&&(!Array.isArray(v)||v.length)).length;
     const kpis=[['Contenus à valider',pend,'Action requise','val'],['Posts planifiés',planned,'ce mois','cal'],['Réseaux reliés',d.social.filter(s=>s.connected).length,'comptes actifs','soc'],['Factures en attente',unpaid,'à régler','doc']];
-    return changeReqCard(d)+`<div class="grid g4" style="margin-bottom:22px">${kpis.map(k=>`<div class="card kpi"><div class="tile-ico" style="background:var(--accent-soft);color:var(--accent-ink)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO[k[3]]}</svg></div><b>${k[1]}</b><div class="lbl">${k[0]}</div><span class="trend">${k[2]}</span></div>`).join('')}</div>
+    return '<div class="s2-wrap">'+changeReqCard(d)+connectCard()+weekCard()+`<div class="grid g4" style="margin-bottom:22px">${kpis.map(k=>`<div class="card kpi"><div class="tile-ico" style="background:var(--accent-soft);color:var(--accent-ink)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO[k[3]]}</svg></div><b>${k[1]}</b><div class="lbl">${k[0]}</div>${k[1]>0?`<span class="trend">${k[2]}</span>`:''}</div>`).join('')}</div>
     <div class="grid" style="grid-template-columns:1.5fr 1fr;align-items:start">
       <div><div class="section-title">Activité récente</div><div class="card">${d.activity.length?d.activity.map(a=>`<div class="row"><span style="width:9px;height:9px;border-radius:50%;background:var(--${a.color||'accent'});flex-shrink:0"></span><div class="rmain"><b style="font-weight:500">${esc(a.message)}</b></div></div>`).join(''):'<div class="empty">Aucune activité.</div>'}</div></div>
       <div><div class="section-title">Onboarding</div><div class="card" style="cursor:pointer" onclick="go('onboarding')"><div class="tile-ico" style="background:var(--accent-soft);color:var(--accent-ink)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO.onb}</svg></div><b style="font-weight:650">Compléter mon profil stratégique</b><div class="lbl" style="font-size:12.5px;color:var(--muted);margin-top:2px">${onbCount} réponse(s) enregistrée(s)</div></div></div>
-    </div>`;
+    </div>`+'</div>';
   },
   onboarding(){
     const MODS=onbModules();
