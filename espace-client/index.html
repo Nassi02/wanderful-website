@@ -438,6 +438,41 @@
   .p90 .card h4{font-size:16px;font-weight:700;margin:4px 0 10px}
   .p90 .res{margin-top:12px;font-size:12.5px;font-weight:600;color:var(--accent-ink);background:var(--accent-soft);border-radius:10px;padding:10px 12px;line-height:1.5}
   @media(min-width:821px){.s2-tabs{flex-wrap:wrap}}
+  .s2-sum{margin-bottom:16px;padding:20px 22px}
+  .s2-sum-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:18px}
+  .s2-sum p{font-size:13.5px;color:var(--ink);line-height:1.5;font-weight:500}
+  .s2-sum .sig{font-weight:700;color:var(--accent-ink)}
+  .s2-sum ol{margin-left:18px;font-size:13.5px;line-height:1.6;font-weight:500}
+  .s2-sum-foot{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+  .s2-sum-foot span{flex:1;font-size:12.5px;color:var(--muted);font-weight:600}
+  .s2-links{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:-8px 0 18px;font-size:12.5px;color:var(--muted);font-weight:600}
+  .s2-link{font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:20px;background:var(--surface);border:1px solid #dcd6ff;color:var(--accent-ink)}
+  .s2-link:hover{background:var(--accent-soft)}
+  .s2-p90sum{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding:14px 18px}
+  .p90m{margin-bottom:16px}
+  .p90h{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+  .p90h h4{flex:1;font-size:16px;font-weight:700}
+  .p90h .tg{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--accent-ink);background:var(--accent-soft);padding:4px 10px;border-radius:20px}
+  .p90pct{font-size:12.5px;font-weight:700;color:var(--muted)}
+  .p90bar{height:7px;background:#efeafe;border-radius:20px;overflow:hidden;margin:10px 0 6px}.p90bar i{display:block;height:100%;background:var(--grad);border-radius:20px}
+  .p90row{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:12px 0;border-bottom:1px solid var(--line)}
+  .p90t{flex:1 1 240px;font-size:13.5px;font-weight:600;color:var(--ink)}
+  .p90row.st-done .p90t{color:var(--muted);text-decoration:line-through}
+  .p90ctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .p90ctl small{font-size:12px;color:var(--muted)}
+  .p90seg{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:3px}
+  .p90seg button{font-size:12px;font-weight:600;padding:5px 10px;border-radius:7px;color:var(--muted)}
+  .p90seg button.on{background:#fff;color:var(--accent-ink);box-shadow:0 1px 3px rgba(70,59,102,.15)}
+  .st-done .p90seg button.on{background:var(--green-soft);color:var(--green)}
+  .st-doing .p90seg button.on{background:var(--amber-soft);color:#b9820f}
+  .p90f{display:flex;flex-direction:column;font-size:10.5px;font-weight:700;color:var(--faint);text-transform:uppercase;letter-spacing:.3px}
+  .p90f input{font-family:inherit;font-size:12.5px;padding:6px 8px;border:1px solid var(--line);border-radius:8px;background:#faf9ff;color:var(--ink);margin-top:2px;text-transform:none;letter-spacing:0;font-weight:500}
+  .p90l input{width:190px}
+  .p90open{width:30px;height:30px;flex-shrink:0;display:grid;place-items:center;border-radius:8px;font-size:14px;font-weight:700;color:var(--accent);text-decoration:none}a.p90open{background:var(--accent-soft)}
+  .p90ctl{justify-content:flex-end;margin-left:auto}
+  .p90m .res{margin-top:12px;font-size:12.5px;font-weight:600;color:var(--accent-ink);background:var(--accent-soft);border-radius:10px;padding:10px 12px;line-height:1.5}
+  @media(max-width:820px){.s2-sum-grid{grid-template-columns:1fr 1fr}.p90l input{width:100%}.p90l{flex:1 1 100%}}
+  @media(max-width:480px){.s2-sum-grid{grid-template-columns:1fr}}
   @media(max-width:820px){.s2-dd,.p90{grid-template-columns:1fr}.s2-kv b{width:90px}}
   @media(max-width:820px){.modal-grid{grid-template-columns:1fr}.cal-date{display:none}.bd-s{width:90px}}
 
@@ -917,22 +952,68 @@ function strategyV2(v){
   const tab=tabs.find(t=>t.k===k)||{blocks:[]};
   const ok=v.status==='validated';
   const hasOld=!!(state.client&&state.client.strategy&&state.client.strategy.hero);
-  let h=`<div class="s2-wrap"><div class="s2-top"><div class="sec-head"><h3>${esc(v.title||'Stratégie')}</h3>${v.intro?`<p>${esc(v.intro)}</p>`:''}</div><span class="s2-status ${ok?'ok':''}">${ok?('✓ Version validée'+(v.validated_at?' le '+esc(fmtDate(v.validated_at)):'')):'● Version de travail'}</span></div>`;
+  let h=`<div class="s2-wrap"><div class="s2-top"><div class="sec-head"><h3>Stratégie Wanderful</h3>${v.intro?`<p>${esc(v.intro)}</p>`:''}</div><span class="s2-status ${ok?'ok':''}">${ok?('✓ Validée'+(v.validated_at?' le '+esc(new Date(v.validated_at).toLocaleDateString('fr-CH',{day:'numeric',month:'long',year:'numeric'})):'')):'● Version de travail'}</span></div>`;
+  const sm=v.summary;
+  if(sm){
+    h+=`<div class="card s2-sum"><div class="s2-sum-grid">
+      <div><div class="st-mini">Cible</div><p>${esc(sm.cible)}</p></div>
+      <div><div class="st-mini">Approche</div><p>${esc(sm.approche)}</p></div>
+      <div><div class="st-mini">Signature</div><p class="sig">« ${esc(sm.signature)} »</p></div>
+      <div><div class="st-mini">Priorités</div><ol>${(sm.priorites||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div>
+    </div>${v.plan90?`<div class="s2-sum-foot"><span>${p90Count(v.plan90)}</span><button class="sbtn ok" onclick="go('tracking')">Ouvrir le Plan 90 jours →</button></div>`:''}</div>`;
+  }
   h+=`<div class="s2-tabs">${tabs.map((t,i)=>`<button class="s2-tab ${t.k===k?'on':''}" onclick="state.stratTab='${esc(t.k)}';go('strategy')"><span class="n">${i+1}</span>${esc(t.t)}</button>`).join('')}</div>`;
+  if(tab.links&&tab.links.length)h+=`<div class="s2-links"><span>Outils liés :</span>${tab.links.map(l=>`<button class="s2-link" onclick="go('${esc(l.k)}')">${esc(l.t)} →</button>`).join('')}</div>`;
   h+=(tab.blocks||[]).map(b=>`<div class="s2-blk">${s2Blk(b)}</div>`).join('');
-  h+=`<div class="s2-foot"><p>${v.plan90?'Le plan sur trois mois est dans <b>Suivi de projet → Plan 90 jours</b>. ':''}${hasOld?'L\'ancienne version reste consultable dans l\'historique.':''}</p>${v.plan90?`<button class="sbtn ghost" onclick="go('tracking')">Plan 90 jours →</button>`:''}${hasOld?`<button class="sbtn ghost" onclick="state.stratArchive=1;go('strategy')">Voir la version précédente</button>`:''}${isAgencyView()?(ok?`<button class="sbtn ghost" onclick="validateStrategyV2(false)">Repasser en version de travail</button>`:`<button class="sbtn ok" onclick="validateStrategyV2(true)">✓ Valider cette version</button>`):''}</div></div>`;
+  h+=`<div class="s2-foot"><p>${hasOld?'L\'ancienne version reste consultable dans l\'historique.':''}</p>${hasOld?`<button class="sbtn ghost" onclick="state.stratArchive=1;go('strategy')">Voir l'historique</button>`:''}${isAgencyView()?(ok?`<button class="sbtn ghost" onclick="validateStrategyV2(false)">Repasser en version de travail</button>`:`<button class="sbtn ok" onclick="validateStrategyV2(true)">✓ Valider cette version</button>`):''}</div></div>`;
   return h;
 }
-async function validateStrategyV2(on){
-  const c=state.client;if(!c||!c.strategy||!c.strategy.v2)return;
-  if(on&&!confirm('Valider la « '+(c.strategy.v2.title||'stratégie')+' » dans son ensemble ?'))return;
-  const s=JSON.parse(JSON.stringify(c.strategy));
-  s.v2.status=on?'validated':'draft';s.v2.validated_at=on?new Date().toISOString():null;
-  if(!DEMO){const {error}=await sb.from('clients').update({strategy:s}).eq('id',c.id);if(error){toast('Erreur : '+error.message);return;}}
-  c.strategy=s;toast(on?'✓ Stratégie validée':'Repassée en version de travail');go('strategy');
+/* Enregistre une modification de la v2 : relit la stratégie en base juste avant pour ne rien écraser (cockpit, idées…). */
+async function saveV2(mut){
+  const c=state.client;if(!c||!c.strategy||!c.strategy.v2)return false;
+  try{
+    let s;
+    if(DEMO){s=JSON.parse(JSON.stringify(c.strategy));}
+    else{const {data,error}=await sb.from('clients').select('strategy').eq('id',c.id).single();if(error)throw error;s=(data&&data.strategy)||{};if(!s.v2)throw new Error('Version de travail introuvable en base');}
+    mut(s.v2);
+    if(!DEMO){const {data,error}=await sb.from('clients').update({strategy:s}).eq('id',c.id).select('id');if(error)throw error;if(!data||!data.length)throw new Error('Enregistrement refusé (droits)');}
+    c.strategy=s;return true;
+  }catch(e){toast('⚠️ Non enregistré : '+(e.message||e));return false;}
 }
+async function validateStrategyV2(on){
+  if(on&&!confirm('Valider la Stratégie Wanderful dans son ensemble ?'))return;
+  const ok=await saveV2(v=>{v.status=on?'validated':'draft';v.validated_at=on?new Date().toISOString():null;});
+  if(ok)toast(on?'✓ Stratégie validée':'Repassée en version de travail');
+  go('strategy');
+}
+function p90Count(p){let n=0,d=0,g=0;(p.months||[]).forEach(m=>(m.items||[]).forEach(x=>{if(typeof x!=='object')return;n++;if(x.st==='done')d++;else if(x.st==='doing')g++;}));return `${d} / ${n} actions terminées · ${g} en cours`;}
+const P90_ST=[['todo','À faire'],['doing','En cours'],['done','Terminé']];
 function plan90View(p){
-  return `<div class="sec-head"><h3>Suivi de projet — Plan 90 jours</h3><p>${esc(p.intro||'')}</p></div><div class="p90">${(p.months||[]).map((m,i)=>`<div class="card s2-card"><span class="num">${i+1}</span><span class="tg">${esc(m.m)}</span><h4>${esc(m.t)}</h4><ul class="s2-list">${(m.items||[]).map(x=>`<li><span class="mk">•</span><span>${esc(x)}</span></li>`).join('')}</ul><div class="res">🎯 ${esc(m.result||'')}</div></div>`).join('')}</div>${p.note?`<div class="s2-note">${esc(p.note)}</div>`:''}`;
+  const ed=isAgencyView();
+  let h=`<div class="sec-head"><h3>Suivi de projet — Plan 90 jours</h3><p>${esc(p.intro||'')} ${ed?'Chaque changement de statut, d\'échéance ou de lien est enregistré immédiatement.':''}</p></div>`;
+  h+=`<div class="card s2-p90sum"><b>${p90Count(p)}</b><button class="sbtn ghost" onclick="go('strategy')">← Stratégie Wanderful</button></div>`;
+  h+=(p.months||[]).map((m,mi)=>{
+    const its=(m.items||[]).map(x=>typeof x==='object'?x:{id:'x'+Math.random(),t:x,st:'todo'});
+    const d=its.filter(x=>x.st==='done').length,pct=its.length?Math.round(d/its.length*100):0;
+    return `<div class="card p90m"><div class="p90h"><span class="tg">${esc(m.m)}</span><h4>${esc(m.t)}</h4><span class="p90pct">${d}/${its.length}</span></div><div class="p90bar"><i style="width:${pct}%"></i></div>
+      ${its.map(x=>`<div class="p90row st-${esc(x.st||'todo')}">
+        <div class="p90t">${esc(x.t)}</div>
+        <div class="p90ctl">
+          ${ed?`<div class="p90seg">${P90_ST.map(s=>`<button class="${(x.st||'todo')===s[0]?'on':''}" onclick="p90Set('${esc(x.id)}','st','${s[0]}')">${s[1]}</button>`).join('')}</div>
+          <label class="p90f">Échéance<input type="date" value="${esc(x.due||'')}" onchange="p90Set('${esc(x.id)}','due',this.value)"></label>
+          <label class="p90f p90l">Livrable<input type="url" placeholder="https://…" value="${esc(x.link||'')}" onchange="p90Set('${esc(x.id)}','link',this.value.trim())"></label>`
+          :`<span class="tag ${x.st==='done'?'t-green':(x.st==='doing'?'t-amber':'t-grey')}">${(P90_ST.find(s=>s[0]===(x.st||'todo'))||P90_ST[0])[1]}</span>${x.due?`<small>📅 ${esc(fmtDate(x.due))}</small>`:''}`}
+          ${x.link&&/^https?:\/\//i.test(x.link)?`<a class="p90open" href="${esc(x.link)}" target="_blank" rel="noopener" title="Ouvrir le livrable">↗</a>`:(ed?'<span class="p90open"></span>':'')}
+        </div></div>`).join('')}
+      <div class="res">🎯 ${esc(m.result||'')}</div></div>`;
+  }).join('');
+  return h;
+}
+async function p90Set(id,field,val){
+  if(field==='link'&&val&&!/^https?:\/\//i.test(val)){toast('Le lien doit commencer par https://');go('tracking');return;}
+  const ok=await saveV2(v=>{(v.plan90.months||[]).forEach(m=>(m.items||[]).forEach(x=>{if(x&&x.id===id)x[field]=val;}));});
+  if(ok)toast(DEMO?'Modifié (aperçu : non sauvegardé)':'✓ Enregistré');
+  go('tracking');
 }
 const VIEWS={
   cockpit(){
@@ -1026,7 +1107,7 @@ const VIEWS={
     const s0=state.client&&state.client.strategy;
     if(s0&&typeof s0==='object'&&s0.v2){
       if(!state.stratArchive||!s0.hero)return strategyV2(s0.v2);
-      return `<div class="s2-archbar"><span>🗂 Historique — version précédente de la stratégie (n'est plus la version active).</span><button class="sbtn ghost" onclick="state.stratArchive=0;go('strategy')">← Revenir à la version de travail</button></div>`+VIEWS.strategyV1();
+      return `<div class="s2-archbar"><span>🗂 Historique — ancienne stratégie (n'est plus la version active).</span><button class="sbtn ghost" onclick="state.stratArchive=0;go('strategy')">← Revenir à la Stratégie Wanderful</button></div>`+VIEWS.strategyV1();
     }
     return VIEWS.strategyV1();
   },
