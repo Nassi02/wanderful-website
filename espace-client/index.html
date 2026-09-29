@@ -374,6 +374,70 @@
   .modal-brief{max-height:460px;overflow-y:auto;padding-right:8px}
   .prod-media video,.prod-media img{display:block}
   .prod-empty{background:var(--bg);border:1px dashed var(--line);border-radius:12px;padding:34px 16px;text-align:center;color:var(--muted);font-size:13px}
+  /* --- STRATÉGIE v2 (onglets) --- */
+  .s2-wrap{display:grid;grid-template-columns:minmax(0,1fr)}
+  .s2-top{display:flex;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+  .s2-top .sec-head{flex:1;min-width:260px;margin-bottom:0}
+  .s2-status{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:20px;background:var(--amber-soft);color:#b9820f;margin-top:4px}
+  .s2-status.ok{background:var(--green-soft);color:var(--green)}
+  .s2-tabs{display:flex;gap:6px;overflow-x:auto;padding:4px;background:var(--surface);border:1px solid var(--line);border-radius:14px;margin-bottom:22px;scrollbar-width:thin}
+  .s2-tab{flex-shrink:0;font-size:13px;font-weight:600;color:var(--ink-soft);padding:9px 14px;border-radius:10px;white-space:nowrap;transition:.15s}
+  .s2-tab:hover{background:var(--bg)}
+  .s2-tab.on{background:var(--accent-soft);color:var(--accent-ink)}
+  .s2-tab .n{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;background:var(--bg);font-size:11px;margin-right:6px}
+  .s2-tab.on .n{background:#fff}
+  .s2-blk{margin-bottom:22px}
+  .s2-lead{background:var(--grad);color:#fff;border-radius:18px;padding:24px 26px;position:relative;overflow:hidden}
+  .s2-lead:after{content:"";position:absolute;right:-50px;top:-50px;width:180px;height:180px;border-radius:50%;background:rgba(255,255,255,.12)}
+  .s2-lead .bdg{font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;background:rgba(255,255,255,.2);display:inline-block;padding:5px 12px;border-radius:20px;margin-bottom:12px}
+  .s2-lead .big{font-size:19px;font-weight:650;line-height:1.4;letter-spacing:-.2px;max-width:820px;position:relative}
+  .s2-lead p{font-size:13.5px;line-height:1.6;opacity:.95;margin-top:10px;max-width:820px;position:relative}
+  .s2-strong{font-size:15px;font-weight:650;color:var(--accent-ink);line-height:1.5;margin-bottom:8px}
+  .s2-p{font-size:13.5px;color:var(--ink-soft);line-height:1.65;margin-top:6px}
+  .s2-note{font-size:12.5px;color:var(--muted);font-style:italic;margin-top:10px;line-height:1.55}
+  .s2-quote{border-left:3px solid var(--accent);padding:4px 0 4px 16px}
+  .s2-quote .qt{font-size:15.5px;font-weight:650;line-height:1.5;color:var(--ink)}
+  .s2-list{list-style:none}
+  .s2-list li{display:flex;gap:10px;font-size:13.5px;color:var(--ink-soft);padding:8px 0;border-bottom:1px solid var(--line);line-height:1.5}
+  .s2-list li:last-child{border-bottom:none}
+  .s2-list .mk{flex-shrink:0;width:22px;height:22px;border-radius:7px;display:grid;place-items:center;font-size:11px;font-weight:800;background:var(--accent-soft);color:var(--accent-ink)}
+  .s2-list.cross .mk{background:#fdecef;color:#c0392b}
+  .s2-list.check .mk{background:var(--green-soft);color:var(--green)}
+  .s2-chips{display:flex;flex-wrap:wrap;gap:8px}
+  .s2-chip{font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:20px;background:var(--accent-soft);color:var(--accent-ink)}
+  .s2-call{display:flex;gap:10px;align-items:flex-start;font-size:13px;line-height:1.55;padding:12px 15px;border-radius:12px;background:var(--accent-soft);color:var(--accent-ink)}
+  .s2-call.warn{background:var(--amber-soft);color:#8a6410}
+  .s2-card{position:relative}
+  .s2-card .tg{font-size:10.5px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--accent-ink);background:var(--accent-soft);padding:4px 10px;border-radius:20px;display:inline-block;margin-bottom:10px}
+  .s2-card h4{font-size:15px;font-weight:700;letter-spacing:-.2px;margin-bottom:6px;line-height:1.35}
+  .s2-card p{font-size:12.8px;color:var(--muted);line-height:1.55}
+  .s2-card ul{margin:10px 0 0 16px}.s2-card li{font-size:12.8px;color:var(--ink-soft);line-height:1.5;margin-bottom:3px}
+  .s2-card .ft{margin-top:10px;font-size:11.8px;font-weight:600;color:var(--ink-soft);border-top:1px dashed var(--line);padding-top:8px}
+  .s2-card .num{position:absolute;right:14px;top:6px;font-size:38px;font-weight:800;color:var(--accent-soft)}
+  .s2-kv{display:flex;gap:12px;padding:8px 0;border-top:1px solid var(--line);font-size:13px}
+  .s2-kv b{width:120px;flex-shrink:0;color:var(--accent-ink)}.s2-kv span{color:var(--ink-soft)}
+  .s2-dd{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .s2-dd ul{list-style:none}.s2-dd li{font-size:13px;color:var(--ink-soft);padding:6px 0;border-bottom:1px solid var(--line)}
+  .s2-dd li:last-child{border-bottom:none}
+  .s2-steps{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+  .s2-step{font-size:12.8px;font-weight:600;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:8px 12px;box-shadow:var(--shadow)}
+  .s2-arr{color:var(--faint);font-weight:700}
+  .s2-mock{background:var(--bg);border:1px dashed var(--line);border-radius:14px;padding:22px}
+  .s2-mock .h1{font-size:21px;font-weight:700;letter-spacing:-.4px;line-height:1.3}
+  .s2-mock .h2{font-size:13.5px;color:var(--ink-soft);margin-top:8px;max-width:620px;line-height:1.6}
+  .s2-mock .ctas{display:flex;gap:9px;margin-top:14px;flex-wrap:wrap}
+  .s2-mock .c1{background:var(--accent);color:#fff;font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:10px}
+  .s2-mock .c2{background:#fff;border:1px solid var(--line);font-size:12.5px;font-weight:600;padding:8px 14px;border-radius:10px;color:var(--ink-soft)}
+  .s2-st{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+  .s2-st:last-child{border-bottom:none}.s2-st .t{flex:1;font-size:13.5px;font-weight:600}.s2-st small{display:block;font-weight:400;font-size:12px;color:var(--muted)}
+  .s2-foot{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:30px;padding-top:18px;border-top:1px solid var(--line)}
+  .s2-foot p{flex:1;min-width:220px;font-size:12.5px;color:var(--muted)}
+  .s2-archbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--amber-soft);color:#8a6410;border-radius:12px;padding:11px 15px;margin-bottom:18px;font-size:13px;font-weight:600}
+  .s2-archbar span{flex:1}
+  .p90{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .p90 .card h4{font-size:16px;font-weight:700;margin:4px 0 10px}
+  .p90 .res{margin-top:12px;font-size:12.5px;font-weight:600;color:var(--accent-ink);background:var(--accent-soft);border-radius:10px;padding:10px 12px;line-height:1.5}
+  @media(max-width:820px){.s2-dd,.p90{grid-template-columns:1fr}.s2-kv b{width:90px}}
   @media(max-width:820px){.modal-grid{grid-template-columns:1fr}.cal-date{display:none}.bd-s{width:90px}}
 
 </style>
@@ -711,7 +775,7 @@ async function bootApp(){
   }
 }
 async function switchClient(id){await selectClient(id);}
-async function selectClient(id){
+async function selectClient(id){state.stratArchive=0;
   if(!id)return;
   state.client=await fetchClient(id);
   const [content,documents,social,activity,onb]=await Promise.all([fetchTable('content_items',id),fetchTable('documents',id),fetchTable('social_accounts',id),fetchTable('activity',id),fetchOnboarding(id)]);
@@ -816,6 +880,59 @@ function isInternalClient(c){return !!c && (((c.plan||'').toLowerCase().indexOf(
 /* =================== VIEWS =================== */
 const ACCESS_META={onboarding:['Onboarding','Questionnaire stratégique','onb'],strategy:['Stratégie','Stratégie de marque visuelle','compass'],ideas:['Idées de contenu','Contenus scénarisés à produire','bulb'],validation:['Validation contenu','Approbation des posts','val'],calendar:['Calendrier éditorial','Planning de publication','cal'],social:['Réseaux & publication','Comptes & auto-publication','soc'],stats:['Statistiques','Performances & croissance','stat'],website:['Site web','Suivi du site vitrine','web'],seo:['SEO / Référencement','Visibilité Google','seo'],tracking:['Suivi de projet','Étapes de l\'accompagnement','proj'],resources:['Ressources & fichiers','Fichiers de marque','res'],documents:['Documents','Devis, factures, contrats','doc']};
 function onbModules(){const c=state.client&&state.client.onb_custom;return (Array.isArray(c)&&c.length)?c:ONB;}
+/* =================== STRATÉGIE v2 (onglets) =================== */
+function s2Blk(b){
+  const ttl=b.title?`<div class="section-title" style="margin-top:0">${esc(b.title)}</div>`:'';
+  const note=b.note?`<div class="s2-note">${esc(b.note)}</div>`:'';
+  const paras=(b.paras||[]).map(p=>`<p class="s2-p">${esc(p)}</p>`).join('');
+  switch(b.type){
+    case 'lead': return `<div class="s2-lead">${b.badge?`<div class="bdg">${esc(b.badge)}</div>`:''}<div class="big">${esc(b.text)}</div>${b.sub?`<p>${esc(b.sub)}</p>`:''}</div>`;
+    case 'text': return `${ttl}<div class="card">${b.strong?`<div class="s2-strong">${esc(b.strong)}</div>`:''}${paras}${(b.kv||[]).map(r=>`<div class="s2-kv"><b>${esc(r[0])}</b><span>${esc(r[1])}</span></div>`).join('')}${note}</div>`;
+    case 'quote': return `${ttl}<div class="card"><div class="s2-quote">${b.text?`<div class="qt">${esc(b.text)}</div>`:''}${paras}</div>${note}</div>`;
+    case 'list':{
+      const st=b.style||'dot';
+      if(st==='chip')return `${ttl}<div class="card"><div class="s2-chips">${b.items.map(x=>`<span class="s2-chip">${esc(x)}</span>`).join('')}</div>${b.intro?`<div class="s2-note">${esc(b.intro)}</div>`:''}</div>`;
+      const mk={dot:'•',cross:'✕',check:'✓'};
+      return `${ttl}<div class="card">${b.intro?`<p class="s2-p" style="margin:0 0 6px">${esc(b.intro)}</p>`:''}<ul class="s2-list ${st}">${b.items.map((x,i)=>`<li><span class="mk">${st==='num'?(i+1):(mk[st]||'•')}</span><span>${esc(x)}</span></li>`).join('')}</ul>${note}</div>`;
+    }
+    case 'callout': return `<div class="s2-call ${b.tone==='warn'?'warn':''}"><span>${b.tone==='warn'?'⚠️':'💡'}</span><span>${esc(b.text)}</span></div>`;
+    case 'cards':{
+      const cols=b.cols===2?'g2':(b.cols===4?'g4':'g3');
+      return `${ttl}${b.intro?`<p class="s2-p" style="margin:-4px 0 12px">${esc(b.intro)}</p>`:''}<div class="grid ${cols}">${b.items.map((c,i)=>`<div class="card s2-card">${b.numbered?`<span class="num">${i+1}</span>`:''}${c.tag?`<span class="tg">${esc(c.tag)}</span>`:''}<h4>${esc(c.t)}</h4>${c.d?`<p>${esc(c.d)}</p>`:''}${c.list?`<ul>${c.list.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${c.foot?`<div class="ft">${esc(c.foot)}</div>`:''}</div>`).join('')}</div>${note}`;
+    }
+    case 'dodont': return `${ttl}<div class="s2-dd"><div class="card st-do"><div class="st-mini" style="color:var(--green)">À privilégier</div><ul>${b.do.map(x=>`<li>✓ ${esc(x)}</li>`).join('')}</ul></div><div class="card st-dont"><div class="st-mini" style="color:#c0392b">À éviter</div><ul>${b.dont.map(x=>`<li>✕ ${esc(x)}</li>`).join('')}</ul></div></div>${note}`;
+    case 'steps': return `${ttl}<div class="card"><div class="s2-steps">${b.items.map((x,i)=>`${i?'<span class="s2-arr">→</span>':''}<span class="s2-step">${esc(x)}</span>`).join('')}</div>${note}</div>`;
+    case 'hero': return `${ttl}<div class="card">${b.badge?`<span class="s2-chip" style="display:inline-block;margin-bottom:12px">${esc(b.badge)}</span>`:''}<div class="s2-mock"><div class="h1">${esc(b.text)}</div><div class="h2">${esc(b.sub)}</div><div class="ctas">${(b.ctas||[]).map((c,i)=>`<span class="${i?'c2':'c1'}">${esc(c)}</span>`).join('')}</div></div>${note}</div>`;
+    case 'status':{
+      const L={active:['Active','t-green'],doing:['En cours','t-amber'],idea:['À examiner','t-grey']};
+      return `${ttl}<div class="card">${b.intro?`<p class="s2-p" style="margin:0 0 6px">${esc(b.intro)}</p>`:''}${b.items.map(x=>{const l=L[x.st]||L.idea;return `<div class="s2-st"><div class="t">${esc(x.t)}${x.note?`<small>${esc(x.note)}</small>`:''}</div><span class="tag ${l[1]}">${l[0]}</span></div>`;}).join('')}</div>`;
+    }
+  }
+  return '';
+}
+function strategyV2(v){
+  const tabs=v.tabs||[];
+  let k=state.stratTab;if(!tabs.some(t=>t.k===k))k=tabs[0]&&tabs[0].k;
+  const tab=tabs.find(t=>t.k===k)||{blocks:[]};
+  const ok=v.status==='validated';
+  const hasOld=!!(state.client&&state.client.strategy&&state.client.strategy.hero);
+  let h=`<div class="s2-wrap"><div class="s2-top"><div class="sec-head"><h3>${esc(v.title||'Stratégie')}</h3>${v.intro?`<p>${esc(v.intro)}</p>`:''}</div><span class="s2-status ${ok?'ok':''}">${ok?('✓ Version validée'+(v.validated_at?' le '+esc(fmtDate(v.validated_at)):'')):'● Version de travail'}</span></div>`;
+  h+=`<div class="s2-tabs">${tabs.map((t,i)=>`<button class="s2-tab ${t.k===k?'on':''}" onclick="state.stratTab='${esc(t.k)}';go('strategy')"><span class="n">${i+1}</span>${esc(t.t)}</button>`).join('')}</div>`;
+  h+=(tab.blocks||[]).map(b=>`<div class="s2-blk">${s2Blk(b)}</div>`).join('');
+  h+=`<div class="s2-foot"><p>${v.plan90?'Le plan sur trois mois est dans <b>Suivi de projet → Plan 90 jours</b>. ':''}${hasOld?'L\'ancienne version reste consultable dans l\'historique.':''}</p>${v.plan90?`<button class="sbtn ghost" onclick="go('tracking')">Plan 90 jours →</button>`:''}${hasOld?`<button class="sbtn ghost" onclick="state.stratArchive=1;go('strategy')">Voir la version précédente</button>`:''}${isAgencyView()?(ok?`<button class="sbtn ghost" onclick="validateStrategyV2(false)">Repasser en version de travail</button>`:`<button class="sbtn ok" onclick="validateStrategyV2(true)">✓ Valider cette version</button>`):''}</div></div>`;
+  return h;
+}
+async function validateStrategyV2(on){
+  const c=state.client;if(!c||!c.strategy||!c.strategy.v2)return;
+  if(on&&!confirm('Valider la « '+(c.strategy.v2.title||'stratégie')+' » dans son ensemble ?'))return;
+  const s=JSON.parse(JSON.stringify(c.strategy));
+  s.v2.status=on?'validated':'draft';s.v2.validated_at=on?new Date().toISOString():null;
+  if(!DEMO){const {error}=await sb.from('clients').update({strategy:s}).eq('id',c.id);if(error){toast('Erreur : '+error.message);return;}}
+  c.strategy=s;toast(on?'✓ Stratégie validée':'Repassée en version de travail');go('strategy');
+}
+function plan90View(p){
+  return `<div class="sec-head"><h3>Suivi de projet — Plan 90 jours</h3><p>${esc(p.intro||'')}</p></div><div class="p90">${(p.months||[]).map((m,i)=>`<div class="card s2-card"><span class="num">${i+1}</span><span class="tg">${esc(m.m)}</span><h4>${esc(m.t)}</h4><ul class="s2-list">${(m.items||[]).map(x=>`<li><span class="mk">•</span><span>${esc(x)}</span></li>`).join('')}</ul><div class="res">🎯 ${esc(m.result||'')}</div></div>`).join('')}</div>${p.note?`<div class="s2-note">${esc(p.note)}</div>`:''}`;
+}
 const VIEWS={
   cockpit(){
     const c=state.client||{};
@@ -905,6 +1022,14 @@ const VIEWS={
     return h;
   },
   strategy(){
+    const s0=state.client&&state.client.strategy;
+    if(s0&&typeof s0==='object'&&s0.v2){
+      if(!state.stratArchive||!s0.hero)return strategyV2(s0.v2);
+      return `<div class="s2-archbar"><span>🗂 Historique — version précédente de la stratégie (n'est plus la version active).</span><button class="sbtn ghost" onclick="state.stratArchive=0;go('strategy')">← Revenir à la version de travail</button></div>`+VIEWS.strategyV1();
+    }
+    return VIEWS.strategyV1();
+  },
+  strategyV1(){
     const s=state.client&&state.client.strategy;
     if(!s||typeof s!=='object'){return `<div class="sec-head"><h3>Stratégie de marque</h3></div><div class="card st-empty"><div style="font-size:34px;margin-bottom:10px">🧭</div><h3 style="font-size:16px;margin-bottom:6px">Ta stratégie arrive bientôt</h3><p>Wanderful finalise ta stratégie de marque. Elle apparaîtra ici, résumée et visuelle, dès qu'elle sera prête.</p></div>`;}
     const star=(v)=>{let o='';for(let i=1;i<=5;i++)o+=i<=v?'★':'<span class="off">★</span>';return `<span class="st-stars">${o}</span>`;};
@@ -1123,6 +1248,8 @@ const VIEWS={
       <div class="card" style="padding:0"><table><thead><tr><th>Mot-clé</th><th>Position</th><th>Tendance</th></tr></thead><tbody>${kws.map(x=>`<tr><td style="font-weight:600">${x[0]}</td><td style="font-weight:700">#${x[1]}</td><td>${x[2]==='up'?'<span class="up">▲ hausse</span>':x[2]==='down'?'<span class="down">▼ baisse</span>':'<span style="color:var(--faint)">— stable</span>'}</td></tr>`).join('')}</tbody></table></div>`;
   },
   tracking(){
+    const sv=state.client&&state.client.strategy;
+    if(sv&&sv.v2&&sv.v2.plan90)return plan90View(sv.v2.plan90);
     const tl=[['done','12 juin','Lancement de l\'accompagnement','Contrat signé, accès transmis, kickoff réalisé.'],['done','20 juin','Ligne éditoriale validée','Ton, thèmes et fréquence définis ensemble.'],['done','3 juil','Premiers contenus publiés','12 posts programmés, publication auto activée.'],['active','15 juil','Optimisation & validation','Contenus en attente de validation, campagne pub en préparation.'],['','24 juil','Shooting du menu d\'été','Séance photo pour alimenter le contenu d\'août.'],['','1 août','Première campagne pub','Lancement des pubs Instagram + Facebook géociblées.']];
     return `<div class="sec-head"><h3>Suivi de projet</h3><p>Où en est votre accompagnement, étape par étape.</p></div><div class="card" style="padding:22px 22px 4px"><div class="tl">${tl.map(t=>`<div class="step ${t[0]}"><div class="dot"></div><div class="when">${t[1]}</div><b>${t[2]}</b><small>${t[3]}</small></div>`).join('')}</div></div>`;
   },
