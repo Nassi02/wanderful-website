@@ -2,14 +2,7 @@
 -- Isolation : chaque ligne porte un client_id. Agence : accès complet. Client : lecture de ses propres lignes.
 -- Les écritures de collecte sont faites par la fonction Edge (clé service, côté serveur uniquement).
 
-create or replace function public.wf_is_agency() returns boolean
-language sql stable security definer set search_path = public as $$
-  select exists(select 1 from public.profiles p where p.id = auth.uid() and p.role = 'agency');
-$$;
-create or replace function public.wf_my_client() returns uuid
-language sql stable security definer set search_path = public as $$
-  select p.client_id from public.profiles p where p.id = auth.uid();
-$$;
+-- Réutilise les fonctions d'accès existantes du projet : public.is_agency() et public.my_client_id().
 
 -- Sources connectées, par projet
 create table if not exists public.data_sources (
@@ -102,9 +95,9 @@ alter table public.action_items  enable row level security;
 do $$ declare t text; begin
   foreach t in array array['data_sources','metric_reports','refresh_runs','seo_recos','action_items'] loop
     execute format('drop policy if exists wf_agency_all on public.%I', t);
-    execute format('create policy wf_agency_all on public.%I for all using (public.wf_is_agency()) with check (public.wf_is_agency())', t);
+    execute format('create policy wf_agency_all on public.%I for all using (public.is_agency()) with check (public.is_agency())', t);
     execute format('drop policy if exists wf_client_read on public.%I', t);
-    execute format('create policy wf_client_read on public.%I for select using (client_id = public.wf_my_client())', t);
+    execute format('create policy wf_client_read on public.%I for select using (client_id = public.my_client_id())', t);
   end loop;
 end $$;
 
@@ -117,7 +110,7 @@ on conflict (client_id, source, property) do nothing;
 -- pg_cron fonctionne en UTC : on déclenche à 6 h et 7 h UTC le lundi ; la fonction ne travaille
 -- que s'il est bien 8 h à Zurich (heure d'été comme d'hiver) et ignore l'autre déclenchement.
 create extension if not exists pg_cron;
-create extension if not exists pg_net;
+create extension if not exists pg_net with schema extensions;
 select cron.unschedule(jobid) from cron.job where jobname = 'wf-weekly-refresh';
 select cron.schedule('wf-weekly-refresh', '0 6,7 * * 1', $$
   select net.http_post(

@@ -8,7 +8,7 @@ import { periods, analyze, extractMeta, parseSitemap } from './analysis.js';
 
 const cors = { 'Access-Control-Allow-Origin': 'https://wanderful-marketing.com', 'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type', 'Access-Control-Allow-Methods': 'POST, OPTIONS' };
 const json = (b: unknown, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { ...cors, 'Content-Type': 'application/json' } });
-const admin = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!);
+const admin = createClient(Deno.env.get('SUPABASE_URL')!, (Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || Deno.env.get('SUPABASE_SECRET_KEY'))!);
 
 // ---------- Jeton Google (compte de service, renouvelé à chaque exécution) ----------
 function b64url(buf: ArrayBuffer | Uint8Array | string) {
