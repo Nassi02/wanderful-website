@@ -4,7 +4,7 @@
 //   GOOGLE_SA_JSON  : clé JSON du compte de service Google (lecture seule sur les propriétés ajoutées)
 // Fournis automatiquement par Supabase : SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-import { periods, analyze, extractMeta, parseSitemap } from './analysis.js';
+import { periods, analyze, analyzePagespeed, extractMeta, parseSitemap } from './analysis.js';
 
 const cors = { 'Access-Control-Allow-Origin': 'https://wanderful-marketing.com', 'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type', 'Access-Control-Allow-Methods': 'POST, OPTIONS' };
 const json = (b: unknown, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { ...cors, 'Content-Type': 'application/json' } });
@@ -84,10 +84,28 @@ async function collectGa4(token: string, property: string, today: string) {
   return { source: 'ga4', property, periods: P, status: 'ok', totals: tot.rows || [], landing: landing.rows || [], keyEvents: (events.rows || []).filter((r: any) => Number(r.metricValues[0].value) > 0), note: "Les événements clés sont listés sous leur nom GA4 : leur signification (prospect, contact…) reste à vérifier avant interprétation." };
 }
 
+// ---------- Site technique (PageSpeed Insights + disponibilité) ----------
+async function psi(url: string, strategy: string, token: string) {
+  const key = Deno.env.get('PAGESPEED_API_KEY');
+  const u = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=${strategy}&category=performance${key ? '&key=' + key : ''}`;
+  const r = await fetch(u, key ? {} : { headers: { Authorization: `Bearer ${token}` } });
+  const j = await r.json();
+  if (!r.ok) throw new Error(`PageSpeed ${r.status} : ${j.error?.message || 'erreur'}`);
+  return j;
+}
+async function collectPagespeed(token: string, url: string, clientId: string, today: string) {
+  let availability: any = {};
+  const t0 = Date.now();
+  try { const r = await fetch(url, { redirect: 'follow' }); availability = { status: r.status, ms: Date.now() - t0 }; } catch (e) { availability = { status: null, ms: null, error: String(e) }; }
+  const [mobile, desktop] = await Promise.all([psi(url, 'mobile', token), psi(url, 'desktop', token).catch(() => null)]);
+  const { data: prev } = await admin.from('metric_reports').select('data').eq('client_id', clientId).eq('source', 'pagespeed').order('period_end', { ascending: false }).limit(1).maybeSingle();
+  return analyzePagespeed({ url, today, availability, mobile, desktop, prev: prev?.data || null });
+}
+
 async function saveRecos(clientId: string, recos: any[], today: string) {
   for (const r of recos) {
     const { data: ex } = await admin.from('seo_recos').select('id,status').eq('client_id', clientId).eq('key', r.key).maybeSingle();
-    const fields = { type: r.type, page: r.page, topic: r.topic, observation: r.observation, source: r.source, interpretation: r.interpretation, uncertainty: r.uncertainty, change: r.change, current_text: r.current_text ?? null, priority: r.priority, effort: r.effort, evaluation: r.evaluation, last_seen: today, updated_at: new Date().toISOString() };
+    const fields = { theme: r.theme || 'seo', type: r.type, page: r.page, topic: r.topic, observation: r.observation, source: r.source, interpretation: r.interpretation, uncertainty: r.uncertainty, change: r.change, current_text: r.current_text ?? null, priority: r.priority, effort: r.effort, evaluation: r.evaluation, last_seen: today, updated_at: new Date().toISOString() };
     if (!ex) await admin.from('seo_recos').insert({ client_id: clientId, key: r.key, first_seen: today, ...fields });
     else if (ex.status === 'open' || ex.status === 'in_plan') await admin.from('seo_recos').update(fields).eq('id', ex.id); // mise à jour, pas de doublon
     // 'done' ou 'dismissed' : on n'écrase pas la décision prise
@@ -102,10 +120,10 @@ async function refreshClient(clientId: string, trigger: string) {
   let token: string | null = null;
   for (const s of sources || []) {
     try {
-      token = token || await googleToken(['https://www.googleapis.com/auth/webmasters.readonly', 'https://www.googleapis.com/auth/analytics.readonly']);
-      const rep = s.source === 'gsc' ? await collectGsc(token, s.property, s.domain, today) : await collectGa4(token, s.property, today);
+      token = token || await googleToken(['https://www.googleapis.com/auth/webmasters.readonly', 'https://www.googleapis.com/auth/analytics.readonly', 'https://www.googleapis.com/auth/cloud-platform']);
+      const rep = s.source === 'gsc' ? await collectGsc(token, s.property, s.domain, today) : s.source === 'pagespeed' ? await collectPagespeed(token, s.property, clientId, today) : await collectGa4(token, s.property, today);
       await admin.from('metric_reports').upsert({ client_id: clientId, source: s.source, period_start: rep.periods.w.start, period_end: rep.periods.w.end, status: rep.status, data: rep }, { onConflict: 'client_id,source,period_end' });
-      if (s.source === 'gsc') await saveRecos(clientId, rep.recos, today);
+      if (rep.recos) await saveRecos(clientId, rep.recos, today);
       await admin.from('data_sources').update({ status: rep.status, last_success_at: new Date().toISOString(), last_error: null }).eq('id', s.id);
       results.push({ source: s.source, status: rep.status });
     } catch (e) {

@@ -473,6 +473,25 @@
   @media(max-width:820px){.s2-sum-grid{grid-template-columns:1fr 1fr}.p90l input{width:100%}.p90l{flex:1 1 100%}}
   @media(max-width:480px){.s2-sum-grid{grid-template-columns:1fr}}
   @media(max-width:820px){.s2-dd,.p90{grid-template-columns:1fr}.s2-kv b{width:90px}}
+  /* --- Sources + feed --- */
+  .cn>summary{list-style:none;cursor:pointer}.cn>summary::-webkit-details-marker{display:none}
+  .src-row{border-top:1px solid var(--line);padding:10px 0}.src-row:first-of-type{margin-top:12px}
+  .src-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.src-top b{font-size:13.5px}.src-top small{font-size:11.5px}
+  .src-row.soon,.src-row.off{opacity:.7}
+  .fd-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  .fd-phone{max-width:560px;background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:14px}
+  .fd-head{display:flex;align-items:center;gap:10px;padding:4px 4px 12px}.fd-head b{display:block;font-size:14px}.fd-head small{font-size:12px;color:var(--muted)}
+  .fd-av{width:42px;height:42px;border-radius:50%;background:var(--grad);color:#fff;display:grid;place-items:center;font-weight:700}
+  .fd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+  .fd-tile{position:relative;background:var(--bg)}.fd-tile[draggable=true]{cursor:grab}.fd-tile.sel{outline:3px solid var(--amber);outline-offset:-3px}
+  .fd-media{aspect-ratio:3/4;overflow:hidden;position:relative;cursor:pointer;background:#efeafe}
+  .fd-media img,.fd-media video{width:100%;height:100%;object-fit:cover;display:block}
+  .fd-ph{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:8px;gap:4px;background:linear-gradient(135deg,#ecebfb,#d9d4f7);color:var(--accent-ink)}
+  .fd-ph b{font-size:12px}.fd-ph span{font-size:11px;line-height:1.3;color:var(--ink-soft);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.fd-ph small{font-size:10px;color:var(--muted)}
+  .fd-ic{position:absolute;top:6px;right:7px;color:#fff;font-size:13px;text-shadow:0 1px 3px rgba(0,0,0,.5)}
+  .fd-meta{display:flex;align-items:center;gap:4px;padding:4px 3px;font-size:10.5px;color:var(--muted)}.fd-meta .ct-status{font-size:9.5px;padding:2px 6px}
+  .fd-sw{margin-left:auto;font-size:13px;color:var(--accent-ink);padding:0 4px}
+  .fd-tile.pub .fd-media{opacity:.85}
   /* --- ACCUEIL : Cette semaine --- */
   .wk{margin-bottom:22px;padding:20px 22px}.wk-title{font-size:17px;font-weight:700}.wk-sub{font-size:12.8px;color:var(--muted);margin-top:2px}
   .wk-theme{border-top:1px solid var(--line);padding:14px 0 4px;margin-top:12px}
@@ -912,9 +931,9 @@ function setClientCard(c){
 
 /* =================== NAV =================== */
 const ICO={home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',onb:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',val:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/>',cal:'<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',soc:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 3v18"/>',stat:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',web:'<rect x="2" y="3" width="20" height="16" rx="2"/><path d="M2 8h20M6 5.5h.01M9 5.5h.01"/>',seo:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',proj:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',res:'<path d="M4 4h6l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',key:'<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5L21 2M17 6l3 3M14 9l2 2"/>',plus:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',bulb:'<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/>',login:'<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/>',gauge:'<path d="M3.5 15a9 9 0 1 1 17 0"/><path d="M12 15l4.5-4"/><circle cx="12" cy="15" r="1.5"/>'};
-const NAV=[{g:'Espace projet'},{k:'home',t:'Accueil',i:'home'},{k:'onboarding',t:'Onboarding',i:'onb'},{k:'strategy',t:'Stratégie',i:'compass'},{g:'Pilotage'},{k:'stats',t:'Statistiques',i:'stat'},{g:'Contenu & social'},{k:'ideas',t:'Idées de contenu',i:'bulb'},{k:'validation',t:'Validation contenu',i:'val',badge:true},{k:'calendar',t:'Calendrier éditorial',i:'cal'},{k:'social',t:'Réseaux & publication',i:'soc'},{g:'Site & visibilité'},{k:'website',t:'Site web',i:'web'},{k:'seo',t:'SEO / Référencement',i:'seo'},{g:'Projet & ressources'},{k:'tracking',t:'Suivi de projet',i:'proj'},{k:'resources',t:'Ressources & fichiers',i:'res'},{k:'documents',t:'Documents',i:'doc'}];
+const NAV=[{g:'Espace projet'},{k:'home',t:'Accueil',i:'home'},{k:'onboarding',t:'Onboarding',i:'onb'},{k:'strategy',t:'Stratégie',i:'compass'},{g:'Pilotage'},{k:'stats',t:'Statistiques',i:'stat'},{g:'Contenu & social'},{k:'ideas',t:'Idées de contenu',i:'bulb'},{k:'validation',t:'Validation contenu',i:'val',badge:true},{k:'calendar',t:'Calendrier éditorial',i:'cal'},{k:'feed',t:'Aperçu du feed',i:'soc'},{k:'social',t:'Réseaux & publication',i:'soc'},{g:'Site & visibilité'},{k:'website',t:'Site web',i:'web'},{k:'seo',t:'SEO / Référencement',i:'seo'},{g:'Projet & ressources'},{k:'tracking',t:'Suivi de projet',i:'proj'},{k:'resources',t:'Ressources & fichiers',i:'res'},{k:'documents',t:'Documents',i:'doc'}];
 /* ---- Contrôle d'accès (cadenas) ---- */
-const LOCKABLE=['onboarding','strategy','ideas','validation','calendar','social','stats','website','seo','tracking','resources','documents'];
+const LOCKABLE=['onboarding','strategy','ideas','validation','calendar','feed','social','stats','website','seo','tracking','resources','documents'];
 function isAgency(){return state.profile&&state.profile.role==='agency';}
 function isAgencyView(){return isAgency()&&!state.preview;}
 function updateRoleTag(){
@@ -976,7 +995,7 @@ function fmtAgo(d){
 function isInternalClient(c){return !!c && (((c.plan||'').toLowerCase().indexOf('interne')>-1) || /wanderful/i.test(c.name||''));}
 
 /* =================== VIEWS =================== */
-const ACCESS_META={onboarding:['Onboarding','Questionnaire stratégique','onb'],strategy:['Stratégie','Stratégie de marque visuelle','compass'],ideas:['Idées de contenu','Contenus scénarisés à produire','bulb'],validation:['Validation contenu','Approbation des posts','val'],calendar:['Calendrier éditorial','Planning de publication','cal'],social:['Réseaux & publication','Comptes & auto-publication','soc'],stats:['Statistiques','Performances & croissance','stat'],website:['Site web','Suivi du site vitrine','web'],seo:['SEO / Référencement','Visibilité Google','seo'],tracking:['Suivi de projet','Étapes de l\'accompagnement','proj'],resources:['Ressources & fichiers','Fichiers de marque','res'],documents:['Documents','Devis, factures, contrats','doc']};
+const ACCESS_META={onboarding:['Onboarding','Questionnaire stratégique','onb'],strategy:['Stratégie','Stratégie de marque visuelle','compass'],ideas:['Idées de contenu','Contenus scénarisés à produire','bulb'],validation:['Validation contenu','Approbation des posts','val'],feed:['Aperçu du feed','Grille Instagram des contenus planifiés','soc'],calendar:['Calendrier éditorial','Planning de publication','cal'],social:['Réseaux & publication','Comptes & auto-publication','soc'],stats:['Statistiques','Performances & croissance','stat'],website:['Site web','Suivi du site vitrine','web'],seo:['SEO / Référencement','Visibilité Google','seo'],tracking:['Suivi de projet','Étapes de l\'accompagnement','proj'],resources:['Ressources & fichiers','Fichiers de marque','res'],documents:['Documents','Devis, factures, contrats','doc']};
 function onbModules(){const c=state.client&&state.client.onb_custom;return (Array.isArray(c)&&c.length)?c:ONB;}
 /* =================== STRATÉGIE v2 (onglets) =================== */
 function s2Blk(b){
@@ -1179,7 +1198,7 @@ function recoCard(r,i){
     ${inPlan?`<span class="tag t-green">✓ Dans le plan d’action</span>`:(isAgencyView()?`<button class="sbtn ok" onclick="recoToPlan('${esc(r.key)}')">+ Ajouter au plan d’action</button>`:'')}</div></div>`;
 }
 async function recoToPlan(key){
-  const p=state.pil,r=(p.recos||[]).find(x=>x.key===key)||(pilReport('gsc')&&pilReport('gsc').data.recos.find(x=>x.key===key));if(!r)return;
+  const p=state.pil;let r=(p.recos||[]).find(x=>x.key===key&&x.topic);if(!r)(p.reports||[]).some(rp=>{r=(rp.data.recos||[]).find(x=>x.key===key);return !!r;});if(!r)return;
   if((p.actions||[]).some(a=>a.reco_key===key)){toast('Déjà dans le plan d’action');return;}
   const row={client_id:state.client.id,reco_key:key,title:r.topic,status:'todo',page:r.page,added_on:new Date().toISOString().slice(0,10),source:r.source,change:r.change};
   if(!DEMO){const {data,error}=await sb.from('action_items').insert(row).select('*').single();if(error){toast('⚠️ '+error.message);return;}
@@ -1232,7 +1251,7 @@ function pilStats(){
 function pilWebsite(){
   let h=`<div class="sec-head"><h3>Site web</h3><p>Données réelles du site du projet sélectionné.</p></div>`;
   const rep=pilReport('gsc');
-  h+=`<div class="grid g3" style="margin-bottom:6px"><div class="card kpi"><div class="lbl">Disponibilité & vitesse</div><b style="font-size:15px">Données non connectées</b></div><div class="card kpi"><div class="lbl">Visiteurs</div><b style="font-size:15px">${pilReport('ga4')?'':'Données non connectées'}</b><div class="pil-prev">nécessite Google Analytics</div></div><div class="card kpi"><div class="lbl">Pages visibles dans Google (28 j)</div><b>${rep?rep.data.pages.length:'—'}</b><div class="pil-prev">${rep?'source : Search Console':'Données non connectées'}</div></div></div>`;
+  h+=`${siteTechBlock()}<div class="section-title">Visites et visibilité</div><div class="grid g2" style="margin-bottom:6px"><div class="card kpi"><div class="lbl">Visiteurs</div><b style="font-size:15px">${pilReport('ga4')?'':'Données non connectées'}</b><div class="pil-prev">nécessite Google Analytics</div></div><div class="card kpi"><div class="lbl">Pages visibles dans Google (28 j)</div><b>${rep?rep.data.pages.length:'—'}</b><div class="pil-prev">${rep?'source : Search Console':'Données non connectées'}</div></div></div>`;
   h+=`<div class="section-title">Pages du site vues dans les résultats Google (28 j)</div>`+(rep?`<div class="card" style="padding:0"><table><thead><tr><th>Page</th><th>Impressions</th><th>Clics</th><th>Position moy.</th></tr></thead><tbody>${rep.data.pages.map(x=>`<tr><td>${esc(x.keys[0].replace(/^https?:\/\/[^/]+/,'')||'/')}</td><td>${nf(x.impressions)}</td><td>${nf(x.clicks)}</td><td>${Math.round(x.position*10)/10}</td></tr>`).join('')}</tbody></table></div><p class="pil-note">Une page absente de cette liste n’a reçu aucune impression sur la période : cela ne signifie pas qu’elle est hors ligne.</p>`:nodata('Données non connectées','Aucune source reliée à ce projet.'));
   return h+pilSources();
 }
@@ -1253,42 +1272,6 @@ async function recoDismiss(key,undo){
   if(r)r.status=st;else(p.recos=p.recos||[]).push({key,status:st});
   toast(undo?'Suggestion rétablie':(DEMO?'Ignorée (aperçu : non sauvegardé)':'Suggestion ignorée'));go(state.section);
 }
-function weekCard(){
-  const p=state.pil;if(!p)return '';
-  const ag=isAgencyView();
-  const rep=pilReport('gsc');
-  const theme=(ico,name,body)=>`<div class="wk-theme"><div class="wk-h"><span class="wk-ico">${ico}</span><b>${name}</b></div>${body}</div>`;
-  let seo;
-  const gs=(p.sources||[]).find(s=>s.source==='gsc');
-  if(!rep){seo=gs?(gs.status==='error'?`<p class="wk-na">⚠️ Problème de connexion : ${esc(gs.last_error||'')}</p>`:'<p class="wk-na">Connexion enregistrée — premier bilan au prochain lundi 8 h (ou via « Actualiser maintenant » dans SEO).</p>'):`<p class="wk-na">Données non connectées${ag?' — voir « À connecter » ci-dessus.':'.'}</p>`;}
-  else{
-    const d=rep.data,st=pilStatus();
-    const recos=(d.recos||[]).map(r=>Object.assign({},r,(p.recos||[]).find(x=>x.key===r.key)||{}));
-    const inPlan=k=>(p.actions||[]).some(a=>a.reco_key===k);
-    const open=recos.filter(r=>r.status!=='dismissed'),ign=recos.filter(r=>r.status==='dismissed');
-    seo=`<div class="wk-per">Semaine du ${dfr(d.periods.w.start)} au ${dfr(d.periods.w.end)} · <span class="tag ${st.c}">${st.t}</span></div>
-      <div class="wk-row"><span class="wk-l">Ce qui a changé</span><span>${esc((d.summary[0]||'').replace(/^Semaine du [^:]+: /,''))}</span></div>
-      <div class="wk-row"><span class="wk-l">Ce que ça veut dire</span><span>${esc(weekMeaning(d))}</span></div>
-      <div class="wk-row"><span class="wk-l">À faire (suggestions)</span><div class="wk-todo">${open.length?open.map(r=>`<div class="wk-t"><div class="wk-tt"><b>${esc(r.topic)}</b><small>${esc(r.change||'')}</small></div>${inPlan(r.key)||r.status==='in_plan'?'<span class="tag t-green">✓ Dans le suivi de projet</span>':(ag?`<div class="wk-btns"><button class="sbtn ok" onclick="recoToPlan('${esc(r.key)}')">✓ Je le fais</button><button class="sbtn ghost" onclick="recoDismiss('${esc(r.key)}')">Ignorer</button></div>`:'')}</div>`).join(''):'<span class="muted">Aucune action suggérée cette semaine.</span>'}
-        ${ign.length&&ag?`<div class="wk-ign">${ign.length} suggestion(s) ignorée(s) : ${ign.map(r=>`<button class="wk-undo" onclick="recoDismiss('${esc(r.key)}',1)">${esc(r.topic)} ↺</button>`).join(' ')}</div>`:''}</div></div>
-      <button class="wk-more" onclick="go('seo')">Voir le détail SEO →</button>`;
-  }
-  const has=t=>(p.sources||[]).some(s=>s.source===t);
-  return `<div class="card wk"><div class="wk-top"><div><div class="wk-title">Cette semaine</div><div class="wk-sub">Ce qui a changé dans les données, ce que ça veut dire et ce qu’il est conseillé de faire. Les actions validées rejoignent le Suivi de projet.</div></div></div>
-    ${theme('🔎','SEO — recherche Google',seo)}
-    ${theme('📱','Réseaux sociaux','<p class="wk-na">Données non connectées.</p>')}
-    ${theme('📊','Trafic du site (Analytics)',has('ga4')?'':'<p class="wk-na">Données non connectées.</p>')}</div>`;
-}
-function connectCard(){
-  const p=state.pil;if(!p||!isAgencyView()||p.unavailable)return '';
-  if((p.sources||[]).some(s=>s.source==='gsc'))return '';
-  const nm=esc(state.client.name);
-  const msg=`Bonjour,\n\nPour activer le suivi SEO de votre espace client, merci d’ajouter cette adresse dans votre Google Search Console :\n${SA_EMAIL}\n\n1. Ouvrez https://search.google.com/search-console\n2. Choisissez votre site, puis Paramètres → Utilisateurs et autorisations\n3. Cliquez « Ajouter un utilisateur », collez l’adresse ci-dessus, autorisation « Restreint »\n\nCet accès est en lecture seule. Merci !`;
-  state._connectMsg=msg;
-  return `<div class="card cn"><div class="cn-h"><span>🔌</span><div><b>À connecter : Search Console de ${nm}</b><small>Tant que ce n’est pas fait, ce projet n’a pas de bilan SEO hebdomadaire.</small></div></div>
-    <ol class="cn-steps"><li><b>Le client donne l’accès</b> à <code>${SA_EMAIL}</code> (autorisation « Restreint ») dans sa Search Console. <button class="sbtn ghost" onclick="navigator.clipboard.writeText(state._connectMsg).then(()=>toast('Message copié'),()=>toast('Copie impossible'))">Copier le message à envoyer au client</button></li>
-    <li><b>Tu indiques sa propriété</b>, puis tu testes :<div class="cn-f"><input id="cnProp" placeholder="sc-domain:exemple.ch  ou  https://www.exemple.ch/"><button class="sbtn ok" onclick="connectGsc()">Enregistrer et tester</button></div><small class="muted">Propriété de domaine : <code>sc-domain:</code> + domaine. Propriété d’URL : l’adresse exacte avec https:// et le / final.</small></li></ol></div>`;
-}
 async function connectGsc(){
   const prop=(document.getElementById('cnProp').value||'').trim();
   if(!/^(sc-domain:[a-z0-9.-]+\.[a-z]{2,}|https?:\/\/[^\s]+\/)$/i.test(prop)){toast('Format attendu : sc-domain:exemple.ch ou https://www.exemple.ch/');return;}
@@ -1298,6 +1281,178 @@ async function connectGsc(){
   if(error){toast('⚠️ '+error.message);return;}
   toast('Enregistré — test de la connexion…');
   await pilRefresh();
+}
+/* =================== THÈMES DE PILOTAGE (même mécanisme pour chacun) =================== */
+const THEMES=[
+  {k:'seo',src:'gsc',name:'SEO — recherche Google',ico:'🔎',page:'seo',how:'gsc'},
+  {k:'site',src:'pagespeed',name:'Site technique (vitesse, disponibilité)',ico:'⚡',page:'website',how:'url'},
+  {k:'prod',src:null,name:'Production de contenu',ico:'🎬',page:'calendar',internal:true},
+  {k:'analytics',src:'ga4',name:'Trafic du site (Analytics)',ico:'📊',page:'stats',how:'ga4'},
+  {k:'social',src:'meta',name:'Réseaux sociaux (Instagram, Facebook)',ico:'📱',soon:'après la connexion Meta'},
+  {k:'ads',src:'ads',name:'Google Ads',ico:'🎯',soon:'prochaine étape'},
+  {k:'gbp',src:'gbp',name:'Fiche Google (avis, appels)',ico:'📍',soon:'après validation de l’accès Google'},
+  {k:'email',src:'email',name:'E-mailing',ico:'✉️',soon:'selon l’outil du client'},
+  {k:'leads',src:'leads',name:'Demandes et prospects',ico:'📥',soon:'selon l’outil du client'}];
+function themeState(t){
+  const p=state.pil||{};
+  if(t.internal)return 'on';
+  const rows=(p.sources||[]).filter(s=>s.source===t.src);
+  if(rows.some(s=>s.active===false))return 'off';
+  if(rows.some(s=>s.active!==false))return rows.some(s=>s.status==='error')?'error':'on';
+  return t.soon?'soon':'todo';
+}
+async function themeSetOff(src,off){
+  if(DEMO){toast('Aperçu : non sauvegardé');return;}
+  if(off){const {error}=await sb.from('data_sources').insert({client_id:state.client.id,source:src,property:'—',active:false,status:'pending'});if(error){toast('⚠️ '+error.message);return;}}
+  else{const {error}=await sb.from('data_sources').delete().eq('client_id',state.client.id).eq('source',src).eq('active',false);if(error){toast('⚠️ '+error.message);return;}}
+  await loadPilotage(state.client.id);go(state.section);
+}
+async function themeConnect(src){
+  const el=document.getElementById('cn_'+src);const v=((el&&el.value)||'').trim();
+  let prop=v,domain=null;
+  if(src==='gsc'){if(!/^(sc-domain:[a-z0-9.-]+\.[a-z]{2,}|https?:\/\/[^\s]+\/)$/i.test(v)){toast('Format attendu : sc-domain:exemple.ch ou https://www.exemple.ch/');return;}domain=v.replace(/^sc-domain:/,'').replace(/^https?:\/\//,'').replace(/\/.*$/,'');}
+  if(src==='pagespeed'){if(!/^https?:\/\/[^\s]+$/i.test(v)){toast('Adresse attendue : https://www.exemple.ch/');return;}domain=v.replace(/^https?:\/\//,'').replace(/\/.*$/,'');}
+  if(src==='ga4'){const m=v.match(/(\d{6,})/);if(!m){toast('Identifiant de propriété attendu (ex. 123456789)');return;}prop='properties/'+m[1];}
+  if(DEMO){toast('Aperçu : connexion non enregistrée');return;}
+  const {error}=await sb.from('data_sources').insert({client_id:state.client.id,source:src,property:prop,domain});
+  if(error){toast('⚠️ '+error.message);return;}
+  toast('Enregistré — test de la connexion…');await pilRefresh();
+}
+function sourcesCard(){
+  const p=state.pil;if(!p||!isAgencyView()||p.unavailable)return '';
+  const nm=esc(state.client.name);
+  const gdom=((p.sources||[]).find(s=>s.source==='gsc'&&s.domain)||{}).domain;
+  const msgGsc=`Bonjour,\n\nPour activer le suivi SEO de votre espace client, merci d’ajouter cette adresse dans votre Google Search Console :\n${SA_EMAIL}\n\n1. Ouvrez https://search.google.com/search-console\n2. Choisissez votre site, puis Paramètres → Utilisateurs et autorisations\n3. « Ajouter un utilisateur », collez l’adresse ci-dessus, autorisation « Restreint »\n\nCet accès est en lecture seule. Merci !`;
+  const msgGa4=`Bonjour,\n\nPour activer le suivi du trafic de votre site dans votre espace client, merci d’ajouter cette adresse dans Google Analytics :\n${SA_EMAIL}\n\n1. Ouvrez https://analytics.google.com → Administration (roue dentée en bas à gauche)\n2. Propriété → Gestion des accès à la propriété → « + » → Ajouter des utilisateurs\n3. Collez l’adresse ci-dessus, rôle « Lecteur », puis Ajouter\n\nMerci de m’indiquer aussi l’ID de la propriété (Administration → Paramètres de la propriété). Cet accès est en lecture seule.`;
+  state._msg={gsc:msgGsc,ga4:msgGa4};
+  const copy=k=>`<button class="sbtn ghost" onclick="navigator.clipboard.writeText(state._msg.${k}).then(()=>toast('Message copié'),()=>toast('Copie impossible'))">Copier le message pour le client</button>`;
+  const lab={on:['Connecté','t-green'],error:['Problème de connexion','t-red'],off:['Non utilisé','t-grey'],todo:['À connecter','t-amber'],soon:['Bientôt','t-grey']};
+  const rows=THEMES.map(t=>{
+    const st=themeState(t);let body='';
+    if(st==='todo'){
+      if(t.how==='gsc')body=`<ol class="cn-steps"><li>Le client ajoute <code>${SA_EMAIL}</code> en « Restreint » dans sa Search Console. ${copy('gsc')}</li><li>Indique sa propriété puis teste :<div class="cn-f"><input id="cn_gsc" placeholder="sc-domain:exemple.ch  ou  https://www.exemple.ch/"><button class="sbtn ok" onclick="themeConnect('gsc')">Enregistrer et tester</button></div></li></ol>`;
+      if(t.how==='url')body=`<div class="cn-steps" style="margin-left:0">Aucun accès à demander : indique l’adresse du site.<div class="cn-f"><input id="cn_pagespeed" placeholder="https://www.exemple.ch/" value="${gdom?'https://'+esc(gdom)+'/':''}"><button class="sbtn ok" onclick="themeConnect('pagespeed')">Enregistrer et tester</button></div></div>`;
+      if(t.how==='ga4')body=`<ol class="cn-steps"><li>Le client ajoute <code>${SA_EMAIL}</code> en « Lecteur » dans Google Analytics. ${copy('ga4')}</li><li>Indique l’ID de sa propriété puis teste :<div class="cn-f"><input id="cn_ga4" placeholder="123456789"><button class="sbtn ok" onclick="themeConnect('ga4')">Enregistrer et tester</button></div></li></ol>`;
+    }
+    const act=t.internal||t.soon&&st==='soon'?'':(st==='off'?`<button class="wk-undo" onclick="themeSetOff('${t.src}',false)">Réactiver</button>`:(st==='todo'?`<button class="wk-undo" onclick="themeSetOff('${t.src}',true)">Non utilisé pour ce client</button>`:''));
+    return `<div class="src-row ${st}"><div class="src-top"><span class="wk-ico">${t.ico}</span><b>${t.name}</b><span class="tag ${lab[st][1]}">${lab[st][0]}${st==='soon'?' · '+esc(t.soon):''}</span>${t.internal?'<small class="muted">données de l’espace, rien à connecter</small>':''}<span style="margin-left:auto">${act}</span></div>${body}</div>`;
+  }).join('');
+  const pending=THEMES.some(t=>themeState(t)==='todo');
+  return `<details class="card cn" ${pending?'open':''}><summary class="cn-h"><span>🔌</span><div><b>Sources de données — ${nm}</b><small>${pending?'Des sources restent à connecter (ou à marquer « non utilisé »).':'Tout est décidé pour ce client.'}</small></div></summary>${rows}</details>`;
+}
+/* ---- Production de contenu (données internes) ---- */
+function prodSummary(){
+  const items=(state.data&&state.data.content)||[];const now=new Date();now.setHours(0,0,0,0);
+  const d=x=>x.scheduled_at?new Date(x.scheduled_at):null;
+  const past=items.filter(x=>{const t=d(x);return t&&t<now&&t>=new Date(now-7*864e5);});
+  const next=items.filter(x=>{const t=d(x);return t&&t>=now&&t<new Date(+now+7*864e5);});
+  const late=items.filter(x=>{const t=d(x);return t&&t<now&&x.status!=='published';});
+  const noMedia=next.filter(x=>!mediaList(x).length);
+  const notOk=next.filter(x=>x.status!=='approved'&&x.status!=='published');
+  const pend=items.filter(x=>x.status==='pending').length,chg=items.filter(x=>x.status==='changes_requested').length;
+  return {past,next,late,noMedia,notOk,pend,chg,pub:past.filter(x=>x.status==='published').length};
+}
+function prodTheme(){
+  const s=prodSummary();
+  if(!s.past.length&&!s.next.length&&!s.late.length)return '<p class="wk-na">Aucun contenu planifié autour de cette semaine.</p>';
+  const todo=[];
+  if(s.noMedia.length)todo.push([`${s.noMedia.length} contenu(s) prévu(s) dans les 7 prochains jours sans visuel`,'Déposer les visuels ou montages','calendar']);
+  if(s.notOk.length)todo.push([`${s.notOk.length} contenu(s) des 7 prochains jours pas encore validé(s)`,'Envoyer en validation ou relancer le client','validation']);
+  if(s.chg)todo.push([`${s.chg} demande(s) de modification`,'Traiter les retours du client','validation']);
+  if(s.late.length)todo.push([`${s.late.length} contenu(s) en retard (date passée, non publié)`,'Reprogrammer ou publier','calendar']);
+  const meaning=s.late.length||s.noMedia.length?'Le planning a pris du retard sur la production : sans visuels validés à temps, ces contenus ne pourront pas partir aux dates prévues.':'La production suit le planning.';
+  return `<div class="wk-row"><span class="wk-l">Ce qui a changé</span><span>7 derniers jours : ${s.pub} publié(s) sur ${s.past.length} prévu(s). 7 prochains jours : ${s.next.length} prévu(s), dont ${s.noMedia.length} sans visuel.</span></div>
+  <div class="wk-row"><span class="wk-l">Ce que ça veut dire</span><span>${meaning}</span></div>
+  <div class="wk-row"><span class="wk-l">À faire</span><div class="wk-todo">${todo.length?todo.map(t=>`<div class="wk-t"><div class="wk-tt"><b>${t[0]}</b><small>${t[1]}</small></div><button class="sbtn ghost" onclick="go('${t[2]}')">Ouvrir →</button></div>`).join(''):'<span class="muted">Rien à signaler.</span>'}</div></div>`;
+}
+/* ---- Section générique d'un thème collecté ---- */
+function themeMeaning(t,d){
+  if(t.k==='seo')return weekMeaning(d);
+  if(t.k==='site'){const m=d.mobile;if(!d.availability||!(d.availability.status<400))return 'Le site n’a pas répondu correctement au contrôle : à vérifier en priorité.';if(!m)return 'Mesure de vitesse indisponible cette semaine.';
+    return m.score>=90?'Le site est rapide sur mobile.':(m.score>=50?'Vitesse mobile correcte, avec des marges d’amélioration.':'Le site est lent sur mobile : cela peut faire partir une partie des visiteurs.');}
+  return '';
+}
+function themeSection(t){
+  const p=state.pil,ag=isAgencyView(),st=themeState(t);
+  if(t.internal)return prodTheme();
+  const rep=pilReport(t.src);const src=(p.sources||[]).find(s=>s.source===t.src&&s.active!==false);
+  if(!rep)return src?(src.status==='error'?`<p class="wk-na">⚠️ Problème de connexion : ${esc(src.last_error||'')}</p>`:'<p class="wk-na">Connexion enregistrée — premier bilan au prochain lundi 8 h (ou « Actualiser maintenant »).</p>'):`<p class="wk-na">Données non connectées${ag?' — voir « Sources de données » ci-dessus.':'.'}</p>`;
+  const d=rep.data,sts=pilStatus();
+  const recos=(d.recos||[]).map(r=>Object.assign({},r,(p.recos||[]).find(x=>x.key===r.key)||{}));
+  const inPlan=k=>(p.actions||[]).some(a=>a.reco_key===k);
+  const open=recos.filter(r=>r.status!=='dismissed'),ign=recos.filter(r=>r.status==='dismissed');
+  const changed=(d.summary||[]).map(x=>x.replace(/^Semaine du [^:]+: /,'')).join(' ');
+  return `<div class="wk-per">${t.k==='seo'?`Semaine du ${dfr(d.periods.w.start)} au ${dfr(d.periods.w.end)}`:`Contrôle de la semaine du ${dfr(d.periods.w.start)}`} · <span class="tag ${src&&src.status==='error'?'t-red':(rep.status==='ok'?'t-green':'t-amber')}">${src&&src.status==='error'?'Problème de connexion':(rep.status==='ok'?'À jour':'Données partielles')}</span></div>
+    <div class="wk-row"><span class="wk-l">Ce qui a changé</span><span>${esc(t.k==='seo'?(d.summary[0]||'').replace(/^Semaine du [^:]+: /,''):changed)}</span></div>
+    <div class="wk-row"><span class="wk-l">Ce que ça veut dire</span><span>${esc(themeMeaning(t,d))}</span></div>
+    <div class="wk-row"><span class="wk-l">À faire (suggestions)</span><div class="wk-todo">${open.length?open.map(r=>`<div class="wk-t"><div class="wk-tt"><b>${esc(r.topic)}</b><small>${esc(r.change||'')}</small></div>${inPlan(r.key)||r.status==='in_plan'?'<span class="tag t-green">✓ Dans le suivi de projet</span>':(ag?`<div class="wk-btns"><button class="sbtn ok" onclick="recoToPlan('${esc(r.key)}')">✓ Je le fais</button><button class="sbtn ghost" onclick="recoDismiss('${esc(r.key)}')">Ignorer</button></div>`:'')}</div>`).join(''):`<span class="muted">${esc(d.recosNote||'Aucune action suggérée cette semaine.')}</span>`}
+      ${ign.length&&ag?`<div class="wk-ign">${ign.length} suggestion(s) ignorée(s) : ${ign.map(r=>`<button class="wk-undo" onclick="recoDismiss('${esc(r.key)}',1)">${esc(r.topic)} ↺</button>`).join(' ')}</div>`:''}</div></div>
+    <button class="wk-more" onclick="go('${t.page}')">Voir le détail →</button>`;
+}
+function weekCard(){
+  const p=state.pil;if(!p)return '';
+  const shown=THEMES.filter(t=>{const s=themeState(t);return s!=='off'&&s!=='soon';});
+  return `<div class="card wk"><div class="wk-top"><div><div class="wk-title">Cette semaine</div><div class="wk-sub">Pour chaque thème : ce qui a changé, ce que ça veut dire et ce qu’il est conseillé de faire. Les actions validées rejoignent le Suivi de projet.</div></div></div>
+    ${shown.map(t=>`<div class="wk-theme"><div class="wk-h"><span class="wk-ico">${t.ico}</span><b>${t.name}</b></div>${themeSection(t)}</div>`).join('')}</div>`;
+}
+function connectCard(){return sourcesCard();}
+/* ---- Site technique : détail dans « Site web » ---- */
+function siteTechBlock(){
+  const rep=pilReport('pagespeed');
+  if(!rep)return `<div class="section-title">Vitesse et disponibilité</div>`+nodata('Données non connectées','Indique l’adresse du site dans « Sources de données » (Accueil) pour activer le contrôle hebdomadaire.');
+  const d=rep.data,m=d.mobile||{},k=d.desktop||{};
+  const col=v=>v==null?'':(v>=90?'up':(v>=50?'':'down'));
+  return `<div class="section-title">Vitesse et disponibilité <small class="muted">(PageSpeed Insights · ${dfr(d.periods.w.start)})</small></div>
+  <div class="grid g4"><div class="card kpi"><div class="lbl">Disponibilité</div><b style="font-size:16px">${d.availability&&d.availability.status<400?'✓ Accessible':'⚠️ Problème'}</b><div class="pil-prev">${d.availability&&d.availability.ms!=null?d.availability.ms+' ms au contrôle':''}</div></div>
+  <div class="card kpi"><div class="lbl">Score mobile</div><b class="${col(m.score)}">${m.score??'—'}/100</b><div class="pil-prev">LCP ${esc(m.lab&&m.lab.lcp||'—')}</div></div>
+  <div class="card kpi"><div class="lbl">Score ordinateur</div><b class="${col(k.score)}">${k.score??'—'}/100</b></div>
+  <div class="card kpi"><div class="lbl">Visiteurs réels (Google)</div><b style="font-size:15px">${m.field?({FAST:'Rapide',AVERAGE:'Moyen',SLOW:'Lent'}[m.field.category]||m.field.category):'Pas assez de données'}</b></div></div>
+  ${(m.opportunities||[]).length?`<div class="card" style="margin-top:12px"><div class="rc-l">Pistes signalées par PageSpeed (mobile)</div><ul class="s2-list">${m.opportunities.map(o=>`<li><span class="mk">•</span><span>${esc(o.title)} — gain estimé ≈ ${(o.savingsMs/1000).toFixed(1)} s</span></li>`).join('')}</ul></div>`:''}
+  ${(d.notes||[]).map(n=>`<div class="pil-note">ℹ️ ${esc(n)}</div>`).join('')}`;
+}
+/* =================== APERÇU DU FEED INSTAGRAM =================== */
+function isVideo(url,it){return /\.(mp4|mov|webm|m4v)(\?|$)/i.test(url||'')||/video/i.test((it&&it.media_type)||'');}
+function feedItems(){
+  const all=((state.data&&state.data.content)||[]).filter(x=>(x.platform||'').toLowerCase()==='instagram'&&!/story/i.test(x.type||'')&&x.scheduled_at);
+  const now=new Date();now.setHours(0,0,0,0);
+  const f=state.feedAll?all:all.filter(x=>x.status==='published'||new Date(x.scheduled_at)>=now);
+  return f.sort((a,b)=>new Date(b.scheduled_at)-new Date(a.scheduled_at));
+}
+function feedTile(it){
+  const m=mediaList(it),first=m[0],ag=isAgencyView(),pub=it.status==='published';
+  const sel=state.feedSel===it.id;
+  const media=first?(isVideo(first,it)?`<video src="${esc(first)}#t=0.5" muted playsinline preload="metadata"></video>`:`<img src="${esc(first)}" alt="" loading="lazy">`)
+    :`<div class="fd-ph"><b>${esc(it.type||'Post')}</b><span>${esc(it.title||'')}</span><small>Visuel à produire</small></div>`;
+  const icon=m.length>1?'<span class="fd-ic" title="Carrousel">❐</span>':(/reel/i.test(it.type||'')||(first&&isVideo(first,it))?'<span class="fd-ic" title="Reel">▶</span>':'');
+  return `<div class="fd-tile ${sel?'sel':''} ${pub?'pub':''}" data-id="${esc(it.id)}" ${ag&&!pub?'draggable="true" ondragstart="feedDrag(event)" ondragover="event.preventDefault()" ondrop="feedDrop(event)"':''}>
+    <div class="fd-media" onclick="openContentModal('${esc(it.id)}')">${media}${icon}</div>
+    <div class="fd-meta"><span>${new Date(it.scheduled_at).toLocaleDateString('fr-CH',{day:'numeric',month:'short'})}</span><span class="ct-status s-${esc(it.status)}">${{idea:'Idée',produced:'Produit',pending:'À valider',changes_requested:'Modif.',approved:'Validé',published:'Publié'}[it.status]||esc(it.status)}</span>${ag&&!pub?`<button class="fd-sw" title="Échanger avec une autre case" onclick="feedTap('${esc(it.id)}')">⇄</button>`:''}</div></div>`;
+}
+function feedView(){
+  const items=feedItems(),ag=isAgencyView();
+  const acct=((state.data&&state.data.social)||[]).find(s=>(s.platform||'').toLowerCase()==='instagram');
+  let h=`<div class="sec-head"><h3>Aperçu du feed Instagram</h3><p>Le rendu de ta grille avec les contenus planifiés, du plus récent (en haut à gauche) au plus ancien. ${ag?'Glisse une case sur une autre, ou utilise ⇄, pour <b>échanger leurs dates de publication</b>. Clique sur une case pour remplacer le visuel ou la vidéo.':''}</p></div>
+  <div class="fd-bar"><div class="p90seg"><button class="${state.feedAll?'':'on'}" onclick="state.feedAll=0;go('feed')">À venir + publiés</button><button class="${state.feedAll?'on':''}" onclick="state.feedAll=1;go('feed')">Tout le planning</button></div>
+  ${state.feedSel?`<span class="tag t-amber">Case sélectionnée — touche une autre case (⇄) pour échanger · <button class="wk-undo" onclick="state.feedSel=null;go('feed')">annuler</button></span>`:''}</div>`;
+  if(!items.length)return h+nodata('Aucun contenu Instagram planifié','Les contenus Instagram avec une date apparaîtront ici.');
+  h+=`<div class="fd-phone"><div class="fd-head"><div class="fd-av">${esc((state.client.initials||'').slice(0,2))}</div><div><b>${esc(acct&&acct.handle||state.client.name)}</b><small>${items.length} publication(s) dans l’aperçu</small></div></div><div class="fd-grid">${items.map(feedTile).join('')}</div></div>
+  <p class="pil-note">Aperçu indicatif : Instagram recadre la grille en 3:4. Les publications déjà en ligne sur le compte s’afficheront ici une fois Instagram connecté.</p>`;
+  return h;
+}
+function feedDrag(e){e.dataTransfer.setData('text/plain',e.currentTarget.getAttribute('data-id'));}
+function feedDrop(e){e.preventDefault();const a=e.dataTransfer.getData('text/plain'),b=e.currentTarget.getAttribute('data-id');if(a&&b&&a!==b)feedSwap(a,b);}
+function feedTap(id){if(!state.feedSel){state.feedSel=id;go('feed');return;}if(state.feedSel===id){state.feedSel=null;go('feed');return;}const a=state.feedSel;state.feedSel=null;feedSwap(a,id);}
+async function feedSwap(a,b){
+  const c=state.data.content,A=c.find(x=>String(x.id)===String(a)),B=c.find(x=>String(x.id)===String(b));
+  if(!A||!B||A.status==='published'||B.status==='published')return;
+  const da=A.scheduled_at,wa=A.week,db=B.scheduled_at,wb=B.week;
+  if(!DEMO){
+    const r1=await sb.from('content_items').update({scheduled_at:db,week:wb}).eq('id',A.id);
+    const r2=await sb.from('content_items').update({scheduled_at:da,week:wa}).eq('id',B.id);
+    if(r1.error||r2.error){toast('⚠️ '+((r1.error||r2.error).message));return;}
+  }
+  A.scheduled_at=db;A.week=wb;B.scheduled_at=da;B.week=wa;
+  toast(DEMO?'Dates échangées (aperçu : non sauvegardé)':'✓ Dates échangées');go('feed');
 }
 const VIEWS={
   cockpit(){
@@ -1592,8 +1747,9 @@ const VIEWS={
     });
     return h;
   },
+  feed(){return '<div class="s2-wrap">'+feedView()+'</div>';},
   social(){
-    return `<div class="sec-head"><h3>Réseaux & publication</h3><p>Vos comptes reliés et la publication automatique.</p></div><div class="grid g3">${state.data.social.map(s=>`<div class="plat"><div class="top">${pico(s.platform)}<div><b>${esc(s.handle||s.platform)}</b><small style="color:var(--muted);display:block">${s.followers?s.followers+' abonnés':'Non relié'}</small></div></div><div style="display:flex;align-items:center;gap:8px;margin-top:8px">${s.connected?'<span class="dot-on"></span><span style="font-size:12.5px;font-weight:600;color:var(--green)">Connecté</span>':'<span class="dot-off"></span><span style="font-size:12.5px;color:var(--muted)">Déconnecté</span>'}${s.auto?'<span style="margin-left:auto;font-size:11.5px;color:var(--muted)">Auto ✓</span>':''}</div></div>`).join('')}</div>`;
+    return `<div class="sec-head"><h3>Réseaux & publication</h3><p>Vos comptes et la publication.</p></div><div class="card pil-bar" style="margin-bottom:16px"><div class="pil-bar-main"><span>ℹ️ La publication automatique n\u2019est pas encore branchée : les contenus validés sont publiés manuellement pour l\u2019instant (connexion Instagram / Facebook en préparation). Les informations ci-dessous sont saisies à la main.</span></div><button class="sbtn ghost" onclick="go('feed')">Aperçu du feed →</button></div><div class="grid g3">${state.data.social.map(s=>`<div class="plat"><div class="top">${pico(s.platform)}<div><b>${esc(s.handle||s.platform)}</b><small style="color:var(--muted);display:block">${s.followers?s.followers+' abonnés':'Non relié'}</small></div></div><div style="display:flex;align-items:center;gap:8px;margin-top:8px">${s.connected?'<span class="dot-on"></span><span style="font-size:12.5px;font-weight:600;color:var(--green)">Connecté</span>':'<span class="dot-off"></span><span style="font-size:12.5px;color:var(--muted)">Déconnecté</span>'}${s.auto?'<span style="margin-left:auto;font-size:11.5px;color:var(--muted)">Auto ✓</span>':''}</div></div>`).join('')}</div>`;
   },
   stats(){
     if(!DEMO||state.pil)return '<div class="s2-wrap">'+pilStats()+'</div>';

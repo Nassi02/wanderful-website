@@ -5,7 +5,7 @@
 // Fournis automatiquement par Supabase : SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
-// ---------- Analyse (copie de analysis.js, version fichier unique pour l'éditeur Supabase) ----------
+// ---------- Analyse (copie de analysis.js, version fichier unique) ----------
 // Analyse hebdomadaire Search Console — module pur (aucun accès réseau).
 // Utilisé par la fonction Edge et par les tests. Aucune donnée n'est inventée :
 // chaque constat renvoie aux chiffres fournis en entrée.
@@ -204,6 +204,56 @@ function parseSitemap(xml) {
   return out;
 }
 
+/**
+ * Site technique (PageSpeed Insights). input: { url, today, availability:{status, ms}, mobile, desktop, prev }
+ * mobile/desktop : réponses brutes PageSpeed (ou null). prev : bilan précédent (ou null).
+ */
+function analyzePagespeed(input) {
+  const P = periods(input.today, 0);
+  const pick = (r) => {
+    if (!r || !r.lighthouseResult) return null;
+    const a = r.lighthouseResult.audits || {};
+    const sc = r.lighthouseResult.categories && r.lighthouseResult.categories.performance ? Math.round(r.lighthouseResult.categories.performance.score * 100) : null;
+    const opp = Object.values(a).filter((x) => x.details && x.details.type === 'opportunity' && (x.details.overallSavingsMs || 0) >= 300)
+      .sort((x, y) => y.details.overallSavingsMs - x.details.overallSavingsMs).slice(0, 3)
+      .map((x) => ({ title: x.title, savingsMs: Math.round(x.details.overallSavingsMs) }));
+    const le = r.loadingExperience || {};
+    const fm = le.metrics || {};
+    return {
+      score: sc,
+      lab: { lcp: a['largest-contentful-paint'] && a['largest-contentful-paint'].displayValue, cls: a['cumulative-layout-shift'] && a['cumulative-layout-shift'].displayValue, tbt: a['total-blocking-time'] && a['total-blocking-time'].displayValue },
+      field: le.overall_category ? { category: le.overall_category, lcpMs: fm.LARGEST_CONTENTFUL_PAINT_MS && fm.LARGEST_CONTENTFUL_PAINT_MS.percentile, inpMs: fm.INTERACTION_TO_NEXT_PAINT && fm.INTERACTION_TO_NEXT_PAINT.percentile, cls: fm.CUMULATIVE_LAYOUT_SHIFT_SCORE ? fm.CUMULATIVE_LAYOUT_SHIFT_SCORE.percentile / 100 : null } : null,
+      opportunities: opp,
+    };
+  };
+  const m = pick(input.mobile), d = pick(input.desktop);
+  const av = input.availability || {};
+  const up = av.status && av.status < 400;
+  const notes = ['Le score PageSpeed est une mesure simulée : il peut varier de quelques points d’un test à l’autre sans changement sur le site.'];
+  if (m && !m.field) notes.push('Pas encore assez de visites réelles pour que Google publie des mesures terrain (Core Web Vitals) : seules les mesures simulées sont disponibles.');
+  const prev = input.prev && input.prev.mobile ? input.prev.mobile.score : null;
+  const summary = [];
+  summary.push(up ? `Site accessible au moment du contrôle (réponse ${av.status}, ${av.ms} ms).` : `Site inaccessible au moment du contrôle${av.status ? ' (code ' + av.status + ')' : ''}.`);
+  if (m) summary.push(`Score performance mobile : ${m.score}/100${prev != null ? ` (bilan précédent : ${prev}/100)` : ''}${d ? ` · ordinateur : ${d.score}/100` : ''}.`);
+  const recos = [];
+  const src = `PageSpeed Insights (Google), test du ${fr(input.today)} sur ${input.url}`;
+  if (!up) recos.push({ key: `site-down:${input.url}`, type: 'disponibilite', theme: 'site', page: input.url, topic: 'Site inaccessible au moment du contrôle',
+    observation: `Le contrôle du ${fr(input.today)} a obtenu ${av.status ? 'le code ' + av.status : 'aucune réponse'}.`, source: 'Contrôle direct depuis le serveur de collecte',
+    interpretation: 'Un seul contrôle ne suffit pas à conclure à une panne durable (maintenance, coupure brève possible).', uncertainty: 'moyenne',
+    change: 'Ouvrir le site, vérifier l’hébergement et le nom de domaine ; relancer « Actualiser maintenant » pour confirmer.', priority: 'haute', effort: 'faible', evaluation: 'Nouveau contrôle immédiat, puis au prochain bilan.' });
+  if (m && m.score != null && m.score < 50) recos.push({ key: `perf-mobile:${input.url}`, type: 'performance', theme: 'site', page: input.url, topic: 'Performance mobile faible',
+    observation: `Score mobile ${m.score}/100 (LCP ${m.lab.lcp || '—'}, TBT ${m.lab.tbt || '—'}, CLS ${m.lab.cls || '—'}).${m.opportunities.length ? ' Pistes signalées par PageSpeed : ' + m.opportunities.map((o) => `${o.title} (≈ ${(o.savingsMs / 1000).toFixed(1)} s)`).join(' ; ') + '.' : ''}`,
+    source: src, interpretation: 'Un site lent sur mobile peut décourager une partie des visiteurs. Le gain réel dépend des pages et des visiteurs ; mesure simulée.', uncertainty: 'moyenne',
+    change: 'Examiner les pistes listées (images, scripts, polices) en commençant par la plus lourde ; aucune modification sans vérification sur une copie du site.', priority: m.score < 30 ? 'haute' : 'moyenne', effort: 'moyen',
+    evaluation: 'Score mobile et LCP au prochain bilan (comparer plusieurs semaines, la mesure varie).' });
+  if (m && m.field && m.field.category === 'SLOW') recos.push({ key: `cwv:${input.url}`, type: 'performance', theme: 'site', page: input.url, topic: 'Expérience réelle jugée lente par Google',
+    observation: `Mesures terrain (visiteurs réels, 28 j) : catégorie « lente » ; LCP ${m.field.lcpMs != null ? (m.field.lcpMs / 1000).toFixed(1) + ' s' : '—'}, INP ${m.field.inpMs != null ? m.field.inpMs + ' ms' : '—'}.`,
+    source: 'Chrome UX Report via PageSpeed Insights', interpretation: 'Donnée issue de vrais visiteurs : plus fiable que le score simulé.', uncertainty: 'faible',
+    change: 'Prioriser l’amélioration de l’indicateur le plus éloigné du seuil « bon ».', priority: 'haute', effort: 'moyen', evaluation: 'Mesures terrain 4 à 6 semaines après correction (moyenne glissante de 28 jours).' });
+  return { source: 'pagespeed', url: input.url, periods: P, status: m ? 'ok' : 'partial', availability: av, mobile: m, desktop: d, summary, notes, recos: recos.slice(0, 3),
+    recosNote: recos.length ? null : 'Aucun problème technique notable détecté cette semaine.' };
+}
+
 // ---------- Fonction ----------
 const cors = { 'Access-Control-Allow-Origin': 'https://wanderful-marketing.com', 'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type', 'Access-Control-Allow-Methods': 'POST, OPTIONS' };
 const json = (b: unknown, s = 200) => new Response(JSON.stringify(b), { status: s, headers: { ...cors, 'Content-Type': 'application/json' } });
@@ -283,10 +333,28 @@ async function collectGa4(token: string, property: string, today: string) {
   return { source: 'ga4', property, periods: P, status: 'ok', totals: tot.rows || [], landing: landing.rows || [], keyEvents: (events.rows || []).filter((r: any) => Number(r.metricValues[0].value) > 0), note: "Les événements clés sont listés sous leur nom GA4 : leur signification (prospect, contact…) reste à vérifier avant interprétation." };
 }
 
+// ---------- Site technique (PageSpeed Insights + disponibilité) ----------
+async function psi(url: string, strategy: string, token: string) {
+  const key = Deno.env.get('PAGESPEED_API_KEY');
+  const u = `https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=${encodeURIComponent(url)}&strategy=${strategy}&category=performance${key ? '&key=' + key : ''}`;
+  const r = await fetch(u, key ? {} : { headers: { Authorization: `Bearer ${token}` } });
+  const j = await r.json();
+  if (!r.ok) throw new Error(`PageSpeed ${r.status} : ${j.error?.message || 'erreur'}`);
+  return j;
+}
+async function collectPagespeed(token: string, url: string, clientId: string, today: string) {
+  let availability: any = {};
+  const t0 = Date.now();
+  try { const r = await fetch(url, { redirect: 'follow' }); availability = { status: r.status, ms: Date.now() - t0 }; } catch (e) { availability = { status: null, ms: null, error: String(e) }; }
+  const [mobile, desktop] = await Promise.all([psi(url, 'mobile', token), psi(url, 'desktop', token).catch(() => null)]);
+  const { data: prev } = await admin.from('metric_reports').select('data').eq('client_id', clientId).eq('source', 'pagespeed').order('period_end', { ascending: false }).limit(1).maybeSingle();
+  return analyzePagespeed({ url, today, availability, mobile, desktop, prev: prev?.data || null });
+}
+
 async function saveRecos(clientId: string, recos: any[], today: string) {
   for (const r of recos) {
     const { data: ex } = await admin.from('seo_recos').select('id,status').eq('client_id', clientId).eq('key', r.key).maybeSingle();
-    const fields = { type: r.type, page: r.page, topic: r.topic, observation: r.observation, source: r.source, interpretation: r.interpretation, uncertainty: r.uncertainty, change: r.change, current_text: r.current_text ?? null, priority: r.priority, effort: r.effort, evaluation: r.evaluation, last_seen: today, updated_at: new Date().toISOString() };
+    const fields = { theme: r.theme || 'seo', type: r.type, page: r.page, topic: r.topic, observation: r.observation, source: r.source, interpretation: r.interpretation, uncertainty: r.uncertainty, change: r.change, current_text: r.current_text ?? null, priority: r.priority, effort: r.effort, evaluation: r.evaluation, last_seen: today, updated_at: new Date().toISOString() };
     if (!ex) await admin.from('seo_recos').insert({ client_id: clientId, key: r.key, first_seen: today, ...fields });
     else if (ex.status === 'open' || ex.status === 'in_plan') await admin.from('seo_recos').update(fields).eq('id', ex.id); // mise à jour, pas de doublon
     // 'done' ou 'dismissed' : on n'écrase pas la décision prise
@@ -301,10 +369,10 @@ async function refreshClient(clientId: string, trigger: string) {
   let token: string | null = null;
   for (const s of sources || []) {
     try {
-      token = token || await googleToken(['https://www.googleapis.com/auth/webmasters.readonly', 'https://www.googleapis.com/auth/analytics.readonly']);
-      const rep = s.source === 'gsc' ? await collectGsc(token, s.property, s.domain, today) : await collectGa4(token, s.property, today);
+      token = token || await googleToken(['https://www.googleapis.com/auth/webmasters.readonly', 'https://www.googleapis.com/auth/analytics.readonly', 'https://www.googleapis.com/auth/cloud-platform']);
+      const rep = s.source === 'gsc' ? await collectGsc(token, s.property, s.domain, today) : s.source === 'pagespeed' ? await collectPagespeed(token, s.property, clientId, today) : await collectGa4(token, s.property, today);
       await admin.from('metric_reports').upsert({ client_id: clientId, source: s.source, period_start: rep.periods.w.start, period_end: rep.periods.w.end, status: rep.status, data: rep }, { onConflict: 'client_id,source,period_end' });
-      if (s.source === 'gsc') await saveRecos(clientId, rep.recos, today);
+      if (rep.recos) await saveRecos(clientId, rep.recos, today);
       await admin.from('data_sources').update({ status: rep.status, last_success_at: new Date().toISOString(), last_error: null }).eq('id', s.id);
       results.push({ source: s.source, status: rep.status });
     } catch (e) {

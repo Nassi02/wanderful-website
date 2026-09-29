@@ -195,3 +195,53 @@ export function parseSitemap(xml) {
   }
   return out;
 }
+
+/**
+ * Site technique (PageSpeed Insights). input: { url, today, availability:{status, ms}, mobile, desktop, prev }
+ * mobile/desktop : réponses brutes PageSpeed (ou null). prev : bilan précédent (ou null).
+ */
+export function analyzePagespeed(input) {
+  const P = periods(input.today, 0);
+  const pick = (r) => {
+    if (!r || !r.lighthouseResult) return null;
+    const a = r.lighthouseResult.audits || {};
+    const sc = r.lighthouseResult.categories && r.lighthouseResult.categories.performance ? Math.round(r.lighthouseResult.categories.performance.score * 100) : null;
+    const opp = Object.values(a).filter((x) => x.details && x.details.type === 'opportunity' && (x.details.overallSavingsMs || 0) >= 300)
+      .sort((x, y) => y.details.overallSavingsMs - x.details.overallSavingsMs).slice(0, 3)
+      .map((x) => ({ title: x.title, savingsMs: Math.round(x.details.overallSavingsMs) }));
+    const le = r.loadingExperience || {};
+    const fm = le.metrics || {};
+    return {
+      score: sc,
+      lab: { lcp: a['largest-contentful-paint'] && a['largest-contentful-paint'].displayValue, cls: a['cumulative-layout-shift'] && a['cumulative-layout-shift'].displayValue, tbt: a['total-blocking-time'] && a['total-blocking-time'].displayValue },
+      field: le.overall_category ? { category: le.overall_category, lcpMs: fm.LARGEST_CONTENTFUL_PAINT_MS && fm.LARGEST_CONTENTFUL_PAINT_MS.percentile, inpMs: fm.INTERACTION_TO_NEXT_PAINT && fm.INTERACTION_TO_NEXT_PAINT.percentile, cls: fm.CUMULATIVE_LAYOUT_SHIFT_SCORE ? fm.CUMULATIVE_LAYOUT_SHIFT_SCORE.percentile / 100 : null } : null,
+      opportunities: opp,
+    };
+  };
+  const m = pick(input.mobile), d = pick(input.desktop);
+  const av = input.availability || {};
+  const up = av.status && av.status < 400;
+  const notes = ['Le score PageSpeed est une mesure simulée : il peut varier de quelques points d’un test à l’autre sans changement sur le site.'];
+  if (m && !m.field) notes.push('Pas encore assez de visites réelles pour que Google publie des mesures terrain (Core Web Vitals) : seules les mesures simulées sont disponibles.');
+  const prev = input.prev && input.prev.mobile ? input.prev.mobile.score : null;
+  const summary = [];
+  summary.push(up ? `Site accessible au moment du contrôle (réponse ${av.status}, ${av.ms} ms).` : `Site inaccessible au moment du contrôle${av.status ? ' (code ' + av.status + ')' : ''}.`);
+  if (m) summary.push(`Score performance mobile : ${m.score}/100${prev != null ? ` (bilan précédent : ${prev}/100)` : ''}${d ? ` · ordinateur : ${d.score}/100` : ''}.`);
+  const recos = [];
+  const src = `PageSpeed Insights (Google), test du ${fr(input.today)} sur ${input.url}`;
+  if (!up) recos.push({ key: `site-down:${input.url}`, type: 'disponibilite', theme: 'site', page: input.url, topic: 'Site inaccessible au moment du contrôle',
+    observation: `Le contrôle du ${fr(input.today)} a obtenu ${av.status ? 'le code ' + av.status : 'aucune réponse'}.`, source: 'Contrôle direct depuis le serveur de collecte',
+    interpretation: 'Un seul contrôle ne suffit pas à conclure à une panne durable (maintenance, coupure brève possible).', uncertainty: 'moyenne',
+    change: 'Ouvrir le site, vérifier l’hébergement et le nom de domaine ; relancer « Actualiser maintenant » pour confirmer.', priority: 'haute', effort: 'faible', evaluation: 'Nouveau contrôle immédiat, puis au prochain bilan.' });
+  if (m && m.score != null && m.score < 50) recos.push({ key: `perf-mobile:${input.url}`, type: 'performance', theme: 'site', page: input.url, topic: 'Performance mobile faible',
+    observation: `Score mobile ${m.score}/100 (LCP ${m.lab.lcp || '—'}, TBT ${m.lab.tbt || '—'}, CLS ${m.lab.cls || '—'}).${m.opportunities.length ? ' Pistes signalées par PageSpeed : ' + m.opportunities.map((o) => `${o.title} (≈ ${(o.savingsMs / 1000).toFixed(1)} s)`).join(' ; ') + '.' : ''}`,
+    source: src, interpretation: 'Un site lent sur mobile peut décourager une partie des visiteurs. Le gain réel dépend des pages et des visiteurs ; mesure simulée.', uncertainty: 'moyenne',
+    change: 'Examiner les pistes listées (images, scripts, polices) en commençant par la plus lourde ; aucune modification sans vérification sur une copie du site.', priority: m.score < 30 ? 'haute' : 'moyenne', effort: 'moyen',
+    evaluation: 'Score mobile et LCP au prochain bilan (comparer plusieurs semaines, la mesure varie).' });
+  if (m && m.field && m.field.category === 'SLOW') recos.push({ key: `cwv:${input.url}`, type: 'performance', theme: 'site', page: input.url, topic: 'Expérience réelle jugée lente par Google',
+    observation: `Mesures terrain (visiteurs réels, 28 j) : catégorie « lente » ; LCP ${m.field.lcpMs != null ? (m.field.lcpMs / 1000).toFixed(1) + ' s' : '—'}, INP ${m.field.inpMs != null ? m.field.inpMs + ' ms' : '—'}.`,
+    source: 'Chrome UX Report via PageSpeed Insights', interpretation: 'Donnée issue de vrais visiteurs : plus fiable que le score simulé.', uncertainty: 'faible',
+    change: 'Prioriser l’amélioration de l’indicateur le plus éloigné du seuil « bon ».', priority: 'haute', effort: 'moyen', evaluation: 'Mesures terrain 4 à 6 semaines après correction (moyenne glissante de 28 jours).' });
+  return { source: 'pagespeed', url: input.url, periods: P, status: m ? 'ok' : 'partial', availability: av, mobile: m, desktop: d, summary, notes, recos: recos.slice(0, 3),
+    recosNote: recos.length ? null : 'Aucun problème technique notable détecté cette semaine.' };
+}
