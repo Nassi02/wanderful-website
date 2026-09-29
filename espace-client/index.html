@@ -2319,6 +2319,10 @@ function openContentModal(id){
     <button class="sbtn ok" id="prodBtn" style="width:100%;margin-top:10px" onclick="document.getElementById('prodFile').click()">${it.media_url?'🔁 Remplacer le fichier':'📎 Déposer mon montage / mon carrousel'}</button>
     <div style="font-size:11px;color:var(--muted);margin-top:5px">Pour un carrousel : sélectionne les slides d'un coup (elles seront rangées par ordre de nom).<br>Taille maximale : <b>50 Mo par fichier</b>.</div>
     <div id="prodProg" style="font-size:12px;color:var(--muted);margin-top:6px"></div>
+    <div class="field" style="margin-top:16px"><label>📅 Date et heure de publication</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:3px"><input type="date" id="pd_date" value="${it.scheduled_at?new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Zurich'}).format(new Date(it.scheduled_at)):''}" onchange="saveSchedule('${it.id}')" style="flex:1;min-width:140px"><input type="time" id="pd_time" value="${esc((it.brief&&it.brief.time)||'')}" onchange="saveSchedule('${it.id}')" style="width:130px"></div>
+      <div id="pd_hint" style="font-size:11px;color:var(--muted);margin-top:6px">${schedHint(it)}</div>
+    </div>
     <div class="field" style="margin-top:16px"><label>🌐 Réseaux de publication</label>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:3px">
         <span id="net_instagram" data-on="${NETS.indexOf('instagram')>=0?'1':'0'}" onclick="toggleNet('instagram')">📸 Instagram</span>
@@ -2341,6 +2345,23 @@ function openContentModal(id){
     </div></div></div>`;
   ['instagram','facebook'].forEach(function(n){var ce=document.getElementById('net_'+n);if(ce)netPaint(ce);});
   syncNetUI();
+}
+function schedHint(it){
+  if(!it.scheduled_at)return 'Aucune date : ce contenu ne sera pas publié automatiquement.';
+  const t=(it.brief&&it.brief.time)||'';
+  return 'Publication prévue : '+esc(igDt(igAt(it)))+(t?'':' (heure par défaut'+(state.ig?' du compte':'')+' — choisis une heure pour la modifier)')+'. Enregistré automatiquement.';
+}
+async function saveSchedule(id){
+  const it=(state.data.content||[]).find(c=>String(c.id)===String(id));if(!it)return;
+  const d=(document.getElementById('pd_date')||{}).value||'',t=(document.getElementById('pd_time')||{}).value||'';
+  const brief=Object.assign({},it.brief||{});if(/^\d{2}:\d{2}$/.test(t))brief.time=t;else delete brief.time;
+  const upd={scheduled_at:d?d:null,brief};
+  if(d){const w=Number(it.week)||null;upd.week=w;}
+  if(!DEMO){const {error}=await sb.from('content_items').update({scheduled_at:upd.scheduled_at,brief}).eq('id',id);if(error){toast('⚠️ '+error.message);return;}}
+  it.scheduled_at=upd.scheduled_at?upd.scheduled_at+'T00:00:00+00:00':null;it.brief=brief;
+  const h=document.getElementById('pd_hint');if(h)h.innerHTML=schedHint(it);
+  const sub=document.querySelector('.modal-head small');if(sub)sub.textContent='Semaine '+(it.week||'—')+' · '+fmtDate(it.scheduled_at)+' · '+(it.pillar||'');
+  toast(DEMO?'Aperçu : non sauvegardé':'✓ Date et heure enregistrées');
 }
 function closeContentModal(){const e=document.getElementById('modalRoot');if(e)e.innerHTML='';}
 /* ============ EDITEUR DE POST (vue agence) ============ */
