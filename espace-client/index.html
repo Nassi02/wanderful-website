@@ -437,7 +437,6 @@
   .p90{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
   .p90 .card h4{font-size:16px;font-weight:700;margin:4px 0 10px}
   .p90 .res{margin-top:12px;font-size:12.5px;font-weight:600;color:var(--accent-ink);background:var(--accent-soft);border-radius:10px;padding:10px 12px;line-height:1.5}
-  @media(min-width:821px){.s2-tabs{flex-wrap:wrap}}
   .s2-sum{margin-bottom:16px;padding:20px 22px}
   .s2-sum-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:18px}
   .s2-sum p{font-size:13.5px;color:var(--ink);line-height:1.5;font-weight:500}
@@ -474,6 +473,48 @@
   @media(max-width:820px){.s2-sum-grid{grid-template-columns:1fr 1fr}.p90l input{width:100%}.p90l{flex:1 1 100%}}
   @media(max-width:480px){.s2-sum-grid{grid-template-columns:1fr}}
   @media(max-width:820px){.s2-dd,.p90{grid-template-columns:1fr}.s2-kv b{width:90px}}
+  /* --- PILOTAGE --- */
+  .grid>*{min-width:0}
+  .card:has(>table){overflow-x:auto}
+  .t-red{background:#fdecef;color:#c0392b}
+  .muted{color:var(--muted);font-weight:500}
+  .pil-bar{display:flex;flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:18px;padding:14px 18px}
+  .pil-bar-main{flex:1;display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;font-size:12.8px;color:var(--ink-soft)}
+  .pil-warn{flex-basis:100%;font-size:12.8px;color:#8a6410;background:var(--amber-soft);border-radius:10px;padding:9px 12px;line-height:1.5}
+  .pil-note{font-size:12.3px;color:var(--muted);line-height:1.55;margin-top:8px}
+  .pil-kh{font-size:13px;font-weight:700;margin:18px 0 10px}.pil-kh small{font-weight:500;color:var(--muted)}
+  .pil-prev{font-size:11.5px;color:var(--muted);margin-top:4px}
+  .pil-empty{padding:18px}.pil-empty b{font-size:14px;color:var(--ink-soft)}.pil-empty p{font-size:12.8px;color:var(--muted);margin-top:4px;line-height:1.55}
+  .pil-src{display:flex;gap:14px;padding:11px 0;border-bottom:1px solid var(--line)}.pil-src:last-of-type{border-bottom:none}
+  .pil-src-n{width:230px;flex-shrink:0;font-size:13px;font-weight:700}.pil-src-n small{display:block;font-weight:500;color:var(--muted);font-size:11.5px}
+  .pil-src-d{flex:1;font-size:12.8px;color:var(--ink-soft);line-height:1.7}
+  .reco{margin-bottom:14px}
+  .rc-h{display:flex;align-items:center;gap:12px;margin-bottom:10px}.rc-h b{display:block;font-size:14.5px}.rc-h small{font-size:12px;color:var(--muted)}
+  .rc-i{width:28px;height:28px;border-radius:9px;background:var(--accent-soft);color:var(--accent-ink);display:grid;place-items:center;font-weight:800;flex-shrink:0}
+  .rc-f{display:flex;gap:10px;padding:9px 0;border-top:1px solid var(--line)}
+  .rc-n{width:20px;height:20px;border-radius:6px;background:var(--bg);font-size:11px;font-weight:800;color:var(--muted);display:grid;place-items:center;flex-shrink:0;margin-top:1px}
+  .rc-l{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--faint);margin-bottom:2px}
+  .rc-v{font-size:13px;color:var(--ink-soft);line-height:1.55;white-space:pre-line}
+  .rc-txt{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--line)}
+  .rc-txt pre{font-family:inherit;font-size:12.5px;white-space:pre-wrap;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin:0;color:var(--ink)}
+  .rc-txt pre.prop{background:var(--green-soft);border-color:#c9eedd}
+  .rc-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:10px;margin-top:2px}.rc-foot small{color:var(--muted);font-size:11.5px}
+  .act{margin-bottom:12px}.act-h{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap}.act-h b{font-size:14px}
+  .act-g{display:grid;grid-template-columns:150px 1fr 1.4fr;gap:14px;margin-top:10px;font-size:12.8px;color:var(--ink-soft)}
+  .act-rev input{width:320px}
+  .s2-sumd>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;color:var(--accent-ink)}
+  .s2-sumd>summary::-webkit-details-marker{display:none}
+  .s2-sumd>summary:after{content:"▾";margin-left:auto;color:var(--faint);transition:.2s}.s2-sumd:not([open])>summary:after{transform:rotate(-90deg)}
+  .s2-sumd[open]>summary{margin-bottom:14px}
+  .s2-ex{margin-top:10px;border-top:1px dashed var(--line);padding-top:8px}.s2-ex .rc-l{margin-bottom:4px}
+  .fiche{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--surface);box-shadow:var(--shadow)}
+  .fiche h4{font-size:15px;margin-bottom:10px}
+  .fiche .s2-steps{margin-bottom:12px}
+  .fiche label{display:block;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--faint);margin-top:8px}
+  .fiche input,.fiche textarea{width:100%;font-family:inherit;font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;background:#faf9ff;color:var(--ink);margin-top:3px;text-transform:none}
+  .fiche textarea{min-height:58px;resize:vertical}
+  @media(min-width:821px){.s2-tabs{display:grid!important;grid-template-columns:repeat(3,1fr)}.s2-tab{white-space:normal;text-align:left}}
+  @media(max-width:820px){.rc-txt,.act-g{grid-template-columns:1fr}.pil-src{flex-direction:column;gap:4px}.pil-src-n{width:auto}.act-rev input{width:100%}}
   @media(max-width:820px){.modal-grid{grid-template-columns:1fr}.cal-date{display:none}.bd-s{width:90px}}
 
 </style>
@@ -817,6 +858,7 @@ async function selectClient(id){state.stratArchive=0;
   const [content,documents,social,activity,onb]=await Promise.all([fetchTable('content_items',id),fetchTable('documents',id),fetchTable('social_accounts',id),fetchTable('activity',id),fetchOnboarding(id)]);
   state.data={content,documents,social,activity};state.onb=onb||{};
   state.logins=await fetchLogins(state.client);
+  await loadPilotage(id);
   setClientCard(state.client);renderNav(content);go(state.section);
 }
 async function fetchLogins(c){
@@ -850,7 +892,7 @@ function setClientCard(c){
 
 /* =================== NAV =================== */
 const ICO={home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',onb:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',val:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/>',cal:'<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',soc:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 3v18"/>',stat:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',web:'<rect x="2" y="3" width="20" height="16" rx="2"/><path d="M2 8h20M6 5.5h.01M9 5.5h.01"/>',seo:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',proj:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',res:'<path d="M4 4h6l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',key:'<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5L21 2M17 6l3 3M14 9l2 2"/>',plus:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',bulb:'<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/>',login:'<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/>',gauge:'<path d="M3.5 15a9 9 0 1 1 17 0"/><path d="M12 15l4.5-4"/><circle cx="12" cy="15" r="1.5"/>'};
-const NAV=[{g:'Espace projet'},{k:'home',t:'Accueil',i:'home'},{k:'onboarding',t:'Onboarding',i:'onb'},{k:'strategy',t:'Stratégie',i:'compass'},{g:'Contenu & social'},{k:'ideas',t:'Idées de contenu',i:'bulb'},{k:'validation',t:'Validation contenu',i:'val',badge:true},{k:'calendar',t:'Calendrier éditorial',i:'cal'},{k:'social',t:'Réseaux & publication',i:'soc'},{k:'stats',t:'Statistiques',i:'stat'},{g:'Site & visibilité'},{k:'website',t:'Site web',i:'web'},{k:'seo',t:'SEO / Référencement',i:'seo'},{g:'Projet & ressources'},{k:'tracking',t:'Suivi de projet',i:'proj'},{k:'resources',t:'Ressources & fichiers',i:'res'},{k:'documents',t:'Documents',i:'doc'}];
+const NAV=[{g:'Espace projet'},{k:'home',t:'Accueil',i:'home'},{k:'onboarding',t:'Onboarding',i:'onb'},{k:'strategy',t:'Stratégie',i:'compass'},{g:'Pilotage'},{k:'stats',t:'Statistiques',i:'stat'},{g:'Contenu & social'},{k:'ideas',t:'Idées de contenu',i:'bulb'},{k:'validation',t:'Validation contenu',i:'val',badge:true},{k:'calendar',t:'Calendrier éditorial',i:'cal'},{k:'social',t:'Réseaux & publication',i:'soc'},{g:'Site & visibilité'},{k:'website',t:'Site web',i:'web'},{k:'seo',t:'SEO / Référencement',i:'seo'},{g:'Projet & ressources'},{k:'tracking',t:'Suivi de projet',i:'proj'},{k:'resources',t:'Ressources & fichiers',i:'res'},{k:'documents',t:'Documents',i:'doc'}];
 /* ---- Contrôle d'accès (cadenas) ---- */
 const LOCKABLE=['onboarding','strategy','ideas','validation','calendar','social','stats','website','seo','tracking','resources','documents'];
 function isAgency(){return state.profile&&state.profile.role==='agency';}
@@ -934,11 +976,16 @@ function s2Blk(b){
     case 'callout': return `<div class="s2-call ${b.tone==='warn'?'warn':''}"><span>${b.tone==='warn'?'⚠️':'💡'}</span><span>${esc(b.text)}</span></div>`;
     case 'cards':{
       const cols=b.cols===2?'g2':(b.cols===4?'g4':'g3');
-      return `${ttl}${b.intro?`<p class="s2-p" style="margin:-4px 0 12px">${esc(b.intro)}</p>`:''}<div class="grid ${cols}">${b.items.map((c,i)=>`<div class="card s2-card">${b.numbered?`<span class="num">${i+1}</span>`:''}${c.tag?`<span class="tg">${esc(c.tag)}</span>`:''}<h4>${esc(c.t)}</h4>${c.d?`<p>${esc(c.d)}</p>`:''}${c.list?`<ul>${c.list.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${c.foot?`<div class="ft">${esc(c.foot)}</div>`:''}</div>`).join('')}</div>${note}`;
+      return `${ttl}${b.intro?`<p class="s2-p" style="margin:-4px 0 12px">${esc(b.intro)}</p>`:''}<div class="grid ${cols}">${b.items.map((c,i)=>`<div class="card s2-card">${b.numbered?`<span class="num">${i+1}</span>`:''}${c.tag?`<span class="tg">${esc(c.tag)}</span>`:''}<h4>${esc(c.t)}</h4>${c.d?`<p>${esc(c.d)}</p>`:''}${c.list?`<ul>${c.list.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}${c.ex?`<div class="s2-ex"><div class="rc-l">${esc(c.exLabel||'Exemples')}</div><ul>${c.ex.map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`:''}${c.foot?`<div class="ft">${esc(c.foot)}</div>`:''}</div>`).join('')}</div>${note}`;
     }
     case 'dodont': return `${ttl}<div class="s2-dd"><div class="card st-do"><div class="st-mini" style="color:var(--green)">À privilégier</div><ul>${b.do.map(x=>`<li>✓ ${esc(x)}</li>`).join('')}</ul></div><div class="card st-dont"><div class="st-mini" style="color:#c0392b">À éviter</div><ul>${b.dont.map(x=>`<li>✕ ${esc(x)}</li>`).join('')}</ul></div></div>${note}`;
     case 'steps': return `${ttl}<div class="card"><div class="s2-steps">${b.items.map((x,i)=>`${i?'<span class="s2-arr">→</span>':''}<span class="s2-step">${esc(x)}</span>`).join('')}</div>${note}</div>`;
     case 'hero': return `${ttl}<div class="card">${b.badge?`<span class="s2-chip" style="display:inline-block;margin-bottom:12px">${esc(b.badge)}</span>`:''}<div class="s2-mock"><div class="h1">${esc(b.text)}</div><div class="h2">${esc(b.sub)}</div><div class="ctas">${(b.ctas||[]).map((c,i)=>`<span class="${i?'c2':'c1'}">${esc(c)}</span>`).join('')}</div></div>${note}</div>`;
+    case 'fiches':{
+      const v=state.client.strategy.v2,F=v.series||[],ed=isAgencyView();
+      return `${ttl}<div class="grid g2">${F.map(f=>`<div class="fiche"><h4>${esc(f.t)}</h4><div class="s2-steps">${f.steps.map((x,i)=>`${i?'<span class="s2-arr">→</span>':''}<span class="s2-step">${esc(x)}</span>`).join('')}</div>
+        ${[['pilot','Sujet pilote','ex. une réalisation ou un élément réellement observé'],['format','Format','ex. carrousel LinkedIn, vidéo courte Instagram'],['needs','Éléments nécessaires','captures, chiffres disponibles, accord du client…']].map(q=>`<label>${q[1]}${ed?(q[0]==='needs'?`<textarea placeholder="${q[2]}" onchange="seriesSet('${f.k}','${q[0]}',this.value)">${esc(f[q[0]]||'')}</textarea>`:`<input placeholder="${q[2]}" value="${esc(f[q[0]]||'')}" onchange="seriesSet('${f.k}','${q[0]}',this.value)">`):`<div class="s2-p">${esc(f[q[0]]||'—')}</div>`}</label>`).join('')}</div>`).join('')}</div>${note}`;
+    }
     case 'status':{
       const L={active:['Active','t-green'],doing:['En cours','t-amber'],idea:['À examiner','t-grey']};
       return `${ttl}<div class="card">${b.intro?`<p class="s2-p" style="margin:0 0 6px">${esc(b.intro)}</p>`:''}${b.items.map(x=>{const l=L[x.st]||L.idea;return `<div class="s2-st"><div class="t">${esc(x.t)}${x.note?`<small>${esc(x.note)}</small>`:''}</div><span class="tag ${l[1]}">${l[0]}</span></div>`;}).join('')}</div>`;
@@ -955,12 +1002,13 @@ function strategyV2(v){
   let h=`<div class="s2-wrap"><div class="s2-top"><div class="sec-head"><h3>Stratégie Wanderful</h3>${v.intro?`<p>${esc(v.intro)}</p>`:''}</div><span class="s2-status ${ok?'ok':''}">${ok?('✓ Validée'+(v.validated_at?' le '+esc(new Date(v.validated_at).toLocaleDateString('fr-CH',{day:'numeric',month:'long',year:'numeric'})):'')):'● Version de travail'}</span></div>`;
   const sm=v.summary;
   if(sm){
-    h+=`<div class="card s2-sum"><div class="s2-sum-grid">
+    let so=true;try{so=localStorage.getItem('wf_sum_closed')!=='1';}catch(e){}
+    h+=`<details class="card s2-sum s2-sumd" ${so?'open':''} ontoggle="try{localStorage.setItem('wf_sum_closed',this.open?'0':'1')}catch(e){}"><summary>Synthèse</summary><div class="s2-sum-grid">
       <div><div class="st-mini">Cible</div><p>${esc(sm.cible)}</p></div>
       <div><div class="st-mini">Approche</div><p>${esc(sm.approche)}</p></div>
       <div><div class="st-mini">Signature</div><p class="sig">« ${esc(sm.signature)} »</p></div>
       <div><div class="st-mini">Priorités</div><ol>${(sm.priorites||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ol></div>
-    </div>${v.plan90?`<div class="s2-sum-foot"><span>${p90Count(v.plan90)}</span><button class="sbtn ok" onclick="go('tracking')">Ouvrir le Plan 90 jours →</button></div>`:''}</div>`;
+    </div>${v.plan90?`<div class="s2-sum-foot"><span>${p90Count(v.plan90)}</span><button class="sbtn ok" onclick="go('tracking')">Ouvrir le Plan 90 jours →</button></div>`:''}</details>`;
   }
   h+=`<div class="s2-tabs">${tabs.map((t,i)=>`<button class="s2-tab ${t.k===k?'on':''}" onclick="state.stratTab='${esc(t.k)}';go('strategy')"><span class="n">${i+1}</span>${esc(t.t)}</button>`).join('')}</div>`;
   if(tab.links&&tab.links.length)h+=`<div class="s2-links"><span>Outils liés :</span>${tab.links.map(l=>`<button class="s2-link" onclick="go('${esc(l.k)}')">${esc(l.t)} →</button>`).join('')}</div>`;
@@ -985,6 +1033,10 @@ async function validateStrategyV2(on){
   const ok=await saveV2(v=>{v.status=on?'validated':'draft';v.validated_at=on?new Date().toISOString():null;});
   if(ok)toast(on?'✓ Stratégie validée':'Repassée en version de travail');
   go('strategy');
+}
+async function seriesSet(k,field,val){
+  const ok=await saveV2(v=>{(v.series||[]).forEach(f=>{if(f.k===k)f[field]=val.trim();});});
+  if(ok)toast(DEMO?'Modifié (aperçu : non sauvegardé)':'✓ Enregistré');
 }
 function p90Count(p){let n=0,d=0,g=0;(p.months||[]).forEach(m=>(m.items||[]).forEach(x=>{if(typeof x!=='object')return;n++;if(x.st==='done')d++;else if(x.st==='doing')g++;}));return `${d} / ${n} actions terminées · ${g} en cours`;}
 const P90_ST=[['todo','À faire'],['doing','En cours'],['done','Terminé']];
@@ -1014,6 +1066,155 @@ async function p90Set(id,field,val){
   const ok=await saveV2(v=>{(v.plan90.months||[]).forEach(m=>(m.items||[]).forEach(x=>{if(x&&x.id===id)x[field]=val;}));});
   if(ok)toast(DEMO?'Modifié (aperçu : non sauvegardé)':'✓ Enregistré');
   go('tracking');
+}
+/* =================== PILOTAGE : sources, bilans, recommandations, plan d'action =================== */
+/* Données réelles du projet sélectionné uniquement. Jamais de chiffre fictif ni de zéro par défaut. */
+async function loadPilotage(id){
+  if(DEMO){state.pil=(window.PREVIEW_PIL&&window.PREVIEW_PIL[id])||null;return;}
+  try{
+    const [src,rep,rec,act,run]=await Promise.all([
+      sb.from('data_sources').select('*').eq('client_id',id),
+      sb.from('metric_reports').select('*').eq('client_id',id).order('period_end',{ascending:false}).limit(12),
+      sb.from('seo_recos').select('*').eq('client_id',id).order('first_seen',{ascending:false}),
+      sb.from('action_items').select('*').eq('client_id',id).order('created_at',{ascending:true}),
+      sb.from('refresh_runs').select('*').eq('client_id',id).order('started_at',{ascending:false}).limit(1)]);
+    if(src.error)throw src.error;
+    state.pil={sources:src.data||[],reports:rep.data||[],recos:rec.data||[],actions:act.data||[],lastRun:(run.data||[])[0]||null};
+  }catch(e){state.pil={sources:[],reports:[],recos:[],actions:[],lastRun:null,unavailable:true};}
+}
+const PIL_SRC={gsc:'Google Search Console',ga4:'Google Analytics 4'};
+const nf=n=>n==null?'—':Number(n).toLocaleString('fr-CH');
+const pctf=x=>x==null?'—':(x*100).toFixed(1).replace('.',',')+' %';
+const dfr=s=>s?new Date(s+(s.length===10?'T12:00:00':'')).toLocaleDateString('fr-CH',{day:'numeric',month:'short',year:'numeric'}):'—';
+const dtfr=s=>s?new Date(s).toLocaleString('fr-CH',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'}):'—';
+function pilReport(src){const p=state.pil;return p?(p.reports||[]).find(r=>r.source===src)||null:null;}
+function pilStatus(){
+  const p=state.pil;
+  if(!p||p.unavailable||!(p.sources||[]).length)return {k:'none',t:'Données non connectées',c:'t-grey'};
+  const err=p.sources.find(s=>s.status==='error');
+  const rep=pilReport('gsc');
+  if(err)return {k:'error',t:'Problème de connexion',c:'t-red',d:(rep?'Dernières données fiables conservées ('+dfr(rep.period_start)+' → '+dfr(rep.period_end)+'). ':'Aucune donnée collectée pour l’instant. ')+'Erreur : '+(err.last_error||'inconnue')+' ('+dtfr(err.last_error_at)+')'};
+  if(!rep)return {k:'pending',t:'Connexion en attente de la première collecte',c:'t-grey'};
+  if(rep.status==='partial')return {k:'partial',t:'Données partielles',c:'t-amber'};
+  return {k:'ok',t:'À jour',c:'t-green'};
+}
+function pilBar(){
+  const s=pilStatus(),p=state.pil,rep=pilReport('gsc');
+  const last=p&&p.sources&&p.sources.map(x=>x.last_success_at).filter(Boolean).sort().pop();
+  return `<div class="card pil-bar"><div class="pil-bar-main"><span class="tag ${s.c}">${s.t}</span>
+    <span>Dernière actualisation réussie : <b>${last?dtfr(last):'—'}</b></span>
+    <span>Période couverte : <b>${rep?dfr(rep.data.periods.w.start)+' → '+dfr(rep.data.periods.w.end):'—'}</b></span>
+    <span>Prochaine actualisation : <b>lundi 8 h (Zurich)</b></span></div>
+    ${isAgencyView()?`<button class="sbtn ghost" onclick="pilRefresh()">↻ Actualiser maintenant</button>`:''}
+    ${s.d?`<div class="pil-warn">⚠️ ${esc(s.d)}</div>`:''}</div>`;
+}
+async function pilRefresh(){
+  if(DEMO){toast('Aperçu : actualisation non disponible (aucune donnée n’est écrite)');return;}
+  toast('Actualisation en cours…');
+  try{const {data,error}=await sb.functions.invoke('weekly-refresh',{body:{client_id:state.client.id}});if(error)throw error;
+    toast(data&&data.status==='ok'?'✓ Données actualisées':'Actualisation terminée avec des alertes');}
+  catch(e){toast('⚠️ Actualisation impossible : '+(e.message||e));}
+  await loadPilotage(state.client.id);go(state.section);
+}
+function pilSources(){
+  const p=state.pil||{};const byType=t=>(p.sources||[]).filter(s=>s.source===t);
+  const row=(name,items,none)=>`<div class="pil-src"><div class="pil-src-n">${name}</div><div class="pil-src-d">${items.length?items.map(s=>`<div><b>${esc(s.property)}</b> · domaine ${esc(s.domain||'—')} · projet ${esc(state.client.name)} · <span class="tag ${s.status==='error'?'t-red':(s.status==='ok'?'t-green':(s.status==='partial'?'t-amber':'t-grey'))}">${{ok:'connectée',partial:'données partielles',error:'problème de connexion',pending:'en attente de collecte'}[s.status]||s.status}</span></div>`).join(''):`<span class="muted">${none}</span>`}</div></div>`;
+  return `<div class="section-title">Sources de données de ce projet</div><div class="card">
+    ${row(PIL_SRC.gsc+' <small>(recherche Google : clics, impressions, CTR, position)</small>',byType('gsc'),'Non connectée pour ce projet.')}
+    ${row(PIL_SRC.ga4+' <small>(trafic du site, pages d’entrée, événements)</small>',byType('ga4'),'Non connectée : aucune propriété Analytics n’est reliée à ce projet.')}
+    ${row('Réseaux sociaux',[],'Données non connectées.')}
+    <p class="pil-note">Search Console et Analytics mesurent des choses différentes : leurs totaux n’ont pas à être identiques et ne sont jamais additionnés.</p></div>`;
+}
+function kpi(l,cur,prev,fmt,better){
+  const d=(cur!=null&&prev!=null)?cur-prev:null;
+  const cls=d==null||d===0?'':((better==='low'?d<0:d>0)?'up':'down');
+  return `<div class="card kpi"><div class="lbl">${l}</div><b>${fmt(cur)}</b><div class="pil-prev">précédent : ${fmt(prev)} ${d!=null&&d!==0?`<span class="${cls}">${d>0?'▲':'▼'}</span>`:''}</div></div>`;
+}
+function pilKpis(rep){
+  const T=rep.data.totals,P=rep.data.periods,pos=x=>x==null?'—':String(x).replace('.',',');
+  return `<div class="pil-kh">Semaine complète ${dfr(P.w.start)} → ${dfr(P.w.end)} <small>(comparée à ${dfr(P.wp.start)} → ${dfr(P.wp.end)})</small></div>
+  <div class="grid g4">${kpi('Clics',T.w.clicks,T.wp.clicks,nf)}${kpi('Impressions',T.w.impressions,T.wp.impressions,nf)}${kpi('CTR',T.w.ctr,T.wp.ctr,pctf)}${kpi('Position moyenne',T.w.position,T.wp.position,pos,'low')}</div>
+  <div class="pil-kh">Tendance 28 jours ${dfr(P.t28.start)} → ${dfr(P.t28.end)} <small>(comparée aux 28 jours précédents)</small></div>
+  <div class="grid g4">${kpi('Clics',T.t28.clicks,T.t28p.clicks,nf)}${kpi('Impressions',T.t28.impressions,T.t28p.impressions,nf)}${kpi('CTR',T.t28.ctr,T.t28p.ctr,pctf)}${kpi('Position moyenne',T.t28.position,T.t28p.position,pos,'low')}</div>
+  <p class="pil-note">Source : Search Console, données finalisées uniquement (délai de ${P.lagDays} jours). La position moyenne est une moyenne entre recherches, pas un classement fixe.</p>`;
+}
+const nodata=(t,d)=>`<div class="card pil-empty"><b>${t}</b><p>${d}</p></div>`;
+function pilHist(){
+  const r=(state.pil&&state.pil.reports||[]).filter(x=>x.source==='gsc');
+  if(!r.length)return '';
+  return `<div class="section-title">Bilans conservés</div><div class="card" style="padding:0"><table><thead><tr><th>Semaine</th><th>Clics</th><th>Impressions</th><th>Position moy.</th><th>État</th></tr></thead><tbody>${r.map(x=>{const t=x.data.totals.w;return `<tr><td>${dfr(x.period_start)} → ${dfr(x.period_end)}</td><td>${nf(t.clicks)}</td><td>${nf(t.impressions)}</td><td>${t.position??'—'}</td><td><span class="tag ${x.status==='ok'?'t-green':'t-amber'}">${x.status==='ok'?'complet':'partiel'}</span></td></tr>`;}).join('')}</tbody></table></div>`;
+}
+function recoCard(r,i){
+  const inPlan=(state.pil.actions||[]).some(a=>a.reco_key===r.key)||r.status==='in_plan';
+  const f=(n,l,v)=>v?`<div class="rc-f"><span class="rc-n">${n}</span><div><div class="rc-l">${l}</div><div class="rc-v">${esc(v)}</div></div></div>`:'';
+  return `<div class="card reco"><div class="rc-h"><span class="rc-i">${i+1}</span><div style="flex:1"><b>${esc(r.topic)}</b><small>${esc(r.page||'')}</small></div><span class="tag ${r.priority==='haute'?'t-red':(r.priority==='moyenne'?'t-amber':'t-grey')}">Priorité ${esc(r.priority)}</span></div>
+    ${f(1,'Page ou sujet concerné',r.page+' — '+r.topic)}
+    ${f(2,'Observation chiffrée · source',r.observation+'\nSource : '+r.source)}
+    ${f(3,'Interprétation · incertitude '+(r.uncertainty||''),r.interpretation)}
+    ${f(4,'Changement proposé',r.change)}
+    ${r.current_text||r.proposed_text?`<div class="rc-txt">${r.current_text?`<div><div class="rc-l">Texte actuel (page consultée)</div><pre>${esc(r.current_text)}</pre></div>`:''}${r.proposed_text?`<div><div class="rc-l">Texte proposé — à valider avant publication</div><pre class="prop">${esc(r.proposed_text)}</pre></div>`:''}</div>`:''}
+    ${f(5,'Priorité · effort estimé',r.priority+' · '+r.effort)}
+    ${f(6,'Évaluation du résultat',r.evaluation)}
+    <div class="rc-foot">${r.first_seen?`<small>Détectée le ${dfr(r.first_seen)}${r.last_seen&&r.last_seen!==r.first_seen?' · mise à jour le '+dfr(r.last_seen):''}</small>`:''}
+    ${inPlan?`<span class="tag t-green">✓ Dans le plan d’action</span>`:(isAgencyView()?`<button class="sbtn ok" onclick="recoToPlan('${esc(r.key)}')">+ Ajouter au plan d’action</button>`:'')}</div></div>`;
+}
+async function recoToPlan(key){
+  const p=state.pil,r=(p.recos||[]).find(x=>x.key===key)||(pilReport('gsc')&&pilReport('gsc').data.recos.find(x=>x.key===key));if(!r)return;
+  if((p.actions||[]).some(a=>a.reco_key===key)){toast('Déjà dans le plan d’action');return;}
+  const row={client_id:state.client.id,reco_key:key,title:r.topic,status:'todo',page:r.page,added_on:new Date().toISOString().slice(0,10),source:r.source,change:r.change};
+  if(!DEMO){const {data,error}=await sb.from('action_items').insert(row).select('*').single();if(error){toast('⚠️ '+error.message);return;}
+    await sb.from('seo_recos').update({status:'in_plan'}).eq('client_id',state.client.id).eq('key',key);p.actions.push(data);}
+  else{row.id='a'+Date.now();p.actions.push(row);}
+  r.status='in_plan';toast(DEMO?'Ajouté (aperçu : non sauvegardé)':'✓ Ajouté au plan d’action');go(state.section);
+}
+async function actSet(id,field,val){
+  const a=(state.pil.actions||[]).find(x=>String(x.id)===String(id));if(!a)return;
+  if(!DEMO){const {error}=await sb.from('action_items').update({[field]:val||null}).eq('id',id);if(error){toast('⚠️ '+error.message);return;}}
+  a[field]=val;toast(DEMO?'Modifié (aperçu : non sauvegardé)':'✓ Enregistré');go(state.section);
+}
+function actionsView(){
+  const p=state.pil;if(!p)return '';
+  const acts=p.actions||[],ed=isAgencyView();
+  return `<div class="section-title">Plan d’action — recommandations retenues</div>${acts.length?acts.map(a=>`<div class="card act">
+    <div class="act-h"><b>${esc(a.title)}</b><span class="tag t-grey">${esc(a.page||'')}</span></div>
+    <div class="act-g"><div><div class="rc-l">Ajoutée le</div>${dfr(a.added_on)}</div><div><div class="rc-l">Source du constat</div>${esc(a.source||'—')}</div><div class="act-w"><div class="rc-l">Modification proposée</div>${esc(a.change||'—')}</div></div>
+    <div class="p90ctl" style="justify-content:flex-start;margin:10px 0 0">${ed?`<div class="p90seg">${P90_ST.map(s=>`<button class="${a.status===s[0]?'on':''}" onclick="actSet('${esc(a.id)}','status','${s[0]}')">${s[1]}</button>`).join('')}</div>
+      <label class="p90f">Réalisée le<input type="date" value="${esc(a.done_on||'')}" onchange="actSet('${esc(a.id)}','done_on',this.value)"></label>
+      <label class="p90f act-rev">Bilan ultérieur<input type="text" placeholder="Résultat observé, date, source…" value="${esc(a.review||'')}" onchange="actSet('${esc(a.id)}','review',this.value.trim())"></label>`
+      :`<span class="tag">${(P90_ST.find(s=>s[0]===a.status)||P90_ST[0])[1]}</span>${a.review?`<small>${esc(a.review)}</small>`:''}`}</div></div>`).join(''):`<div class="card pil-empty"><p>Aucune recommandation ajoutée pour l’instant. Les recommandations se trouvent dans « SEO / Référencement » ; une recommandation ne peut être ajoutée qu’une fois.</p></div>`}`;
+}
+function pilSeo(){
+  const p=state.pil;
+  let h=`<div class="sec-head"><h3>SEO / Référencement</h3><p>Bilan hebdomadaire fondé sur les sources réellement connectées au projet. Les modifications proposées restent à examiner avant toute application sur le site.</p></div>`+pilBar();
+  const rep=pilReport('gsc');
+  if(!rep)return h+pilSources()+nodata('Données indisponibles','Aucun bilan n’a encore été produit pour ce projet.');
+  const d=rep.data;
+  h+=`<div class="section-title">Ce qui a changé</div><div class="card">${d.summary.map(s=>`<p class="s2-p" style="margin:0 0 6px">${esc(s)}</p>`).join('')}${(d.notes||[]).map(n=>`<div class="pil-note">ℹ️ ${esc(n)}</div>`).join('')}</div>`;
+  h+=pilKpis(rep);
+  const mv=(list,k,lab)=>list.length?`<table><thead><tr><th>${lab}</th><th>Clics</th><th>Impressions</th><th>Position</th></tr></thead><tbody>${list.map(x=>`<tr><td>${x.dir==='up'?'<span class="up">▲</span>':'<span class="down">▼</span>'} ${esc(k==='page'?(x.page.replace(/^https?:\/\/[^/]+/,'')||'/'):x.query)}</td><td>${x.clicks} <small>(${x.clicksPrev})</small></td><td>${x.impressions} <small>(${x.impressionsPrev})</small></td><td>${x.position??'—'} <small>(${x.positionPrev??'—'})</small></td></tr>`).join('')}</tbody></table>`:'<p class="pil-note" style="padding:14px">Aucune variation significative.</p>';
+  h+=`<div class="section-title">Pages et requêtes qui progressent ou reculent <small class="muted">(28 j vs 28 j précédents · entre parenthèses : période précédente)</small></div><div class="grid g2"><div class="card" style="padding:0">${mv(d.movers.pages,'page','Page')}</div><div class="card" style="padding:0">${mv(d.movers.queries,'query','Requête')}</div></div>`;
+  h+=`<div class="section-title">Opportunités détectées</div><div class="card">${(d.opportunities||[]).length?'<ul class="s2-list">'+d.opportunities.map(o=>`<li><span class="mk">•</span><span>${esc(o)}</span></li>`).join('')+'</ul>':'<p class="pil-note">Aucune opportunité fiable détectée cette semaine.</p>'}</div>`;
+  const recos=(d.recos||[]).map(r=>Object.assign({},r,(p.recos||[]).find(x=>x.key===r.key)||{}));
+  h+=`<div class="section-title">Actions prioritaires (${recos.length} / 3 maximum)</div>`+(recos.length?recos.map(recoCard).join(''):'')+(d.recosNote?`<div class="pil-note">${esc(d.recosNote)}</div>`:'');
+  const cur=new Set(recos.map(r=>r.key)),prev=(p.recos||[]).filter(r=>!cur.has(r.key));
+  h+=`<div class="section-title">Suivi des recommandations précédentes</div>`+(prev.length?`<div class="card" style="padding:0"><table><thead><tr><th>Recommandation</th><th>Détectée</th><th>Statut</th></tr></thead><tbody>${prev.map(r=>`<tr><td>${esc(r.topic)}</td><td>${dfr(r.first_seen)}</td><td>${{open:'ouverte',in_plan:'dans le plan d’action',done:'réalisée',dismissed:'écartée'}[r.status]}</td></tr>`).join('')}</tbody></table></div>`:`<div class="card pil-empty"><p>Aucune recommandation antérieure : ce bilan est le premier.</p></div>`);
+  h+=`<div class="section-title">Analytics (trafic organique, pages d’entrée, événements)</div>`+(pilReport('ga4')?'':nodata('Données non connectées','Aucune propriété Google Analytics n’est reliée à ce projet. Les indicateurs Analytics ne sont pas remplacés par ceux de Search Console.'));
+  return h+pilHist()+pilSources();
+}
+function pilStats(){
+  let h=`<div class="sec-head"><h3>Statistiques — pilotage</h3><p>Vue transversale des données réellement connectées au projet sélectionné.</p></div>`+pilBar();
+  const rep=pilReport('gsc');
+  h+=`<div class="section-title">Recherche Google (Search Console)</div>`+(rep?pilKpis(rep)+`<button class="sbtn ghost" onclick="go('seo')">Voir le bilan SEO complet →</button>`:nodata('Données non connectées','Aucune donnée Search Console pour ce projet.'));
+  h+=`<div class="section-title">Trafic du site (Analytics)</div>`+(pilReport('ga4')?'':nodata('Données non connectées','Aucune propriété Analytics reliée à ce projet.'));
+  h+=`<div class="section-title">Réseaux sociaux</div>`+nodata('Données non connectées','Abonnés, portée et engagement ne sont pas encore collectés automatiquement.');
+  return h+pilHist()+pilSources();
+}
+function pilWebsite(){
+  let h=`<div class="sec-head"><h3>Site web</h3><p>Données réelles du site du projet sélectionné.</p></div>`;
+  const rep=pilReport('gsc');
+  h+=`<div class="grid g3" style="margin-bottom:6px"><div class="card kpi"><div class="lbl">Disponibilité & vitesse</div><b style="font-size:15px">Données non connectées</b></div><div class="card kpi"><div class="lbl">Visiteurs</div><b style="font-size:15px">${pilReport('ga4')?'':'Données non connectées'}</b><div class="pil-prev">nécessite Google Analytics</div></div><div class="card kpi"><div class="lbl">Pages visibles dans Google (28 j)</div><b>${rep?rep.data.pages.length:'—'}</b><div class="pil-prev">${rep?'source : Search Console':'Données non connectées'}</div></div></div>`;
+  h+=`<div class="section-title">Pages du site vues dans les résultats Google (28 j)</div>`+(rep?`<div class="card" style="padding:0"><table><thead><tr><th>Page</th><th>Impressions</th><th>Clics</th><th>Position moy.</th></tr></thead><tbody>${rep.data.pages.map(x=>`<tr><td>${esc(x.keys[0].replace(/^https?:\/\/[^/]+/,'')||'/')}</td><td>${nf(x.impressions)}</td><td>${nf(x.clicks)}</td><td>${Math.round(x.position*10)/10}</td></tr>`).join('')}</tbody></table></div><p class="pil-note">Une page absente de cette liste n’a reçu aucune impression sur la période : cela ne signifie pas qu’elle est hors ligne.</p>`:nodata('Données non connectées','Aucune source reliée à ce projet.'));
+  return h+pilSources();
 }
 const VIEWS={
   cockpit(){
@@ -1107,7 +1308,7 @@ const VIEWS={
     const s0=state.client&&state.client.strategy;
     if(s0&&typeof s0==='object'&&s0.v2){
       if(!state.stratArchive||!s0.hero)return strategyV2(s0.v2);
-      return `<div class="s2-archbar"><span>🗂 Historique — ancienne stratégie (n'est plus la version active).</span><button class="sbtn ghost" onclick="state.stratArchive=0;go('strategy')">← Revenir à la Stratégie Wanderful</button></div>`+VIEWS.strategyV1();
+      return `<div class="s2-archbar"><span>🗂 Ancienne version — contient des hypothèses non vérifiées. Elle n'est plus la version active.</span><button class="sbtn ghost" onclick="state.stratArchive=0;go('strategy')">← Revenir à la Stratégie Wanderful</button></div>`+VIEWS.strategyV1();
     }
     return VIEWS.strategyV1();
   },
@@ -1310,6 +1511,7 @@ const VIEWS={
     return `<div class="sec-head"><h3>Réseaux & publication</h3><p>Vos comptes reliés et la publication automatique.</p></div><div class="grid g3">${state.data.social.map(s=>`<div class="plat"><div class="top">${pico(s.platform)}<div><b>${esc(s.handle||s.platform)}</b><small style="color:var(--muted);display:block">${s.followers?s.followers+' abonnés':'Non relié'}</small></div></div><div style="display:flex;align-items:center;gap:8px;margin-top:8px">${s.connected?'<span class="dot-on"></span><span style="font-size:12.5px;font-weight:600;color:var(--green)">Connecté</span>':'<span class="dot-off"></span><span style="font-size:12.5px;color:var(--muted)">Déconnecté</span>'}${s.auto?'<span style="margin-left:auto;font-size:11.5px;color:var(--muted)">Auto ✓</span>':''}</div></div>`).join('')}</div>`;
   },
   stats(){
+    if(!DEMO||state.pil)return '<div class="s2-wrap">'+pilStats()+'</div>';
     const data=[['Fév',3380],['Mar',3510],['Avr',3720],['Mai',3910],['Juin',4120],['Juil',4250]],max=4400;
     const k=(l,v,s,t)=>`<div class="card kpi"><div class="lbl">${l}</div><b>${v}</b><span class="trend">${t}</span> <span style="font-size:11.5px;color:var(--muted)">${s}</span></div>`;
     return `<div class="sec-head"><h3>Statistiques</h3><p>L'évolution de votre présence en ligne, en un coup d'œil.</p></div>
@@ -1318,12 +1520,14 @@ const VIEWS={
       <div class="card"><div class="section-title" style="margin:0 0 6px">Top contenus du mois</div>${[['Reel — latte art','TikTok · 21,4k vues'],['Carrousel — brunch','Instagram · 4,2k likes'],['Post — terrasse','Facebook · 3,1k portée']].map(x=>`<div class="row"><div class="fico" style="background:var(--accent-soft)">📈</div><div class="rmain"><b>${x[0]}</b><small>${x[1]}</small></div></div>`).join('')}</div></div>`;
   },
   website(){
+    if(!DEMO||state.pil)return '<div class="s2-wrap">'+pilWebsite()+'</div>';
     const r=(b,s,tag,tc='t-green')=>`<div class="row"><div class="fico" style="background:var(--accent-soft)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="1.7">${ICO.web}</svg></div><div class="rmain"><b>${b}</b><small>${s}</small></div><span class="tag ${tc}">${tag}</span></div>`;
     return `<div class="sec-head"><h3>Site web</h3><p>Votre vitrine en ligne, gérée et maintenue par Wanderful.</p></div>
       <div class="grid g3" style="margin-bottom:20px"><div class="card kpi"><div class="lbl">Statut</div><b style="font-size:20px">En ligne</b><span class="trend">100% uptime</span></div><div class="card kpi"><div class="lbl">Visiteurs (30j)</div><b>2 840</b><span class="trend">+22%</span></div><div class="card kpi"><div class="lbl">Vitesse</div><b>94/100</b><span class="trend">Rapide</span></div></div>
       <div class="card">${r('Accueil','Mise à jour il y a 3 j','En ligne')}${r('Menu & carte','Mise à jour il y a 1 sem.','En ligne')}${r('Réserver','Formulaire actif','En ligne')}${r('Landing « Menu d\'été »','Brouillon','En préparation','t-amber')}</div>`;
   },
   seo(){
+    if(!DEMO||state.pil)return '<div class="s2-wrap">'+pilSeo()+'</div>';
     const kws=[['café spécialité genève',3,'up'],['brunch genève',7,'up'],['meilleur cappuccino',5,'same'],['café télétravail',2,'up'],['terrasse café centre',12,'down']];
     return `<div class="sec-head"><h3>SEO / Référencement</h3><p>Votre visibilité sur Google, suivie mois après mois.</p></div>
       <div class="grid g3" style="margin-bottom:20px"><div class="card kpi"><div class="lbl">Position moyenne</div><b>5,8</b><span class="trend">+1,4</span></div><div class="card kpi"><div class="lbl">Clics Google (30j)</div><b>740</b><span class="trend">+26%</span></div><div class="card kpi"><div class="lbl">Impressions</div><b>18,2k</b><span class="trend">+14%</span></div></div>
@@ -1331,11 +1535,13 @@ const VIEWS={
   },
   tracking(){
     const sv=state.client&&state.client.strategy;
-    if(sv&&sv.v2&&sv.v2.plan90)return plan90View(sv.v2.plan90);
+    if(sv&&sv.v2&&sv.v2.plan90)return '<div class="s2-wrap">'+plan90View(sv.v2.plan90)+actionsView()+'</div>';
+    if(!DEMO||state.pil)return `<div class="sec-head"><h3>Suivi de projet</h3><p>Étapes de l\u2019accompagnement.</p></div>`+nodata('Suivi non construit','Les étapes de ce projet n\u2019ont pas encore été renseignées.')+actionsView();
     const tl=[['done','12 juin','Lancement de l\'accompagnement','Contrat signé, accès transmis, kickoff réalisé.'],['done','20 juin','Ligne éditoriale validée','Ton, thèmes et fréquence définis ensemble.'],['done','3 juil','Premiers contenus publiés','12 posts programmés, publication auto activée.'],['active','15 juil','Optimisation & validation','Contenus en attente de validation, campagne pub en préparation.'],['','24 juil','Shooting du menu d\'été','Séance photo pour alimenter le contenu d\'août.'],['','1 août','Première campagne pub','Lancement des pubs Instagram + Facebook géociblées.']];
     return `<div class="sec-head"><h3>Suivi de projet</h3><p>Où en est votre accompagnement, étape par étape.</p></div><div class="card" style="padding:22px 22px 4px"><div class="tl">${tl.map(t=>`<div class="step ${t[0]}"><div class="dot"></div><div class="when">${t[1]}</div><b>${t[2]}</b><small>${t[3]}</small></div>`).join('')}</div></div>`;
   },
   resources(){
+    if(!DEMO||state.pil)return `<div class="sec-head"><h3>Ressources & fichiers</h3><p>Éléments de marque partagés pour ce projet.</p></div>`+nodata('Aucun fichier renseigné','Aucune ressource n\u2019a encore été ajoutée à ce projet. (Les fichiers d\u2019exemple de la démonstration ne sont plus affichés.)');
     const files=[['Logo & identité','Marque · SVG + PNG','2,4 Mo'],['Charte graphique 2026.pdf','Marque','1,1 Mo'],['Photos menu — printemps','Photos · 42 images','86 Mo'],['Ligne éditoriale.docx','Stratégie','340 Ko'],['Templates stories','Modèles Canva','Lien']];
     return `<div class="sec-head"><h3>Ressources & fichiers</h3><p>Tous vos éléments de marque, au même endroit.</p></div><div class="card">${files.map(f=>`<div class="row"><div class="fico" style="background:var(--accent-soft)"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="var(--accent-ink)" stroke-width="1.7">${ICO.res}</svg></div><div class="rmain"><b>${f[0]}</b><small>${f[1]} · ${f[2]}</small></div><span class="link">Télécharger</span></div>`).join('')}</div>`;
   },
