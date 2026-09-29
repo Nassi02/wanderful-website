@@ -1518,7 +1518,7 @@ function igReturnNotice(){
   setTimeout(()=>toast(r==='ok'?('✓ Instagram connecté'+(u?' : @'+u:'')):('⚠️ Connexion Instagram : '+(m||r))),600);
   state._igReturn=r;
 }
-function igReturnClient(){let id=null;try{id=localStorage.getItem('wf_ig_cid');if(state._igReturn)localStorage.removeItem('wf_ig_cid');}catch(e){}return state._igReturn?id:null;}
+function igReturnClient(){if(!state._igReturn)return null;if(state._igCid)return state._igCid;let id=null;try{id=localStorage.getItem('wf_ig_cid');localStorage.removeItem('wf_ig_cid');}catch(e){}state._igCid=id;return id;}
 /* ---- Carte de connexion (Sources de données + page Réseaux) ---- */
 function igConnectBody(){
   return `<ol class="cn-steps"><li>Le compte Instagram doit être <b>professionnel</b> (entreprise ou créateur) — aucune page Facebook n’est nécessaire.</li>
