@@ -1612,7 +1612,7 @@ function socialView(){
 }
 /* =================== TIKTOK : compte + publication automatique des vidéos =================== */
 const TT_PRIV={PUBLIC_TO_EVERYONE:'Tout le monde',MUTUAL_FOLLOW_FRIENDS:'Amis (abonnements mutuels)',FOLLOWER_OF_CREATOR:'Abonnés',SELF_ONLY:'Moi uniquement (privé)'};
-const TT_NOTE='Tant que TikTok n’a pas validé l’app Wanderful (audit en cours), les vidéos publiées automatiquement sont visibles uniquement par le compte (« Moi uniquement »).';
+const TT_NOTE='Tant que TikTok n’a pas validé l’app Wanderful (audit en cours), la publication directe ne fonctionne que si le compte TikTok est en privé, avec la visibilité « Moi uniquement ». L’envoi en brouillon fonctionne sans condition.';
 function ttSet(it){return ((it&&it.brief)||{}).tt||{};}
 function ttAt(it){if(!it.scheduled_at)return null;const tt=state.tt||{};
   const day=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Zurich'}).format(new Date(it.scheduled_at));
