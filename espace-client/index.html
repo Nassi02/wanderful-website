@@ -496,6 +496,7 @@
   .ig-card .ig-h{display:flex;align-items:center;gap:10px}.ig-card .ig-h small{display:block;color:var(--muted);font-size:12px}
   .ig-av{width:40px;height:40px;border-radius:50%;object-fit:cover;flex-shrink:0}
   .ig-set{display:grid;gap:8px;margin:14px 0 8px}.ig-sw{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:13.5px}
+  .ig-sw select{padding:6px 9px;border:1px solid var(--line);border-radius:8px;font:inherit;max-width:220px}
   .ig-sw input[type=time]{padding:6px 9px;border:1px solid var(--line);border-radius:8px;font:inherit;background:var(--surface);color:var(--ink)}
   .igg{margin-bottom:14px}.igq-missed{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}.igq-missed summary{cursor:pointer;font-size:13px;font-weight:600;color:var(--muted)}
   .igq-row{display:grid;grid-template-columns:150px minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
@@ -914,6 +915,7 @@ async function selectClient(id){state.stratArchive=0;
   state.logins=await fetchLogins(state.client);
   await loadPilotage(id);
   await igLoad(id);
+  await liLoad(id);
   setClientCard(state.client);renderNav(content);go(state.section);
 }
 async function fetchLogins(c){
@@ -1305,6 +1307,9 @@ const THEMES=[
   {k:'prod',src:null,name:'Production de contenu',ico:'🎬',page:'calendar',internal:true},
   {k:'analytics',src:'ga4',name:'Trafic du site (Analytics)',ico:'📊',page:'stats',how:'ga4'},
   {k:'social',src:'meta',name:'Réseaux sociaux (Instagram)',ico:'📱',page:'social',how:'ig'},
+  {k:'linkedin',src:'linkedin',name:'LinkedIn (page entreprise)',ico:'💼',page:'social',how:'li'},
+  {k:'facebook',src:'facebook',name:'Facebook',ico:'📘',soon:'plus tard'},
+  {k:'tiktok',src:'tiktok',name:'TikTok',ico:'🎵',soon:'plus tard'},
   {k:'ads',src:'ads',name:'Google Ads',ico:'🎯',soon:'prochaine étape'},
   {k:'gbp',src:'gbp',name:'Fiche Google (avis, appels)',ico:'📍',soon:'après validation de l’accès Google'},
   {k:'email',src:'email',name:'E-mailing',ico:'✉️',soon:'selon l’outil du client'},
@@ -1315,6 +1320,7 @@ function themeState(t){
   const rows=(p.sources||[]).filter(s=>s.source===t.src);
   if(rows.some(s=>s.active===false))return 'off';
   if(t.how==='ig')return state.ig?(state.ig.status==='error'?'error':'on'):'todo';
+  if(t.how==='li')return state.li?(state.li.status==='error'?'error':'on'):'todo';
   if(rows.some(s=>s.active!==false))return rows.some(s=>s.status==='error')?'error':'on';
   return t.soon?'soon':'todo';
 }
@@ -1350,6 +1356,7 @@ function sourcesCard(){
       if(t.how==='gsc')body=`<ol class="cn-steps"><li>Le client ajoute <code>${SA_EMAIL}</code> en « Restreint » dans sa Search Console. ${copy('gsc')}</li><li>Indique sa propriété puis teste :<div class="cn-f"><input id="cn_gsc" placeholder="sc-domain:exemple.ch  ou  https://www.exemple.ch/"><button class="sbtn ok" onclick="themeConnect('gsc')">Enregistrer et tester</button></div></li></ol>`;
       if(t.how==='url')body=`<div class="cn-steps" style="margin-left:0">Aucun accès à demander : indique l’adresse du site.<div class="cn-f"><input id="cn_pagespeed" placeholder="https://www.exemple.ch/" value="${gdom?'https://'+esc(gdom)+'/':''}"><button class="sbtn ok" onclick="themeConnect('pagespeed')">Enregistrer et tester</button></div></div>`;
       if(t.how==='ig')body=igConnectBody();
+      if(t.how==='li')body=liConnectBody();
       if(t.how==='ga4')body=`<ol class="cn-steps"><li>Le client ajoute <code>${SA_EMAIL}</code> en « Lecteur » dans Google Analytics. ${copy('ga4')}</li><li>Indique l’ID de sa propriété puis teste :<div class="cn-f"><input id="cn_ga4" placeholder="123456789"><button class="sbtn ok" onclick="themeConnect('ga4')">Enregistrer et tester</button></div></li></ol>`;
     }
     const act=t.internal||t.soon&&st==='soon'?'':(st==='off'?`<button class="wk-undo" onclick="themeSetOff('${t.src}',false)">Réactiver</button>`:(st==='todo'?`<button class="wk-undo" onclick="themeSetOff('${t.src}',true)">Non utilisé pour ce client</button>`:''));
@@ -1394,6 +1401,7 @@ function themeSection(t){
   const p=state.pil,ag=isAgencyView(),st=themeState(t);
   if(t.internal)return prodTheme();
   if(t.how==='ig')return socialTheme();
+  if(t.how==='li')return liTheme();
   const rep=pilReport(t.src);const src=(p.sources||[]).find(s=>s.source===t.src&&s.active!==false);
   if(!rep)return src?(src.status==='error'?`<p class="wk-na">⚠️ Problème de connexion : ${esc(src.last_error||'')}</p>`:'<p class="wk-na">Connexion enregistrée — premier bilan au prochain lundi 8 h (ou « Actualiser maintenant »).</p>'):`<p class="wk-na">Données non connectées${ag?' — voir « Sources de données » ci-dessus.':'.'}</p>`;
   const d=rep.data,sts=pilStatus();
@@ -1513,10 +1521,11 @@ async function igLoadMedia(){
 }
 function igReturnNotice(){
   let q;try{q=new URLSearchParams(location.search);}catch(e){return;}
-  const r=q.get('ig');if(!r)return;
+  const isLi=q.has('li');const r=q.get('ig')||q.get('li');if(!r)return;
   const u=q.get('u'),m=q.get('msg');
   try{history.replaceState(null,'',location.pathname);}catch(e){}
-  setTimeout(()=>toast(r==='ok'?('✓ Instagram connecté'+(u?' : @'+u:'')):('⚠️ Connexion Instagram : '+(m||r))),600);
+  const N=isLi?'LinkedIn':'Instagram';
+  setTimeout(()=>toast(r==='ok'?('✓ '+N+' connecté'+(u?' : '+(isLi?'':'@')+u:'')):('⚠️ Connexion '+N+' : '+(m||r))),600);
   state._igReturn=r;
 }
 function igReturnClient(){if(!state._igReturn)return null;if(state._igCid)return state._igCid;let id=null;try{id=localStorage.getItem('wf_ig_cid');localStorage.removeItem('wf_ig_cid');}catch(e){}state._igCid=id;return id;}
@@ -1576,11 +1585,121 @@ function socialTheme(){
   <button class="wk-more" onclick="go('social')">Voir les publications →</button>`;
 }
 function socialView(){
-  const others=((state.data&&state.data.social)||[]).filter(s=>(s.platform||'').toLowerCase()!=='instagram');
-  return `<div class="sec-head"><h3>Réseaux & publication</h3><p>Connexion Instagram, publication automatique des contenus validés et suivi.</p></div>
-  <div class="grid g2 igg">${igCard()}<div class="card"><div class="section-title" style="margin:0 0 6px">Comment ça marche</div><ul class="s2-list"><li><span class="mk">1</span><span>Le contenu est produit, puis <b>validé par le client</b> dans l’espace.</span></li><li><span class="mk">2</span><span>À la date prévue (heure du contenu ou heure par défaut), il est <b>publié automatiquement</b> sur Instagram.</span></li><li><span class="mk">3</span><span>Le lien de la publication apparaît ici ; en cas d’échec, la raison s’affiche et rien n’est republié sans action.</span></li></ul><button class="sbtn ghost" onclick="go('feed')">Aperçu du feed →</button></div></div>
+  const others=((state.data&&state.data.social)||[]).filter(s=>!['instagram','linkedin'].includes((s.platform||'').toLowerCase()));
+  return `<div class="sec-head"><h3>Réseaux & publication</h3><p>Connexions Instagram et LinkedIn, publication automatique des contenus validés et suivi.</p></div>
+  <div class="grid g2 igg">${igCard()}${liCard()}</div>
   ${igQueue()}
+  ${liQueue()}
+  <div class="card" style="margin-top:14px"><div class="section-title" style="margin:0 0 6px">Comment ça marche</div><ul class="s2-list"><li><span class="mk">1</span><span>Le contenu est produit, puis <b>validé par le client</b> dans l’espace.</span></li><li><span class="mk">2</span><span>À la date prévue (heure du contenu ou heure par défaut), il est <b>publié automatiquement</b> sur Instagram.</span></li><li><span class="mk">3</span><span>Le lien de la publication apparaît ici ; en cas d’échec, la raison s’affiche et rien n’est republié sans action.</span></li></ul><button class="sbtn ghost" onclick="go('feed')">Aperçu du feed →</button></div>
   ${others.length?`<div class="section-title">Autres réseaux <small class="muted">(saisis à la main — pas encore de publication automatique)</small></div><div class="grid g3">${others.map(s=>`<div class="plat"><div class="top">${pico(s.platform)}<div><b>${esc(s.handle||s.platform)}</b><small style="color:var(--muted);display:block">${s.followers?s.followers+' abonnés':'Non relié'}</small></div></div></div>`).join('')}</div>`:''}`;
+}
+/* =================== LINKEDIN : page entreprise + publication automatique =================== */
+const LI_NOTE='Tant que LinkedIn n’a pas accordé l’accès « Community Management API » à l’app Wanderful, la connexion ne fonctionne pas (demande envoyée, réponse par email).';
+function liAt(it){if(!it.scheduled_at)return null;const li=state.li||{};
+  const day=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Zurich'}).format(new Date(it.scheduled_at));
+  const t=/^\d{2}:\d{2}$/.test((it.brief||{}).time||'')?it.brief.time:(li.default_time||'09:00');
+  const g=Date.UTC(+day.slice(0,4),+day.slice(5,7)-1,+day.slice(8,10),+t.slice(0,2),+t.slice(3,5));return new Date(g-igTzOff(g));}
+function liProblems(it){const m=mediaList(it),p=[];const cap=capFor(it,'linkedin');
+  if(m.length>20)p.push('Plus de 20 images');
+  if(m.length>1&&m.some(u=>igIsVid(u)))p.push('LinkedIn ne mélange pas vidéo et images dans un même post');
+  if(cap.length>3000)p.push('Texte LinkedIn de plus de 3 000 caractères');
+  if(!m.length&&!cap.trim())p.push('Ni visuel ni texte');return p;}
+function liPlan(it){
+  const li=state.li,at=liAt(it),pb=liProblems(it);
+  if(it.li_state==='published')return {k:'pub',t:'Publié sur LinkedIn',c:'t-green'};
+  if(it.li_state==='error')return {k:'err',t:'Échec de publication',c:'t-red',d:it.li_error};
+  if(it.li_state==='processing')return {k:'proc',t:'Publication en cours',c:'t-amber'};
+  if(it.status!=='approved'&&it.status!=='published')return {k:'wait',t:({idea:'Idée',produced:'Produit — à envoyer en validation',pending:'En attente de validation client',changes_requested:'Modification demandée'}[it.status]||'Non validé'),c:'t-grey',d:pb.length?'À prévoir : '+pb.join(' · '):''};
+  if(pb.length)return {k:'bad',t:'À corriger avant publication',c:'t-red',d:pb.join(' · ')};
+  if(!at)return {k:'nodate',t:'Pas de date : ne partira pas',c:'t-amber',d:'Choisis une date et une heure de publication.'};
+  if(!li)return {k:'noc',t:'LinkedIn non connecté',c:'t-grey'};
+  if(!li.org_urn)return {k:'noc',t:'Page LinkedIn à choisir',c:'t-amber'};
+  if(!li.publish_enabled)return {k:'off',t:'Publication auto désactivée',c:'t-grey'};
+  if(li.enabled_at&&at.getTime()<new Date(li.enabled_at).getTime())return {k:'old',t:'Date antérieure à l’activation : pas de publication automatique',c:'t-amber'};
+  if(at.getTime()<=Date.now())return {k:'due',t:'Publication au prochain passage (≤ 5 min)',c:'t-green'};
+  return {k:'auto',t:'Sera publié automatiquement',c:'t-green'};
+}
+async function liLoad(id){state.li=null;if(DEMO){state.li=(window.PREVIEW_LI&&window.PREVIEW_LI[id])||null;return;}
+  try{const {data,error}=await sb.rpc('li_status',{cid:id});if(!error&&data&&data.length)state.li=data[0];}catch(e){}}
+async function liStart(){
+  if(DEMO){toast('Aperçu : connexion non disponible');return;}
+  const box=document.getElementById('liLink');
+  try{const {data,error}=await sb.functions.invoke('linkedin',{body:{action:'start',client_id:state.client.id}});
+    if(error||!data||!data.url)throw new Error((data&&data.error)||(error&&error.message)||'Lien indisponible');
+    try{localStorage.setItem('wf_ig_cid',state.client.id);}catch(e){}
+    state._liUrl=data.url;state._msg=state._msg||{};
+    state._msg.li=`Bonjour,\n\nPour que Wanderful puisse publier automatiquement vos contenus validés sur votre page LinkedIn, merci de la relier à votre espace client :\n\n1. Vous devez être « Super admin » ou « Admin de contenu » de la page LinkedIn de l’entreprise\n2. Ouvrez ce lien (valable 7 jours) et connectez-vous avec votre compte LinkedIn :\n${data.url}\n3. Acceptez les autorisations demandées\n\nRien n’est publié sans votre validation dans l’espace client. Vous pouvez retirer cet accès à tout moment dans LinkedIn (Préférences → Données → Services autorisés). Merci !`;
+    if(box)box.innerHTML=`<div class="cn-f" style="flex-wrap:wrap"><button class="sbtn ok" onclick="window.location.href=state._liUrl">Se connecter maintenant (compte LinkedIn ouvert sur cet appareil)</button><button class="sbtn ghost" onclick="navigator.clipboard.writeText(state._msg.li).then(()=>toast('Message copié'),()=>toast('Copie impossible'))">Copier le message pour le client</button></div><small class="muted">Lien valable 7 jours, propre à ce projet (${esc(state.client.name)}).</small>`;
+  }catch(e){toast('⚠️ '+(e.message||e));if(box)box.innerHTML=`<div class="pil-warn">⚠️ ${esc(e.message||String(e))}</div>`;}
+}
+async function liSettings(enabled,time,org){
+  if(DEMO){toast('Aperçu : non sauvegardé');return;}
+  const {error}=await sb.rpc('li_settings',{cid:state.client.id,enabled:enabled,dtime:time,org:org});
+  if(error){toast('⚠️ '+error.message);return;}
+  await liLoad(state.client.id);toast(org?'✓ Page choisie':(enabled===true?'✓ Publication automatique activée':(enabled===false?'Publication automatique désactivée':'✓ Heure enregistrée')));go(state.section);
+}
+async function liDisconnect(btn){
+  if(btn&&btn.getAttribute('data-c')!=='1'){btn.setAttribute('data-c','1');btn.textContent='⚠️ Confirmer la déconnexion ?';return;}
+  if(DEMO){toast('Aperçu : non sauvegardé');return;}
+  const {error}=await sb.rpc('li_disconnect',{cid:state.client.id});if(error){toast('⚠️ '+error.message);return;}
+  await liLoad(state.client.id);toast('LinkedIn déconnecté');go(state.section);
+}
+async function liPublishNow(id,btn){
+  if(btn&&btn.getAttribute('data-c')!=='1'){btn.setAttribute('data-c','1');btn.textContent='Confirmer : publier sur LinkedIn';return;}
+  if(DEMO){toast('Aperçu : rien n’est publié');return;}
+  if(btn){btn.disabled=true;btn.textContent='Publication…';}
+  try{const {data,error}=await sb.functions.invoke('linkedin',{body:{action:'publish_now',id}});
+    if(error)throw error;if(data&&data.error)throw new Error(data.error);
+    toast(data.r==='done'?'✓ Publié sur LinkedIn':(data.r==='wait'?'LinkedIn traite la vidéo : publication dès que c’est prêt':'⚠️ '+(data.e||data.r)));}
+  catch(e){toast('⚠️ '+(e.message||e));}
+  state.data.content=await fetchTable('content_items',state.client.id);go(state.section);
+}
+function liConnectBody(){
+  return `<ol class="cn-steps"><li>La personne qui connecte doit être <b>admin de la page LinkedIn</b> de l’entreprise.</li>
+  <li>Génère le lien de connexion de ce projet, puis connecte-toi (si tu es admin de la page) ou envoie le message au client : <button class="sbtn ok" onclick="liStart()">Générer le lien de connexion</button><div id="liLink"></div></li>
+  <li>Une fois connecté, choisis la page puis active la publication automatique dans « Réseaux & publication ».</li></ol><small class="muted">${LI_NOTE}</small>`;
+}
+function liCard(){
+  const li=state.li,ag=isAgencyView();
+  if(!li)return `<div class="card ig-card"><div class="ig-h"><span class="pico li-bg">in</span><div><b>LinkedIn</b><small>Non connecté — la publication automatique est inactive.</small></div></div>${ag?liConnectBody():'<p class="muted" style="margin:8px 0 0">Wanderful vous enverra un lien pour relier votre page.</p>'}</div>`;
+  const ch=Array.isArray(li.org_choices)?li.org_choices:[];
+  const pick=!li.org_urn||ch.length>1?`<div class="ig-sw"><span>Page publiée</span>${ag?`<select onchange="liSettings(null,null,this.value)"><option value="">— choisir —</option>${ch.map(o=>`<option value="${esc(o.urn)}" ${o.urn===li.org_urn?'selected':''}>${esc(o.name)}</option>`).join('')}</select>`:`<b>${esc(li.org_name||'—')}</b>`}</div>`:'';
+  return `<div class="card ig-card"><div class="ig-h"><span class="pico li-bg">in</span><div><b>${esc(li.org_name||'Page à choisir')}</b><small>page LinkedIn · connectée le ${dfr((li.connected_at||'').slice(0,10))}${li.member_name?' par '+esc(li.member_name):''}</small></div>
+    <span class="tag ${li.status==='error'?'t-red':'t-green'}" style="margin-left:auto">${li.status==='error'?'Problème de connexion':'Connecté'}</span></div>
+    ${li.status==='error'?`<div class="pil-warn">⚠️ ${esc(li.last_error||'')}${ag?' — reconnecte la page avec le lien ci-dessous.':''}</div>${ag?liConnectBody():''}`:''}
+    <div class="ig-set">${pick}<div class="ig-sw"><span>Publication automatique</span>${ag?`<div class="p90seg"><button class="${li.publish_enabled?'':'on'}" onclick="liSettings(false,null,null)">Désactivée</button><button class="${li.publish_enabled?'on':''}" onclick="liSettings(true,null,null)">Activée</button></div>`:`<b>${li.publish_enabled?'Activée':'Désactivée'}</b>`}</div>
+    <div class="ig-sw"><span>Heure par défaut (Zurich)</span>${ag?`<input type="time" value="${esc(li.default_time||'09:00')}" onchange="liSettings(null,this.value,null)">`:`<b>${esc(li.default_time||'09:00')}</b>`}</div></div>
+    <small class="muted">Seuls les contenus <b>validés</b> et cochés « LinkedIn » partent, à leur date. ${li.publish_enabled&&li.enabled_at?'Activée le '+dtfr(li.enabled_at)+' : les contenus datés d’avant ne sont jamais publiés d’office.':''}${li.token_expires_at?' Accès valable jusqu’au '+dfr(li.token_expires_at.slice(0,10))+'.':''}</small>
+    ${ag?`<div style="margin-top:10px"><button class="wk-undo" onclick="liDisconnect(this)">Déconnecter LinkedIn</button></div>`:''}</div>`;
+}
+function liQueue(){
+  const items=((state.data&&state.data.content)||[]).filter(x=>netsOf(x).includes('linkedin'));
+  if(!items.length)return '';
+  const ag=isAgencyView(),today=new Date();today.setHours(0,0,0,0);
+  const open=items.filter(x=>x.li_state!=='published').sort((a,b)=>(liAt(a)||0)-(liAt(b)||0));
+  const up=open.filter(x=>x.li_state||!x.scheduled_at||(liAt(x)||0)>=today).sort((a,b)=>(a.scheduled_at?1:0)-(b.scheduled_at?1:0));
+  const recent=items.filter(x=>x.li_state==='published').sort((a,b)=>new Date(b.li_published_at)-new Date(a.li_published_at)).slice(0,6);
+  const row=it=>{const s=liPlan(it),at=liAt(it);
+    const btn=s.k==='nodate'?`<button class="sbtn ghost" onclick="openContentModal('${esc(it.id)}')">Choisir une date</button>`:(ag&&(it.status==='approved'||it.status==='published')&&state.li&&state.li.org_urn&&['auto','due','old','off','err'].includes(s.k)?`<button class="sbtn ghost" onclick="liPublishNow('${esc(it.id)}',this)">${s.k==='err'?'Réessayer':'Publier maintenant'}</button>`:'');
+    return `<div class="igq-row"><div class="igq-when">${at?igDt(at):'<span style="color:#b45309">Sans date</span>'}</div><div class="igq-main" onclick="openContentModal('${esc(it.id)}')"><b>${esc(it.title||'')}</b><small>${mediaList(it).length?mediaList(it).length+' média(s)':'texte seul'}</small>${s.d?`<small class="igq-err">${esc(s.d)}</small>`:''}</div><div class="igq-st"><span class="tag ${s.c}">${s.t}</span>${it.li_permalink?`<a href="${esc(it.li_permalink)}" target="_blank" rel="noopener">Voir ↗</a>`:''}${btn}</div></div>`;};
+  return `<div class="card" style="margin-top:14px"><div class="section-title" style="margin:0 0 8px">Prochaines publications LinkedIn</div>${up.length?up.map(row).join(''):'<p class="muted">Aucun contenu LinkedIn à venir.</p>'}
+    ${recent.length?`<div class="section-title" style="margin:16px 0 8px">Dernières publications LinkedIn</div>${recent.map(row).join('')}`:''}</div>`;
+}
+function liTheme(){
+  const li=state.li,ag=isAgencyView();
+  if(!li)return `<p class="wk-na">LinkedIn non connecté${ag?' — voir « Sources de données » ci-dessus.':'.'}</p>`;
+  const items=((state.data&&state.data.content)||[]).filter(x=>netsOf(x).includes('linkedin'));
+  const now=Date.now(),wk=7*864e5;
+  const pub=items.filter(x=>x.li_published_at&&now-new Date(x.li_published_at)<wk);
+  const next=items.filter(x=>{const a=liAt(x);return a&&a.getTime()>=now&&a.getTime()<now+wk&&x.li_state!=='published';});
+  const err=items.filter(x=>x.li_state==='error');
+  const todo=[];
+  if(li.status==='error')todo.push(['Connexion LinkedIn à rétablir',li.last_error||'','social']);
+  if(!li.org_urn)todo.push(['Choisir la page LinkedIn','Plusieurs pages disponibles','social']);
+  if(err.length)todo.push([`${err.length} publication(s) LinkedIn en échec`,'Voir le détail et réessayer','social']);
+  if(!li.publish_enabled)todo.push(['Publication automatique LinkedIn désactivée','Les contenus validés ne partiront pas seuls','social']);
+  return `<div class="wk-row"><span class="wk-l">Ce qui a changé</span><span>7 derniers jours : ${pub.length} publication(s) LinkedIn. 7 prochains jours : ${next.length} prévue(s).</span></div>
+  <div class="wk-row"><span class="wk-l">À faire</span><div class="wk-todo">${todo.length?todo.map(t=>`<div class="wk-t"><div class="wk-tt"><b>${esc(t[0])}</b><small>${esc(t[1])}</small></div><button class="sbtn ghost" onclick="go('${t[2]}')">Ouvrir →</button></div>`).join(''):'<span class="muted">Rien à signaler.</span>'}</div></div>`;
 }
 /* =================== APERÇU DU FEED INSTAGRAM =================== */
 function isVideo(url,it){return /\.(mp4|mov|webm|m4v)(\?|$)/i.test(url||'')||/video/i.test((it&&it.media_type)||'');}
@@ -1900,7 +2019,7 @@ const VIEWS={
     const waiting=state.data.content.filter(c=>c.status==='changes_requested');
     const wBlock=waiting.length?`<div class="section-title" style="margin-top:26px">⏳ En cours de correction chez Wanderful</div>`+waiting.map(it=>`<div class="card" style="margin-bottom:12px;border-left:3px solid #B98DF2"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:5px">${netsOf(it).map(function(n){return netBadge(n);}).join('')} <span>· ${typeLabel(it)}</span></div><b style="font-size:15px">${esc(it.title)}</b><div class="meta"><span>🗓️ ${fmtDate(it.scheduled_at)}</span></div>${threadHtml(it,'Ta demande de modification')}<div style="font-size:12.5px;color:var(--muted);margin-top:10px">Wanderful a bien reçu ta demande. La version corrigée réapparaîtra ici pour validation.</div></div>`).join(''):'';
     if(!items.length)return `<div class="sec-head"><h3>Validation contenu</h3><p>Vos contenus avant publication.</p></div>`+(wBlock||`<div class="card empty">🎉 Tout est validé ! Aucun contenu en attente.</div>`);
-    return `<div class="sec-head"><h3>Validation contenu</h3><p>${items.length} contenu(s) attendent votre feu vert avant publication automatique.</p></div>`+items.map(it=>`<div class="card" style="margin-bottom:14px"><div class="appr"><div class="apprv-media">${renderMedia(it)||('<div class="preview" style="width:100%;aspect-ratio:4/5;box-sizing:border-box">'+esc(it.type)+'<br><span style="opacity:.8;font-weight:400">Visuel en préparation</span></div>')}</div><div class="body"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:5px">${netsOf(it).map(function(n){return netBadge(n);}).join('')} <span>· ${typeLabel(it)}</span></div><b style="font-size:15px">${esc(it.title)}</b><div class="meta"><span>🗓️ ${fmtDate(it.scheduled_at)}</span></div>${revBanner(it)}${netsOf(it).map(function(n){return '<div style="margin-top:9px">'+(netsOf(it).length>1?'<div style="font-size:11px;font-weight:700;color:#8a90a6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px">'+(n==='facebook'?'Texte Facebook':'Texte Instagram')+'</div>':'')+'<div class="caption-box">'+esc(capFor(it,n))+'</div></div>';}).join('')}${threadHtml(it,'Historique des échanges')}<div class="btn-row"><button class="sbtn ghost" onclick="toggleReqBox('${it.id}')">✏️ Demander une modif</button><button class="sbtn ok" onclick="act('${it.id}','approved')">✓ Approuver</button></div><div id="rq_${it.id}" style="display:none;margin-top:12px;padding:14px;background:#f3ecff;border-radius:12px"><div style="font-size:12.5px;font-weight:800;color:#7a4fd0;margin-bottom:6px">✏️ Qu'est-ce qui doit changer ?</div><textarea id="rqt_${it.id}" placeholder="Ex : sur la slide 2 mon prénom est mal écrit, et j'aimerais un ton plus direct dans la légende…" style="width:100%;min-height:110px;padding:11px 13px;border:1.5px solid #e6dcf7;border-radius:10px;font:inherit;font-size:14px;resize:vertical;background:#fff;box-sizing:border-box"></textarea><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:9px"><button class="sbtn ghost" onclick="toggleReqBox('${it.id}')">Annuler</button><button class="sbtn ok" id="rqb_${it.id}" onclick="sendChangeRequest('${it.id}')">Envoyer ma demande →</button></div><div style="font-size:11.5px;color:var(--muted);margin-top:7px">Ta demande arrive tout de suite dans l'espace de Wanderful.</div></div></div></div></div>`).join('')+wBlock;
+    return `<div class="sec-head"><h3>Validation contenu</h3><p>${items.length} contenu(s) attendent votre feu vert avant publication automatique.</p></div>`+items.map(it=>`<div class="card" style="margin-bottom:14px"><div class="appr"><div class="apprv-media">${renderMedia(it)||('<div class="preview" style="width:100%;aspect-ratio:4/5;box-sizing:border-box">'+esc(it.type)+'<br><span style="opacity:.8;font-weight:400">Visuel en préparation</span></div>')}</div><div class="body"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:5px">${netsOf(it).map(function(n){return netBadge(n);}).join('')} <span>· ${typeLabel(it)}</span></div><b style="font-size:15px">${esc(it.title)}</b><div class="meta"><span>🗓️ ${fmtDate(it.scheduled_at)}</span></div>${revBanner(it)}${netsOf(it).map(function(n){return '<div style="margin-top:9px">'+(netsOf(it).length>1?'<div style="font-size:11px;font-weight:700;color:#8a90a6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px">'+({facebook:'Texte Facebook',linkedin:'Texte LinkedIn'}[n]||'Texte Instagram')+'</div>':'')+'<div class="caption-box">'+esc(capFor(it,n))+'</div></div>';}).join('')}${threadHtml(it,'Historique des échanges')}<div class="btn-row"><button class="sbtn ghost" onclick="toggleReqBox('${it.id}')">✏️ Demander une modif</button><button class="sbtn ok" onclick="act('${it.id}','approved')">✓ Approuver</button></div><div id="rq_${it.id}" style="display:none;margin-top:12px;padding:14px;background:#f3ecff;border-radius:12px"><div style="font-size:12.5px;font-weight:800;color:#7a4fd0;margin-bottom:6px">✏️ Qu'est-ce qui doit changer ?</div><textarea id="rqt_${it.id}" placeholder="Ex : sur la slide 2 mon prénom est mal écrit, et j'aimerais un ton plus direct dans la légende…" style="width:100%;min-height:110px;padding:11px 13px;border:1.5px solid #e6dcf7;border-radius:10px;font:inherit;font-size:14px;resize:vertical;background:#fff;box-sizing:border-box"></textarea><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:9px"><button class="sbtn ghost" onclick="toggleReqBox('${it.id}')">Annuler</button><button class="sbtn ok" id="rqb_${it.id}" onclick="sendChangeRequest('${it.id}')">Envoyer ma demande →</button></div><div style="font-size:11.5px;color:var(--muted);margin-top:7px">Ta demande arrive tout de suite dans l'espace de Wanderful.</div></div></div></div></div>`).join('')+wBlock;
   },
   ideas(){
     const items=(state.data.content||[]).slice().sort((a,b)=>(new Date(a.scheduled_at))-(new Date(b.scheduled_at)));
@@ -2168,7 +2287,7 @@ function typeNo(it){
 function typeLabel(it){var n=typeNo(it);return esc((it&&it.type)||'')+(n?(' '+n):'');}
 function ctBadgeN(it){var n=typeNo(it),b=ctBadge(it&&it.type);return n?b.replace(/<\/span>$/,' '+n+'</span>'):b;}
 function netsOf(it){var b=(it&&it.brief)||{};var n=Array.isArray(b.nets)?b.nets:null;if(n&&n.length)return n;return [String((it&&it.platform)||'instagram').toLowerCase().indexOf('face')>=0?'facebook':'instagram'];}
-function netBadge(n){var fb=(n==='facebook');return '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;background:'+(fb?'#e7f0fe':'#fdeef6')+';color:'+(fb?'#1b4bb8':'#b8317a')+'">'+(fb?'\u{1F4D8} Facebook':'\u{1F4F8} Instagram')+'</span>';}
+function netBadge(n){if(n==='linkedin')return '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;background:#e8f1f8;color:#0a66c2">\u{1F4BC} LinkedIn</span>';var fb=(n==='facebook');return '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;background:'+(fb?'#e7f0fe':'#fdeef6')+';color:'+(fb?'#1b4bb8':'#b8317a')+'">'+(fb?'\u{1F4D8} Facebook':'\u{1F4F8} Instagram')+'</span>';}
 const CHAN={instagram:['📸','Instagram','#fdeef6','#b8317a'],facebook:['📘','Facebook','#e7f0fe','#1b4bb8'],linkedin:['💼','LinkedIn','#e8f1f8','#0a66c2'],tiktok:['🎵','TikTok','#ecebf2','#16161d'],youtube:['▶️','YouTube','#fdecec','#c4302b'],pinterest:['📌','Pinterest','#fdeaec','#bd081c'],stories:['⭕','Stories','#f6eefc','#7a4fd0'],newsletter:['✉️','Newsletter','#eaf5ec','#2f7d32'],site:['🌐','Site web','#eef1fb','#3b5bdb']};
 function chansOf(it){var b=(it&&it.brief)||{};var a=Array.isArray(b.chans)?b.chans.filter(function(x){return CHAN[x];}):null;return (a&&a.length)?a:netsOf(it);}
 function chanBadge(k,sm){var x=CHAN[k];if(!x)return '';return '<span style="display:inline-flex;align-items:center;gap:4px;padding:'+(sm?'2px 8px':'3px 10px')+';border-radius:999px;font-size:'+(sm?'10.5px':'11.5px')+';font-weight:700;background:'+x[2]+';color:'+x[3]+'">'+x[0]+' '+x[1]+'</span>';}
@@ -2186,11 +2305,11 @@ function chanFilterBar(items){
   keys.forEach(function(k){h+=pill(k,CHAN[k][0]+' '+CHAN[k][1],counts[k],cur===k);});
   return h+'</div>';
 }
-function capFor(it,n){var b=(it&&it.brief)||{};if(n==='facebook'&&b.caption_fb!=null&&String(b.caption_fb).trim()!=='')return b.caption_fb;return (it&&it.caption)||'';}
+function capFor(it,n){var b=(it&&it.brief)||{};if(n==='linkedin'&&b.caption_li!=null&&String(b.caption_li).trim()!=='')return b.caption_li;if(n==='facebook'&&b.caption_fb!=null&&String(b.caption_fb).trim()!=='')return b.caption_fb;return (it&&it.caption)||'';}
 function netPaint(el){var on=el.getAttribute('data-on')==='1';el.style.cssText='display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:999px;font-size:13px;font-weight:600;cursor:pointer;user-select:none;border:1.5px solid '+(on?'#3b5bdb':'#dde1ec')+';background:'+(on?'#eef1fb':'#fff')+';color:'+(on?'#2a3550':'#9096a8')+';';}
-function selectedNets(){var out=[];['instagram','facebook'].forEach(function(n){var el=document.getElementById('net_'+n);if(el&&el.getAttribute('data-on')==='1')out.push(n);});return out;}
+function selectedNets(){var out=[];['instagram','facebook','linkedin'].forEach(function(n){var el=document.getElementById('net_'+n);if(el&&el.getAttribute('data-on')==='1')out.push(n);});return out;}
 function toggleNet(n){var el=document.getElementById('net_'+n);if(!el)return;var on=el.getAttribute('data-on')==='1';if(on&&selectedNets().length<=1){toast('Choisis au moins un reseau');return;}el.setAttribute('data-on',on?'0':'1');netPaint(el);syncNetUI();}
-function syncNetUI(){var s=selectedNets();var ig=document.getElementById('igBox'),fb=document.getElementById('fbBox');if(ig)ig.style.display=(s.indexOf('instagram')>=0)?'':'none';if(fb)fb.style.display=(s.indexOf('facebook')>=0)?'':'none';var tf=document.getElementById('prodCaptionFb'),ti=document.getElementById('prodCaption');if(tf&&ti&&!tf.value.trim())tf.value=ti.value;}
+function syncNetUI(){var s=selectedNets();var ig=document.getElementById('igBox'),fb=document.getElementById('fbBox');if(ig)ig.style.display=(s.indexOf('instagram')>=0)?'':'none';if(fb)fb.style.display=(s.indexOf('facebook')>=0)?'':'none';var lb=document.getElementById('liBox');if(lb)lb.style.display=(s.indexOf('linkedin')>=0)?'':'none';var tl=document.getElementById('prodCaptionLi');if(tl&&document.getElementById('prodCaption')&&!tl.value.trim())tl.value=document.getElementById('prodCaption').value;var tf=document.getElementById('prodCaptionFb'),ti=document.getElementById('prodCaption');if(tf&&ti&&!tf.value.trim())tf.value=ti.value;}
 function copyIgToFb(){var tf=document.getElementById('prodCaptionFb'),ti=document.getElementById('prodCaption');if(tf&&ti){tf.value=ti.value;toast('\u2713 Legende Instagram reprise');}}
 function revOf(it){var b=(it&&it.brief)||{};var r=parseInt(b.rev,10);return isNaN(r)?0:r;}
 function notesOf(it){var b=(it&&it.brief)||{};return Array.isArray(b.notes)?b.notes:[];}
@@ -2328,11 +2447,13 @@ function openContentModal(id){
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:3px">
         <span id="net_instagram" data-on="${NETS.indexOf('instagram')>=0?'1':'0'}" onclick="toggleNet('instagram')">📸 Instagram</span>
         <span id="net_facebook" data-on="${NETS.indexOf('facebook')>=0?'1':'0'}" onclick="toggleNet('facebook')">📘 Facebook</span>
+        <span id="net_linkedin" data-on="${NETS.indexOf('linkedin')>=0?'1':'0'}" onclick="toggleNet('linkedin')">💼 LinkedIn</span>
       </div>
       <div style="font-size:11px;color:var(--muted);margin-top:6px">Même visuel, légende adaptée à chaque réseau.</div>
     </div>
     <div class="field" id="igBox" style="margin-top:14px"><label>✍️ Légende Instagram</label><textarea id="prodCaption" style="min-height:130px">${esc(it.caption||'')}</textarea><div style="font-size:11px;color:var(--muted);margin-top:4px">Les 2 premières lignes sont décisives · les liens ne sont pas cliquables · hashtags en fin de texte.</div></div>
     <div class="field" id="fbBox" style="margin-top:14px"><label>✍️ Légende Facebook</label><textarea id="prodCaptionFb" style="min-height:130px">${esc(capFor(it,'facebook'))}</textarea><div style="font-size:11px;color:var(--muted);margin-top:4px">Ici les liens sont cliquables, le texte long fonctionne bien, et les hashtags sont inutiles.</div><button class="sbtn ghost" style="margin-top:7px;font-size:12px" onclick="copyIgToFb()">⧉ Reprendre la légende Instagram</button></div>
+    <div class="field" id="liBox" style="margin-top:14px"><label>✍️ Texte LinkedIn</label><textarea id="prodCaptionLi" style="min-height:130px">${esc(capFor(it,'linkedin'))}</textarea><div style="font-size:11px;color:var(--muted);margin-top:4px">Ton plus professionnel · les liens sont cliquables · 3–5 hashtags maximum.</div></div>
     ${it.status==='changes_requested'?`<div class="field" style="margin-top:14px"><label>💬 Réponse au client (optionnel)</label><textarea id="prodReply" style="min-height:70px" placeholder="Ex : c'est corrigé, j'ai aussi retravaillé la slide 3."></textarea><div style="font-size:11px;color:var(--muted);margin-top:4px">Ce message s'affichera au-dessus de la nouvelle version, côté client.</div></div>`:''}
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="sbtn ghost" onclick="saveContentCaption('${it.id}')">💾 Enregistrer</button><button class="sbtn ok" onclick="sendToValidation('${it.id}')">${it.status==='changes_requested'?`🔁 Renvoyer en validation (v${revOf(it)+2}) →`:'Envoyer en validation →'}</button></div>
     ${threadHtml(it,'Historique des échanges')}`;
@@ -2344,7 +2465,7 @@ function openContentModal(id){
       <div class="modal-col"><div class="bd-lbl" style="margin-bottom:8px">📋 Le brief</div><div class="modal-brief">${it.brief&&it.brief.obj?`<div class="idea-obj">🎯 ${esc(it.brief.obj)}</div>`:''}${briefDetail(it)}</div></div>
       <div class="modal-col">${prod}</div>
     </div></div></div>`;
-  ['instagram','facebook'].forEach(function(n){var ce=document.getElementById('net_'+n);if(ce)netPaint(ce);});
+  ['instagram','facebook','linkedin'].forEach(function(n){var ce=document.getElementById('net_'+n);if(ce)netPaint(ce);});
   syncNetUI();
 }
 function schedHint(it){
@@ -2559,7 +2680,8 @@ function netPayload(id){
   if(!t)return null;
   const ns=selectedNets();const nets=ns.length?ns:['instagram'];
   const it=state.data.content.find(c=>String(c.id)===String(id));
-  const nb=Object.assign({},(it&&it.brief)||{},{nets:nets,caption_fb:fbEl?fbEl.value:''});
+  const liEl=document.getElementById('prodCaptionLi');
+  const nb=Object.assign({},(it&&it.brief)||{},{nets:nets,caption_fb:fbEl?fbEl.value:'',caption_li:liEl?liEl.value:''});
   return {cap:t.value,brief:nb,it:it};
 }
 async function saveContentCaption(id){
