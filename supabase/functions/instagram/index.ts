@@ -52,7 +52,7 @@ function igMsg(e: any) {
   if (e.code === 9004 || /media type|format/i.test(m)) return 'Format refusé par Instagram (images : JPEG uniquement ; vidéos : MP4/MOV). (' + m + ')';
   if (e.code === 36003 || /aspect ratio/i.test(m)) return 'Proportions refusées par Instagram (images du feed entre 4:5 et 1,91:1). (' + m + ')';
   if (e.code === 4 || e.code === 9 || /limit/i.test(m)) return 'Limite de publication Instagram atteinte : nouvel essai plus tard. (' + m + ')';
-  return m;
+  return m + (e.code ? ' (code ' + e.code + (e.error_subcode ? '/' + e.error_subcode : '') + ')' : '');
 }
 
 async function whoAmI(req: Request) {
@@ -145,12 +145,19 @@ function publishAt(it: any, conn: any) {
 }
 
 // ---------- publication d'un contenu (machine à états, reprise possible) ----------
-async function containerStatus(id: string, token: string) { return (await ig('/' + id, token, { fields: 'status_code,status' })).status_code as string; }
+let lastStatus = '';
+async function containerStatus(id: string, token: string) { const r = await ig('/' + id, token, { fields: 'status_code,status' }); lastStatus = r.status || ''; return r.status_code as string; }
 async function step(it: any, conn: any) {
+  let where = 'préparation';
+  try { return await stepInner(it, conn, (w: string) => { where = w; }); }
+  catch (e) { const er: any = new Error('[' + where + '] ' + (e as Error).message + (lastStatus ? ' — ' + lastStatus : '')); er.code = (e as any).code; throw er; }
+}
+async function stepInner(it: any, conn: any, at: (w: string) => void) {
   const token = conn.access_token, uid = conn.ig_user_id;
   const s = (() => { try { return JSON.parse(it.ig_container_id || '{}'); } catch { return {}; } })();
   const save = async () => { await admin.from('content_items').update({ ig_container_id: JSON.stringify(s) }).eq('id', it.id); };
   const kind = kindOf(it), m = mediaOf(it), cap = it.caption || '';
+  at('création du conteneur');
   if (!s.parent) {
     if (kind === 'CAROUSEL') {
       if (!s.children) {
@@ -169,11 +176,24 @@ async function step(it: any, conn: any) {
     }
     await save();
   }
+  at('traitement par Instagram');
   let st = '';
   for (let i = 0; i < 6; i++) { st = await containerStatus(s.parent, token); if (st !== 'IN_PROGRESS') break; await new Promise(r => setTimeout(r, 5000)); }
   if (st === 'ERROR' || st === 'EXPIRED') throw new Error('Traitement du média refusé par Instagram (' + st + ')');
+  lastStatus = '';
   if (st !== 'FINISHED' && st !== 'PUBLISHED') return 'wait';
-  const pub = await ig('/' + uid + '/media_publish', token, { creation_id: s.parent }, 'POST');
+  at('publication');
+  let pub: any;
+  try { pub = await ig('/' + uid + '/media_publish', token, { creation_id: s.parent }, 'POST'); }
+  catch (e) {
+    // Instagram renvoie parfois une erreur alors que la publication a bien eu lieu : on vérifie avant de conclure à l'échec.
+    await new Promise(r => setTimeout(r, 4000));
+    const st2 = await containerStatus(s.parent, token).catch(() => '');
+    if (st2 !== 'PUBLISHED') throw e;
+    const last = await ig('/' + uid + '/media', token, { fields: 'id', limit: 1 });
+    pub = { id: last.data?.[0]?.id };
+    if (!pub.id) throw e;
+  }
   const info = await ig('/' + pub.id, token, { fields: 'permalink,timestamp' }).catch(() => ({}));
   await admin.from('content_items').update({
     status: 'published', publish_state: 'published', publish_error: null, ig_media_id: pub.id,
