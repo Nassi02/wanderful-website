@@ -8,3 +8,6 @@ verify_jwt = false
 
 [functions.linkedin]
 verify_jwt = false
+
+[functions.tiktok]
+verify_jwt = false
