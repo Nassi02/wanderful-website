@@ -2291,7 +2291,7 @@ function renderMedia(it){
   var urls=mediaList(it);if(!urls.length)return '';
   var isVid=String(it.media_type||'').startsWith('video');
   if(urls.length===1){
-    return isVid?'<video preload="none" controls data-src="'+esc(urls[0])+'" style="width:100%;border-radius:12px;max-height:440px;background:#000"></video>'
+    return isVid?'<video preload="metadata" controls playsinline src="'+esc(urls[0])+'#t=0.1" style="width:100%;border-radius:12px;max-height:440px;background:#000"></video>'
                 :'<img loading="lazy" decoding="async" src="'+esc(urls[0])+'" style="width:100%;border-radius:12px;display:block">';
   }
   var id=String(it.id);
