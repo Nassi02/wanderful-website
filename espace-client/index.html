@@ -832,7 +832,7 @@ const DEMO_KEY={content_items:'content',social_accounts:'social',documents:'docu
 async function fetchTable(table,id){if(DEMO){const d=demoDataFor(id);return d[DEMO_KEY[table]||table]||[];}const {data}=await sb.from(table).select('*').eq('client_id',id);return data||[];}
 async function fetchOnboarding(id){if(DEMO)return state._demoOnb||{};try{const {data}=await sb.from('onboarding').select('answers').eq('client_id',id).single();return (data&&data.answers)||{};}catch(e){return {};}}
 async function saveOnboarding(id,answers){if(DEMO){state._demoOnb=answers;return {};}return await sb.from('onboarding').upsert({client_id:id,answers,updated_at:new Date().toISOString()},{onConflict:'client_id'});}
-async function updateContentStatus(item,status){if(DEMO){item.status=status;return;}await sb.from('content_items').update({status}).eq('id',item.id);}
+async function updateContentStatus(item,status){if(DEMO){item.status=status;return true;}const {error}=await sb.from('content_items').update({status}).eq('id',item.id);if(error){toast('⚠️ '+error.message);return false;}item.status=status;return true;}
 async function saveClientUnlocked(id,arr){if(DEMO){const c=DEMO_CLIENTS.find(x=>x.id===id);if(c)c.unlocked=arr;return {};}return await sb.from('clients').update({unlocked:arr}).eq('id',id);}
 function autoInitials(name){const w=(name||'').trim().split(/\s+/).filter(Boolean);if(!w.length)return '?';return (w.length===1?w[0].slice(0,2):w[0][0]+w[1][0]).toUpperCase();}
 async function createClient(){
@@ -2614,7 +2614,30 @@ async function submitOnboarding(){
   if(res&&res.error){ document.getElementById('obStatus').textContent='Erreur : '+res.error.message; toast('Erreur d\'enregistrement'); return; }
   document.getElementById('obStatus').textContent='✓ Enregistré';toast('✓ Réponses enregistrées');
 }
-async function act(id,status){const it=state.data.content.find(c=>c.id===id);if(!it)return;await updateContentStatus(it,status);toast(status==='approved'?'✓ Contenu approuvé':'✏️ Demande de modification envoyée');go('validation');}
+async function act(id,status){const it=state.data.content.find(c=>String(c.id)===String(id));if(!it)return;
+  if(status==='approved'&&netsOf(it).includes('instagram')){const at=igAt(it);if(!at||at.getTime()<Date.now()+2*60000){askNewDate(it);return;}}
+  if(!await updateContentStatus(it,status))return;toast(status==='approved'?'✓ Contenu approuvé':'✏️ Demande de modification envoyée');go(state.section);}
+function askNewDate(it){
+  const now=new Date(Date.now()+15*60000);
+  const d=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Zurich'}).format(now);
+  const t=new Intl.DateTimeFormat('fr-CH',{timeZone:'Europe/Zurich',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(now);
+  const el=document.getElementById('modalRoot');
+  el.innerHTML=`<div class="modal-ov" onclick="if(event.target===this)closeContentModal()"><div class="modal" style="max-width:460px"><button class="modal-x" onclick="closeContentModal()">✕</button>
+    <div class="modal-head"><h3>Choisir la date de publication</h3><small>${it.scheduled_at?'La date prévue ('+esc(igDt(igAt(it)))+') est déjà passée.':'Ce contenu n’a pas encore de date.'} Choisis quand il doit être publié.</small></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><input type="date" id="nd_date" value="${d}" style="flex:1;min-width:140px"><input type="time" id="nd_time" value="${t}" style="width:130px"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;justify-content:flex-end"><button class="sbtn ghost" onclick="closeContentModal()">Annuler</button><button class="sbtn ok" onclick="approveWithDate('${it.id}')">✓ Approuver avec cette date</button></div></div></div>`;
+}
+async function approveWithDate(id){
+  const it=state.data.content.find(c=>String(c.id)===String(id));if(!it)return;
+  const d=(document.getElementById('nd_date')||{}).value,t=(document.getElementById('nd_time')||{}).value;
+  if(!d||!/^\d{2}:\d{2}$/.test(t||'')){toast('Choisis une date et une heure');return;}
+  const brief=Object.assign({},it.brief||{},{time:t});
+  const probe=Object.assign({},it,{scheduled_at:d+'T00:00:00+00:00',brief});
+  if(igAt(probe).getTime()<Date.now()){toast('Cette heure est déjà passée : choisis plus tard');return;}
+  if(!DEMO){const {error}=await sb.from('content_items').update({scheduled_at:d,brief,status:'approved'}).eq('id',id);if(error){toast('⚠️ '+error.message);return;}}
+  it.scheduled_at=d+'T00:00:00+00:00';it.brief=brief;it.status='approved';
+  closeContentModal();toast('✓ Approuvé — publication prévue le '+igDt(igAt(it)));go(state.section);
+}
 
 /* =================== INACTIVITÉ — DÉCONNEXION AUTO =================== */
 const WF_IDLE_MS=30*60*1000; // 30 min d'inactivité
