@@ -246,7 +246,7 @@ async function cronRun() {
     await maintain(conn);
     if (conn.status === 'error') continue;
     // Suivi des vidéos en cours de traitement chez TikTok
-    const { data: proc } = await admin.from('content_items').select('*').eq('client_id', conn.client_id).eq('tt_state', 'processing');
+    const { data: proc } = await admin.from('content_items').select('*').eq('client_id', conn.client_id).eq('tt_state', 'processing').not('tt_publish_id', 'is', null);
     for (const it of proc || []) out.push(await run(it, conn));
     if (!conn.publish_enabled || !conn.enabled_at) continue;
     const { data: items } = await admin.from('content_items').select('*').eq('client_id', conn.client_id).in('status', ['approved', 'published']).is('tt_state', null);
