@@ -2338,7 +2338,7 @@ function openContentModal(id){
   const prodLocked=`<div class="prod-empty">Le dépôt de fichier se fait depuis la vue client. Utilise « Voir la vue client » pour tester.</div>`;
   const el=document.getElementById('modalRoot');
   el.innerHTML=`<div class="modal-ov" onclick="if(event.target===this)closeContentModal()"><div class="modal"><button class="modal-x" onclick="closeContentModal()">✕</button>
-    <div class="modal-head">${ctBadgeN(it)} <span class="ct-status s-${it.status}" style="margin-left:6px">${statusLabel(it.status)}</span><h3>${esc(it.title)}</h3><small>Semaine ${it.week||'—'} · ${fmtDate(it.scheduled_at)} · ${esc(it.pillar||'')}</small></div>
+    <div class="modal-head">${ctBadgeN(it)} <span class="ct-status s-${it.status}" style="margin-left:6px">${statusLabel(it.status)}</span><h3>${esc(it.title)}</h3><small>Semaine ${it.week||'—'} · ${fmtDate(it.scheduled_at)} · ${esc(it.pillar||'')}</small></div>${isAgencyView()?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin:-4px 0 14px"><button class="sbtn ghost" onclick="openPostEditor('${it.id}')">✏️ Modifier le post (statut, type, date…)</button><button class="sbtn danger" data-del="0" onclick="deletePost('${it.id}',this)">🗑️ Supprimer</button></div>`:''}
     <div class="modal-grid">
       <div class="modal-col"><div class="bd-lbl" style="margin-bottom:8px">📋 Le brief</div><div class="modal-brief">${it.brief&&it.brief.obj?`<div class="idea-obj">🎯 ${esc(it.brief.obj)}</div>`:''}${briefDetail(it)}</div></div>
       <div class="modal-col">${prod}</div>
