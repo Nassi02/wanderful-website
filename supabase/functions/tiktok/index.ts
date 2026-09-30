@@ -9,8 +9,8 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const SB_URL = Deno.env.get('SUPABASE_URL')!;
 const admin = createClient(SB_URL, (Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || Deno.env.get('SUPABASE_SECRET_KEY'))!);
-const CLIENT_KEY = Deno.env.get('TT_CLIENT_KEY') || '';
-const CLIENT_SECRET = Deno.env.get('TT_CLIENT_SECRET') || '';
+const CLIENT_KEY = (Deno.env.get('TT_CLIENT_KEY') || '').trim();
+const CLIENT_SECRET = (Deno.env.get('TT_CLIENT_SECRET') || '').trim();
 const REDIRECT = SB_URL.replace(/\/$/, '') + '/functions/v1/tiktok';
 const BACK = 'https://wanderful-marketing.com/espace-client/';
 const SCOPES = 'user.info.basic,video.publish,video.upload';
