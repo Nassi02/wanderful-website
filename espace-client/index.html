@@ -2400,6 +2400,7 @@ function openPostEditor(id){
   H.push('<div class="field"><label>🎨 Visuel, couleurs, lumiere</label><textarea id="pe_visual">'+esc(b.visual||'')+'</textarea></div>');
   H.push('<div class="field"><label>👉 CTA</label><input id="pe_cta" value="'+esc(b.cta||'')+'"></div>');
   H.push('<div class="field"><label># Hashtags</label><input id="pe_tags" value="'+esc(b.tags||'')+'"></div>');
+  H.push('<div class="field"><label>🖼️ Visuel ou vidéo <small class="muted">(facultatif — plusieurs fichiers = carrousel)</small></label><input type="file" id="pe_file" accept="image/jpeg,image/*,video/*" multiple onchange="peFileInfo()"><div id="pe_fileinfo" style="font-size:11.5px;color:var(--muted);margin-top:5px">Instagram n’accepte que le <b>JPEG</b> pour les images (vidéo : MP4/MOV). Max 50 Mo par fichier.</div></div>');
   H.push('<div class="field"><label>✍️ Legende</label><textarea id="pe_caption" style="min-height:100px">'+esc(it?(it.caption||''):'')+'</textarea></div>');
   H.push('<div id="pe_msg" class="msg"></div>');
   H.push('<div class="pe-actions">'+(editing?'<button class="sbtn danger" data-del="0" onclick="deletePost(\''+id+'\',this)">🗑️ Supprimer</button>':'<span></span>'));
@@ -2412,7 +2413,18 @@ function peParseBody(txt,hook){
   (txt||'').split('\n').forEach(function(line){var l=line.trim();if(!l)return;var i=l.indexOf('|');if(i>=0)steps.push({s:l.slice(0,i).trim(),t:l.slice(i+1).trim()});else steps.push({s:'',t:l});});
   var out=[];if(hook)out.push({s:'Hook',t:hook});return out.concat(steps);
 }
+function peFileInfo(){const i=document.getElementById('pe_file'),o=document.getElementById('pe_fileinfo');if(!i||!o)return;const fs=Array.from(i.files||[]);
+  const bad=fs.filter(f=>/^image\//.test(f.type)&&!/jpe?g/i.test(f.type));
+  o.innerHTML=fs.length?(fs.length+' fichier(s) : '+fs.map(f=>esc(f.name)).join(', ')+(bad.length?'<br><b style="color:#dc2626">⚠️ '+bad.length+' image(s) non JPEG : Instagram les refusera. Exporte-les en JPEG.</b>':'')):'Instagram n’accepte que le <b>JPEG</b> pour les images.';}
+async function peUploadAfterSave(id,files){
+  if(!files||!files.length)return;
+  openContentModal(id);
+  const inp=document.getElementById('prodFile');if(!inp){toast('Dépose le fichier depuis la fiche du contenu');return;}
+  try{const dt=new DataTransfer();files.forEach(f=>dt.items.add(f));inp.files=dt.files;}catch(e){toast('Dépose le fichier depuis la fiche du contenu');return;}
+  await uploadContentMedia(id);
+}
 async function savePost(id){
+  var _peFiles=Array.from(((document.getElementById('pe_file')||{}).files)||[]);
   var editing=(id!=null&&id!=='null');
   var gv=function(x){var e=document.getElementById(x);return e?e.value.trim():'';};
   var msg=document.getElementById('pe_msg');
@@ -2436,13 +2448,14 @@ async function savePost(id){
     if(editing){
       var r1=await sb.from('content_items').update(row).eq('id',id);if(r1.error)throw r1.error;
       var it=(state.data.content||[]).find(function(c){return String(c.id)===String(id);});if(it)Object.assign(it,row);
-      toast('✓ Post mis a jour');
+      toast('✓ Post mis a jour');var _savedId=id;
     }else{
       var r2=await sb.from('content_items').insert(row).select().single();if(r2.error)throw r2.error;
       state.data.content=state.data.content||[];state.data.content.push(r2.data);
-      toast('✓ Post cree');
+      toast('✓ Post cree');var _savedId=r2.data.id;
     }
     closeContentModal();go(state.section);
+    if(_peFiles.length)await peUploadAfterSave(_savedId,_peFiles);
   }catch(e){if(msg){msg.className='msg err';msg.textContent='Erreur : '+(e.message||e);}if(btn){btn.disabled=false;btn.textContent=editing?'Enregistrer':'Creer le post';}}
 }
 async function deletePost(id,btn){
@@ -2524,9 +2537,11 @@ async function uploadContentMedia(id){
     }
     if(prog)prog.innerHTML=progHtml('Finalisation…',100,'Enregistrement du post…');
     const val=urls.length>1?JSON.stringify(urls):urls[0];
-    const {error}=await sb.from('content_items').update({media_url:val,media_type:fs[0].type,status:'produced'}).eq('id',id);
+    const _cur0=(state.data.content.find(c=>String(c.id)===String(id))||{}).status;
+    const _st=(!_cur0||_cur0==='idea')?'produced':_cur0;
+    const {error}=await sb.from('content_items').update({media_url:val,media_type:fs[0].type,status:_st}).eq('id',id);
     if(error) throw error;
-    const it=state.data.content.find(c=>String(c.id)===String(id));if(it){it.media_url=val;it.media_type=fs[0].type;it.status='produced';}
+    const it=state.data.content.find(c=>String(c.id)===String(id));if(it){it.media_url=val;it.media_type=fs[0].type;it.status=_st;}
     if(prog)prog.innerHTML='';
     toast(urls.length>1?('✓ '+urls.length+' slides déposées'):'✓ Fichier déposé');openContentModal(id);
     var _ph=document.getElementById('prodProg');
