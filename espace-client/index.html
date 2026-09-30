@@ -1676,7 +1676,7 @@ async function ttPublishNow(id,btn){
     if(error)throw error;if(data&&data.error)throw new Error(data.error);
     toast(data.r==='done'?'✓ Publié sur TikTok':(data.r==='wait'?'Vidéo envoyée : TikTok la traite, le lien apparaîtra dans quelques minutes':'⚠️ '+(data.e||data.r)));}
   catch(e){toast('⚠️ '+(e.message||e));}
-  state.data.content=await fetchTable('content_items',state.client.id);go(state.section);
+  state.data.content=await fetchTable('content_items',state.client.id);closeContentModal();go(state.section);
 }
 /* Réglages de publication TikTok d'un contenu (choisis avant publication, exigence TikTok) */
 function ttSettingsHtml(it,editable){
@@ -1697,6 +1697,7 @@ function ttSettingsHtml(it,editable){
     ${brand?`<div class="tt-chks" style="margin:0 0 6px 0">${`<label class="tt-chk"><input type="checkbox" ${s.brand_organic?'checked':''} ${dis} onchange="ttSave('${id}','brand_organic',this.checked)"> Votre marque <small>(« Contenu promotionnel »)</small></label><label class="tt-chk"><input type="checkbox" ${s.brand_content?'checked':''} ${dis} onchange="ttSave('${id}','brand_content',this.checked)"> Contenu de marque — partenariat rémunéré <small>(« Partenariat rémunéré »)</small></label>`}</div>`:''}
     ${brand&&!s.brand_organic&&!s.brand_content?'<small class="tt-note">Indique s’il s’agit de ta propre marque ou d’un partenariat.</small>':''}
     <small class="muted">En publiant, vous acceptez la <a href="https://www.tiktok.com/legal/page/global/music-usage-confirmation/en" target="_blank" rel="noopener">Music Usage Confirmation</a>${s.brand_content?' et la <a href="https://www.tiktok.com/legal/page/global/bc-policy/en" target="_blank" rel="noopener">Branded Content Policy</a>':''} de TikTok.${cr.max_video_post_duration_sec?' Durée maximale sur ce compte : '+Math.round(cr.max_video_post_duration_sec/60)+' min.':''}</small>
+    ${editable&&isAgencyView()&&(it.status==='approved'||it.status==='published')&&it.tt_state!=='published'?(ttProblems(it).length?`<small class="tt-note">Pour publier : ${esc(ttProblems(it).join(' · '))}</small>`:`<div><button class="sbtn ok" onclick="ttPublishNow('${id}',this)">🎵 Publier maintenant sur TikTok</button></div>`):''}
   </div>`;
 }
 async function ttSave(id,k,v){
