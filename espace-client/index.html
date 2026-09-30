@@ -1457,6 +1457,7 @@ function igPlan(it){
   if(it.publish_state==='processing')return {k:'proc',t:'Publication en cours (traitement Instagram)',c:'t-amber'};
   if(it.status!=='approved')return {k:'wait',t:({idea:'Idée',produced:'Produit — à envoyer en validation',pending:'En attente de validation client',changes_requested:'Modification demandée'}[it.status]||'Non validé'),c:'t-grey',d:pb.length?'À prévoir : '+pb.join(' · '):''};
   if(pb.length)return {k:'bad',t:'À corriger avant publication',c:'t-red',d:pb.join(' · ')};
+  if(!at)return {k:'nodate',t:'Pas de date : ne partira pas',c:'t-amber',d:'Choisis une date et une heure de publication.'};
   if(!ig)return {k:'noc',t:'Instagram non connecté',c:'t-grey'};
   if(!ig.publish_enabled)return {k:'off',t:'Publication auto désactivée',c:'t-grey'};
   if(at&&ig.enabled_at&&at.getTime()<new Date(ig.enabled_at).getTime())return {k:'old',t:'Date antérieure à l’activation : pas de publication automatique',c:'t-amber'};
@@ -1538,16 +1539,16 @@ function igCard(){
     ${ag?`<div style="margin-top:10px"><button class="wk-undo" onclick="igDisconnect(this)">Déconnecter Instagram</button></div>`:''}</div>`;
 }
 function igQueue(){
-  const items=((state.data&&state.data.content)||[]).filter(x=>netsOf(x).includes('instagram')&&x.scheduled_at);
+  const items=((state.data&&state.data.content)||[]).filter(x=>netsOf(x).includes('instagram')&&(x.scheduled_at||x.status==='approved'||x.status==='pending'));
   const now=Date.now(),ag=isAgencyView();
   const today=new Date();today.setHours(0,0,0,0);
   const open=items.filter(x=>x.status!=='published'&&x.publish_state!=='published').sort((a,b)=>(igAt(a)||0)-(igAt(b)||0));
-  const up=open.filter(x=>x.publish_state||(igAt(x)||0)>=today);
+  const up=open.filter(x=>x.publish_state||!x.scheduled_at||(igAt(x)||0)>=today).sort((a,b)=>(a.scheduled_at?1:0)-(b.scheduled_at?1:0));
   const missed=open.filter(x=>!up.includes(x));
   const recent=items.filter(x=>x.status==='published'||x.publish_state==='published').sort((a,b)=>new Date(b.published_at||b.scheduled_at)-new Date(a.published_at||a.scheduled_at)).slice(0,6);
   const row=it=>{const s=igPlan(it),at=igAt(it);
-    const btn=ag&&it.status==='approved'&&state.ig&&(s.k==='auto'||s.k==='due'||s.k==='old'||s.k==='off'||s.k==='err')?`<button class="sbtn ghost" onclick="igPublishNow('${esc(it.id)}',this)">${s.k==='err'?'Réessayer':'Publier maintenant'}</button>`:'';
-    return `<div class="igq-row"><div class="igq-when">${igDt(at)}${at&&at.getTime()<now&&s.k!=='pub'?' <span class="muted">(passé)</span>':''}</div><div class="igq-main" onclick="openContentModal('${esc(it.id)}')"><b>${esc(it.title||'')}</b><small>${mediaList(it).length?IG_KIND[igKind(it)]+' · '+mediaList(it).length+' média(s)':esc(it.type||'Post')+' · visuel à venir'}</small>${s.d?`<small class="igq-err">${esc(s.d)}</small>`:''}</div><div class="igq-st"><span class="tag ${s.c}">${s.t}</span>${it.permalink?`<a href="${esc(it.permalink)}" target="_blank" rel="noopener">Voir ↗</a>`:''}${btn}</div></div>`;};
+    const btn=s.k==='nodate'?`<button class="sbtn ghost" onclick="${it.status==='approved'?`askNewDate(state.data.content.find(c=>String(c.id)==='${esc(it.id)}'))`:`openContentModal('${esc(it.id)}')`}">Choisir une date</button>`:ag&&it.status==='approved'&&state.ig&&(s.k==='auto'||s.k==='due'||s.k==='old'||s.k==='off'||s.k==='err')?`<button class="sbtn ghost" onclick="igPublishNow('${esc(it.id)}',this)">${s.k==='err'?'Réessayer':'Publier maintenant'}</button>`:'';
+    return `<div class="igq-row"><div class="igq-when">${at?igDt(at):'<span style="color:#b45309">Sans date</span>'}${at&&at.getTime()<now&&s.k!=='pub'?' <span class="muted">(passé)</span>':''}</div><div class="igq-main" onclick="openContentModal('${esc(it.id)}')"><b>${esc(it.title||'')}</b><small>${mediaList(it).length?IG_KIND[igKind(it)]+' · '+mediaList(it).length+' média(s)':esc(it.type||'Post')+' · visuel à venir'}</small>${s.d?`<small class="igq-err">${esc(s.d)}</small>`:''}</div><div class="igq-st"><span class="tag ${s.c}">${s.t}</span>${it.permalink?`<a href="${esc(it.permalink)}" target="_blank" rel="noopener">Voir ↗</a>`:''}${btn}</div></div>`;};
   return `<div class="card"><div class="section-title" style="margin:0 0 8px">Prochaines publications Instagram</div>${up.length?up.map(row).join(''):'<p class="muted">Aucun contenu Instagram à venir.</p>'}
     ${missed.length?`<details class="igq-missed"><summary>${missed.length} contenu(s) à date passée, jamais publié(s) — à reprogrammer ou publier</summary>${missed.map(row).join('')}</details>`:''}
     ${recent.length?`<div class="section-title" style="margin:16px 0 8px">Dernières publications</div>${recent.map(row).join('')}`:''}</div>`;
