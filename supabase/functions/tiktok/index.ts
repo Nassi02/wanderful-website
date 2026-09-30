@@ -287,7 +287,7 @@ Deno.serve(async (req) => {
     if (!body.client_id) return json({ error: 'client_id manquant' }, 400);
     const state = await signState({ c: body.client_id, u: me.id, e: Date.now() + 7 * 864e5 });
     const u = new URL('https://www.tiktok.com/v2/auth/authorize/');
-    u.search = new URLSearchParams({ client_key: CLIENT_KEY, response_type: 'code', scope: SCOPES, redirect_uri: REDIRECT, state }).toString();
+    u.search = new URLSearchParams({ client_key: CLIENT_KEY, response_type: 'code', scope: SCOPES, redirect_uri: REDIRECT, state, disable_auto_auth: '1' }).toString();
     return json({ url: u.toString() });
   }
   if (body.action === 'publish_now') {

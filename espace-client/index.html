@@ -1707,7 +1707,7 @@ async function ttSave(id,k,v){
   if(s.brand_content&&s.privacy==='SELF_ONLY')s.privacy='';
   b.tt=s;
   if(!DEMO){const {error}=await sb.from('content_items').update({brief:b}).eq('id',id);if(error){toast('⚠️ '+error.message);return;}}
-  it.brief=b;
+  it.brief=b;state._ttDirty=true;
   document.querySelectorAll('[data-tt-for="'+id+'"]').forEach(el=>{el.innerHTML=ttSettingsHtml(it,el.getAttribute('data-ed')==='1');});
   toast('✓ Réglage TikTok enregistré');
 }
@@ -2653,7 +2653,7 @@ async function saveSchedule(id){
   const sub=document.querySelector('.modal-head small');if(sub)sub.textContent='Semaine '+(it.week||'—')+' · '+fmtDate(it.scheduled_at)+' · '+(it.pillar||'');
   toast(DEMO?'Aperçu : non sauvegardé':'✓ Date et heure enregistrées');
 }
-function closeContentModal(){const e=document.getElementById('modalRoot');if(e)e.innerHTML='';}
+function closeContentModal(){const e=document.getElementById('modalRoot');if(e)e.innerHTML='';if(state._ttDirty){state._ttDirty=false;if(state.section==='social'){const y=window.scrollY;go('social');setTimeout(()=>window.scrollTo(0,y),0);}}}
 /* ============ EDITEUR DE POST (vue agence) ============ */
 var POST_STATUSES=[['idea','Idee'],['produced','Produit'],['pending','A valider'],['approved','Valide'],['changes_requested','Modif demandee'],['published','Publie']];
 function peOpt(v,cur,l){return '<option value="'+v+'"'+(v===cur?' selected':'')+'>'+l+'</option>';}
