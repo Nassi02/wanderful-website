@@ -358,17 +358,52 @@ footer{margin-top:76px;padding:54px 0 34px;}
 .ap-princ{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:56px;}
 
 /* CTA */
-.ap-cta{background:var(--grad-main);border-radius:clamp(28px,4vw,52px);padding:clamp(70px,10vw,130px) 32px;
-  text-align:center;margin:var(--ap-gap) 0 90px;position:relative;overflow:hidden;}
-.ap-cta .ap-h2{color:#fff;max-width:17ch;margin:0 auto;}
-.ap-cta .ap-lead{color:rgba(255,255,255,.85);margin:24px auto 0;max-width:52ch;}
-.ap-cta .ap-label{color:rgba(255,255,255,.8);}
+.ap-cta{position:relative;overflow:hidden;text-align:center;
+  border-radius:clamp(28px,4vw,52px);margin:var(--ap-gap) 0 90px;
+  padding:clamp(80px,11vw,146px) 32px clamp(68px,9vw,118px);
+  background:
+    radial-gradient(130% 95% at 50% -14%, #FFFFFF 0%, rgba(255,255,255,0) 56%),
+    radial-gradient(78% 58% at 10% 20%, #F8E9F6 0%, rgba(248,233,246,0) 62%),
+    radial-gradient(70% 58% at 90% 26%, #DCE8FA 0%, rgba(220,232,250,0) 64%),
+    radial-gradient(95% 85% at 50% 118%, #C5C1F2 0%, rgba(197,193,242,0) 66%),
+    linear-gradient(162deg,#F0ECFD 0%,#E3DEF9 46%,#D5D1F5 100%);
+  box-shadow:0 44px 96px -44px rgba(141,126,242,.6), inset 0 1px 0 rgba(255,255,255,.8);}
+.ap-cta::before{content:"";position:absolute;inset:-12%;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(44% 30% at 20% 74%, rgba(255,255,255,.88), transparent 70%),
+    radial-gradient(36% 24% at 80% 82%, rgba(255,255,255,.72), transparent 72%),
+    radial-gradient(28% 20% at 64% 8%, rgba(255,255,255,.8), transparent 70%);
+  filter:blur(8px);}
+.ap-cta > *{position:relative;z-index:2;}
+.ap-cta .ap-h2{color:var(--plum);max-width:17ch;margin:0 auto;}
+.ap-cta .ap-lead{color:var(--ink);opacity:.88;margin:24px auto 0;max-width:52ch;}
+.ap-cta .ap-label{color:var(--violet);}
 .ap-cta-row{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:40px;}
 .ap-btn{display:inline-flex;align-items:center;gap:9px;border-radius:999px;padding:16px 30px;font-weight:600;
-  font-size:15px;transition:transform .3s ease,box-shadow .3s ease;}
-.ap-btn-1{background:#fff;color:var(--plum);box-shadow:0 14px 40px -14px rgba(53,43,82,.5);}
-.ap-btn-2{border:1px solid rgba(255,255,255,.55);color:#fff;}
-.ap-btn:hover{transform:translateY(-2px);box-shadow:0 18px 44px -12px rgba(53,43,82,.55);}
+  font-size:15px;transition:transform .3s ease,box-shadow .3s ease,background .3s ease;}
+.ap-btn-1{background:var(--violet);color:#fff;box-shadow:0 16px 40px -14px rgba(141,126,242,.9);}
+.ap-btn-2{border:1.5px solid rgba(141,126,242,.5);color:var(--violet);background:rgba(255,255,255,.55);}
+.ap-btn:hover{transform:translateY(-2px);box-shadow:0 22px 48px -14px rgba(141,126,242,.75);}
+
+/* etoile iridescente + objets flottants du bloc final */
+.ap-cta-star{width:clamp(78px,9vw,122px);margin:0 auto 20px;display:block;
+  filter:drop-shadow(0 16px 34px rgba(141,126,242,.45));
+  animation:apCtaStar 11s ease-in-out infinite;}
+@keyframes apCtaStar{0%,100%{transform:translateY(0) rotate(-4deg) scale(1)}
+  50%{transform:translateY(-10px) rotate(4deg) scale(1.04)}}
+.ap-cta-deco{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
+.ap-cta-deco img{position:absolute;display:block;opacity:.5;
+  filter:blur(.4px) drop-shadow(0 14px 30px rgba(141,126,242,.3));}
+.ap-cta-deco .d1{width:14%;left:4%;top:16%;animation:apDeco 13s ease-in-out infinite;}
+.ap-cta-deco .d2{width:12%;right:5%;top:30%;animation:apDeco 16s ease-in-out infinite reverse;}
+.ap-cta-deco .d3{width:10%;left:11%;bottom:12%;opacity:.38;animation:apDeco 18s ease-in-out infinite;}
+@keyframes apDeco{0%,100%{transform:translate3d(0,0,0) rotate(-5deg)}
+  50%{transform:translate3d(0,-16px,0) rotate(5deg)}}
+.ap-cta-sp{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none;}
+.ap-cta-sp g{fill:#B98DF2;opacity:0;animation:apCtaTw 5s ease-in-out infinite;
+  animation-delay:calc(var(--i)*800ms);}
+@keyframes apCtaTw{0%,100%{opacity:0;transform:scale(.4)}14%{opacity:.9;transform:scale(1.2)}34%{opacity:.2;transform:scale(.8)}}
+@media(max-width:700px){.ap-cta-deco .d3{display:none}.ap-cta-deco img{opacity:.34}}
 
 @media(max-width:980px){
   .ap-sticky-grid{grid-template-columns:1fr;gap:40px;}
@@ -397,6 +432,8 @@ footer{margin-top:76px;padding:54px 0 34px;}
   .apd-corein,.apd-in{transform:none!important;}
   .apd-tr{stroke-dashoffset:0!important;}
   .apd-sp{opacity:.5!important;}
+  .ap-cta-sp g{opacity:.5!important;}
+  .ap-cta-star,.ap-cta-deco img{animation:none!important;}
 }
 
 /* ===== composition « disciplines » ===== */
@@ -762,14 +799,16 @@ footer{margin-top:76px;padding:54px 0 34px;}
 <!-- ============ 05 — CTA ============ -->
 <section class="ap-wrap">
   <div class="ap-cta">
-    <svg class="ap-wand" viewBox="0 0 120 90" fill="none" aria-hidden="true" style="width:clamp(90px,10vw,130px);margin-bottom:18px;">
-      <polygon class="w-star" points="60,6 64,22 80,22 67,32 72,49 60,39 48,49 53,32 40,22 56,22" fill="#fff"/>
-      <line x1="60" y1="49" x2="24" y2="84" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-      <line x1="33" y1="75" x2="25" y2="84" stroke="rgba(255,255,255,.6)" stroke-width="5" stroke-linecap="round"/>
-    </svg>
+    <div class="ap-cta-deco" aria-hidden="true">
+      <img class="d1" src="assets/disciplines/anneaux.webp" alt="" loading="lazy" decoding="async">
+      <img class="d2" src="assets/disciplines/ruban.webp" alt="" loading="lazy" decoding="async">
+      <img class="d3" src="assets/disciplines/molecule.webp" alt="" loading="lazy" decoding="async">
+      <svg class="ap-cta-sp" viewBox="0 0 100 100" preserveAspectRatio="none"><g style="--i:0" transform="translate(18 22)"><path d="M 0 -1.6 C .14 -.62, .62 -.14, 1.6 0 C .62 .14, .14 .62, 0 1.6 C -.14 .62, -.62 .14, -1.6 0 C -.62 -.14, -.14 -.62, 0 -1.6 Z"/></g><g style="--i:1" transform="translate(82 18)"><path d="M 0 -1.6 C .14 -.62, .62 -.14, 1.6 0 C .62 .14, .14 .62, 0 1.6 C -.14 .62, -.62 .14, -1.6 0 C -.62 -.14, -.14 -.62, 0 -1.6 Z"/></g><g style="--i:2" transform="translate(12 64)"><path d="M 0 -1.6 C .14 -.62, .62 -.14, 1.6 0 C .62 .14, .14 .62, 0 1.6 C -.14 .62, -.62 .14, -1.6 0 C -.62 -.14, -.14 -.62, 0 -1.6 Z"/></g><g style="--i:3" transform="translate(88 58)"><path d="M 0 -1.6 C .14 -.62, .62 -.14, 1.6 0 C .62 .14, .14 .62, 0 1.6 C -.14 .62, -.62 .14, -1.6 0 C -.62 -.14, -.14 -.62, 0 -1.6 Z"/></g><g style="--i:4" transform="translate(34 10)"><path d="M 0 -1.6 C .14 -.62, .62 -.14, 1.6 0 C .62 .14, .14 .62, 0 1.6 C -.14 .62, -.62 .14, -1.6 0 C -.62 -.14, -.14 -.62, 0 -1.6 Z"/></g><g style="--i:5" transform="translate(66 88)"><path d="M 0 -1.6 C .14 -.62, .62 -.14, 1.6 0 C .62 .14, .14 .62, 0 1.6 C -.14 .62, -.62 .14, -1.6 0 C -.62 -.14, -.14 -.62, 0 -1.6 Z"/></g></svg>
+    </div>
+    <img class="ap-cta-star" src="assets/disciplines/etoile.webp" alt="" aria-hidden="true" decoding="async">
     <div class="ap-label ap-rev">05 — À vous</div>
     <h2 class="ap-h2 ap-rev" data-d="1">Votre marketing n'a pas besoin de plus de bruit.<br>
-      Il a besoin d'une meilleure idée.</h2>
+      Il a besoin d'une meilleure direction.</h2>
     <p class="ap-lead ap-rev" data-d="2">Parlez-nous de votre marque, de votre problème ou simplement de ce que
       vous aimeriez changer. Nous vous dirons franchement comment nous l'aborderions.</p>
     <div class="ap-cta-row ap-rev" data-d="3">
