@@ -929,6 +929,7 @@ async function selectClient(id){state.stratArchive=0;
   await igLoad(id);
   await liLoad(id);
   await ttLoad(id);
+  await fbLoad(id);
   setClientCard(state.client);renderNav(content);go(state.section);
 }
 async function fetchLogins(c){
@@ -1321,7 +1322,7 @@ const THEMES=[
   {k:'analytics',src:'ga4',name:'Trafic du site (Analytics)',ico:'📊',page:'stats',how:'ga4'},
   {k:'social',src:'meta',name:'Réseaux sociaux (Instagram)',ico:'📱',page:'social',how:'ig'},
   {k:'linkedin',src:'linkedin',name:'LinkedIn (page entreprise)',ico:'💼',page:'social',how:'li'},
-  {k:'facebook',src:'facebook',name:'Facebook',ico:'📘',soon:'plus tard'},
+  {k:'facebook',src:'facebook',name:'Facebook (page)',ico:'📘',page:'social',how:'fb'},
   {k:'tiktok',src:'tiktok',name:'TikTok',ico:'🎵',page:'social',how:'tt'},
   {k:'ads',src:'ads',name:'Google Ads',ico:'🎯',soon:'prochaine étape'},
   {k:'gbp',src:'gbp',name:'Fiche Google (avis, appels)',ico:'📍',soon:'après validation de l’accès Google'},
@@ -1335,6 +1336,7 @@ function themeState(t){
   if(t.how==='ig')return state.ig?(state.ig.status==='error'?'error':'on'):'todo';
   if(t.how==='li')return state.li?(state.li.status==='error'?'error':'on'):'todo';
   if(t.how==='tt')return state.tt?(state.tt.status==='error'?'error':'on'):'todo';
+  if(t.how==='fb')return state.fb?(state.fb.status==='error'?'error':'on'):'todo';
   if(rows.some(s=>s.active!==false))return rows.some(s=>s.status==='error')?'error':'on';
   return t.soon?'soon':'todo';
 }
@@ -1372,6 +1374,7 @@ function sourcesCard(){
       if(t.how==='ig')body=igConnectBody();
       if(t.how==='li')body=liConnectBody();
       if(t.how==='tt')body=ttConnectBody();
+      if(t.how==='fb')body=fbConnectBody();
       if(t.how==='ga4')body=`<ol class="cn-steps"><li>Le client ajoute <code>${SA_EMAIL}</code> en « Lecteur » dans Google Analytics. ${copy('ga4')}</li><li>Indique l’ID de sa propriété puis teste :<div class="cn-f"><input id="cn_ga4" placeholder="123456789"><button class="sbtn ok" onclick="themeConnect('ga4')">Enregistrer et tester</button></div></li></ol>`;
     }
     const act=t.internal||t.soon&&st==='soon'?'':(st==='off'?`<button class="wk-undo" onclick="themeSetOff('${t.src}',false)">Réactiver</button>`:(st==='todo'?`<button class="wk-undo" onclick="themeSetOff('${t.src}',true)">Non utilisé pour ce client</button>`:''));
@@ -1418,6 +1421,7 @@ function themeSection(t){
   if(t.how==='ig')return socialTheme();
   if(t.how==='li')return liTheme();
   if(t.how==='tt')return ttTheme();
+  if(t.how==='fb')return fbTheme();
   const rep=pilReport(t.src);const src=(p.sources||[]).find(s=>s.source===t.src&&s.active!==false);
   if(!rep)return src?(src.status==='error'?`<p class="wk-na">⚠️ Problème de connexion : ${esc(src.last_error||'')}</p>`:'<p class="wk-na">Connexion enregistrée — premier bilan au prochain lundi 8 h (ou « Actualiser maintenant »).</p>'):`<p class="wk-na">Données non connectées${ag?' — voir « Sources de données » ci-dessus.':'.'}</p>`;
   const d=rep.data,sts=pilStatus();
@@ -1537,11 +1541,11 @@ async function igLoadMedia(){
 }
 function igReturnNotice(){
   let q;try{q=new URLSearchParams(location.search);}catch(e){return;}
-  const isLi=q.has('li'),isTt=q.has('tt');const r=q.get('ig')||q.get('li')||q.get('tt');if(!r)return;
+  const isLi=q.has('li'),isTt=q.has('tt'),isFb=q.has('fb');const r=q.get('ig')||q.get('li')||q.get('tt')||q.get('fb');if(!r)return;
   const u=q.get('u'),m=q.get('msg');
   try{history.replaceState(null,'',location.pathname);}catch(e){}
-  const N=isTt?'TikTok':(isLi?'LinkedIn':'Instagram');
-  setTimeout(()=>toast(r==='ok'?('✓ '+N+' connecté'+(u?' : '+(isLi?'':'@')+u:'')):('⚠️ Connexion '+N+' : '+(m||r))),600);
+  const N=isFb?'Facebook':(isTt?'TikTok':(isLi?'LinkedIn':'Instagram'));
+  setTimeout(()=>toast(r==='ok'?('✓ '+N+' connecté'+(u?' : '+(isLi||isFb?'':'@')+u:'')):('⚠️ Connexion '+N+' : '+(m||r))),600);
   state._igReturn=r;
 }
 function igReturnClient(){if(!state._igReturn)return null;if(state._igCid)return state._igCid;let id=null;try{id=localStorage.getItem('wf_ig_cid');localStorage.removeItem('wf_ig_cid');}catch(e){}state._igCid=id;return id;}
@@ -1601,13 +1605,14 @@ function socialTheme(){
   <button class="wk-more" onclick="go('social')">Voir les publications →</button>`;
 }
 function socialView(){
-  const others=((state.data&&state.data.social)||[]).filter(s=>!['instagram','linkedin','tiktok'].includes((s.platform||'').toLowerCase()));
-  return `<div class="sec-head"><h3>Réseaux & publication</h3><p>Connexions Instagram, LinkedIn et TikTok, publication automatique des contenus validés et suivi.</p></div>
-  <div class="grid g3 igg">${igCard()}${liCard()}${ttCard()}</div>
+  const others=((state.data&&state.data.social)||[]).filter(s=>!['instagram','linkedin','tiktok','facebook'].includes((s.platform||'').toLowerCase()));
+  return `<div class="sec-head"><h3>Réseaux & publication</h3><p>Connexions Instagram, Facebook, LinkedIn et TikTok, publication automatique des contenus validés et suivi.</p></div>
+  <div class="grid g2 igg">${igCard()}${fbCard()}${liCard()}${ttCard()}</div>
   ${igQueue()}
+  ${fbQueue()}
   ${liQueue()}
   ${ttQueue()}
-  <div class="card" style="margin-top:14px"><div class="section-title" style="margin:0 0 6px">Comment ça marche</div><ul class="s2-list"><li><span class="mk">1</span><span>Le contenu est produit, puis <b>validé par le client</b> dans l’espace.</span></li><li><span class="mk">2</span><span>À la date prévue (heure du contenu ou heure par défaut), il est <b>publié automatiquement</b> sur les réseaux cochés (Instagram, LinkedIn, TikTok).</span></li><li><span class="mk">3</span><span>Le lien de la publication apparaît ici ; en cas d’échec, la raison s’affiche et rien n’est republié sans action.</span></li></ul><button class="sbtn ghost" onclick="go('feed')">Aperçu du feed →</button></div>
+  <div class="card" style="margin-top:14px"><div class="section-title" style="margin:0 0 6px">Comment ça marche</div><ul class="s2-list"><li><span class="mk">1</span><span>Le contenu est produit, puis <b>validé par le client</b> dans l’espace.</span></li><li><span class="mk">2</span><span>À la date prévue (heure du contenu ou heure par défaut), il est <b>publié automatiquement</b> sur les réseaux cochés (Instagram, Facebook, LinkedIn, TikTok).</span></li><li><span class="mk">3</span><span>Le lien de la publication apparaît ici ; en cas d’échec, la raison s’affiche et rien n’est republié sans action.</span></li></ul><button class="sbtn ghost" onclick="go('feed')">Aperçu du feed →</button></div>
   ${others.length?`<div class="section-title">Autres réseaux <small class="muted">(saisis à la main — pas encore de publication automatique)</small></div><div class="grid g3">${others.map(s=>`<div class="plat"><div class="top">${pico(s.platform)}<div><b>${esc(s.handle||s.platform)}</b><small style="color:var(--muted);display:block">${s.followers?s.followers+' abonnés':'Non relié'}</small></div></div></div>`).join('')}</div>`:''}`;
 }
 /* =================== TIKTOK : compte + publication automatique des vidéos =================== */
@@ -1759,6 +1764,175 @@ function ttTheme(){
   <div class="wk-row"><span class="wk-l">À faire</span><div class="wk-todo">${todo.length?todo.map(t=>`<div class="wk-t"><div class="wk-tt"><b>${esc(t[0])}</b><small>${esc(t[1])}</small></div><button class="sbtn ghost" onclick="go('${t[2]}')">Ouvrir →</button></div>`).join(''):'<span class="muted">Rien à signaler.</span>'}</div></div>`;
 }
 
+/* =================== FACEBOOK : page + publication automatique =================== */
+const FB_NOTE='Tant que Meta n’a pas validé l’app Wanderful (App Review), seules les pages dont tu es toi-même admin (comptes ajoutés comme testeurs de l’app) peuvent être connectées.';
+function fbIsStory(it){return /story/i.test(it.type||'')||(Array.isArray((it.brief||{}).chans)&&it.brief.chans.includes('stories')&&!it.brief.chans.includes('instagram'));}
+function fbIncluded(it){const b=(it&&it.brief)||{},n=Array.isArray(b.nets)&&b.nets.length?b.nets:null;
+  if(n&&n.includes('facebook'))return true;if(b.fb_off)return false;
+  const base=n||[String((it&&it.platform)||'instagram').toLowerCase().indexOf('face')>=0?'facebook':'instagram'];
+  if(base.includes('facebook'))return true;
+  return !!(state.fb&&state.fb.mirror_ig)&&base.includes('instagram')&&!fbIsStory(it);}
+function fbParse(m){if(!m)return [];if(Array.isArray(m))return m.filter(Boolean);if(typeof m==='string'&&m.charAt(0)==='['){try{const a=JSON.parse(m);return Array.isArray(a)?a:[];}catch(e){return [m];}}return [m];}
+function fbOwnMedia(it){return fbParse(((it&&it.brief)||{}).fb_media);}
+function fbMedia(it){const f=fbOwnMedia(it);return f.length?f:mediaList(it);}
+function fbMediaType(it){return fbOwnMedia(it).length?((it.brief||{}).fb_media_type||''):(it.media_type||'');}
+function fbLink(it){const l=String(((it&&it.brief)||{}).fb_link||'').trim();return /^https?:\/\/\S+$/i.test(l)?l:'';}
+function fbKind(it){const m=fbMedia(it);if(!m.length)return 'TEXT';if(m.length===1&&(igIsVid(m[0])||/video/i.test(fbMediaType(it))))return ((it.brief||{}).fb_format==='video')?'VIDEO':'REEL';return m.length>1?'MULTI':'PHOTO';}
+const FB_KIND={TEXT:'texte / lien',PHOTO:'photo',MULTI:'album photos',VIDEO:'vidéo',REEL:'reel'};
+function fbAt(it){if(!it.scheduled_at)return null;const fbc=state.fb||{};
+  const day=new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Zurich'}).format(new Date(it.scheduled_at));
+  const t=/^\d{2}:\d{2}$/.test((it.brief||{}).time||'')?it.brief.time:(fbc.default_time||'18:00');
+  const g=Date.UTC(+day.slice(0,4),+day.slice(5,7)-1,+day.slice(8,10),+t.slice(0,2),+t.slice(3,5));return new Date(g-igTzOff(g));}
+function fbProblems(it){const m=fbMedia(it),p=[];
+  if(m.length>1&&m.some(u=>igIsVid(u)))p.push('Facebook ne mélange pas vidéo et photos dans un même post');
+  if(m.length>30)p.push('Plus de 30 photos');
+  if(!m.length&&!capFor(it,'facebook').trim()&&!fbLink(it))p.push('Ni visuel, ni texte, ni lien');
+  if(String(((it.brief||{}).fb_link)||'').trim()&&!fbLink(it))p.push('Lien invalide (il doit commencer par https://)');return p;}
+function fbPlan(it){
+  const fbc=state.fb,at=fbAt(it),pb=fbProblems(it);
+  if(it.fb_state==='published')return {k:'pub',t:'Publié sur Facebook',c:'t-green'};
+  if(it.fb_state==='error')return {k:'err',t:'Échec de publication',c:'t-red',d:it.fb_error};
+  if(it.fb_state==='processing')return {k:'proc',t:'Publication en cours',c:'t-amber'};
+  if(it.status!=='approved'&&it.status!=='published')return {k:'wait',t:({idea:'Idée',produced:'Produit — à envoyer en validation',pending:'En attente de validation client',changes_requested:'Modification demandée'}[it.status]||'Non validé'),c:'t-grey',d:(pb.length&&fbMedia(it).length)?'À prévoir : '+pb.join(' · '):''};
+  if(pb.length)return {k:'bad',t:'À corriger avant publication',c:'t-red',d:pb.join(' · ')};
+  if(!at)return {k:'nodate',t:'Pas de date : ne partira pas',c:'t-amber',d:'Choisis une date et une heure de publication.'};
+  if(!fbc)return {k:'noc',t:'Facebook non connecté',c:'t-grey'};
+  if(!fbc.page_id)return {k:'noc',t:'Page Facebook à choisir',c:'t-amber'};
+  if(!fbc.publish_enabled)return {k:'off',t:'Publication auto désactivée',c:'t-grey'};
+  if(fbc.enabled_at&&at.getTime()<new Date(fbc.enabled_at).getTime())return {k:'old',t:'Date antérieure à l’activation : pas de publication automatique',c:'t-amber'};
+  if(at.getTime()<=Date.now())return {k:'due',t:'Publication au prochain passage (≤ 5 min)',c:'t-green'};
+  return {k:'auto',t:'Sera publié automatiquement',c:'t-green'};
+}
+async function fbLoad(id){state.fb=null;if(DEMO){state.fb=(window.PREVIEW_FB&&window.PREVIEW_FB[id])||null;return;}
+  try{const {data,error}=await sb.rpc('fb_status',{cid:id});if(!error&&data&&data.length)state.fb=data[0];}catch(e){}}
+async function fbStart(){
+  if(DEMO){toast('Aperçu : connexion non disponible');return;}
+  const box=document.getElementById('fbLink');
+  try{const {data,error}=await sb.functions.invoke('facebook',{body:{action:'start',client_id:state.client.id}});
+    if(error||!data||!data.url)throw new Error((data&&data.error)||(error&&error.message)||'Lien indisponible');
+    try{localStorage.setItem('wf_ig_cid',state.client.id);}catch(e){}
+    state._fbUrl=data.url;state._msg=state._msg||{};
+    state._msg.fb=`Bonjour,\n\nPour que Wanderful puisse publier automatiquement vos contenus validés sur votre page Facebook, merci de la relier à votre espace client :\n\n1. Vous devez être administrateur de la page Facebook de l’entreprise (accès complet / contrôle total)\n2. Ouvrez ce lien (valable 7 jours) et connectez-vous avec votre compte Facebook :\n${data.url}\n3. Cochez la page de l’entreprise quand Facebook vous le demande, et laissez toutes les autorisations activées\n\nRien n’est publié sans votre validation dans l’espace client. Vous pouvez retirer cet accès à tout moment dans Facebook (Paramètres → Intégrations professionnelles). Merci !`;
+    if(box)box.innerHTML=`<div class="cn-f" style="flex-wrap:wrap"><button class="sbtn ok" onclick="window.location.href=state._fbUrl">Se connecter maintenant (compte Facebook ouvert sur cet appareil)</button><button class="sbtn ghost" onclick="navigator.clipboard.writeText(state._msg.fb).then(()=>toast('Message copié'),()=>toast('Copie impossible'))">Copier le message pour le client</button></div><small class="muted">Lien valable 7 jours, propre à ce projet (${esc(state.client.name)}).</small>`;
+  }catch(e){toast('⚠️ '+(e.message||e));if(box)box.innerHTML=`<div class="pil-warn">⚠️ ${esc(e.message||String(e))}</div>`;}
+}
+async function fbSettings(enabled,time,page,mirror){
+  if(DEMO){toast('Aperçu : non sauvegardé');return;}
+  const {error}=await sb.rpc('fb_settings',{cid:state.client.id,enabled:enabled,dtime:time,page:page,mirror:mirror});
+  if(error){toast('⚠️ '+error.message);return;}
+  await fbLoad(state.client.id);toast(page?'✓ Page choisie':(mirror!=null?(mirror?'✓ Les contenus Instagram partent aussi sur Facebook':'Facebook uniquement quand la case est cochée'):(enabled===true?'✓ Publication automatique activée':(enabled===false?'Publication automatique désactivée':'✓ Heure enregistrée'))));go(state.section);
+}
+async function fbDisconnect(btn){
+  if(btn&&btn.getAttribute('data-c')!=='1'){btn.setAttribute('data-c','1');btn.textContent='⚠️ Confirmer la déconnexion ?';return;}
+  if(DEMO){toast('Aperçu : non sauvegardé');return;}
+  const {error}=await sb.rpc('fb_disconnect',{cid:state.client.id});if(error){toast('⚠️ '+error.message);return;}
+  await fbLoad(state.client.id);toast('Facebook déconnecté');go(state.section);
+}
+async function fbPublishNow(id,btn){
+  if(btn&&btn.getAttribute('data-c')!=='1'){btn.setAttribute('data-c','1');btn.textContent='Confirmer : publier sur Facebook';return;}
+  if(DEMO){toast('Aperçu : rien n’est publié');return;}
+  if(btn){btn.disabled=true;btn.textContent='Publication…';}
+  try{const {data,error}=await sb.functions.invoke('facebook',{body:{action:'publish_now',id}});
+    if(error)throw error;if(data&&data.error)throw new Error(data.error);
+    toast(data.r==='done'?'✓ Publié sur Facebook':(data.r==='wait'?'Facebook traite la vidéo : publication dès que c’est prêt (≤ 5 min)':'⚠️ '+(data.e||data.r)));}
+  catch(e){toast('⚠️ '+(e.message||e));}
+  state.data.content=await fetchTable('content_items',state.client.id);
+  if(document.getElementById('modalRoot')&&document.getElementById('modalRoot').innerHTML)closeContentModal();
+  go(state.section);
+}
+function fbConnectBody(){
+  return `<ol class="cn-steps"><li>La personne qui connecte doit être <b>administrateur de la page Facebook</b> de l’entreprise.</li>
+  <li>Génère le lien de connexion de ce projet, puis connecte-toi (si tu es admin de la page) ou envoie le message au client : <button class="sbtn ok" onclick="fbStart()">Générer le lien de connexion</button><div id="fbLink"></div></li>
+  <li>Une fois connecté, choisis la page puis active la publication automatique dans « Réseaux & publication ».</li></ol><small class="muted">${FB_NOTE}</small>`;
+}
+function fbCard(){
+  const f=state.fb,ag=isAgencyView();
+  if(!f)return `<div class="card ig-card"><div class="ig-h"><span class="pico fb-bg">f</span><div><b>Facebook</b><small>Non connecté — la publication automatique est inactive.</small></div></div>${ag?fbConnectBody():'<p class="muted" style="margin:8px 0 0">Wanderful vous enverra un lien pour relier votre page.</p>'}</div>`;
+  const ch=Array.isArray(f.page_choices)?f.page_choices:[];
+  const pick=!f.page_id||ch.length>1?`<div class="ig-sw"><span>Page publiée</span>${ag?`<select onchange="fbSettings(null,null,this.value,null)"><option value="">— choisir —</option>${ch.map(o=>`<option value="${esc(o.id)}" ${o.id===f.page_id?'selected':''}>${esc(o.name)}</option>`).join('')}</select>`:`<b>${esc(f.page_name||'—')}</b>`}</div>`:'';
+  const av=f.page_picture?`<img src="${esc(f.page_picture)}" alt="" style="width:34px;height:34px;border-radius:50%;object-fit:cover">`:'<span class="pico fb-bg">f</span>';
+  return `<div class="card ig-card"><div class="ig-h">${av}<div><b>${esc(f.page_name||'Page à choisir')}</b><small>page Facebook${f.followers!=null?' · '+nf(f.followers)+' abonnés':''} · connectée le ${dfr((f.connected_at||'').slice(0,10))}${f.user_name?' par '+esc(f.user_name):''}</small></div>
+    <span class="tag ${f.status==='error'?'t-red':'t-green'}" style="margin-left:auto">${f.status==='error'?'Problème de connexion':'Connecté'}</span></div>
+    ${f.status==='error'?`<div class="pil-warn">⚠️ ${esc(f.last_error||'')}${ag?' — reconnecte la page avec le lien ci-dessous.':''}</div>${ag?fbConnectBody():''}`:''}
+    <div class="ig-set">${pick}<div class="ig-sw"><span>Publication automatique</span>${ag?`<div class="p90seg"><button class="${f.publish_enabled?'':'on'}" onclick="fbSettings(false,null,null,null)">Désactivée</button><button class="${f.publish_enabled?'on':''}" onclick="fbSettings(true,null,null,null)">Activée</button></div>`:`<b>${f.publish_enabled?'Activée':'Désactivée'}</b>`}</div>
+    <div class="ig-sw"><span>Contenus Instagram</span>${ag?`<div class="p90seg"><button class="${f.mirror_ig?'on':''}" onclick="fbSettings(null,null,null,true)">Repris sur Facebook</button><button class="${f.mirror_ig?'':'on'}" onclick="fbSettings(null,null,null,false)">Seulement si coché</button></div>`:`<b>${f.mirror_ig?'Repris sur Facebook':'Seulement si coché'}</b>`}</div>
+    <div class="ig-sw"><span>Heure par défaut (Zurich)</span>${ag?`<input type="time" value="${esc(f.default_time||'18:00')}" onchange="fbSettings(null,this.value,null,null)">`:`<b>${esc(f.default_time||'18:00')}</b>`}</div></div>
+    <small class="muted">Seuls les contenus <b>validés</b> partent, à leur date. ${f.mirror_ig?'Chaque contenu Instagram part aussi sur Facebook (avec sa légende Facebook si elle est remplie), sauf si tu décoches Facebook dans le contenu. ':''}${f.publish_enabled&&f.enabled_at?'Activée le '+dtfr(f.enabled_at)+' : les contenus datés d’avant ne sont jamais publiés d’office.':''}</small>
+    ${ag?`<div style="margin-top:10px"><button class="wk-undo" onclick="fbDisconnect(this)">Déconnecter Facebook</button></div>`:''}</div>`;
+}
+function fbQueue(){
+  const items=((state.data&&state.data.content)||[]).filter(x=>fbIncluded(x));
+  if(!items.length)return '';
+  const ag=isAgencyView(),today=new Date();today.setHours(0,0,0,0);
+  const open=items.filter(x=>x.fb_state!=='published').sort((a,b)=>(fbAt(a)||0)-(fbAt(b)||0));
+  const up=open.filter(x=>x.fb_state||!x.scheduled_at||(fbAt(x)||0)>=today).sort((a,b)=>(a.scheduled_at?1:0)-(b.scheduled_at?1:0));
+  const recent=items.filter(x=>x.fb_state==='published').sort((a,b)=>new Date(b.fb_published_at)-new Date(a.fb_published_at)).slice(0,6);
+  const row=it=>{const s=fbPlan(it),at=fbAt(it);
+    const btn=s.k==='nodate'?`<button class="sbtn ghost" onclick="openContentModal('${esc(it.id)}')">Choisir une date</button>`:(ag&&(it.status==='approved'||it.status==='published')&&state.fb&&state.fb.page_id&&['auto','due','old','off','err'].includes(s.k)?`<button class="sbtn ghost" onclick="fbPublishNow('${esc(it.id)}',this)">${s.k==='err'?'Réessayer':'Publier maintenant'}</button>`:'');
+    const own=fbOwnMedia(it).length?' · visuel propre à Facebook':'';
+    return `<div class="igq-row"><div class="igq-when">${at?igDt(at):'<span style="color:#b45309">Sans date</span>'}</div><div class="igq-main" onclick="openContentModal('${esc(it.id)}')"><b>${esc(it.title||'')}</b><small>${(!fbMedia(it).length&&it.status!=='approved'&&it.status!=='published')?'visuel à venir':FB_KIND[fbKind(it)]}${own}${fbLink(it)?' · avec lien':''}</small>${s.d?`<small class="igq-err">${esc(s.d)}</small>`:''}</div><div class="igq-st"><span class="tag ${s.c}">${s.t}</span>${it.fb_permalink?`<a href="${esc(it.fb_permalink)}" target="_blank" rel="noopener">Voir ↗</a>`:''}${btn}</div></div>`;};
+  return `<div class="card" style="margin-top:14px"><div class="section-title" style="margin:0 0 8px">Prochaines publications Facebook</div>${up.length?up.map(row).join(''):'<p class="muted">Aucun contenu Facebook à venir.</p>'}
+    ${recent.length?`<div class="section-title" style="margin:16px 0 8px">Dernières publications Facebook</div>${recent.map(row).join('')}`:''}</div>`;
+}
+function fbTheme(){
+  const f=state.fb,ag=isAgencyView();
+  if(!f)return `<p class="wk-na">Facebook non connecté${ag?' — voir « Sources de données » ci-dessus.':'.'}</p>`;
+  const items=((state.data&&state.data.content)||[]).filter(x=>fbIncluded(x));
+  const now=Date.now(),wk=7*864e5;
+  const pub=items.filter(x=>x.fb_published_at&&now-new Date(x.fb_published_at)<wk);
+  const next=items.filter(x=>{const a=fbAt(x);return a&&a.getTime()>=now&&a.getTime()<now+wk&&x.fb_state!=='published';});
+  const err=items.filter(x=>x.fb_state==='error');
+  const todo=[];
+  if(f.status==='error')todo.push(['Connexion Facebook à rétablir',f.last_error||'','social']);
+  if(!f.page_id)todo.push(['Choisir la page Facebook','Plusieurs pages disponibles','social']);
+  if(err.length)todo.push([`${err.length} publication(s) Facebook en échec`,'Voir le détail et réessayer','social']);
+  if(!f.publish_enabled)todo.push(['Publication automatique Facebook désactivée','Les contenus validés ne partiront pas seuls','social']);
+  return `<div class="wk-row"><span class="wk-l">Ce qui a changé</span><span>7 derniers jours : ${pub.length} publication(s) Facebook. 7 prochains jours : ${next.length} prévue(s).${f.followers!=null?' Abonnés : '+nf(f.followers)+'.':''}</span></div>
+  <div class="wk-row"><span class="wk-l">À faire</span><div class="wk-todo">${todo.length?todo.map(t=>`<div class="wk-t"><div class="wk-tt"><b>${esc(t[0])}</b><small>${esc(t[1])}</small></div><button class="sbtn ghost" onclick="go('${t[2]}')">Ouvrir →</button></div>`).join(''):'<span class="muted">Rien à signaler.</span>'}</div></div>`;
+}
+/* ---- Réglages Facebook dans la fiche du contenu ---- */
+function fbBoxExtra(it){
+  const own=fbOwnMedia(it),m=fbMedia(it),b=it.brief||{};
+  const oneVid=m.length===1&&(igIsVid(m[0])||/video/i.test(fbMediaType(it)));
+  const prev=own.length?renderMedia({id:'fb_'+it.id,media_url:own.length>1?JSON.stringify(own):own[0],media_type:b.fb_media_type||''}):'';
+  return `<div style="margin-top:10px"><label>🔗 Lien (facultatif, cliquable sur Facebook)</label><input id="prodFbLink" type="url" placeholder="https://…" value="${esc(b.fb_link||'')}" style="width:100%;box-sizing:border-box"><div style="font-size:11px;color:var(--muted);margin-top:4px">Ajouté à la fin du texte (ou en aperçu de lien pour un post sans visuel).</div></div>
+  ${oneVid?`<div style="margin-top:10px"><label>🎬 Format de la vidéo sur Facebook</label><select id="prodFbFormat"><option value="reel" ${b.fb_format!=='video'?'selected':''}>Reel (vertical 9:16, 3 à 90 s)</option><option value="video" ${b.fb_format==='video'?'selected':''}>Vidéo classique (tout format)</option></select></div>`:''}
+  <div style="margin-top:10px"><label>🖼️ Visuel sur Facebook</label>
+    ${own.length?`<div style="font-size:12px;color:#1b4bb8;font-weight:700;margin:2px 0 6px">Visuel propre à Facebook (${own.length} fichier${own.length>1?'s':''})</div><div style="max-width:260px">${prev}</div>`:'<div style="font-size:12px;color:var(--muted);margin:2px 0 6px">Même visuel qu’Instagram.</div>'}
+    <input type="file" id="fbFile" accept="image/*,video/*" multiple style="display:none" onchange="uploadFbMedia('${esc(it.id)}')">
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="sbtn ghost" style="font-size:12px" onclick="document.getElementById('fbFile').click()">${own.length?'🔁 Remplacer le visuel Facebook':'📎 Mettre un autre visuel pour Facebook'}</button>${own.length?`<button class="sbtn ghost" style="font-size:12px" onclick="clearFbMedia('${esc(it.id)}')">↩︎ Reprendre le visuel Instagram</button>`:''}</div>
+    <div id="fbProg" style="font-size:12px;color:var(--muted);margin-top:6px"></div></div>
+  ${(state.fb&&isAgencyView()&&(it.status==='approved'||it.status==='published')&&it.fb_state!=='published'&&state.fb.page_id&&!fbProblems(it).length)?`<button class="sbtn ok" style="margin-top:10px" onclick="fbPublishNow('${esc(it.id)}',this)">📘 Publier maintenant sur Facebook</button>`:''}
+  ${it.fb_state==='error'?`<div class="pil-warn" style="margin-top:8px">⚠️ ${esc(it.fb_error||'')}</div>`:''}${it.fb_permalink?`<div style="margin-top:8px"><a href="${esc(it.fb_permalink)}" target="_blank" rel="noopener">Voir sur Facebook ↗</a></div>`:''}`;
+}
+async function uploadFbMedia(id){
+  const inp=document.getElementById('fbFile');
+  const fs=(inp&&inp.files)?Array.prototype.slice.call(inp.files):[];if(!fs.length)return;
+  fs.sort(function(a,b){return String(a.name).localeCompare(String(b.name),'fr',{numeric:true,sensitivity:'base'});});
+  const prog=document.getElementById('fbProg');
+  if(fs.some(f=>f.size>52428800)){if(inp)inp.value='';toast('Fichier trop lourd (max 50 Mo)');return;}
+  const it=state.data.content.find(c=>String(c.id)===String(id));if(!it)return;
+  const keep=netPayload(id);
+  if(DEMO){const du=fs.map(f=>URL.createObjectURL(f));it.brief=Object.assign({},(keep&&keep.brief)||it.brief||{},{fb_media:du,fb_media_type:fs[0].type});toast('✓ Visuel Facebook déposé (démo)');openContentModal(id);return;}
+  try{
+    const urls=[];const total=fs.reduce((a,f)=>a+f.size,0)||1;let done=0;
+    for(let n=0;n<fs.length;n++){const f=fs[n];
+      const ext=(f.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,'');
+      const path=state.client.id+'/'+id+'/fb-'+(n+1)+'.'+ext;
+      await uploadXhr(path,f,(function(base){return function(loaded){if(prog)prog.innerHTML=progHtml('Envoi du visuel Facebook — '+Math.round((base+loaded)/total*100)+' %',Math.round((base+loaded)/total*100),fmtMo(base+loaded)+' / '+fmtMo(total));};})(done));
+      done+=f.size;urls.push(sb.storage.from('content').getPublicUrl(path).data.publicUrl+'?t='+Date.now());}
+    const brief=Object.assign({},(keep&&keep.brief)||it.brief||{},{fb_media:urls,fb_media_type:fs[0].type});
+    const upd={brief};if(keep)upd.caption=keep.cap;
+    const {error}=await sb.from('content_items').update(upd).eq('id',id);if(error)throw error;
+    it.brief=brief;if(keep)it.caption=keep.cap;toast('✓ Visuel Facebook déposé');openContentModal(id);
+  }catch(e){if(prog)prog.innerHTML='<div class="pil-warn">⚠️ '+esc(e.message||String(e))+'</div>';toast('Erreur d’envoi');}
+}
+async function clearFbMedia(id){
+  const it=state.data.content.find(c=>String(c.id)===String(id));if(!it)return;
+  const keep=netPayload(id);const brief=Object.assign({},(keep&&keep.brief)||it.brief||{});delete brief.fb_media;delete brief.fb_media_type;
+  if(!DEMO){const upd={brief};if(keep)upd.caption=keep.cap;const {error}=await sb.from('content_items').update(upd).eq('id',id);if(error){toast('⚠️ '+error.message);return;}}
+  it.brief=brief;if(keep)it.caption=keep.cap;toast('✓ Facebook reprend le visuel Instagram');openContentModal(id);
+}
 /* =================== LINKEDIN : page entreprise + publication automatique =================== */
 const LI_NOTE='Tant que LinkedIn n’a pas accordé l’accès « Community Management API » à l’app Wanderful, la connexion ne fonctionne pas (demande envoyée, réponse par email).';
 function liAt(it){if(!it.scheduled_at)return null;const li=state.li||{};
@@ -2185,7 +2359,7 @@ const VIEWS={
     const waiting=state.data.content.filter(c=>c.status==='changes_requested');
     const wBlock=waiting.length?`<div class="section-title" style="margin-top:26px">⏳ En cours de correction chez Wanderful</div>`+waiting.map(it=>`<div class="card" style="margin-bottom:12px;border-left:3px solid #B98DF2"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:5px">${netsOf(it).map(function(n){return netBadge(n);}).join('')} <span>· ${typeLabel(it)}</span></div><b style="font-size:15px">${esc(it.title)}</b><div class="meta"><span>🗓️ ${fmtDate(it.scheduled_at)}</span></div>${threadHtml(it,'Ta demande de modification')}<div style="font-size:12.5px;color:var(--muted);margin-top:10px">Wanderful a bien reçu ta demande. La version corrigée réapparaîtra ici pour validation.</div></div>`).join(''):'';
     if(!items.length)return `<div class="sec-head"><h3>Validation contenu</h3><p>Vos contenus avant publication.</p></div>`+(wBlock||`<div class="card empty">🎉 Tout est validé ! Aucun contenu en attente.</div>`);
-    return `<div class="sec-head"><h3>Validation contenu</h3><p>${items.length} contenu(s) attendent votre feu vert avant publication automatique.</p></div>`+items.map(it=>`<div class="card" style="margin-bottom:14px"><div class="appr"><div class="apprv-media">${renderMedia(it)||('<div class="preview" style="width:100%;aspect-ratio:4/5;box-sizing:border-box">'+esc(it.type)+'<br><span style="opacity:.8;font-weight:400">Visuel en préparation</span></div>')}</div><div class="body"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:5px">${netsOf(it).map(function(n){return netBadge(n);}).join('')} <span>· ${typeLabel(it)}</span></div><b style="font-size:15px">${esc(it.title)}</b><div class="meta"><span>🗓️ ${fmtDate(it.scheduled_at)}</span></div>${revBanner(it)}${netsOf(it).map(function(n){return '<div style="margin-top:9px">'+(netsOf(it).length>1?'<div style="font-size:11px;font-weight:700;color:#8a90a6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px">'+({facebook:'Texte Facebook',linkedin:'Texte LinkedIn',tiktok:'Texte TikTok'}[n]||'Texte Instagram')+'</div>':'')+'<div class="caption-box">'+esc(capFor(it,n))+'</div></div>';}).join('')}${netsOf(it).includes('tiktok')?'<div style="margin-top:12px"><div style="font-size:11px;font-weight:700;color:#8a90a6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px">Publication TikTok</div><div data-tt-for="'+esc(it.id)+'" data-ed="1">'+ttSettingsHtml(it,true)+'</div></div>':''}${threadHtml(it,'Historique des échanges')}<div class="btn-row"><button class="sbtn ghost" onclick="toggleReqBox('${it.id}')">✏️ Demander une modif</button><button class="sbtn ok" onclick="act('${it.id}','approved')">✓ Approuver</button></div><div id="rq_${it.id}" style="display:none;margin-top:12px;padding:14px;background:#f3ecff;border-radius:12px"><div style="font-size:12.5px;font-weight:800;color:#7a4fd0;margin-bottom:6px">✏️ Qu'est-ce qui doit changer ?</div><textarea id="rqt_${it.id}" placeholder="Ex : sur la slide 2 mon prénom est mal écrit, et j'aimerais un ton plus direct dans la légende…" style="width:100%;min-height:110px;padding:11px 13px;border:1.5px solid #e6dcf7;border-radius:10px;font:inherit;font-size:14px;resize:vertical;background:#fff;box-sizing:border-box"></textarea><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:9px"><button class="sbtn ghost" onclick="toggleReqBox('${it.id}')">Annuler</button><button class="sbtn ok" id="rqb_${it.id}" onclick="sendChangeRequest('${it.id}')">Envoyer ma demande →</button></div><div style="font-size:11.5px;color:var(--muted);margin-top:7px">Ta demande arrive tout de suite dans l'espace de Wanderful.</div></div></div></div></div>`).join('')+wBlock;
+    return `<div class="sec-head"><h3>Validation contenu</h3><p>${items.length} contenu(s) attendent votre feu vert avant publication automatique.</p></div>`+items.map(it=>`<div class="card" style="margin-bottom:14px"><div class="appr"><div class="apprv-media">${renderMedia(it)||('<div class="preview" style="width:100%;aspect-ratio:4/5;box-sizing:border-box">'+esc(it.type)+'<br><span style="opacity:.8;font-weight:400">Visuel en préparation</span></div>')}</div><div class="body"><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-bottom:5px">${netsOf(it).map(function(n){return netBadge(n);}).join('')} <span>· ${typeLabel(it)}</span></div><b style="font-size:15px">${esc(it.title)}</b><div class="meta"><span>🗓️ ${fmtDate(it.scheduled_at)}</span></div>${revBanner(it)}${netsOf(it).map(function(n){return '<div style="margin-top:9px">'+(netsOf(it).length>1?'<div style="font-size:11px;font-weight:700;color:#8a90a6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px">'+({facebook:'Texte Facebook',linkedin:'Texte LinkedIn',tiktok:'Texte TikTok'}[n]||'Texte Instagram')+'</div>':'')+'<div class="caption-box">'+esc(capFor(it,n))+(n==='facebook'&&fbLink(it)?'\n\n'+esc(fbLink(it)):'')+'</div>'+(n==='facebook'&&fbOwnMedia(it).length?'<div style="font-size:11.5px;color:#1b4bb8;margin-top:5px;font-weight:600">Visuel propre à Facebook :</div><div style="max-width:240px;margin-top:4px">'+renderMedia({id:'fbv_'+it.id,media_url:fbOwnMedia(it).length>1?JSON.stringify(fbOwnMedia(it)):fbOwnMedia(it)[0],media_type:(it.brief||{}).fb_media_type||''})+'</div>':'')+'</div>';}).join('')}${netsOf(it).includes('tiktok')?'<div style="margin-top:12px"><div style="font-size:11px;font-weight:700;color:#8a90a6;margin-bottom:3px;text-transform:uppercase;letter-spacing:.4px">Publication TikTok</div><div data-tt-for="'+esc(it.id)+'" data-ed="1">'+ttSettingsHtml(it,true)+'</div></div>':''}${threadHtml(it,'Historique des échanges')}<div class="btn-row"><button class="sbtn ghost" onclick="toggleReqBox('${it.id}')">✏️ Demander une modif</button><button class="sbtn ok" onclick="act('${it.id}','approved')">✓ Approuver</button></div><div id="rq_${it.id}" style="display:none;margin-top:12px;padding:14px;background:#f3ecff;border-radius:12px"><div style="font-size:12.5px;font-weight:800;color:#7a4fd0;margin-bottom:6px">✏️ Qu'est-ce qui doit changer ?</div><textarea id="rqt_${it.id}" placeholder="Ex : sur la slide 2 mon prénom est mal écrit, et j'aimerais un ton plus direct dans la légende…" style="width:100%;min-height:110px;padding:11px 13px;border:1.5px solid #e6dcf7;border-radius:10px;font:inherit;font-size:14px;resize:vertical;background:#fff;box-sizing:border-box"></textarea><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:9px"><button class="sbtn ghost" onclick="toggleReqBox('${it.id}')">Annuler</button><button class="sbtn ok" id="rqb_${it.id}" onclick="sendChangeRequest('${it.id}')">Envoyer ma demande →</button></div><div style="font-size:11.5px;color:var(--muted);margin-top:7px">Ta demande arrive tout de suite dans l'espace de Wanderful.</div></div></div></div></div>`).join('')+wBlock;
   },
   ideas(){
     const items=(state.data.content||[]).slice().sort((a,b)=>(new Date(a.scheduled_at))-(new Date(b.scheduled_at)));
@@ -2452,7 +2626,7 @@ function typeNo(it){
 }
 function typeLabel(it){var n=typeNo(it);return esc((it&&it.type)||'')+(n?(' '+n):'');}
 function ctBadgeN(it){var n=typeNo(it),b=ctBadge(it&&it.type);return n?b.replace(/<\/span>$/,' '+n+'</span>'):b;}
-function netsOf(it){var b=(it&&it.brief)||{};var n=Array.isArray(b.nets)?b.nets:null;if(n&&n.length)return n;var p=String((it&&it.platform)||'instagram').toLowerCase();return [p.indexOf('face')>=0?'facebook':(p.indexOf('linkedin')>=0?'linkedin':(p.indexOf('tiktok')>=0?'tiktok':'instagram'))];}
+function netsOf(it){var b=(it&&it.brief)||{};var n=Array.isArray(b.nets)?b.nets:null;var r;if(n&&n.length)r=n.slice();else{var p=String((it&&it.platform)||'instagram').toLowerCase();r=[p.indexOf('face')>=0?'facebook':(p.indexOf('linkedin')>=0?'linkedin':(p.indexOf('tiktok')>=0?'tiktok':'instagram'))];}if(r.indexOf('facebook')<0&&typeof fbIncluded==='function'&&fbIncluded(it)){var i=r.indexOf('instagram');r.splice(i+1,0,'facebook');}return r;}
 function netBadge(n){if(n==='tiktok')return '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;background:#ecebf2;color:#16161d">\u{1F3B5} TikTok</span>';if(n==='linkedin')return '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;background:#e8f1f8;color:#0a66c2">\u{1F4BC} LinkedIn</span>';var fb=(n==='facebook');return '<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:700;background:'+(fb?'#e7f0fe':'#fdeef6')+';color:'+(fb?'#1b4bb8':'#b8317a')+'">'+(fb?'\u{1F4D8} Facebook':'\u{1F4F8} Instagram')+'</span>';}
 const CHAN={instagram:['📸','Instagram','#fdeef6','#b8317a'],facebook:['📘','Facebook','#e7f0fe','#1b4bb8'],linkedin:['💼','LinkedIn','#e8f1f8','#0a66c2'],tiktok:['🎵','TikTok','#ecebf2','#16161d'],youtube:['▶️','YouTube','#fdecec','#c4302b'],pinterest:['📌','Pinterest','#fdeaec','#bd081c'],stories:['⭕','Stories','#f6eefc','#7a4fd0'],newsletter:['✉️','Newsletter','#eaf5ec','#2f7d32'],site:['🌐','Site web','#eef1fb','#3b5bdb']};
 function chansOf(it){var b=(it&&it.brief)||{};var a=Array.isArray(b.chans)?b.chans.filter(function(x){return CHAN[x];}):null;return (a&&a.length)?a:netsOf(it);}
@@ -2616,10 +2790,10 @@ function openContentModal(id){
         <span id="net_linkedin" data-on="${NETS.indexOf('linkedin')>=0?'1':'0'}" onclick="toggleNet('linkedin')">💼 LinkedIn</span>
         <span id="net_tiktok" data-on="${NETS.indexOf('tiktok')>=0?'1':'0'}" onclick="toggleNet('tiktok')">🎵 TikTok</span>
       </div>
-      <div style="font-size:11px;color:var(--muted);margin-top:6px">Même visuel, légende adaptée à chaque réseau.</div>
+      <div style="font-size:11px;color:var(--muted);margin-top:6px">Même visuel, légende adaptée à chaque réseau${state.fb&&state.fb.mirror_ig?' · Facebook est coché d’office pour les contenus Instagram (décoche-le si ce post ne doit pas y aller)':''}.</div>
     </div>
     <div class="field" id="igBox" style="margin-top:14px"><label>✍️ Légende Instagram</label><textarea id="prodCaption" style="min-height:130px">${esc(it.caption||'')}</textarea><div style="font-size:11px;color:var(--muted);margin-top:4px">Les 2 premières lignes sont décisives · les liens ne sont pas cliquables · hashtags en fin de texte.</div></div>
-    <div class="field" id="fbBox" style="margin-top:14px"><label>✍️ Légende Facebook</label><textarea id="prodCaptionFb" style="min-height:130px">${esc(capFor(it,'facebook'))}</textarea><div style="font-size:11px;color:var(--muted);margin-top:4px">Ici les liens sont cliquables, le texte long fonctionne bien, et les hashtags sont inutiles.</div><button class="sbtn ghost" style="margin-top:7px;font-size:12px" onclick="copyIgToFb()">⧉ Reprendre la légende Instagram</button></div>
+    <div class="field" id="fbBox" style="margin-top:14px"><label>✍️ Légende Facebook</label><textarea id="prodCaptionFb" style="min-height:130px">${esc(capFor(it,'facebook'))}</textarea><div style="font-size:11px;color:var(--muted);margin-top:4px">Ici les liens sont cliquables, le texte long fonctionne bien, et les hashtags sont inutiles.</div><button class="sbtn ghost" style="margin-top:7px;font-size:12px" onclick="copyIgToFb()">⧉ Reprendre la légende Instagram</button>${fbBoxExtra(it)}</div>
     <div class="field" id="liBox" style="margin-top:14px"><label>✍️ Texte LinkedIn</label><textarea id="prodCaptionLi" style="min-height:130px">${esc(capFor(it,'linkedin'))}</textarea><div style="font-size:11px;color:var(--muted);margin-top:4px">Ton plus professionnel · les liens sont cliquables · 3–5 hashtags maximum.</div></div>
     <div class="field" id="ttBox" style="margin-top:14px"><label>✍️ Texte TikTok</label><textarea id="prodCaptionTt" style="min-height:100px">${esc(capFor(it,'tiktok'))}</textarea><div style="font-size:11px;color:var(--muted);margin-top:4px">Court et direct · 3–5 hashtags · 2 200 caractères maximum · une seule vidéo par publication.</div><label style="margin-top:12px;display:block">🎵 Réglages de publication TikTok</label><div data-tt-for="${esc(it.id)}" data-ed="1">${ttSettingsHtml(it,true)}</div></div>
     ${it.status==='changes_requested'?`<div class="field" style="margin-top:14px"><label>💬 Réponse au client (optionnel)</label><textarea id="prodReply" style="min-height:70px" placeholder="Ex : c'est corrigé, j'ai aussi retravaillé la slide 3."></textarea><div style="font-size:11px;color:var(--muted);margin-top:4px">Ce message s'affichera au-dessus de la nouvelle version, côté client.</div></div>`:''}
@@ -2851,6 +3025,7 @@ function netPayload(id){
   const it=state.data.content.find(c=>String(c.id)===String(id));
   const liEl=document.getElementById('prodCaptionLi'),ttEl=document.getElementById('prodCaptionTt');
   const nb=Object.assign({},(it&&it.brief)||{},{nets:nets,caption_fb:fbEl?fbEl.value:'',caption_li:liEl?liEl.value:'',caption_tt:ttEl?ttEl.value:''});
+  nb.fb_off=nets.indexOf('facebook')<0;const lkEl=document.getElementById('prodFbLink'),fmEl=document.getElementById('prodFbFormat');if(lkEl)nb.fb_link=lkEl.value.trim();if(fmEl)nb.fb_format=fmEl.value;
   return {cap:t.value,brief:nb,it:it};
 }
 async function saveContentCaption(id){
@@ -2908,7 +3083,7 @@ async function submitOnboarding(){
 }
 async function act(id,status){const it=state.data.content.find(c=>String(c.id)===String(id));if(!it)return;
   if(status==='approved'&&netsOf(it).includes('tiktok')&&state.tt&&!ttSet(it).privacy){toast('Choisis d’abord qui peut voir la vidéo sur TikTok');return;}
-  if(status==='approved'&&netsOf(it).some(n=>['instagram','linkedin','tiktok'].includes(n))){const at=igAt(it);if(!at||at.getTime()<Date.now()+2*60000){askNewDate(it);return;}}
+  if(status==='approved'&&netsOf(it).some(n=>['instagram','facebook','linkedin','tiktok'].includes(n))){const at=igAt(it);if(!at||at.getTime()<Date.now()+2*60000){askNewDate(it);return;}}
   if(!await updateContentStatus(it,status))return;toast(status==='approved'?'✓ Contenu approuvé':'✏️ Demande de modification envoyée');go(state.section);}
 function askNewDate(it){
   const now=new Date(Date.now()+15*60000);

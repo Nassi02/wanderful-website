@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.tiktok]
 verify_jwt = false
+
+[functions.facebook]
+verify_jwt = false
