@@ -41,14 +41,16 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}
 @keyframes bgShimmer{0%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(20deg)}100%{filter:hue-rotate(0deg)}}
 @media(prefers-reduced-motion:reduce){.bg,.bg2{animation:none}}
 
-/* forme liquide : le noir disparait en mode screen sur le bloc sombre */
-.ap-forme{position:relative;z-index:1;mix-blend-mode:screen;
-  width:min(74%,560px);margin:0 auto -18px;
-  animation:apFormeFloat 15s ease-in-out infinite;}
-.ap-forme video{width:100%;height:auto;display:block;}
-@keyframes apFormeFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-12px) scale(1.02)}}
-@media(max-width:700px){.ap-forme{width:92%;}}
-@media(prefers-reduced-motion:reduce){.ap-forme{animation:none;}}
+/* forme liquide detouree : remplace la pastille ronde */
+.ap-birth .ap-mark{width:clamp(200px,26vw,320px);height:auto;aspect-ratio:3/2;
+  margin:26px auto 0;background:none;box-shadow:none;border-radius:0;
+  display:block;position:relative;place-items:initial;
+  animation:apMarkFloat 15s ease-in-out infinite;}
+.ap-birth .ap-mark img,.ap-birth .ap-mark canvas{width:100%;height:100%;display:block;object-fit:contain;}
+.ap-birth .ap-mark canvas{position:absolute;inset:0;}
+.ap-birth .ap-mark video{display:none;}
+@keyframes apMarkFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-11px) scale(1.03)}}
+@media(prefers-reduced-motion:reduce){.ap-birth .ap-mark{animation:none;}}
 
 /* video iridescente dans le bloc magie */
 .ap-magic{position:relative;isolation:isolate;}
@@ -636,10 +638,9 @@ footer{margin-top:76px;padding:54px 0 34px;}
     <p class="ap-lead ap-rev" data-d="2" style="margin:26px auto 0;text-align:center;">Entre ce que la technologie
       peut produire et ce que les humains doivent encore décider.</p>
     <div class="ap-mark ap-rev" data-d="3" aria-hidden="true">
-      <svg viewBox="0 0 38 44" fill="none">
-        <polygon points="19,2 21.5,9 29,9 23,13.5 25.5,21 19,16.5 12.5,21 15,13.5 9,9 16.5,9" fill="#fff" opacity=".95"/>
-        <line x1="19" y1="21" x2="8" y2="39" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/>
-      </svg>
+      <img id="apMarkStill" src="assets/bg/forme-alpha.png" alt="" width="660" height="440" decoding="async">
+      <canvas id="apMarkCanvas" width="520" height="347" hidden></canvas>
+      <video id="apMarkVideo" muted loop playsinline preload="none" width="1100" height="734"></video>
     </div>
   </div>
 </section>
@@ -703,11 +704,14 @@ footer{margin-top:76px;padding:54px 0 34px;}
   <div class="ap-magic-bg" aria-hidden="true">
     <video id="apMagicVideo" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1"></video>
   </div>
-  <div class="ap-forme" aria-hidden="true">
-    <video id="apFormeVideo" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1"
-           poster="assets/bg/forme.jpg" width="1100" height="734"></video>
-  </div>
   <div class="ap-wrap" style="text-align:center">
+    <svg class="ap-wand" viewBox="0 0 120 90" fill="none" aria-hidden="true">
+      <polygon class="w-star" points="60,6 64,22 80,22 67,32 72,49 60,39 48,49 53,32 40,22 56,22" fill="#E4DBFF"/>
+      <circle cx="26" cy="14" r="2.4" fill="#C9BCFF" opacity=".8"/><circle cx="96" cy="20" r="1.8" fill="#C9BCFF" opacity=".6"/>
+      <circle cx="34" cy="38" r="1.6" fill="#C9BCFF" opacity=".5"/>
+      <line x1="60" y1="49" x2="24" y2="84" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+      <line x1="33" y1="75" x2="25" y2="84" stroke="#B98DF2" stroke-width="5" stroke-linecap="round"/>
+    </svg>
     <h2 class="ap-h ap-rev" style="max-width:none">La magie, oui.<br>
       <span class="ap-grad">Mais jamais par hasard.</span></h2>
     <p class="ap-lead ap-rev" data-d="2" style="margin:30px auto 0;text-align:center;">On aime appeler ça de la magie.
@@ -1048,45 +1052,90 @@ if(t&&m)t.addEventListener('click',()=>{const open=getComputedStyle(m).display!=
 })();
 </script>
 <script>
-/* videos du bloc magie : chargees a l'approche, hors petit ecran, reduction des mouvements et economie de donnees */
+/* fond video du bloc magie */
 (function(){
-  var sec = document.getElementById('apMagic');
-  var vids = [
-    {el: document.getElementById('apMagicVideo'), base: 'assets/bg/wanderful-bg'},
-    {el: document.getElementById('apFormeVideo'), base: 'assets/bg/forme'}
-  ].filter(function(x){ return x.el; });
-  if (!sec || !vids.length) return;
-
+  var v = document.getElementById('apMagicVideo'), sec = document.getElementById('apMagic');
+  if (!v || !sec) return;
   var rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var small = window.matchMedia && matchMedia('(max-width: 980px)').matches;
   var c = navigator.connection || {};
-  var save = c.saveData === true || /(^|-)2g$/.test(c.effectiveType || '');
-  if (rm || small || save) return;
-
+  if (rm || small || c.saveData === true || /(^|-)2g$/.test(c.effectiveType || '')) return;
   var started = false;
-  function play(v){ var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+  function play(){ var p = v.play(); if (p && p.catch) p.catch(function(){}); }
   function start(){
     if (started) return; started = true;
-    vids.forEach(function(x){
-      [[x.base + '.webm','video/webm'], [x.base + '.mp4','video/mp4']].forEach(function(s){
-        var e = document.createElement('source'); e.src = s[0]; e.type = s[1]; x.el.appendChild(e);
-      });
-      x.el.addEventListener('canplay', function(){ x.el.classList.add('on'); }, {once:true});
-      x.el.load();
-      play(x.el);
-    });
+    [['assets/bg/wanderful-bg.webm','video/webm'],['assets/bg/wanderful-bg.mp4','video/mp4']]
+      .forEach(function(s){ var e=document.createElement('source'); e.src=s[0]; e.type=s[1]; v.appendChild(e); });
+    v.addEventListener('canplay', function(){ v.classList.add('on'); }, {once:true});
+    v.load(); play();
   }
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        if (e.isIntersecting) { start(); vids.forEach(function(x){ play(x.el); }); }
-        else if (started) { vids.forEach(function(x){ x.el.pause(); }); }
-      });
-    }, {rootMargin:'300px 0px'}).observe(sec);
+    new IntersectionObserver(function(es){ es.forEach(function(e){
+      if (e.isIntersecting) { start(); play(); } else if (started) { v.pause(); }
+    }); }, {rootMargin:'300px 0px'}).observe(sec);
   } else { start(); }
-  document.addEventListener('visibilitychange', function(){
-    if (document.hidden) vids.forEach(function(x){ x.el.pause(); });
-  });
+  document.addEventListener('visibilitychange', function(){ if (document.hidden) v.pause(); });
+})();
+
+/* forme liquide detouree en direct : la luminance devient la transparence */
+(function(){
+  var wrap = document.querySelector('.ap-mark');
+  var still = document.getElementById('apMarkStill');
+  var cv = document.getElementById('apMarkCanvas');
+  var v = document.getElementById('apMarkVideo');
+  if (!wrap || !still || !cv || !v) return;
+  var rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var small = window.matchMedia && matchMedia('(max-width: 980px)').matches;
+  var c = navigator.connection || {};
+  if (rm || small || c.saveData === true || /(^|-)2g$/.test(c.effectiveType || '')) return;
+
+  var ctx;
+  try { ctx = cv.getContext('2d', {willReadFrequently:true}); } catch(e) { return; }
+  if (!ctx) return;
+
+  var W = cv.width, H = cv.height, visible = false, started = false, raf = 0, last = 0;
+
+  function draw(ts){
+    raf = requestAnimationFrame(draw);
+    if (!visible || v.readyState < 2) return;
+    if (ts - last < 42) return;            /* ~24 images par seconde */
+    last = ts;
+    ctx.drawImage(v, 0, 0, W, H);
+    var img = ctx.getImageData(0, 0, W, H), p = img.data;
+    for (var i = 0; i < p.length; i += 4) {
+      var r = p[i], g = p[i+1], b = p[i+2];
+      var a = (r*0.299 + g*0.587 + b*0.114) / 150;
+      if (a > 1) a = 1;
+      var d = a < 0.06 ? 0.06 : a;
+      var rr = r/d, gg = g/d, bb = b/d;
+      p[i]   = rr > 255 ? 255 : rr;
+      p[i+1] = gg > 255 ? 255 : gg;
+      p[i+2] = bb > 255 ? 255 : bb;
+      p[i+3] = a * 255;
+    }
+    ctx.putImageData(img, 0, 0);
+  }
+
+  function start(){
+    if (started) return; started = true;
+    [['assets/bg/forme.webm','video/webm'],['assets/bg/forme.mp4','video/mp4']]
+      .forEach(function(s){ var e=document.createElement('source'); e.src=s[0]; e.type=s[1]; v.appendChild(e); });
+    v.addEventListener('canplay', function(){
+      cv.hidden = false; still.style.visibility = 'hidden';
+      if (!raf) raf = requestAnimationFrame(draw);
+    }, {once:true});
+    v.load();
+    var p = v.play(); if (p && p.catch) p.catch(function(){});
+  }
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(es){ es.forEach(function(e){
+      visible = e.isIntersecting;
+      if (visible) { start(); var q=v.play(); if(q&&q.catch) q.catch(function(){}); }
+      else if (started) { v.pause(); }
+    }); }, {rootMargin:'250px 0px'}).observe(wrap);
+  } else { visible = true; start(); }
+  document.addEventListener('visibilitychange', function(){ if (document.hidden) v.pause(); });
 })();
 </script>
 <script src="/assistant.js" defer></script>
