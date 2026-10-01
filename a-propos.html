@@ -41,6 +41,18 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}
 @keyframes bgShimmer{0%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(20deg)}100%{filter:hue-rotate(0deg)}}
 @media(prefers-reduced-motion:reduce){.bg,.bg2{animation:none}}
 
+/* fond video iridescent */
+.ap-bgvid{position:fixed;inset:0;z-index:-4;overflow:hidden;
+  background:url('assets/bg/wanderful-bg.jpg') center center/cover no-repeat;}
+.ap-bgvid video{width:100%;height:100%;object-fit:cover;display:block;
+  opacity:0;transition:opacity 1.4s ease;}
+.ap-bgvid video.on{opacity:1;}
+.ap-bgveil{position:fixed;inset:0;z-index:-3;pointer-events:none;
+  background:
+    radial-gradient(120% 70% at 50% 0%, rgba(255,255,255,.55), rgba(255,255,255,0) 60%),
+    linear-gradient(180deg,rgba(245,243,252,.84) 0%,rgba(245,243,252,.76) 45%,rgba(245,243,252,.86) 100%);}
+@media(max-width:980px){.ap-bgveil{background:linear-gradient(180deg,rgba(245,243,252,.88),rgba(245,243,252,.82));}}
+
 /* nav */
 header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .nav{display:flex;align-items:center;justify-content:space-between;background:var(--glass);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border:1px solid rgba(255,255,255,.6);border-radius:var(--r-pill);padding:11px 12px 11px 26px;box-shadow:var(--shadow-soft);}
@@ -489,6 +501,10 @@ footer{margin-top:76px;padding:54px 0 34px;}
 </style>
 </head>
 <body>
+<div class="ap-bgvid" aria-hidden="true">
+  <video id="apBgVideo" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1"></video>
+</div>
+<div class="ap-bgveil" aria-hidden="true"></div>
 <header>
   <div class="wrap">
     <nav class="nav">
@@ -1019,6 +1035,26 @@ if(t&&m)t.addEventListener('click',()=>{const open=getComputedStyle(m).display!=
       stage.style.setProperty('--mx', 0); stage.style.setProperty('--my', 0);
     }, {passive:true});
   }
+})();
+</script>
+<script>
+/* fond video : seulement sur grand ecran, hors reduction des mouvements et hors economie de donnees */
+(function(){
+  var v = document.getElementById('apBgVideo');
+  if (!v) return;
+  var rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var small = window.matchMedia && matchMedia('(max-width: 980px)').matches;
+  var c = navigator.connection || {};
+  var save = c.saveData === true || /(^|-)2g$/.test(c.effectiveType || '');
+  if (rm || small || save) return;
+  [['assets/bg/wanderful-bg.webm','video/webm'],['assets/bg/wanderful-bg.mp4','video/mp4']]
+    .forEach(function(s){ var e=document.createElement('source'); e.src=s[0]; e.type=s[1]; v.appendChild(e); });
+  v.addEventListener('canplay', function(){ v.classList.add('on'); }, {once:true});
+  v.load();
+  var p = v.play(); if (p && p.catch) p.catch(function(){});
+  document.addEventListener('visibilitychange', function(){
+    if (document.hidden) { v.pause(); } else { var q=v.play(); if(q&&q.catch) q.catch(function(){}); }
+  });
 })();
 </script>
 <script src="/assistant.js" defer></script>
