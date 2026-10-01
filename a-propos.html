@@ -279,7 +279,7 @@ footer{margin-top:76px;padding:54px 0 34px;}
 .ap-founder{padding:var(--ap-gap) 0;}
 .ap-founder-grid{display:grid;grid-template-columns:38% 1fr;gap:64px;align-items:center;}
 .ap-photo{aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;position:relative;
-  background:linear-gradient(150deg,#E8E4FB,#CED0F2 55%,#B8A6F5);box-shadow:var(--shadow-card);}
+  background:#E8E4FB;box-shadow:var(--shadow-card);}
 .ap-photo img{width:100%;height:100%;object-fit:cover;display:block;}
 .ap-photo .ap-photo-hint{position:absolute;inset:auto 0 0 0;padding:18px;font-size:12px;
   letter-spacing:.14em;color:#fff;opacity:.85;text-transform:uppercase;}
@@ -519,10 +519,9 @@ footer{margin-top:76px;padding:54px 0 34px;}
 <section class="ap-founder">
   <div class="ap-wrap">
     <div class="ap-founder-grid">
-      <div class="ap-photo ap-rev" aria-hidden="true">
-        <!-- Pour ajouter la photo : placer le fichier dans assets/ puis remplacer ce bloc par
-             <img src="assets/nassima.jpg" alt="Nassima Rizzotti, fondatrice de Wanderful Marketing"> -->
-        <span class="ap-photo-hint">Nassima Rizzotti · Fondatrice</span>
+      <div class="ap-photo ap-rev">
+        <img src="assets/nassima.jpg" width="720" height="900" loading="lazy" decoding="async"
+             alt="Nassima Rizzotti, fondatrice de Wanderful Marketing">
       </div>
       <div>
         <div class="ap-label ap-rev">La fondatrice</div>
