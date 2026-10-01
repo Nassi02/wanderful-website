@@ -76,6 +76,13 @@
   .nav-item svg{width:18px;height:18px;flex-shrink:0}
   .nav-item .badge{margin-left:auto;background:var(--coral);color:#fff;font-size:10.5px;font-weight:700;border-radius:20px;padding:1px 7px}
   .side-foot{margin-top:auto;padding-top:14px;border-top:1px solid var(--line)}
+  .to-site{text-decoration:none;color:var(--muted)}
+  .to-site:hover{background:#f6f3fe;color:var(--ink)}
+  .brand-link{display:block;text-decoration:none;border-radius:8px}
+  .brand-link:hover{opacity:.78}
+  .login-back{display:inline-flex;align-items:center;gap:6px;margin-top:16px;font-size:12.5px;font-weight:600;color:var(--muted);text-decoration:none}
+  .login-back:hover{color:var(--ink)}
+  .login-back svg{width:14px;height:14px}
   .role-tag{font-size:11px;font-weight:700;padding:5px 10px;border-radius:8px;display:inline-flex;align-items:center;gap:6px;margin-bottom:10px}
   .role-tag.agency{background:var(--accent-soft);color:var(--accent-ink)}.role-tag.client{background:var(--green-soft);color:var(--green)}
   .view-client,.back-agency{font-size:12.5px;font-weight:600;margin-bottom:6px}
@@ -589,7 +596,7 @@
 <!-- ============ LOGIN ============ -->
 <div id="loginView" class="login-wrap">
   <div class="login">
-    <div class="brand"><img src="/assets/logo.png" alt="Wanderful Marketing" class="wl-logo" style="height:44px"><div style="font-size:12px;color:var(--muted);margin-top:8px;font-weight:500">Espace client</div></div>
+    <div class="brand"><a class="brand-link" href="/" title="Retour au site wanderful-marketing.com"><img src="/assets/logo.png" alt="Wanderful Marketing" class="wl-logo" style="height:44px"></a><div style="font-size:12px;color:var(--muted);margin-top:8px;font-weight:500">Espace client</div></div>
     <div id="stepLogin">
       <h2>Connexion</h2><p class="sub">Accédez à votre espace client.</p>
       <div id="msg1" class="msg"></div>
@@ -618,6 +625,7 @@
       <button id="resetBtn" class="btn" onclick="setNewPassword()">Enregistrer et se connecter</button>
     </div>
     <div class="demo-tag" id="demoHint"></div>
+    <a class="login-back" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Retour au site wanderful-marketing.com</a>
   </div>
 </div>
 
@@ -625,18 +633,19 @@
 <div id="appView" class="app hidden">
   <div class="nav-backdrop" onclick="closeNav()"></div>
   <aside class="sidebar">
-    <div class="sb-brand"><img src="/assets/logo.png" alt="Wanderful Marketing" class="wl-logo" style="height:34px"><div style="font-size:11px;color:var(--muted);margin-top:5px">Marketing Hub</div></div>
+    <div class="sb-brand"><a class="brand-link" href="/" title="Retour au site wanderful-marketing.com"><img src="/assets/logo.png" alt="Wanderful Marketing" class="wl-logo" style="height:34px"></a><div style="font-size:11px;color:var(--muted);margin-top:5px">Marketing Hub</div></div>
     <div class="client-card"><div class="avatar" id="cAvatar">–</div><div class="info"><b id="cName">…</b><small id="cPlan"></small></div></div>
     <div id="switcherWrap" class="switcher hidden"><select id="clientSwitch" onchange="switchClient(this.value)"></select></div>
     <nav id="nav"></nav>
     <div class="side-foot">
       <div id="roleZone"></div>
+      <a class="nav-item to-site" href="/"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M19 12H5M12 19l-7-7 7-7"/></svg> Retour au site</a>
       <button class="nav-item" onclick="openPwModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg> Mon mot de passe</button>
       <button class="nav-item" onclick="logout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg> Se déconnecter</button>
     </div>
   </aside>
   <main class="main">
-    <div class="mobile-top"><button class="burger" onclick="toggleNav()" aria-label="Ouvrir le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button><img src="/assets/logo.png" alt="Wanderful Marketing" class="wl-logo" style="height:26px"></div>
+    <div class="mobile-top"><button class="burger" onclick="toggleNav()" aria-label="Ouvrir le menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button><a class="brand-link" href="/" title="Retour au site"><img src="/assets/logo.png" alt="Wanderful Marketing" class="wl-logo" style="height:26px"></a></div>
     <div class="topbar"><div><h2 id="topTitle">…</h2><p id="topSub">Voici l'état de votre projet cette semaine.</p></div><div class="spacer"></div><span class="pill">● En cours</span></div>
     <div id="content"></div>
   </main>
