@@ -42,13 +42,19 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}
 @media(prefers-reduced-motion:reduce){.bg,.bg2{animation:none}}
 
 /* forme liquide detouree : remplace la pastille ronde */
-.ap-birth .ap-mark{width:clamp(200px,26vw,320px);height:auto;aspect-ratio:3/2;
-  margin:26px auto 0;background:none;box-shadow:none;border-radius:0;
-  display:block;position:relative;place-items:initial;
-  animation:apMarkFloat 15s ease-in-out infinite;}
-.ap-birth .ap-mark img,.ap-birth .ap-mark canvas{width:100%;height:100%;display:block;object-fit:contain;}
-.ap-birth .ap-mark canvas{position:absolute;inset:0;}
-.ap-birth .ap-mark video{display:none;}
+.ap-birth .ap-mark{width:clamp(240px,32vw,400px);height:auto;aspect-ratio:1100/734;
+  margin:18px auto 0;background:none;box-shadow:none;border-radius:0;
+  display:block;position:relative;place-items:initial;overflow:hidden;
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 9%,#000 91%,transparent 100%),
+                     linear-gradient(to bottom,transparent 0,#000 9%,#000 91%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(to right,transparent 0,#000 9%,#000 91%,transparent 100%),
+             linear-gradient(to bottom,transparent 0,#000 9%,#000 91%,transparent 100%);
+  mask-composite:intersect;
+  animation:apMarkFloat 16s ease-in-out infinite;}
+.ap-birth .ap-mark img,.ap-birth .ap-mark video{width:100%;height:100%;display:block;object-fit:cover;}
+.ap-birth .ap-mark video{position:absolute;inset:0;opacity:0;transition:opacity 1.2s ease;}
+.ap-birth .ap-mark video.on{opacity:1;}
 @keyframes apMarkFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-11px) scale(1.03)}}
 @media(prefers-reduced-motion:reduce){.ap-birth .ap-mark{animation:none;}}
 
@@ -638,9 +644,9 @@ footer{margin-top:76px;padding:54px 0 34px;}
     <p class="ap-lead ap-rev" data-d="2" style="margin:26px auto 0;text-align:center;">Entre ce que la technologie
       peut produire et ce que les humains doivent encore décider.</p>
     <div class="ap-mark ap-rev" data-d="3" aria-hidden="true">
-      <img id="apMarkStill" src="assets/bg/forme-alpha.png" alt="" width="660" height="440" decoding="async">
-      <canvas id="apMarkCanvas" width="520" height="347" hidden></canvas>
-      <video id="apMarkVideo" muted loop playsinline preload="none" width="1100" height="734"></video>
+      <img id="apMarkStill" src="assets/bg/blob.jpg" alt="" width="1100" height="734" decoding="async">
+      <video id="apMarkVideo" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1"
+             width="1100" height="734"></video>
     </div>
   </div>
 </section>
@@ -1077,64 +1083,29 @@ if(t&&m)t.addEventListener('click',()=>{const open=getComputedStyle(m).display!=
   document.addEventListener('visibilitychange', function(){ if (document.hidden) v.pause(); });
 })();
 
-/* forme liquide detouree en direct : la luminance devient la transparence */
+/* forme liquide : lecture simple, les bords sont fondus en CSS */
 (function(){
-  var wrap = document.querySelector('.ap-mark');
-  var still = document.getElementById('apMarkStill');
-  var cv = document.getElementById('apMarkCanvas');
+  var wrap = document.querySelector('.ap-birth .ap-mark');
   var v = document.getElementById('apMarkVideo');
-  if (!wrap || !still || !cv || !v) return;
+  if (!wrap || !v) return;
   var rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var small = window.matchMedia && matchMedia('(max-width: 980px)').matches;
   var c = navigator.connection || {};
   if (rm || small || c.saveData === true || /(^|-)2g$/.test(c.effectiveType || '')) return;
-
-  var ctx;
-  try { ctx = cv.getContext('2d', {willReadFrequently:true}); } catch(e) { return; }
-  if (!ctx) return;
-
-  var W = cv.width, H = cv.height, visible = false, started = false, raf = 0, last = 0;
-
-  function draw(ts){
-    raf = requestAnimationFrame(draw);
-    if (!visible || v.readyState < 2) return;
-    if (ts - last < 42) return;            /* ~24 images par seconde */
-    last = ts;
-    ctx.drawImage(v, 0, 0, W, H);
-    var img = ctx.getImageData(0, 0, W, H), p = img.data;
-    for (var i = 0; i < p.length; i += 4) {
-      var r = p[i], g = p[i+1], b = p[i+2];
-      var a = (r*0.299 + g*0.587 + b*0.114) / 150;
-      if (a > 1) a = 1;
-      var d = a < 0.06 ? 0.06 : a;
-      var rr = r/d, gg = g/d, bb = b/d;
-      p[i]   = rr > 255 ? 255 : rr;
-      p[i+1] = gg > 255 ? 255 : gg;
-      p[i+2] = bb > 255 ? 255 : bb;
-      p[i+3] = a * 255;
-    }
-    ctx.putImageData(img, 0, 0);
-  }
-
+  var started = false;
+  function play(){ var p = v.play(); if (p && p.catch) p.catch(function(){}); }
   function start(){
     if (started) return; started = true;
-    [['assets/bg/forme.webm','video/webm'],['assets/bg/forme.mp4','video/mp4']]
+    [['assets/bg/blob.webm','video/webm'],['assets/bg/blob.mp4','video/mp4']]
       .forEach(function(s){ var e=document.createElement('source'); e.src=s[0]; e.type=s[1]; v.appendChild(e); });
-    v.addEventListener('canplay', function(){
-      cv.hidden = false; still.style.visibility = 'hidden';
-      if (!raf) raf = requestAnimationFrame(draw);
-    }, {once:true});
-    v.load();
-    var p = v.play(); if (p && p.catch) p.catch(function(){});
+    v.addEventListener('canplay', function(){ v.classList.add('on'); }, {once:true});
+    v.load(); play();
   }
-
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function(es){ es.forEach(function(e){
-      visible = e.isIntersecting;
-      if (visible) { start(); var q=v.play(); if(q&&q.catch) q.catch(function(){}); }
-      else if (started) { v.pause(); }
+      if (e.isIntersecting) { start(); play(); } else if (started) { v.pause(); }
     }); }, {rootMargin:'250px 0px'}).observe(wrap);
-  } else { visible = true; start(); }
+  } else { start(); }
   document.addEventListener('visibilitychange', function(){ if (document.hidden) v.pause(); });
 })();
 </script>
