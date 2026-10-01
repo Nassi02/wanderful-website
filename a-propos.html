@@ -242,7 +242,7 @@ footer{margin-top:76px;padding:54px 0 34px;}
 /* 01 — sticky */
 .ap-sticky{padding:var(--ap-gap) 0;}
 .ap-sticky-grid{display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:start;}
-.ap-sticky-vis{position:sticky;top:16vh;height:56vh;display:flex;align-items:center;justify-content:center;}
+.ap-sticky-vis{position:sticky;top:14vh;height:auto;display:flex;align-items:center;justify-content:center;}
 .ap-steps p{font-size:clamp(19px,2.1vw,28px);line-height:1.35;color:var(--plum);font-weight:400;
   margin:0 0 22px;opacity:.25;transition:opacity .5s ease,transform .5s ease;transform:translateX(-4px);}
 .ap-steps p.on{opacity:1;transform:none;}
@@ -393,6 +393,61 @@ footer{margin-top:76px;padding:54px 0 34px;}
   .ap-hero-l2,.ap-tok,.ap-node,.ap-core,.ap-links,.ap-effect{opacity:1!important;transform:none!important;}
   .ap-steps p{opacity:1!important;}
   .ap-thread{display:none;}
+  .apd-core,.apd-in,.apd-lbl{opacity:1!important;}
+  .apd-corein,.apd-in{transform:none!important;}
+  .apd-tr{stroke-dashoffset:0!important;}
+  .apd-sp{opacity:.5!important;}
+}
+
+/* ===== composition « disciplines » ===== */
+.apd-stage{position:relative;width:100%;max-width:440px;margin:0 auto;aspect-ratio:1;isolation:isolate;}
+.apd-pad{width:100%;max-width:520px;padding:clamp(26px,4vw,40px) clamp(10px,3vw,26px);}
+.apd-traj{position:absolute;inset:0;width:100%;height:100%;z-index:0;overflow:visible;}
+.apd-traj .apd-orbit{fill:none;stroke:#E2DEF8;stroke-width:.4;}
+.apd-traj .apd-tr{fill:none;stroke:#BFB7E4;stroke-width:.6;stroke-linecap:round;opacity:.9;
+  stroke-dasharray:var(--len,1);stroke-dashoffset:var(--len,1);}
+.apd-play .apd-tr{stroke-dashoffset:0;
+  transition:stroke-dashoffset 1.1s cubic-bezier(.22,1,.36,1) var(--dl3),stroke .3s ease,stroke-width .3s ease;}
+.apd-traj .apd-tr.apd-hot{stroke:var(--violet);stroke-width:1.1;}
+.apd-traj .apd-sp{fill:#B98DF2;opacity:0;}
+.apd-play .apd-sp{animation:apdTw 4.2s ease-in-out infinite;animation-delay:calc(2s + var(--i)*620ms);}
+@keyframes apdTw{0%,100%{opacity:0;transform:scale(.4)}12%{opacity:.95;transform:scale(1.25)}30%{opacity:.25;transform:scale(.8)}60%{opacity:0;transform:scale(.4)}}
+.apd-core{position:absolute;left:50%;top:50%;width:27%;aspect-ratio:1;z-index:2;
+  transform:translate(-50%,-50%) translate3d(calc(var(--mx,0)*5px),calc(var(--my,0)*4px),0);
+  opacity:0;transition:opacity .8s ease,transform .6s cubic-bezier(.22,1,.36,1);}
+.apd-play .apd-core{opacity:1;}
+.apd-corein{width:100%;height:100%;transform:scale(.35);transition:transform 1s cubic-bezier(.34,1.3,.5,1);}
+.apd-play .apd-corein{transform:scale(1);}
+.apd-corefloat{width:100%;height:100%;animation:apdOsc 13s ease-in-out infinite;}
+@keyframes apdOsc{0%,100%{transform:rotate(-3.5deg) scale(1)}50%{transform:rotate(3.5deg) scale(1.04)}}
+.apd-core img{width:100%;height:100%;object-fit:contain;display:block;filter:drop-shadow(0 14px 30px rgba(141,126,242,.38));}
+.apd-orb{position:absolute;left:50%;top:50%;width:22%;aspect-ratio:1;z-index:1;
+  transform:translate(-50%,-50%) translate3d(calc(var(--mx,0)*var(--k,1)*13px),calc(var(--my,0)*var(--k,1)*9px),0);
+  transition:left 1s cubic-bezier(.22,1,.36,1) var(--dl),top 1s cubic-bezier(.22,1,.36,1) var(--dl),transform .7s cubic-bezier(.22,1,.36,1);}
+.apd-play .apd-orb{left:calc(var(--ax)*1%);top:calc(var(--ay)*1%);}
+.apd-in{width:100%;height:100%;opacity:0;transform:scale(.3);
+  transition:opacity .7s ease var(--dl),transform .95s cubic-bezier(.34,1.28,.5,1) var(--dl);}
+.apd-play .apd-in{opacity:1;transform:scale(1);}
+.apd-float{width:100%;height:100%;animation:apdFloat var(--fd,9s) ease-in-out infinite;animation-delay:var(--fdel,0s);}
+@keyframes apdFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-9px) rotate(2deg)}}
+.apd-orb img{width:100%;height:100%;object-fit:contain;display:block;
+  filter:drop-shadow(0 10px 22px rgba(141,126,242,.26));
+  transition:transform .4s cubic-bezier(.22,1,.36,1),filter .4s ease;}
+.apd-orb.apd-hot img{transform:scale(1.11);filter:drop-shadow(0 16px 32px rgba(141,126,242,.5)) saturate(1.12);}
+.apd-lbl{position:absolute;left:50%;width:175%;transform:translateX(-50%);z-index:3;text-align:center;
+  font-size:clamp(11.5px,1.15vw,13.5px);line-height:1.3;font-weight:500;color:var(--muted);
+  text-wrap:balance;opacity:0;pointer-events:none;
+  transition:opacity .7s ease var(--dl2),color .3s ease,font-weight .2s ease;}
+.apd-play .apd-lbl{opacity:1;}
+.apd-orb.apd-hot .apd-lbl{color:var(--plum);font-weight:600;}
+.apd-top{bottom:100%;margin-bottom:7px;}
+.apd-bottom{top:100%;margin-top:7px;}
+.apd-paused,.apd-paused *{animation-play-state:paused!important;}
+@media(max-width:980px){
+  .apd-stage{max-width:330px;}
+  .apd-orb{width:25%;}.apd-core{width:31%;}
+  .apd-lbl{width:150%;font-size:12px;}
+  .apd-pad{padding:30px 34px;}
 }
 </style>
 </head>
@@ -467,19 +522,44 @@ footer{margin-top:76px;padding:54px 0 34px;}
         <p data-step="6">Mesurer ce qui fonctionne réellement.</p>
       </div>
       <div class="ap-sticky-vis">
-        <div class="ap-stage" id="apStage">
-          <svg class="ap-links" viewBox="0 0 100 100" aria-hidden="true">
-            <line x1="50" y1="50" x2="50" y2="12"/><line x1="50" y1="50" x2="86" y2="38"/>
-            <line x1="50" y1="50" x2="74" y2="82"/><line x1="50" y1="50" x2="26" y2="82"/>
-            <line x1="50" y1="50" x2="14" y2="38"/>
+       <div class="apd-pad">
+        <div class="apd-stage" id="apdStage" role="img" aria-label="Les cinq disciplines de Wanderful autour de l'etoile : strategie, comprehension humaine, creativite, donnees et technologie">
+          <svg class="apd-traj" viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="apd-orbit" cx="50" cy="50" r="34"/>
+            <path class="apd-tr" id="apd-tr-strategie" d="M 50.0 50.0 Q 55.0 33.0 50.0 16.0" style="--dl3:0.90s"/>
+            <path class="apd-tr" id="apd-tr-humain" d="M 50.0 50.0 Q 67.7 49.5 82.3 39.5" style="--dl3:1.02s"/>
+            <path class="apd-tr" id="apd-tr-technologie" d="M 50.0 50.0 Q 55.9 66.7 70.0 77.5" style="--dl3:1.14s"/>
+            <path class="apd-tr" id="apd-tr-donnees" d="M 50.0 50.0 Q 36.0 60.8 30.0 77.5" style="--dl3:1.26s"/>
+            <path class="apd-tr" id="apd-tr-creativite" d="M 50.0 50.0 Q 35.4 40.0 17.7 39.5" style="--dl3:1.38s"/>
+            <g transform="translate(52.4 28.9)"><g class="apd-sp" style="--i:0"><path d="M 0 -1.9 C .17 -.74, .74 -.17, 1.9 0 C .74 .17, .17 .74, 0 1.9 C -.17 .74, -.74 .17, -1.9 0 C -.74 -.17, -.17 -.74, 0 -1.9 Z"/></g></g>
+            <g transform="translate(70.8 45.7)"><g class="apd-sp" style="--i:1"><path d="M 0 -1.9 C .17 -.74, .74 -.17, 1.9 0 C .74 .17, .17 .74, 0 1.9 C -.17 .74, -.74 .17, -1.9 0 C -.74 -.17, -.17 -.74, 0 -1.9 Z"/></g></g>
+            <g transform="translate(60.5 68.4)"><g class="apd-sp" style="--i:2"><path d="M 0 -1.9 C .17 -.74, .74 -.17, 1.9 0 C .74 .17, .17 .74, 0 1.9 C -.17 .74, -.74 .17, -1.9 0 C -.74 -.17, -.17 -.74, 0 -1.9 Z"/></g></g>
+            <g transform="translate(35.7 65.7)"><g class="apd-sp" style="--i:3"><path d="M 0 -1.9 C .17 -.74, .74 -.17, 1.9 0 C .74 .17, .17 .74, 0 1.9 C -.17 .74, -.74 .17, -1.9 0 C -.74 -.17, -.17 -.74, 0 -1.9 Z"/></g></g>
+            <g transform="translate(30.7 41.2)"><g class="apd-sp" style="--i:4"><path d="M 0 -1.9 C .17 -.74, .74 -.17, 1.9 0 C .74 .17, .17 .74, 0 1.9 C -.17 .74, -.74 .17, -1.9 0 C -.74 -.17, -.17 -.74, 0 -1.9 Z"/></g></g>
           </svg>
-          <div class="ap-core"></div>
-          <span class="ap-node" style="--x:0px;--y:-190px">STRATEGY</span>
-          <span class="ap-node" style="--x:172px;--y:-58px">HUMAN</span>
-          <span class="ap-node" style="--x:110px;--y:152px">CREATIVE</span>
-          <span class="ap-node" style="--x:-110px;--y:152px">DATA</span>
-          <span class="ap-node" style="--x:-172px;--y:-58px">TECHNOLOGY</span>
+          <div class="apd-core"><div class="apd-corein"><div class="apd-corefloat"><img src="assets/disciplines/etoile.webp" width="512" height="512" alt="" decoding="async" draggable="false"></div></div></div>
+          <div class="apd-orb" data-k="strategie" style="--ax:50.0;--ay:16.0;--k:0.9;--dl:0.25s;--dl2:1.25s">
+            <div class="apd-in"><div class="apd-float" style="--fd:8.4s;--fdel:0s"><img src="assets/disciplines/boussole.webp" width="384" height="384" alt="" loading="lazy" decoding="async" draggable="false"></div></div>
+            <div class="apd-lbl apd-top">Stratégie</div>
+          </div>
+          <div class="apd-orb" data-k="humain" style="--ax:82.3;--ay:39.5;--k:1.15;--dl:0.38s;--dl2:1.33s">
+            <div class="apd-in"><div class="apd-float" style="--fd:9.7s;--fdel:-2.1s"><img src="assets/disciplines/anneaux.webp" width="384" height="384" alt="" loading="lazy" decoding="async" draggable="false"></div></div>
+            <div class="apd-lbl apd-top">Compréhension humaine</div>
+          </div>
+          <div class="apd-orb" data-k="technologie" style="--ax:70.0;--ay:77.5;--k:0.8;--dl:0.51s;--dl2:1.41s">
+            <div class="apd-in"><div class="apd-float" style="--fd:7.9s;--fdel:-4.3s"><img src="assets/disciplines/molecule.webp" width="384" height="384" alt="" loading="lazy" decoding="async" draggable="false"></div></div>
+            <div class="apd-lbl apd-bottom">Technologie</div>
+          </div>
+          <div class="apd-orb" data-k="donnees" style="--ax:30.0;--ay:77.5;--k:1.0;--dl:0.64s;--dl2:1.49s">
+            <div class="apd-in"><div class="apd-float" style="--fd:10.6s;--fdel:-1.2s"><img src="assets/disciplines/prismes.webp" width="384" height="384" alt="" loading="lazy" decoding="async" draggable="false"></div></div>
+            <div class="apd-lbl apd-bottom">Données</div>
+          </div>
+          <div class="apd-orb" data-k="creativite" style="--ax:17.7;--ay:39.5;--k:1.25;--dl:0.77s;--dl2:1.57s">
+            <div class="apd-in"><div class="apd-float" style="--fd:9.1s;--fdel:-3.4s"><img src="assets/disciplines/ruban.webp" width="384" height="384" alt="" loading="lazy" decoding="async" draggable="false"></div></div>
+            <div class="apd-lbl apd-top">Créativité</div>
+          </div>
         </div>
+       </div>
       </div>
     </div>
     <p class="ap-punch ap-rev">La différence se fait <span class="ap-grad">avant le prompt.</span></p>
@@ -726,7 +806,7 @@ footer{margin-top:76px;padding:54px 0 34px;}
 
   /* 01 : etapes + bascule de la composition */
   var steps = [].slice.call(document.querySelectorAll('#apSteps p[data-step]'));
-  var stage = document.getElementById('apStage');
+  var stage = null; /* ancienne composition remplacee par la composition disciplines */
   var sIo = new IntersectionObserver(function(es){
     es.forEach(function(e){
       if (e.isIntersecting) {
@@ -858,6 +938,49 @@ const io=new IntersectionObserver((es)=>{es.forEach(e=>{if(e.isIntersecting){e.t
 document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 const t=document.querySelector('.nav-toggle');const m=document.querySelector('.menu');
 if(t&&m)t.addEventListener('click',()=>{const open=getComputedStyle(m).display!=='none';m.style.display=open?'none':'flex';});
+</script>
+<script>
+/* composition « disciplines » : entree au scroll, flottement continu, parallaxe, survol */
+(function(){
+  var stage = document.getElementById('apdStage');
+  if (!stage) return;
+  var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  [].forEach.call(stage.querySelectorAll('.apd-tr'), function(p){
+    try { p.style.setProperty('--len', p.getTotalLength().toFixed(2)); } catch(e){}
+  });
+
+  if (RM || !('IntersectionObserver' in window)) {
+    stage.classList.add('apd-play');
+  } else {
+    var seen = false;
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) { if (!seen) { seen = true; stage.classList.add('apd-play'); } stage.classList.remove('apd-paused'); }
+        else { stage.classList.add('apd-paused'); }
+      });
+    }, {threshold:.12}).observe(stage);
+  }
+
+  [].forEach.call(stage.querySelectorAll('.apd-orb'), function(orb){
+    var tr = document.getElementById('apd-tr-' + orb.getAttribute('data-k'));
+    function on(){ orb.classList.add('apd-hot'); if (tr) tr.classList.add('apd-hot'); }
+    function off(){ orb.classList.remove('apd-hot'); if (tr) tr.classList.remove('apd-hot'); }
+    orb.addEventListener('pointerenter', on); orb.addEventListener('pointerleave', off);
+    orb.addEventListener('focusin', on); orb.addEventListener('focusout', off);
+  });
+
+  if (!RM && matchMedia('(pointer:fine)').matches) {
+    stage.addEventListener('pointermove', function(e){
+      var r = stage.getBoundingClientRect();
+      stage.style.setProperty('--mx', (((e.clientX - r.left) / r.width) - .5).toFixed(3));
+      stage.style.setProperty('--my', (((e.clientY - r.top) / r.height) - .5).toFixed(3));
+    }, {passive:true});
+    stage.addEventListener('pointerleave', function(){
+      stage.style.setProperty('--mx', 0); stage.style.setProperty('--my', 0);
+    }, {passive:true});
+  }
+})();
 </script>
 <script src="/assistant.js" defer></script>
 </body>
