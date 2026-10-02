@@ -88,7 +88,7 @@
       </div>
 
       <div class="ga-demo-scene">
-        <div class="ga-frame">
+        <div class="ga-stage" id="gaStage">
           <div class="ga-screen" id="gaScreen" role="img" aria-label="Démonstration animée : une recherche, une annonce, un site, une demande envoyée.">
 
             <!-- étape recherche + résultats -->
@@ -166,6 +166,8 @@
             </span>
 
           </div>
+          <span class="ga-cloud ga-cloud-l" aria-hidden="true"><img src="../assets/demo/nuage-gauche.webp" alt="" width="507" height="760" decoding="async"></span>
+          <span class="ga-cloud ga-cloud-r" aria-hidden="true"><img src="../assets/demo/nuage-droite.webp" alt="" width="487" height="760" decoding="async"></span>
         </div>
         <p class="ga-note">Exemple fictif d'une annonce sur Google&nbsp;Search. Chaque clic ne débouche pas nécessairement sur une demande ou une vente.</p>
       </div>
@@ -246,6 +248,7 @@
 /* démonstration « comment fonctionne une annonce Google Ads » */
 (function(){
   var root=document.getElementById('demo-ads'); if(!root) return;
+  var stage=document.getElementById('gaStage');
   var screenEl=document.getElementById('gaScreen');
   var typed=document.getElementById('gaTyped');
   var bar=screenEl.querySelector('.ga-bar');
@@ -318,19 +321,29 @@
   steps.push([25400,function(){show('recap');views.recap.classList.add('is-on');}]);
   steps.sort(function(a,b){return a[0]-b[0];});
 
+  var LOOP=29500;   /* 26 s de scenario + 3,5 s sur le recapitulatif, puis on recommence */
   var t0=0, acc=0, idx=0, raf=0, paused=false, running=false;
   function frame(now){
     if(!running) return;
     var t=acc+(now-t0);
     while(idx<steps.length&&steps[idx][0]<=t){steps[idx][1]();idx++;}
     if(idx<steps.length) raf=requestAnimationFrame(frame);
-    else {running=false;raf=0;setPause(false,true);}
+    else if(t<LOOP) raf=requestAnimationFrame(frame);
+    else {idx=0;acc=0;t0=now;reset();raf=requestAnimationFrame(frame);}
   }
   function start(){
     reset(); idx=0; acc=0; paused=false; running=true;
     pauseBtn.disabled=false; pauseBtn.textContent='Pause'; pauseBtn.setAttribute('aria-pressed','false');
     cancelAnimationFrame(raf);
     t0=performance.now(); raf=requestAnimationFrame(frame);
+  }
+  /* ouverture des nuages, puis la demonstration */
+  var openTimer=0;
+  function openAndPlay(reopen){
+    clearTimeout(openTimer);
+    if(reopen){ stage.classList.remove('is-open'); reset();
+      openTimer=setTimeout(function(){stage.classList.add('is-open');openTimer=setTimeout(start,1500);},420); }
+    else { stage.classList.add('is-open'); openTimer=setTimeout(start,1500); }
   }
   function setPause(p,silent){
     if(!running&&!silent) return;
@@ -342,19 +355,23 @@
     pauseBtn.disabled=!running;
   }
 
-  if(RM){finalState();return;}
+  if(RM){stage.classList.add('is-open');finalState();return;}
   reset(); pauseBtn.disabled=true;
-  replayBtn.addEventListener('click',start);
+  replayBtn.addEventListener('click',function(){openAndPlay(true);});
   pauseBtn.addEventListener('click',function(){setPause(!paused);});
   /* les clics simulés ne quittent jamais la scène */
   order.addEventListener('click',function(e){e.preventDefault();});
 
   if('IntersectionObserver' in window){
+    var started=false;
     var io=new IntersectionObserver(function(es){
-      es.forEach(function(e){if(e.isIntersecting){io.disconnect();setTimeout(start,350);}});
-    },{threshold:.35});
+      es.forEach(function(e){
+        if(e.isIntersecting&&!started){started=true;setTimeout(function(){openAndPlay(false);},300);}
+        else if(started){ setPause(!e.isIntersecting); }   /* on suspend la boucle hors ecran */
+      });
+    },{threshold:.3});
     io.observe(root);
-  }else{start();}
+  }else{openAndPlay(false);}
   /* on suspend si l'onglet passe en arrière-plan */
   document.addEventListener('visibilitychange',function(){if(document.hidden&&running&&!paused)setPause(true);});
 })();

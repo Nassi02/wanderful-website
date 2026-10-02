@@ -177,26 +177,58 @@ h2{
 
 /* ── démonstration Google Ads ── */
 .ga-demo{padding:60px 0 10px;}
-.ga-demo-grid{display:grid;grid-template-columns:minmax(0,.72fr) minmax(0,1.28fr);gap:38px;align-items:center;}
+.ga-demo-grid{display:grid;grid-template-columns:1fr;gap:30px;justify-items:center;}
+.ga-demo-scene{width:100%;}
+.ga-demo-txt{max-width:640px;text-align:center;}
 .ga-demo-txt h2{font-size:clamp(1.4rem,2.4vw,1.9rem);font-weight:700;color:var(--p2);line-height:1.25;margin-bottom:14px;}
 .ga-demo-txt p{font-size:1.02rem;line-height:1.7;color:var(--ts);opacity:.85;}
-.ga-demo-ctrl{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;}
+.ga-demo-ctrl{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px;justify-content:center;}
 .ga-btn-ghost{font-family:inherit;font-size:.85rem;font-weight:600;color:var(--p1);cursor:pointer;
   background:rgba(255,255,255,.7);border:1.5px solid rgba(123,63,189,.3);border-radius:999px;padding:9px 20px;
   transition:background .22s,border-color .22s,color .22s;}
 .ga-btn-ghost:hover{background:var(--p1);border-color:var(--p1);color:#fff;}
 .ga-btn-ghost:focus-visible{outline:3px solid rgba(123,63,189,.45);outline-offset:3px;}
 
-.ga-frame{position:relative;width:100%;aspect-ratio:1536/985;}
-.ga-frame::after{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;
-  background:url(assets/demo/cadre.webp) center/100% 100% no-repeat;}
-.ga-screen{position:absolute;left:11%;top:13.5%;width:78%;height:73%;z-index:2;overflow:hidden;
-  border-radius:20px;background:linear-gradient(170deg,#fdfcff,#f5f1ff);
-  box-shadow:inset 0 0 0 1px rgba(123,63,189,.08);
-  font-size:clamp(11px,1.02vw,14px);}
+.ga-stage{position:relative;width:100%;aspect-ratio:2/1;overflow:hidden;
+  /* la brume se dissout sur les bords de la scene : aucun contour rectangulaire */
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%),
+                     linear-gradient(to bottom,transparent 0,#000 6%,#000 94%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(to right,transparent 0,#000 7%,#000 93%,transparent 100%),
+             linear-gradient(to bottom,transparent 0,#000 6%,#000 94%,transparent 100%);
+  mask-composite:intersect;}
+.ga-screen{position:absolute;left:22%;top:6%;width:56%;height:88%;z-index:2;overflow:hidden;
+  border-radius:22px;background:linear-gradient(170deg,#fdfcff,#f6f2ff);
+  font-size:clamp(11px,1.05vw,14px);
+  opacity:0;transform:scale(.97);
+  transition:opacity .9s ease .35s,transform 1.1s cubic-bezier(.3,.9,.3,1) .35s;
+  /* seuls les bords se fondent dans la brume : tout le centre reste net */
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 5.5%,#000 94.5%,transparent 100%),
+                     linear-gradient(to bottom,transparent 0,#000 4%,#000 96%,transparent 100%);
+  -webkit-mask-composite:source-in;
+  mask-image:linear-gradient(to right,transparent 0,#000 5.5%,#000 94.5%,transparent 100%),
+             linear-gradient(to bottom,transparent 0,#000 4%,#000 96%,transparent 100%);
+  mask-composite:intersect;}
+.ga-stage.is-open .ga-screen{opacity:1;transform:none;}
+
+/* les deux nuages, devant la demonstration */
+.ga-cloud{position:absolute;top:-10%;height:120%;z-index:3;pointer-events:none;display:block;
+  transition:transform 1.6s cubic-bezier(.33,.02,.2,1);}
+.ga-cloud img{display:block;height:100%;width:auto;}
+.ga-cloud-l img{transform:scaleX(-1);}
+.ga-cloud-r img{transform:scaleX(-1);}
+.ga-cloud-l{left:-9%;transform:translateX(62%);}
+.ga-cloud-r{right:-9%;transform:translateX(-62%);}
+.ga-stage.is-open .ga-cloud-l{transform:translateX(-20%);}
+.ga-stage.is-open .ga-cloud-r{transform:translateX(20%);}
+/* derive tres legere une fois ouverts */
+.ga-stage.is-open .ga-cloud-l img{animation:gaDriftL 17s ease-in-out 1.8s infinite;}
+.ga-stage.is-open .ga-cloud-r img{animation:gaDriftR 21s ease-in-out 2.4s infinite;}
+@keyframes gaDriftL{0%,100%{transform:scaleX(-1) translate(0,0);}50%{transform:scaleX(-1) translate(1.8%,1.8%) scale(1.03);}}
+@keyframes gaDriftR{0%,100%{transform:scaleX(-1) translate(0,0);}50%{transform:scaleX(-1) translate(-1.8%,-1.6%) scale(1.035);}}
 
 /* vues */
-.ga-view{position:absolute;inset:0;padding:4.4% 5.4%;opacity:0;visibility:hidden;
+.ga-view{position:absolute;inset:0;padding:5.2% 7%;opacity:0;visibility:hidden;
   transition:opacity .45s ease,transform .45s cubic-bezier(.3,.9,.3,1);transform:translateY(8px);}
 .ga-view.is-on{opacity:1;visibility:visible;transform:none;}
 
@@ -227,7 +259,7 @@ h2{
 
 /* page du fleuriste */
 .ga-site{padding:0;}
-.ga-site-top{display:flex;align-items:center;gap:.4em;padding:.7em 1em;background:rgba(123,63,189,.08);
+.ga-site-top{display:flex;align-items:center;gap:.4em;padding:.7em 1.3em;background:rgba(123,63,189,.08);
   border-bottom:1px solid rgba(123,63,189,.14);}
 .ga-dot{width:.52em;height:.52em;border-radius:50%;background:rgba(123,63,189,.45);}
 .ga-url{margin-left:.6em;font-size:.82em;color:var(--p3);background:#fff;border-radius:999px;padding:.2em .9em;}
@@ -257,11 +289,13 @@ h2{
 
 /* mise en avant comparee annonce / resultats naturels */
 .ga-res{transition:opacity .45s,filter .45s,transform .4s cubic-bezier(.3,.9,.3,1),box-shadow .3s,border-color .3s;}
+.ga-results{transition:transform .5s cubic-bezier(.3,.9,.3,1);}
+.ga-results.ga-focus-ad,.ga-results.ga-focus-seo{transform:translateY(-6%);}
 .ga-results.ga-focus-ad .ga-res:not(.ga-ad){opacity:.3;filter:saturate(.3);}
 .ga-results.ga-focus-ad .ga-ad{box-shadow:0 0 0 2.5px rgba(123,63,189,.5),0 10px 24px -12px rgba(123,63,189,1);}
 .ga-results.ga-focus-seo .ga-ad{opacity:.3;filter:saturate(.3);}
 .ga-results.ga-focus-seo .ga-res:not(.ga-ad){border-color:rgba(111,181,138,.75);box-shadow:0 0 0 2px rgba(111,181,138,.35);}
-.ga-tip{position:absolute;left:5.4%;right:5.4%;bottom:4.2%;z-index:5;
+.ga-tip{position:absolute;left:7.5%;right:7.5%;bottom:6.5%;z-index:5;max-height:34%;overflow:visible;
   display:flex;align-items:baseline;gap:.5em;flex-wrap:wrap;
   background:#3D1766;color:#fff;border-radius:12px;padding:.6em .95em;
   font-size:.86em;line-height:1.35;
@@ -326,14 +360,19 @@ h2{
   .ga-demo-grid{grid-template-columns:1fr;gap:26px;}
   .ga-demo-txt{order:-1;}
   .ga-demo-txt p{font-size:.98rem;}
-  /* le cadre s'etire un peu en hauteur pour que les trois resultats tiennent */
-  .ga-frame{aspect-ratio:1536/1220;}
-  .ga-screen{left:9.5%;top:12%;width:81%;height:76%;font-size:clamp(10.5px,2.9vw,13.5px);border-radius:15px;}
-  .ga-view{padding:4% 5%;}
+  .ga-stage{aspect-ratio:1/1;}
+  .ga-screen{left:7%;top:6%;width:86%;height:88%;font-size:clamp(10.5px,3vw,13.5px);border-radius:18px;}
+  .ga-view{padding:5% 6%;}
   .ga-flower{width:min(30%,110px);}
+  /* sur mobile les nuages se replient sur les cotes : la zone de lecture reste intacte */
+  .ga-cloud{top:14%;height:72%;}
+  .ga-cloud-l{left:-20%;transform:translateX(70%);}
+  .ga-cloud-r{right:-20%;transform:translateX(-70%);}
+  .ga-stage.is-open .ga-cloud-l{transform:translateX(-42%);}
+  .ga-stage.is-open .ga-cloud-r{transform:translateX(42%);}
 }
 @media(max-width:620px){
-  .ga-tip{font-size:.8em;padding:.55em .8em;}
+  .ga-tip{font-size:.8em;padding:.55em .8em;left:9%;right:9%;}
   .ga-tip b{white-space:normal;}
 }
 @media(max-width:560px){
@@ -343,11 +382,14 @@ h2{
   .ga-res:not(.ga-ad){padding:.62em .9em;}
 }
 @media(max-width:430px){
-  .ga-frame{aspect-ratio:1536/1300;}
-  .ga-screen{height:78%;top:11%;}
+  .ga-stage{aspect-ratio:1/1.08;}
 }
 @media(prefers-reduced-motion:reduce){
-  .ga-view,.ga-res,.ga-step,.ga-arrow,.ga-conf,.ga-fl,.ga-cursor,.ga-cta{transition:none!important;animation:none!important;}
+  .ga-view,.ga-res,.ga-step,.ga-arrow,.ga-conf,.ga-fl,.ga-cursor,.ga-cta,
+  .ga-cloud,.ga-cloud img,.ga-screen,.ga-results,.ga-tip{transition:none!important;animation:none!important;}
+  .ga-screen{opacity:1;transform:none;}
+  .ga-cloud-l{transform:translateX(-20%);}
+  .ga-cloud-r{transform:translateX(20%);}
   .ga-cursor{display:none;}
   .ga-demo-ctrl{display:none;}
 }
