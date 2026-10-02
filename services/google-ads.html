@@ -97,7 +97,7 @@
                 <svg class="ga-loupe" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.4" y1="15.4" x2="21" y2="21"/></svg>
                 <span class="ga-query"><span id="gaTyped"></span><i class="ga-caret"></i></span>
               </div>
-              <div class="ga-results">
+              <div class="ga-results" id="gaResults">
                 <article class="ga-res ga-ad" id="gaAd">
                   <span class="ga-tag">Sponsorisé</span>
                   <h3>Votre boutique de fleurs à Lausanne</h3>
@@ -112,6 +112,7 @@
                   <p>Comparatif des services de livraison et délais.</p>
                 </article>
               </div>
+              <div class="ga-tip" id="gaTip"><b id="gaTipT"></b><span id="gaTipD"></span></div>
             </div>
 
             <!-- étape site -->
@@ -240,6 +241,8 @@
   var cur=document.getElementById('gaCursor');
   var conf=document.getElementById('gaConf');
   var order=document.getElementById('gaOrder');
+  var results=document.getElementById('gaResults');
+  var tip=document.getElementById('gaTip'), tipT=document.getElementById('gaTipT'), tipD=document.getElementById('gaTipD');
   var replayBtn=document.getElementById('gaReplay');
   var pauseBtn=document.getElementById('gaPause');
   var views={}; [].forEach.call(screenEl.querySelectorAll('.ga-view'),function(v){views[v.dataset.view]=v;});
@@ -250,12 +253,16 @@
   function show(name){for(var k in views) views[k].classList.toggle('is-on',k===name);}
   function moveCursor(x,y){cur.style.left=x+'%';cur.style.top=y+'%';}
   function clickPulse(){cur.classList.remove('is-click');void cur.offsetWidth;cur.classList.add('is-click');}
+  function focus(mode){results.classList.toggle('ga-focus-ad',mode==='ad');results.classList.toggle('ga-focus-seo',mode==='seo');}
+  function showTip(t,d,seo){tipT.textContent=t;tipD.textContent=d;tip.classList.toggle('is-seo',!!seo);tip.classList.add('is-on');}
+  function hideTip(){tip.classList.remove('is-on');}
 
   /* état final, utilisé aussi pour prefers-reduced-motion */
   function finalState(){
     typed.textContent=QUERY; bar.classList.add('ga-done');
     [].forEach.call(res,function(r){r.classList.add('is-in');});
     views.site.classList.add('is-bloom'); conf.classList.add('is-on');
+    focus(null); hideTip();
     cur.classList.remove('is-on'); show('recap'); views.recap.classList.add('is-on');
   }
   function reset(){
@@ -263,7 +270,7 @@
     [].forEach.call(res,function(r){r.classList.remove('is-in');});
     ad.classList.remove('is-hit'); order.classList.remove('is-hit');
     conf.classList.remove('is-on'); views.site.classList.remove('is-bloom');
-    views.recap.classList.remove('is-on');
+    views.recap.classList.remove('is-on'); focus(null); hideTip();
     cur.classList.remove('is-on','is-click'); moveCursor(50,78);
     show('serp');
   }
@@ -277,17 +284,25 @@
   steps.push([2150,function(){res[0].classList.add('is-in');}]);
   steps.push([2600,function(){res[1].classList.add('is-in');}]);
   steps.push([3050,function(){res[2].classList.add('is-in');}]);
-  steps.push([4000,function(){cur.classList.add('is-on');moveCursor(78,88);}]);
-  steps.push([4120,function(){moveCursor(34,36);}]);
-  steps.push([4820,function(){clickPulse();ad.classList.add('is-hit');}]);
-  steps.push([5060,function(){show('site');}]);
-  steps.push([5420,function(){views.site.classList.add('is-bloom');}]);
-  steps.push([7000,function(){moveCursor(50,76);}]);
-  steps.push([7750,function(){clickPulse();order.classList.add('is-hit');}]);
-  steps.push([7980,function(){order.classList.remove('is-hit');}]);
-  steps.push([8150,function(){conf.classList.add('is-on');}]);
-  steps.push([8900,function(){cur.classList.remove('is-on');}]);
-  steps.push([9100,function(){show('recap');views.recap.classList.add('is-on');}]);
+  /* comparaison annonce / referencement naturel */
+  steps.push([3700,function(){focus('ad');showTip('Annonce','Vous apparaissez tout de suite, et vous payez seulement quand on clique.');}]);
+  steps.push([5600,function(){hideTip();}]);
+  steps.push([5900,function(){focus('seo');showTip('R\u00e9sultats naturels','Gratuits, mais c\'est le r\u00e9f\u00e9rencement : il faut des mois pour y arriver.',true);}]);
+  steps.push([7800,function(){hideTip();}]);
+  steps.push([8100,function(){focus(null);}]);
+  /* le clic sur l'annonce, en prenant le temps */
+  steps.push([8500,function(){cur.classList.add('is-on');moveCursor(80,92);}]);
+  steps.push([8700,function(){moveCursor(36,34);}]);
+  steps.push([9800,function(){ad.classList.add('is-hit');}]);
+  steps.push([10500,function(){clickPulse();}]);
+  steps.push([11300,function(){show('site');}]);
+  steps.push([11700,function(){views.site.classList.add('is-bloom');}]);
+  steps.push([13100,function(){moveCursor(50,76);}]);
+  steps.push([14100,function(){clickPulse();order.classList.add('is-hit');}]);
+  steps.push([14350,function(){order.classList.remove('is-hit');}]);
+  steps.push([14550,function(){conf.classList.add('is-on');}]);
+  steps.push([15500,function(){cur.classList.remove('is-on');}]);
+  steps.push([15800,function(){show('recap');views.recap.classList.add('is-on');}]);
   steps.sort(function(a,b){return a[0]-b[0];});
 
   var t0=0, acc=0, idx=0, raf=0, paused=false, running=false;
