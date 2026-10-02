@@ -111,7 +111,12 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 
 /* cta */
 .cta{position:relative;border-radius:var(--r-lg);overflow:hidden;padding:70px 40px;text-align:center;background:var(--grad-main);box-shadow:var(--shadow-card);}
-.cta::after{content:"";position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.5),transparent 70%);right:-80px;top:-120px;}
+.cta::after{z-index:1;content:"";position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.5),transparent 70%);right:-80px;top:-120px;}
+/* video de bulles par-dessus le degrade violet du CTA */
+.cta-bg{position:absolute;inset:0;z-index:0;overflow:hidden;mix-blend-mode:luminosity;opacity:.5;pointer-events:none;
+  background:url('assets/bg/wanderful-bg.jpg') center center/cover no-repeat;}
+.cta-bg video{width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity 1.6s ease;}
+.cta-bg video.on{opacity:1;}
 .cta h2{position:relative;color:#fff;font-size:clamp(28px,4vw,46px);}
 .cta p{position:relative;color:rgba(255,255,255,.92);max-width:520px;margin:16px auto 28px;font-weight:300;}
 .cta .btn-white{position:relative;background:#fff;color:var(--violet);}
@@ -283,6 +288,7 @@ footer{margin-top:76px;padding:54px 0 34px;}
 
 <section id="contact" class="wrap section">
   <div class="cta reveal">
+    <div class="cta-bg" aria-hidden="true"><video id="ctaVideo" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1"></video></div>
     <h2>Prêt à remplir votre pipeline ?</h2>
     <p>Discutons de vos objectifs de mandats et de ventes. Plan d'action concret sous 48h, sans engagement.</p>
     <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;position:relative;">
@@ -332,5 +338,30 @@ const t=document.querySelector('.nav-toggle');const m=document.querySelector('.m
 if(t&&m)t.addEventListener('click',()=>{const open=getComputedStyle(m).display!=='none';m.style.display=open?'none':'flex';});
 </script>
 <script src="/assistant.js" defer></script>
+<script>
+/* video de bulles dans le bloc CTA */
+(function(){
+  var v = document.getElementById('ctaVideo'); if (!v) return; var sec = v.closest('.cta');
+  var rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var small = window.matchMedia && matchMedia('(max-width: 980px)').matches;
+  var c = navigator.connection || {};
+  if (rm || small || c.saveData === true || /(^|-)2g$/.test(c.effectiveType || '')) return;
+  var started = false;
+  function play(){ var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+  function start(){
+    if (started) return; started = true;
+    [['assets/bg/wanderful-bg.webm','video/webm'],['assets/bg/wanderful-bg.mp4','video/mp4']]
+      .forEach(function(s){ var e=document.createElement('source'); e.src=s[0]; e.type=s[1]; v.appendChild(e); });
+    v.addEventListener('canplay', function(){ v.classList.add('on'); }, {once:true});
+    v.load(); play();
+  }
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(es){ es.forEach(function(e){
+      if (e.isIntersecting) { start(); play(); } else if (started) { v.pause(); }
+    }); }, {rootMargin:'300px 0px'}).observe(sec);
+  } else { start(); }
+  document.addEventListener('visibilitychange', function(){ if (document.hidden) v.pause(); });
+})();
+</script>
 </body>
 </html>
