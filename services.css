@@ -26,6 +26,7 @@ nav{
   border-bottom:1px solid rgba(207,195,232,.3);
 }
 .nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.nav-logo img{height:42px;width:auto;display:block;}
 .logo-text{display:flex;align-items:baseline;}
 .wande{font-size:1.3rem;font-weight:800;color:var(--p2);letter-spacing:-.02em;}
 .rful{font-size:1.3rem;font-weight:800;color:var(--p1);letter-spacing:-.02em;}
@@ -176,6 +177,7 @@ h2{
 /* ── RESPONSIVE ── */
 @media(max-width:900px){
   nav{padding:14px 24px;}
+  .nav-logo img{height:34px;}
   .svc-hero{padding:110px 24px 60px;}
   .svc-main{padding:60px 24px 40px;}
   .includes-grid{grid-template-columns:repeat(2,1fr);}
