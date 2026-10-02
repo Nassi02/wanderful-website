@@ -10,7 +10,7 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#8D7EF2">
-<link rel="stylesheet" href="../services.css?v=5"/>
+<link rel="stylesheet" href="../services.css?v=6"/>
 <link rel="canonical" href="https://wanderful-marketing.com/services/personal-branding.html">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
@@ -124,6 +124,7 @@
   </section>
   <section class="svc-cta-section">
     <div class="cta-box">
+        <div class="cta-bg" aria-hidden="true"><video id="ctaVideo" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1"></video></div>
       <h2>Prêt à devenir incontournable dans votre secteur ?</h2>
       <p>30 minutes d'audit gratuit de votre présence digitale — on vous dit comment construire votre marque personnelle qui attire les bons clients.</p>
       <a href="../index.html#audit" class="cta-btn"><span>✦</span> Demander mon audit gratuit <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2.5 7.5h10M9 3.5l4 4-4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
@@ -151,6 +152,31 @@
     });
   }, { threshold: 0.25 });
   vids.forEach(function(v){ io.observe(v); });
+})();
+</script>
+<script>
+/* video de bulles dans le bloc CTA */
+(function(){
+  var v = document.getElementById('ctaVideo'); if (!v) return; var sec = v.closest('.cta-box');
+  var rm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var small = window.matchMedia && matchMedia('(max-width: 980px)').matches;
+  var c = navigator.connection || {};
+  if (rm || small || c.saveData === true || /(^|-)2g$/.test(c.effectiveType || '')) return;
+  var started = false;
+  function play(){ var p = v.play(); if (p && p.catch) p.catch(function(){}); }
+  function start(){
+    if (started) return; started = true;
+    [['../assets/bg/wanderful-bg.webm','video/webm'],['../assets/bg/wanderful-bg.mp4','video/mp4']]
+      .forEach(function(s){ var e=document.createElement('source'); e.src=s[0]; e.type=s[1]; v.appendChild(e); });
+    v.addEventListener('canplay', function(){ v.classList.add('on'); }, {once:true});
+    v.load(); play();
+  }
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function(es){ es.forEach(function(e){
+      if (e.isIntersecting) { start(); play(); } else if (started) { v.pause(); }
+    }); }, {rootMargin:'300px 0px'}).observe(sec);
+  } else { start(); }
+  document.addEventListener('visibilitychange', function(){ if (document.hidden) v.pause(); });
 })();
 </script>
 </body>
