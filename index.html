@@ -113,7 +113,7 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .card .cmore{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:13.5px;font-weight:600;color:var(--violet);transition:gap .25s;}
 .card:hover .cmore{gap:11px;}
 /* ── carte Google Ads animee ── */
-.card-gads{
+.card-fx{
   --gs:clamp(132px,13.2vw,172px);
   position:relative;overflow:hidden;
   display:grid;grid-template-columns:minmax(0,1fr) var(--gs);
@@ -123,23 +123,23 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   border-color:rgba(141,126,242,.42);
   box-shadow:0 26px 60px -30px rgba(141,126,242,.6);
 }
-.card-gads::before{
+.card-fx::before{
   content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0;
   background:radial-gradient(118% 92% at 84% 44%,rgba(185,166,255,.24),transparent 62%);
   transition:opacity .4s;opacity:.9;
 }
-.card-gads:hover{transform:translateY(-8px);border-color:rgba(141,126,242,.78);box-shadow:0 36px 80px -28px rgba(141,126,242,.78);}
-.card-gads:hover::before{opacity:1;}
-.card-gads:focus-visible{outline:3px solid rgba(141,126,242,.9);outline-offset:3px;}
-.gads-txt{position:relative;z-index:6;}
-.gads-txt h3{font-size:20px;margin-bottom:9px;}
-.gads-txt p{font-size:14.5px;color:var(--ink);font-weight:300;}
+.card-fx:hover{transform:translateY(-8px);border-color:rgba(141,126,242,.78);box-shadow:0 36px 80px -28px rgba(141,126,242,.78);}
+.card-fx:hover::before{opacity:1;}
+.card-fx:focus-visible{outline:3px solid rgba(141,126,242,.9);outline-offset:3px;}
+.fx-txt{position:relative;z-index:6;}
+.fx-txt h3{font-size:20px;margin-bottom:9px;}
+.fx-txt p{font-size:14.5px;color:var(--ink);font-weight:300;}
 
-.gads-fx{position:relative;width:var(--gs);height:var(--gs);justify-self:end;z-index:1;}
+.fx-stage{position:relative;width:var(--gs);height:var(--gs);justify-self:end;z-index:1;}
 .gads-glow{position:absolute;left:50%;top:50%;width:118%;height:118%;transform:translate(-50%,-50%);
   background:radial-gradient(circle,rgba(190,172,255,.5),rgba(190,172,255,0) 66%);
   opacity:0;transition:opacity .45s;pointer-events:none;z-index:0;}
-.card-gads:hover .gads-glow{opacity:1;}
+.card-fx:hover .gads-glow{opacity:1;}
 
 .gads-orbits{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:0;}
 .gads-orbit{fill:none;stroke:rgba(141,126,242,.42);stroke-width:1.1;
@@ -177,8 +177,13 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .card-gads.in .gb3.b{--orb:gadsOrb3B;--dur:21s;animation-delay:.42s;}
 
 /* pause hors ecran */
-.card-gads:not(.gads-vis) .gads-tilt,
-.card-gads:not(.gads-vis) .gads-b{animation-play-state:paused;}
+.card-fx:not(.fx-vis) .gads-tilt,
+.card-fx:not(.fx-vis) .gads-b,
+.card-fx:not(.fx-vis) .ia-node,
+.card-fx:not(.fx-vis) .ia-spark,
+.card-fx:not(.fx-vis) .web-win,
+.card-fx:not(.fx-vis) .web-shine,
+.card-fx:not(.fx-vis) .web-img b{animation-play-state:paused;}
 
 /* convergence + onde */
 .card-gads.is-pulse .gads-swarm{animation:gadsConverge .9s cubic-bezier(.3,.8,.3,1);}
@@ -305,19 +310,153 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   93.75%{transform:translate(-50%,-50%) translate(calc(var(--gs)*-0.3247),calc(var(--gs)*-0.2509)) scale(0.758);opacity:0.780;}
   100.0%{transform:translate(-50%,-50%) translate(calc(var(--gs)*-0.1545),calc(var(--gs)*-0.3138)) scale(0.712);opacity:0.780;}
 }
+
+/* ── carte IA & Automatisation ── */
+.ia-net{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:1;}
+.ia-link{fill:none;stroke:rgba(141,126,242,.42);stroke-width:1.4;stroke-linecap:round;
+  stroke-dasharray:1;stroke-dashoffset:1;opacity:0;}
+.ia-spark{fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;
+  stroke-dasharray:.14 1;stroke-dashoffset:.14;opacity:0;
+  filter:drop-shadow(0 0 4px rgba(168,146,255,.95));}
+.ia-node{position:absolute;display:block;transform:translate(-50%,-50%) scale(var(--ns,1));opacity:0;z-index:2;}
+.ia-node img{display:block;width:100%;height:auto;}
+.ia-halo{position:absolute;left:50%;top:50%;width:200%;height:200%;border-radius:50%;
+  transform:translate(-50%,-50%) scale(.4);opacity:0;pointer-events:none;
+  box-shadow:0 0 0 2px rgba(255,255,255,.9),0 0 18px 6px rgba(176,155,255,.8);}
+.card-ia .nd1{left:15%;top:78%;width:calc(var(--gs)*.14);}
+.card-ia .nd2{left:40%;top:57%;width:calc(var(--gs)*.24);z-index:3;}
+.card-ia .nd3{left:65%;top:39%;width:calc(var(--gs)*.185);}
+.card-ia .nd4{left:86%;top:23%;width:calc(var(--gs)*.12);}
+.card-ia .nd5{left:29%;top:26%;width:calc(var(--gs)*.13);}
+
+.card-ia.in .ia-node{animation:iaPop .5s cubic-bezier(.22,.9,.26,1) both,iaDrift var(--df,9s) ease-in-out var(--dd,0s) infinite;}
+.card-ia.in .nd2{animation-delay:.10s,.9s;--df:8s;}
+.card-ia.in .nd1{animation-delay:.20s,1.1s;--df:10s;}
+.card-ia.in .nd3{animation-delay:.28s,1.0s;--df:11s;}
+.card-ia.in .nd5{animation-delay:.36s,1.2s;--df:9.5s;}
+.card-ia.in .nd4{animation-delay:.44s,1.3s;--df:12s;}
+.card-ia.in .ia-link{animation:iaDraw .6s ease-out both;}
+.card-ia.in .k1{animation-delay:.30s;}
+.card-ia.in .k2{animation-delay:.42s;}
+.card-ia.in .k4{animation-delay:.50s;}
+.card-ia.in .k3{animation-delay:.58s;}
+/* impulsion continue, discrete */
+.card-ia.in .ia-spark{animation:iaRun 5.4s cubic-bezier(.5,0,.5,1) infinite;}
+.card-ia.in .p1{animation-delay:1.4s;}
+.card-ia.in .p2{animation-delay:1.74s;}
+.card-ia.in .p4{animation-delay:1.86s;}
+.card-ia.in .p3{animation-delay:2.08s;}
+/* au survol : relance immediate de l'impulsion + allumage des noeuds */
+.card-ia.is-pulse .ia-spark{animation:iaRunFast 1.25s cubic-bezier(.45,0,.5,1);}
+.card-ia.is-pulse .p1{animation-delay:0s;}
+.card-ia.is-pulse .p2{animation-delay:.26s;}
+.card-ia.is-pulse .p4{animation-delay:.36s;}
+.card-ia.is-pulse .p3{animation-delay:.52s;}
+.card-ia.is-pulse .ia-halo{animation:iaHalo .62s ease-out;}
+.card-ia.is-pulse .nd1 .ia-halo{animation-delay:.02s;}
+.card-ia.is-pulse .nd2 .ia-halo{animation-delay:.26s;}
+.card-ia.is-pulse .nd3 .ia-halo{animation-delay:.52s;}
+.card-ia.is-pulse .nd5 .ia-halo{animation-delay:.58s;}
+.card-ia.is-pulse .nd4 .ia-halo{animation-delay:.78s;}
+.card-ia.is-pulse .ia-link{stroke:rgba(141,126,242,.78);}
+.card-ia .ia-link{transition:stroke .4s;}
+.card-ia.is-click .ia-halo{animation:iaHalo .5s ease-out;}
+
+@keyframes iaPop{from{opacity:0;transform:translate(-50%,-50%) scale(.3);}to{opacity:1;transform:translate(-50%,-50%) scale(1);}}
+@keyframes iaDrift{0%,100%{transform:translate(-50%,-50%) translate(0,0);}33%{transform:translate(-50%,-50%) translate(3px,-5px);}66%{transform:translate(-50%,-50%) translate(-4px,3px);}}
+@keyframes iaDraw{from{stroke-dashoffset:1;opacity:0;}25%{opacity:1;}to{stroke-dashoffset:0;opacity:1;}}
+@keyframes iaRun{0%{stroke-dashoffset:.14;opacity:0;}4%{opacity:1;}22%{stroke-dashoffset:-1;opacity:1;}26%{stroke-dashoffset:-1;opacity:0;}100%{stroke-dashoffset:-1;opacity:0;}}
+@keyframes iaRunFast{0%{stroke-dashoffset:.14;opacity:0;}10%{opacity:1;}60%{stroke-dashoffset:-1;opacity:1;}72%{stroke-dashoffset:-1;opacity:0;}100%{opacity:0;}}
+@keyframes iaHalo{0%{opacity:0;transform:translate(-50%,-50%) scale(.45);}30%{opacity:.95;}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5);}}
+
+/* ── carte Création de site web ── */
+.web-stage{perspective:700px;}
+.web-win{position:absolute;left:4%;top:12%;width:80%;height:64%;border-radius:11px;
+  background:linear-gradient(165deg,#fff,#f6f2ff);
+  border:1px solid rgba(141,126,242,.3);
+  box-shadow:0 16px 34px -14px rgba(121,98,220,.5);
+  overflow:hidden;transform-origin:50% 60%;opacity:0;z-index:2;}
+.web-bar{position:absolute;left:0;right:0;top:0;height:16%;min-height:13px;
+  background:rgba(141,126,242,.12);border-bottom:1px solid rgba(141,126,242,.18);
+  display:flex;align-items:center;gap:3px;padding:0 6px;}
+.web-bar i{width:4px;height:4px;border-radius:50%;background:rgba(141,126,242,.55);opacity:0;}
+.web-bar u{flex:1;height:5px;margin-left:4px;border-radius:3px;background:rgba(141,126,242,.2);opacity:0;}
+.web-body{position:absolute;left:0;right:0;top:16%;bottom:0;padding:7% 8%;}
+.web-h{display:block;height:9%;width:56%;border-radius:3px;background:var(--grad-main);opacity:0;transform:translateX(-8px);}
+.web-img{display:block;position:relative;height:38%;margin-top:7%;border-radius:5px;overflow:hidden;
+  background:linear-gradient(135deg,#cfc0ff,#b9d8ff 48%,#ffc9ea);opacity:0;transform:scale(.9);}
+.web-img b{position:absolute;inset:0;background:linear-gradient(100deg,transparent 35%,rgba(255,255,255,.75) 50%,transparent 65%);transform:translateX(-120%);}
+.web-l{display:block;height:5%;border-radius:3px;background:rgba(141,126,242,.26);margin-top:6%;opacity:0;}
+.web-l.a{width:88%;}
+.web-l.b{width:62%;margin-top:4%;}
+.web-btn{display:block;height:12%;width:40%;margin-top:7%;border-radius:999px;background:var(--violet);
+  box-shadow:0 6px 14px -5px rgba(141,126,242,.95);opacity:0;transform:translateY(6px);}
+.web-shine{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(104deg,transparent 38%,rgba(255,255,255,.6) 50%,transparent 62%);
+  transform:translateX(-130%);}
+
+.web-phone{position:absolute;right:1%;bottom:4%;width:26%;height:46%;z-index:3;opacity:0;transform:translate(14px,10px);}
+.web-ph{position:absolute;inset:0;border-radius:9px;background:#fff;
+  border:1.5px solid rgba(141,126,242,.42);box-shadow:0 12px 26px -10px rgba(121,98,220,.6);
+  padding:14% 11%;display:flex;flex-direction:column;gap:9%;overflow:hidden;}
+.web-ph i{display:block;border-radius:2px;background:rgba(141,126,242,.3);}
+.web-ph .ph1{height:14%;width:70%;background:var(--grad-main);}
+.web-ph .ph2{height:34%;width:100%;border-radius:4px;background:linear-gradient(135deg,#cfc0ff,#b9d8ff 50%,#ffc9ea);}
+.web-ph .ph3{height:11%;width:52%;border-radius:999px;background:var(--violet);}
+
+.card-web.in .web-win{animation:webWin .55s cubic-bezier(.22,.9,.26,1) .05s both,webFloat 8s ease-in-out 1.6s infinite;}
+.card-web.in .web-bar i{animation:webFade .3s ease-out both;}
+.card-web.in .web-bar i:nth-child(1){animation-delay:.30s;}
+.card-web.in .web-bar i:nth-child(2){animation-delay:.36s;}
+.card-web.in .web-bar i:nth-child(3){animation-delay:.42s;}
+.card-web.in .web-bar u{animation:webFade .3s ease-out .46s both;}
+.card-web.in .web-h{animation:webSlide .4s cubic-bezier(.22,.9,.26,1) .40s both;}
+.card-web.in .web-img{animation:webPop .45s cubic-bezier(.22,.9,.26,1) .52s both;}
+.card-web.in .web-l.a{animation:webFade .3s ease-out .66s both;}
+.card-web.in .web-l.b{animation:webFade .3s ease-out .74s both;}
+.card-web.in .web-btn{animation:webRise .4s cubic-bezier(.22,.9,.26,1) .82s both;}
+.card-web.in .web-phone{animation:webPhone .5s cubic-bezier(.22,.9,.26,1) .96s both;}
+.card-web.in .web-shine{animation:webShine 7s ease-in-out 2.4s infinite;}
+.card-web.in .web-img b{animation:webShine 7s ease-in-out 2.9s infinite;}
+
+.card-web.is-pulse .web-h{animation:webSlide .34s cubic-bezier(.22,.9,.26,1) .02s both;}
+.card-web.is-pulse .web-img{animation:webPop .36s cubic-bezier(.22,.9,.26,1) .12s both;}
+.card-web.is-pulse .web-l.a{animation:webFade .26s ease-out .24s both;}
+.card-web.is-pulse .web-l.b{animation:webFade .26s ease-out .30s both;}
+.card-web.is-pulse .web-btn{animation:webRise .34s cubic-bezier(.22,.9,.26,1) .38s both;}
+.card-web.is-pulse .web-phone{animation:webPhone .42s cubic-bezier(.22,.9,.26,1) .52s both;}
+.card-web.is-pulse .web-shine{animation:webShine 1.1s ease-out;}
+.card-web:hover .web-phone{transform:translateY(-5px);}
+.card-web .web-phone{transition:transform .45s cubic-bezier(.22,.8,.26,1);}
+.card-web.is-click .web-win{animation:webClick .5s ease-out;}
+
+@keyframes webWin{from{opacity:0;transform:translateY(12px) scale(.9);}to{opacity:1;transform:none;}}
+@keyframes webFloat{0%,100%{transform:translateY(0) rotateY(0);}50%{transform:translateY(-6px) rotateY(-3deg);}}
+@keyframes webFade{from{opacity:0;}to{opacity:1;}}
+@keyframes webSlide{from{opacity:0;transform:translateX(-8px);}to{opacity:1;transform:none;}}
+@keyframes webPop{from{opacity:0;transform:scale(.9);}to{opacity:1;transform:none;}}
+@keyframes webRise{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+@keyframes webPhone{from{opacity:0;transform:translate(14px,10px) scale(.88);}to{opacity:1;transform:none;}}
+@keyframes webShine{0%{transform:translateX(-130%);}18%,100%{transform:translateX(130%);}}
+@keyframes webClick{0%{transform:scale(1);}35%{transform:scale(1.05);}100%{transform:scale(1);}}
+
 /* la carte passe en pile des que la colonne devient trop etroite pour deux blocs */
 @media(min-width:981px) and (max-width:1150px){
-  .card-gads{grid-template-columns:1fr;gap:16px;--gs:min(180px,19vw);}
-  .gads-fx{justify-self:center;order:-1;}
+  .card-fx{grid-template-columns:1fr;gap:16px;--gs:min(180px,19vw);}
+  .fx-stage{justify-self:center;order:-1;}
 }
 @media(max-width:745px){
-  .card-gads{grid-template-columns:1fr;gap:16px;--gs:min(190px,52vw);padding:30px 26px;}
-  .gads-fx{justify-self:center;order:-1;}
+  .card-fx{grid-template-columns:1fr;gap:16px;--gs:min(190px,52vw);padding:30px 26px;}
+  .fx-stage{justify-self:center;order:-1;}
 }
 @media(prefers-reduced-motion:reduce){
-  .card-gads.in .gads-tilt,.card-gads.in .gads-b,.card-gads.in .gads-orbit,
-  .card-gads.is-pulse .gads-swarm,.card-gads.is-pulse .gads-ripple,
-  .card-gads.is-click .gads-ripple{animation:none!important;}
+  .card-fx *,.card-fx{animation:none!important;}
+  .card-ia .ia-node{opacity:1;}
+  .card-ia .ia-link{opacity:1;stroke-dashoffset:0;}
+  .card-ia .ia-spark{opacity:0;}
+  .card-web .web-win,.card-web .web-phone,.card-web .web-h,.card-web .web-img,
+  .card-web .web-l,.card-web .web-btn,.card-web .web-bar i,.card-web .web-bar u{opacity:1;transform:none;}
+  .card-web .web-shine,.card-web .web-img b{opacity:0;}
   .card-gads .gads-orbit{opacity:1;stroke-dashoffset:0;}
   .card-gads .gads-target{transition:none;transform:none;}
   .card-gads .gb1.f{opacity:.95;transform:translate(-50%,-50%) translate(calc(var(--gs)*.44),calc(var(--gs)*.16)) scale(1.1);}
@@ -675,13 +814,13 @@ footer{margin-top:80px;padding:56px 0 34px;}
     <p>Choisissez votre besoin — cliquez et parlons-en. Chaque service s'intègre dans notre méthode globale.</p>
   </div>
   <div class="grid-3">
-    <a href="services/google-ads.html" class="card reveal card-gads" aria-label="Google Ads — découvrir le service">
+    <a href="services/google-ads.html" class="card reveal card-fx card-gads" aria-label="Google Ads — découvrir le service">
       <div class="gads-txt">
         <h3>Google Ads</h3>
         <p>Des campagnes rentables, pilotées par notre outil connecté à l'API Google&nbsp;Ads.</p>
         <span class="cmore">Découvrir →</span>
       </div>
-      <div class="gads-fx" aria-hidden="true">
+      <div class="fx-stage gads-fx" aria-hidden="true">
         <svg class="gads-orbits" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" focusable="false">
           <ellipse class="gads-orbit o1" cx="100" cy="100" rx="92" ry="60" pathLength="1"/>
           <ellipse class="gads-orbit o2" cx="100" cy="100" rx="68" ry="43" pathLength="1"/>
@@ -701,10 +840,61 @@ footer{margin-top:80px;padding:56px 0 34px;}
         </span>
       </div>
     </a>
-    <a href="services/intelligence-artificielle.html" class="card reveal"><div class="ico">🤖</div><h3>IA &amp; Automatisation</h3><p>On automatise et accélère votre marketing grâce à l'intelligence artificielle.</p><span class="cmore">Découvrir →</span></a>
+    <a href="services/intelligence-artificielle.html" class="card reveal card-fx card-ia" aria-label="IA et Automatisation — découvrir le service">
+      <div class="fx-txt">
+        <h3>IA &amp; Automatisation</h3>
+        <p>On automatise et accélère votre marketing grâce à l'intelligence artificielle.</p>
+        <span class="cmore">Découvrir →</span>
+      </div>
+      <div class="fx-stage ia-stage" aria-hidden="true">
+        <svg class="ia-net" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" focusable="false">
+          <g class="ia-links">
+            <path class="ia-link k1" d="M30 156 L80 114" pathLength="1"/>
+            <path class="ia-link k2" d="M80 114 L130 78" pathLength="1"/>
+            <path class="ia-link k3" d="M130 78 L172 46" pathLength="1"/>
+            <path class="ia-link k4" d="M80 114 L58 52" pathLength="1"/>
+          </g>
+          <g class="ia-sparks">
+            <path class="ia-spark p1" d="M30 156 L80 114" pathLength="1"/>
+            <path class="ia-spark p2" d="M80 114 L130 78" pathLength="1"/>
+            <path class="ia-spark p3" d="M130 78 L172 46" pathLength="1"/>
+            <path class="ia-spark p4" d="M80 114 L58 52" pathLength="1"/>
+          </g>
+        </svg>
+        <span class="ia-node nd1"><span class="ia-halo"></span><img src="assets/gads/b3.webp" alt="" width="160" height="136" loading="lazy" decoding="async"></span>
+        <span class="ia-node nd2"><span class="ia-halo"></span><img src="assets/gads/b1.webp" alt="" width="160" height="152" loading="lazy" decoding="async"></span>
+        <span class="ia-node nd3"><span class="ia-halo"></span><img src="assets/gads/b2.webp" alt="" width="160" height="133" loading="lazy" decoding="async"></span>
+        <span class="ia-node nd4"><span class="ia-halo"></span><img src="assets/gads/b3.webp" alt="" width="160" height="136" loading="lazy" decoding="async"></span>
+        <span class="ia-node nd5"><span class="ia-halo"></span><img src="assets/gads/b2.webp" alt="" width="160" height="133" loading="lazy" decoding="async"></span>
+      </div>
+    </a>
     <a href="services/creation-contenu.html" class="card reveal"><div class="ico">📱</div><h3>Social Media &amp; Contenu</h3><p>Stratégie, création et community management pour une vraie communauté.</p><span class="cmore">Découvrir →</span></a>
     <a href="services/branding.html" class="card reveal"><div class="ico">💜</div><h3>Branding &amp; Design</h3><p>Une identité visuelle premium qui vous rend immédiatement reconnaissable.</p><span class="cmore">Découvrir →</span></a>
-    <a href="services/creation-sites-web.html" class="card reveal"><div class="ico">💻</div><h3>Création de site web</h3><p>Un site rapide, soigné et pensé pour convertir vos visiteurs en clients.</p><span class="cmore">Découvrir →</span></a>
+    <a href="services/creation-sites-web.html" class="card reveal card-fx card-web" aria-label="Création de site web — découvrir le service">
+      <div class="fx-txt">
+        <h3>Création de site web</h3>
+        <p>Un site rapide, soigné et pensé pour convertir vos visiteurs en clients.</p>
+        <span class="cmore">Découvrir →</span>
+      </div>
+      <div class="fx-stage web-stage" aria-hidden="true">
+        <span class="web-win">
+          <span class="web-bar"><i></i><i></i><i></i><u></u></span>
+          <span class="web-body">
+            <span class="web-h"></span>
+            <span class="web-img"><b></b></span>
+            <span class="web-l a"></span>
+            <span class="web-l b"></span>
+            <span class="web-btn"></span>
+          </span>
+          <span class="web-shine"></span>
+        </span>
+        <span class="web-phone">
+          <span class="web-ph">
+            <i class="ph1"></i><i class="ph2"></i><i class="ph3"></i>
+          </span>
+        </span>
+      </div>
+    </a>
     <a href="services/seo.html" class="card reveal"><div class="ico">🔍</div><h3>SEO &amp; Visibilité</h3><p>On vous rend visible sur Google, durablement, là où vos clients cherchent.</p><span class="cmore">Découvrir →</span></a>
     <a href="services/videos-publicitaires.html" class="card reveal"><div class="ico">🎬</div><h3>Vidéo &amp; Motion</h3><p>Vidéos publicitaires, drone et motion design qui captent l'attention.</p><span class="cmore">Découvrir →</span></a>
     <a href="services/strategie-digitale.html" class="card reveal"><div class="ico">🚀</div><h3>Stratégie de marque</h3><p>Positionnement et plan d'action clairs pour donner une direction à votre croissance.</p><span class="cmore">Découvrir →</span></a>
@@ -1089,10 +1279,8 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 })();
 </script>
 <script>
-/* carte Google Ads : visibilite, inclinaison au curseur, convergence, impulsion au clic */
-(function(){
-  var card=document.querySelector('.card-gads');
-  if(!card) return;
+/* cartes services animees : visibilite, inclinaison au curseur, sequence au survol, impulsion au clic */
+[].forEach.call(document.querySelectorAll('.card-fx'),function(card){
   var tilt=card.querySelector('.gads-target');
   var RM=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   var canHover=window.matchMedia&&matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -1100,9 +1288,9 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   /* n'anime que lorsque la carte est a l'ecran */
   if('IntersectionObserver' in window){
     new IntersectionObserver(function(es){
-      es.forEach(function(e){card.classList.toggle('gads-vis',e.isIntersecting);});
+      es.forEach(function(e){card.classList.toggle('fx-vis',e.isIntersecting);});
     },{threshold:0}).observe(card);
-  }else{card.classList.add('gads-vis','in');}
+  }else{card.classList.add('fx-vis','in');}
 
   if(RM||!canHover) return;
 
@@ -1119,6 +1307,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   }
   function apply(){
     raf=0;
+    if(!tilt) return;
     tilt.style.setProperty('--ry',tx.toFixed(2)+'deg');
     tilt.style.setProperty('--rx',ty.toFixed(2)+'deg');
   }
@@ -1141,8 +1330,9 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
     card.classList.remove('is-click');
     void card.offsetWidth;
     card.classList.add('is-click');
+    setTimeout(function(){card.classList.remove('is-click');},700);
   });
-})();
+});
 </script>
 
 </body>
