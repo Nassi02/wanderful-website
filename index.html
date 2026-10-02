@@ -212,7 +212,9 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .card-fx:not(.fx-vis) .smo-fl,
 .card-fx:not(.fx-vis) .smo-o img,
 .card-fx:not(.fx-vis) .seo-lens,
-.card-fx:not(.fx-vis) .seo-r img{animation-play-state:paused;}
+.card-fx:not(.fx-vis) .seo-r img,
+.card-fx:not(.fx-vis) .vid-film,
+.card-fx:not(.fx-vis) .vid-bar{animation-play-state:paused;}
 
 /* convergence + onde */
 .card-gads.is-pulse .gads-swarm{animation:gadsConverge .9s cubic-bezier(.3,.8,.3,1);}
@@ -715,6 +717,55 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   100%{filter:drop-shadow(0 8px 16px rgba(121,98,220,.28)) brightness(1) saturate(1);}}
 @keyframes seoGl{0%{opacity:0;transform:translateX(-120%);}14%{opacity:1;}86%{opacity:1;}100%{opacity:0;transform:translateX(120%);}}
 
+
+/* ── carte Vidéo & Motion ── */
+.card-vid .fx-stage{--bt:11.4s;--bd:-5.2s;}
+/* la bande de film, derriere, dans une fenetre qui masque son debordement */
+.vid-win{position:absolute;left:2%;top:11%;width:96%;height:27%;overflow:hidden;z-index:1;display:block;
+  border-radius:8px;opacity:0;}
+.vid-film{position:absolute;left:0;top:50%;display:flex;width:200%;transform:translateY(-50%) translateX(0);}
+.vid-film img{display:block;width:50%;height:auto;}
+/* le clap : corps + barre articulee sur la charniere de gauche */
+.vid-clap{position:absolute;left:50%;top:63%;width:92%;z-index:2;display:block;opacity:0;
+  transform:translate(-50%,-50%);}
+.vid-body{display:block;width:100%;height:auto;filter:drop-shadow(0 12px 24px rgba(121,98,220,.34));}
+.vid-bar{position:absolute;left:0;bottom:100%;width:100%;height:auto;display:block;
+  margin-bottom:-6%;transform-origin:5% 72%;transform:rotate(0deg);
+  filter:drop-shadow(0 6px 14px rgba(121,98,220,.4));}
+.vid-shine{position:absolute;left:0;top:0;right:0;bottom:0;pointer-events:none;z-index:3;
+  background:linear-gradient(104deg,transparent 40%,rgba(255,255,255,.9) 50%,transparent 60%);
+  -webkit-mask-image:url(assets/vid/corps.webp);mask-image:url(assets/vid/corps.webp);
+  -webkit-mask-size:100% 100%;mask-size:100% 100%;
+  opacity:0;transform:translateX(-120%);}
+
+/* arrivee : la bande, puis le clap */
+.card-vid.in .vid-win{animation:vidFade .5s ease-out .06s both;}
+.card-vid.in .vid-clap{animation:vidIn .55s cubic-bezier(.22,.9,.26,1) .18s both;}
+/* au repos : la bande defile lentement et le clap fait un petit tic */
+.card-vid.in .vid-film{animation:vidScroll 16s linear infinite;}
+.card-vid.in:not(:hover):not(.is-built) .vid-bar{animation:vidTic 6.4s ease-in-out 1.6s infinite;}
+
+/* survol : 1 ouverture -20deg, 2 fermeture avec rebond, 3 la lecture demarre, 4 reflet */
+.card-vid:hover .vid-bar,.card-vid.is-built .vid-bar{animation:vidClap .42s cubic-bezier(.3,.9,.4,1) forwards;}
+.card-vid:hover .vid-film,.card-vid.is-built .vid-film{animation:vidScroll 1.25s linear .4s infinite;}
+.card-vid:hover .vid-shine,.card-vid.is-built .vid-shine{animation:vidShine .85s cubic-bezier(.4,.05,.3,1) .5s;}
+.card-vid:hover .vid-win,.card-vid.is-built .vid-win{box-shadow:0 0 0 1px rgba(141,126,242,.35),0 10px 26px -12px rgba(121,98,220,.8);}
+.vid-win{transition:box-shadow .5s;}
+.card-vid.is-click .vid-clap{animation:vidClick .5s ease-out;}
+
+@keyframes vidFade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+@keyframes vidIn{from{opacity:0;transform:translate(-50%,-50%) translateY(14px) scale(.9);}
+  to{opacity:1;transform:translate(-50%,-50%);}}
+@keyframes vidScroll{from{transform:translateY(-50%) translateX(0);}to{transform:translateY(-50%) translateX(-50%);}}
+@keyframes vidTic{0%,86%,100%{transform:rotate(0deg);}91%{transform:rotate(-5.5deg);}96%{transform:rotate(.8deg);}}
+@keyframes vidClap{
+  0%{transform:rotate(0deg);}
+  58%{transform:rotate(-21deg);}
+  88%{transform:rotate(2.6deg);}
+  100%{transform:rotate(0deg);}}
+@keyframes vidShine{0%{opacity:0;transform:translateX(-120%);}14%{opacity:1;}86%{opacity:1;}100%{opacity:0;transform:translateX(120%);}}
+@keyframes vidClick{0%{transform:translate(-50%,-50%) scale(1);}40%{transform:translate(-50%,-50%) scale(1.05);}100%{transform:translate(-50%,-50%) scale(1);}}
+
 /* la carte passe en pile des que la colonne devient trop etroite pour deux blocs */
 @media(min-width:981px) and (max-width:1150px){
   .card-fx{grid-template-columns:1fr;gap:16px;--gs:min(180px,19vw);}
@@ -746,6 +797,11 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   .card-seo .sr2{--s:2;}
   .card-seo .seo-gl{opacity:0;}
   .card-seo .seo-lens{transform:translate(0,0);}
+  .card-vid .vid-win,.card-vid .vid-clap{opacity:1;transform:translate(-50%,-50%);}
+  .card-vid .vid-win{transform:none;}
+  .card-vid .vid-bar{transform:rotate(0deg);}
+  .card-vid .vid-film{transform:translateY(-50%) translateX(0);}
+  .card-vid .vid-shine{opacity:0;}
   .card-fx::after{opacity:0;animation:none!important;}
   .card-fx .fx-stage{transform:none!important;}
   .card-gads .gads-orbit{opacity:1;stroke-dashoffset:0;}
@@ -1229,7 +1285,26 @@ footer{margin-top:80px;padding:56px 0 34px;}
         <span class="seo-lens"><img src="assets/seo/loupe.webp" alt="" width="420" height="281" loading="lazy" decoding="async"></span>
       </div>
     </a>
-    <a href="services/videos-publicitaires.html" class="card reveal"><div class="ico">🎬</div><h3>Vidéo &amp; Motion</h3><p>Vidéos publicitaires, drone et motion design qui captent l'attention.</p><span class="cmore">Découvrir →</span></a>
+    <a href="services/videos-publicitaires.html" class="card reveal card-fx card-vid" aria-label="Vidéo et Motion — découvrir le service">
+      <div class="fx-txt">
+        <h3>Vidéo &amp; Motion</h3>
+        <p>Vidéos publicitaires, drone et motion design qui captent l'attention.</p>
+        <span class="cmore">Découvrir →</span>
+      </div>
+      <div class="fx-stage vid-stage" aria-hidden="true">
+        <span class="vid-win">
+          <span class="vid-film">
+            <img src="assets/vid/film.webp" alt="" width="744" height="215" loading="lazy" decoding="async">
+            <img src="assets/vid/film.webp" alt="" width="744" height="215" loading="lazy" decoding="async">
+          </span>
+        </span>
+        <span class="vid-clap">
+          <img class="vid-body" src="assets/vid/corps.webp" alt="" width="620" height="263" loading="lazy" decoding="async">
+          <img class="vid-bar" src="assets/vid/barre.webp" alt="" width="640" height="77" loading="lazy" decoding="async">
+          <span class="vid-shine"></span>
+        </span>
+      </div>
+    </a>
     <a href="services/strategie-digitale.html" class="card reveal"><div class="ico">🚀</div><h3>Stratégie de marque</h3><p>Positionnement et plan d'action clairs pour donner une direction à votre croissance.</p><span class="cmore">Découvrir →</span></a>
     <a href="#methode" class="card reveal"><div class="ico">✨</div><h3>Méthode complète</h3><p>Pas sûr de votre besoin ? Découvrez notre parcours en 8 étapes de A à Z.</p><span class="cmore">Voir la méthode →</span></a>
   </div>
@@ -1626,7 +1701,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   }else{card.classList.add('fx-vis','in');}
 
   /* sur mobile : on joue la construction une fois, puis on garde le resultat */
-  if(!canHover&&!RM&&(card.classList.contains('card-brd')||card.classList.contains('card-seo'))){
+  if(!canHover&&!RM&&(card.classList.contains('card-brd')||card.classList.contains('card-seo')||card.classList.contains('card-vid'))){
     var built=false;
     if('IntersectionObserver' in window){
       var io2=new IntersectionObserver(function(es){
