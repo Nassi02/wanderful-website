@@ -212,20 +212,19 @@ h2{
 .ga-stage.is-open .ga-screen{opacity:1;transform:none;}
 
 /* les deux nuages, devant la demonstration */
-.ga-cloud{position:absolute;top:-10%;height:120%;z-index:3;pointer-events:none;display:block;
+.ga-cloud{position:absolute;top:-20%;height:140%;z-index:3;pointer-events:none;display:block;
   transition:transform 1.6s cubic-bezier(.33,.02,.2,1);}
 .ga-cloud img{display:block;height:100%;width:auto;}
-.ga-cloud-l img{transform:scaleX(-1);}
-.ga-cloud-r img{transform:scaleX(-1);}
-.ga-cloud-l{left:-9%;transform:translateX(62%);}
-.ga-cloud-r{right:-9%;transform:translateX(-62%);}
-.ga-stage.is-open .ga-cloud-l{transform:translateX(-20%);}
-.ga-stage.is-open .ga-cloud-r{transform:translateX(20%);}
+
+.ga-cloud-l{left:0;transform:translateX(6%);}
+.ga-cloud-r{right:0;transform:translateX(-6%);}
+.ga-stage.is-open .ga-cloud-l{transform:translateX(-39%);}
+.ga-stage.is-open .ga-cloud-r{transform:translateX(38%);}
 /* derive tres legere une fois ouverts */
 .ga-stage.is-open .ga-cloud-l img{animation:gaDriftL 17s ease-in-out 1.8s infinite;}
 .ga-stage.is-open .ga-cloud-r img{animation:gaDriftR 21s ease-in-out 2.4s infinite;}
-@keyframes gaDriftL{0%,100%{transform:scaleX(-1) translate(0,0);}50%{transform:scaleX(-1) translate(1.8%,1.8%) scale(1.03);}}
-@keyframes gaDriftR{0%,100%{transform:scaleX(-1) translate(0,0);}50%{transform:scaleX(-1) translate(-1.8%,-1.6%) scale(1.035);}}
+@keyframes gaDriftL{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-1.6%,1.6%) scale(1.03);}}
+@keyframes gaDriftR{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(1.6%,-1.6%) scale(1.035);}}
 
 /* vues */
 .ga-view{position:absolute;inset:0;padding:5.2% 7%;opacity:0;visibility:hidden;
@@ -365,11 +364,11 @@ h2{
   .ga-view{padding:5% 6%;}
   .ga-flower{width:min(30%,110px);}
   /* sur mobile les nuages se replient sur les cotes : la zone de lecture reste intacte */
-  .ga-cloud{top:14%;height:72%;}
-  .ga-cloud-l{left:-20%;transform:translateX(70%);}
-  .ga-cloud-r{right:-20%;transform:translateX(-70%);}
-  .ga-stage.is-open .ga-cloud-l{transform:translateX(-42%);}
-  .ga-stage.is-open .ga-cloud-r{transform:translateX(42%);}
+  .ga-cloud{top:3%;height:94%;}
+  .ga-cloud-l{left:0;transform:translateX(2%);}
+  .ga-cloud-r{right:0;transform:translateX(-2%);}
+  .ga-stage.is-open .ga-cloud-l{transform:translateX(-56%);}
+  .ga-stage.is-open .ga-cloud-r{transform:translateX(56%);}
 }
 @media(max-width:620px){
   .ga-tip{font-size:.8em;padding:.55em .8em;left:9%;right:9%;}
@@ -388,8 +387,8 @@ h2{
   .ga-view,.ga-res,.ga-step,.ga-arrow,.ga-conf,.ga-fl,.ga-cursor,.ga-cta,
   .ga-cloud,.ga-cloud img,.ga-screen,.ga-results,.ga-tip{transition:none!important;animation:none!important;}
   .ga-screen{opacity:1;transform:none;}
-  .ga-cloud-l{transform:translateX(-20%);}
-  .ga-cloud-r{transform:translateX(20%);}
+  .ga-cloud-l{transform:translateX(-39%);}
+  .ga-cloud-r{transform:translateX(38%);}
   .ga-cursor{display:none;}
   .ga-demo-ctrl{display:none;}
 }
