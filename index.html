@@ -128,7 +128,18 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   background:radial-gradient(118% 92% at 84% 44%,rgba(185,166,255,.24),transparent 62%);
   transition:opacity .4s;opacity:.9;
 }
-.card-fx:hover{transform:translateY(-8px);border-color:rgba(141,126,242,.78);box-shadow:0 36px 80px -28px rgba(141,126,242,.78);}
+.card-fx{transition:transform .5s cubic-bezier(.2,1.1,.3,1),box-shadow .5s,border-color .4s;}
+.card-fx:hover{transform:translateY(-14px) scale(1.022);border-color:rgba(141,126,242,.95);
+  box-shadow:0 48px 96px -26px rgba(141,126,242,.95),0 0 0 1px rgba(141,126,242,.35);}
+/* balayage lumineux sur toute la carte */
+.card-fx::after{content:"";position:absolute;inset:-20% -40%;pointer-events:none;z-index:5;
+  background:linear-gradient(104deg,transparent 42%,rgba(255,255,255,.72) 50%,transparent 58%);
+  opacity:0;transform:translateX(-70%);}
+.card-fx:hover::after,.card-fx.is-pulse::after{animation:fxSweep .85s cubic-bezier(.4,.05,.3,1);}
+@keyframes fxSweep{0%{opacity:0;transform:translateX(-70%);}14%{opacity:1;}86%{opacity:1;}100%{opacity:0;transform:translateX(70%);}}
+/* la composition grandit avec la carte */
+.fx-stage{transition:transform .55s cubic-bezier(.2,1.2,.3,1);}
+.card-fx:hover .fx-stage{transform:scale(1.12);}
 .card-fx:hover::before{opacity:1;}
 .card-fx:focus-visible{outline:3px solid rgba(141,126,242,.9);outline-offset:3px;}
 .fx-txt{position:relative;z-index:6;}
@@ -146,6 +157,8 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   transform-origin:100px 100px;transform:rotate(-16deg);
   stroke-dasharray:1;stroke-dashoffset:1;opacity:0;}
 .gads-orbit.o2{stroke:rgba(141,126,242,.28);}
+.gads-orbit{transition:stroke .4s,stroke-width .4s;}
+.card-gads:hover .gads-orbit{stroke:rgba(141,126,242,.95);stroke-width:1.8;}
 
 .gads-tilt{position:absolute;left:50%;top:50%;width:80%;transform:translate(-50%,-50%);z-index:2;display:block;}
 .gads-target{display:block;width:100%;height:auto;
@@ -195,8 +208,8 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 @keyframes gadsIn{from{opacity:0;transform:translate(-50%,-36%) scale(.86);}to{opacity:1;transform:translate(-50%,-50%) scale(1);}}
 @keyframes gadsFloat{0%,100%{transform:translate(-50%,-50%) translateY(0);}50%{transform:translate(-50%,-50%) translateY(-7px);}}
 @keyframes gadsDraw{from{stroke-dashoffset:1;opacity:0;}30%{opacity:1;}to{stroke-dashoffset:0;opacity:1;}}
-@keyframes gadsConverge{0%{transform:scale(1);}36%{transform:scale(.44);}100%{transform:scale(1);}}
-@keyframes gadsRipple{0%{opacity:0;transform:translate(-50%,-50%) scale(.25);}26%{opacity:.95;}100%{opacity:0;transform:translate(-50%,-50%) scale(1.55);}}
+@keyframes gadsConverge{0%{transform:scale(1) rotate(0deg);}34%{transform:scale(.3) rotate(26deg);}72%{transform:scale(1.16) rotate(8deg);}100%{transform:scale(1) rotate(0deg);}}
+@keyframes gadsRipple{0%{opacity:0;transform:translate(-50%,-50%) scale(.2);}18%{opacity:1;}100%{opacity:0;transform:translate(-50%,-50%) scale(2.3);}}
 @keyframes gadsBurst{0%{opacity:1;transform:translate(-50%,-50%) scale(.3);}100%{opacity:0;transform:translate(-50%,-50%) scale(2.2);}}
 @keyframes gadsOrb1F{
   0.0%{transform:translate(-50%,-50%) translate(calc(var(--gs)*0.4550),calc(var(--gs)*0.0000)) scale(0.940);opacity:0.480;}
@@ -349,18 +362,18 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .card-ia.in .p4{animation-delay:1.86s;}
 .card-ia.in .p3{animation-delay:2.08s;}
 /* au survol : relance immediate de l'impulsion + allumage des noeuds */
-.card-ia.is-pulse .ia-spark{animation:iaRunFast 1.25s cubic-bezier(.45,0,.5,1);}
-.card-ia.is-pulse .p1{animation-delay:0s;}
-.card-ia.is-pulse .p2{animation-delay:.26s;}
-.card-ia.is-pulse .p4{animation-delay:.36s;}
-.card-ia.is-pulse .p3{animation-delay:.52s;}
-.card-ia.is-pulse .ia-halo{animation:iaHalo .62s ease-out;}
-.card-ia.is-pulse .nd1 .ia-halo{animation-delay:.02s;}
-.card-ia.is-pulse .nd2 .ia-halo{animation-delay:.26s;}
-.card-ia.is-pulse .nd3 .ia-halo{animation-delay:.52s;}
-.card-ia.is-pulse .nd5 .ia-halo{animation-delay:.58s;}
-.card-ia.is-pulse .nd4 .ia-halo{animation-delay:.78s;}
-.card-ia.is-pulse .ia-link{stroke:rgba(141,126,242,.78);}
+.card-ia:hover .ia-spark,.card-ia.is-pulse .ia-spark{animation:iaRunFast 1.15s cubic-bezier(.45,0,.5,1) infinite;}
+.card-ia:hover .p1,.card-ia.is-pulse .p1{animation-delay:0s;}
+.card-ia:hover .p2,.card-ia.is-pulse .p2{animation-delay:.24s;}
+.card-ia:hover .p4,.card-ia.is-pulse .p4{animation-delay:.33s;}
+.card-ia:hover .p3,.card-ia.is-pulse .p3{animation-delay:.48s;}
+.card-ia:hover .ia-halo,.card-ia.is-pulse .ia-halo{animation:iaHalo 1.15s ease-out infinite;}
+.card-ia:hover .nd1 .ia-halo,.card-ia.is-pulse .nd1 .ia-halo{animation-delay:.1s;}
+.card-ia:hover .nd2 .ia-halo,.card-ia.is-pulse .nd2 .ia-halo{animation-delay:.3s;}
+.card-ia:hover .nd3 .ia-halo,.card-ia.is-pulse .nd3 .ia-halo{animation-delay:.52s;}
+.card-ia:hover .nd5 .ia-halo,.card-ia.is-pulse .nd5 .ia-halo{animation-delay:.42s;}
+.card-ia:hover .nd4 .ia-halo,.card-ia.is-pulse .nd4 .ia-halo{animation-delay:.72s;}
+.card-ia:hover .ia-link,.card-ia.is-pulse .ia-link{stroke:rgba(141,126,242,.95);stroke-width:2;}
 .card-ia .ia-link{transition:stroke .4s;}
 .card-ia.is-click .ia-halo{animation:iaHalo .5s ease-out;}
 
@@ -369,7 +382,7 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 @keyframes iaDraw{from{stroke-dashoffset:1;opacity:0;}25%{opacity:1;}to{stroke-dashoffset:0;opacity:1;}}
 @keyframes iaRun{0%{stroke-dashoffset:.14;opacity:0;}4%{opacity:1;}22%{stroke-dashoffset:-1;opacity:1;}26%{stroke-dashoffset:-1;opacity:0;}100%{stroke-dashoffset:-1;opacity:0;}}
 @keyframes iaRunFast{0%{stroke-dashoffset:.14;opacity:0;}10%{opacity:1;}60%{stroke-dashoffset:-1;opacity:1;}72%{stroke-dashoffset:-1;opacity:0;}100%{opacity:0;}}
-@keyframes iaHalo{0%{opacity:0;transform:translate(-50%,-50%) scale(.45);}30%{opacity:.95;}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5);}}
+@keyframes iaHalo{0%{opacity:0;transform:translate(-50%,-50%) scale(.4);}26%{opacity:1;}100%{opacity:0;transform:translate(-50%,-50%) scale(2.1);}}
 
 /* ── carte Création de site web ── */
 .web-stage{perspective:700px;}
@@ -560,6 +573,30 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   12%{opacity:1;}88%{opacity:1;}100%{opacity:0;transform:translateX(120%);}}
 @keyframes brdClick{0%{transform:translate(-50%,-50%) scale(1);}40%{transform:translate(-50%,-50%) scale(1.045);}100%{transform:translate(-50%,-50%) scale(1);}}
 
+
+/* survol spectaculaire — creation de site web */
+.card-web .web-win{transition:transform .55s cubic-bezier(.2,1.15,.3,1),box-shadow .5s;}
+.card-web:hover .web-win{box-shadow:0 26px 52px -16px rgba(121,98,220,.8);}
+.card-web:hover .web-phone{transform:translate(-10px,-14px) scale(1.14);}
+.card-web .web-phone{transition:transform .55s cubic-bezier(.2,1.3,.3,1);}
+.card-web:hover .web-btn{box-shadow:0 10px 22px -6px rgba(141,126,242,1);}
+
+/* survol spectaculaire — social media : eventail plus large */
+.card-smo:hover .smo-post,.card-smo.is-pulse .smo-post{--pose:translate(13%,11%) rotate(8deg) scale(1.13);}
+.card-smo:hover .smo-play,.card-smo.is-pulse .smo-play{--pose:translate(6%,-22%) rotate(-30deg) scale(1.1);}
+.card-smo:hover .smo-chat,.card-smo.is-pulse .smo-chat{--pose:translate(7%,-15%) rotate(-6deg) scale(1.3);}
+
+/* survol spectaculaire — branding : la carte se redresse, l'etoile eclate */
+.brd-card{transition:transform .6s cubic-bezier(.2,1.15,.3,1);}
+.card-brd:hover .brd-card,.card-brd.is-built .brd-card{transform:translate(-50%,-50%) translate(-2%,-3%) scale(1.07) rotate(-1.5deg);}
+.card-brd:hover .brd-palette,.card-brd.is-pulse .brd-palette,.card-brd.is-built .brd-palette{transform:translate(-50%,-50%) translate(9%,-6%) rotate(11deg) scale(1.1);}
+.brd-burst{position:absolute;z-index:5;left:35.68%;top:37.01%;width:20.05%;aspect-ratio:1;border-radius:50%;
+  transform:translate(-50%,-50%) scale(.3);opacity:0;pointer-events:none;
+  border:2px solid rgba(255,255,255,.95);
+  box-shadow:0 0 26px 8px rgba(190,172,255,.9),inset 0 0 16px rgba(255,255,255,.9);}
+.card-brd:hover .brd-burst,.card-brd.is-built .brd-burst{animation:brdBurst .7s cubic-bezier(.2,.7,.3,1) .6s;}
+@keyframes brdBurst{0%{opacity:0;transform:translate(-50%,-50%) scale(.25);}22%{opacity:1;}100%{opacity:0;transform:translate(-50%,-50%) scale(3);}}
+
 /* la carte passe en pile des que la colonne devient trop etroite pour deux blocs */
 @media(min-width:981px) and (max-width:1150px){
   .card-fx{grid-template-columns:1fr;gap:16px;--gs:min(180px,19vw);}
@@ -584,7 +621,9 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   .card-brd .brd-card,.card-brd .brd-palette{opacity:1;}
   .card-brd .brd-card img.brd-final{-webkit-mask-image:none!important;mask-image:none!important;transition:none!important;}
   .card-brd .brd-star{opacity:1;transform:translate(-50%,-50%);transition:none;}
-  .card-brd .brd-shine{opacity:0;}
+  .card-brd .brd-shine,.card-brd .brd-burst{opacity:0;animation:none!important;}
+  .card-fx::after{opacity:0;animation:none!important;}
+  .card-fx .fx-stage{transform:none!important;}
   .card-gads .gads-orbit{opacity:1;stroke-dashoffset:0;}
   .card-gads .gads-target{transition:none;transform:none;}
   .card-gads .gb1.f{opacity:.95;transform:translate(-50%,-50%) translate(calc(var(--gs)*.44),calc(var(--gs)*.16)) scale(1.1);}
@@ -1022,6 +1061,7 @@ footer{margin-top:80px;padding:56px 0 34px;}
           <img class="brd-final" src="assets/brd/carte-finale.webp" alt="" width="620" height="409" loading="lazy" decoding="async">
           <span class="brd-shine"></span>
           <img class="brd-star" src="assets/brd/etoile.webp" alt="" width="280" height="268" loading="lazy" decoding="async">
+          <span class="brd-burst"></span>
         </span>
       </div>
     </a>
@@ -1482,8 +1522,8 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   }
   function move(ev){
     var r=card.getBoundingClientRect();
-    tx=((ev.clientX-r.left)/r.width-.5)*16;
-    ty=-((ev.clientY-r.top)/r.height-.5)*12;
+    tx=((ev.clientX-r.left)/r.width-.5)*30;
+    ty=-((ev.clientY-r.top)/r.height-.5)*22;
     if(!raf) raf=requestAnimationFrame(apply);
   }
   function leave(){
