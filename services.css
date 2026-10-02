@@ -937,6 +937,7 @@ html{scroll-behavior:smooth;}
 .ga-page .svc-hero-sub{font-size:1.04rem;max-width:460px;text-wrap:balance;}
 .ga-page .svc-main{padding-top:0;}
 .ga-page .ga-demo{padding:30px 0 10px;scroll-margin-top:90px;}
+.ga-page .ga-demo-scene{scroll-margin-top:86px;}
 
 /* invitation a decouvrir, a la place du bouton de contact */
 .ga-scroll-cue{

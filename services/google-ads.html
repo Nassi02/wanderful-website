@@ -10,7 +10,7 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#8D7EF2">
-<link rel="stylesheet" href="../services.css?v=8"/>
+<link rel="stylesheet" href="../services.css?v=9"/>
 <link rel="canonical" href="https://wanderful-marketing.com/services/google-ads.html">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
@@ -99,7 +99,7 @@
 
       <div class="ga-lede">
         <p>Des campagnes pensées pour attirer vos futurs clients, avec un suivi clair des résultats.</p>
-        <a href="#demo-ads" class="ga-scroll-cue">
+        <a href="#demo-scene" class="ga-scroll-cue">
           Voir comment ça fonctionne
           <svg viewBox="0 0 15 15" fill="none" aria-hidden="true"><path d="M7.5 2.5v10M3.5 9l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </a>
@@ -123,7 +123,7 @@
         </div>
       </div>
 
-      <div class="ga-demo-scene">
+      <div class="ga-demo-scene" id="demo-scene">
         <div class="ga-stage" id="gaStage">
           <div class="ga-screen" id="gaScreen" role="img" aria-label="Démonstration animée : une recherche, une annonce, un site, une demande envoyée.">
 
@@ -623,24 +623,38 @@
   /* les clics simulés ne quittent jamais la scène */
   order.addEventListener('click',function(e){e.preventDefault();});
 
-  if('IntersectionObserver' in window){
-    var started=false;
-    /* les nuages ne s'ouvrent que lorsque la scene est vraiment devant les yeux */
-    var ioStart=new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        if(e.isIntersecting&&!started){
-          started=true; ioStart.disconnect();
-          setTimeout(function(){openAndPlay(false);},250);
-        }
-      });
-    },{threshold:.62});
-    ioStart.observe(stage);
-    /* on suspend la boucle des que la scene quitte l'ecran */
-    var ioPause=new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(started) setPause(!e.isIntersecting); });
-    },{threshold:.12});
-    ioPause.observe(stage);
-  }else{openAndPlay(false);}
+  /* la demonstration ne demarre que lorsque la scene remplit l'ecran,
+     et seulement une fois le defilement arrete. Si elle sort de l'ecran,
+     elle se rembobine : on ne retombe jamais sur une demo deja commencee. */
+  var etat='attente', arret=0, enAttenteDeFrame=false;
+  function mesure(){
+    var r=stage.getBoundingClientRect(), vh=window.innerHeight||0;
+    var vu=Math.max(0,Math.min(r.bottom,vh)-Math.max(r.top,0));
+    return {vu:vu, seuil:Math.min(r.height,vh)*0.85};
+  }
+  /* on ne lance rien pendant que ca defile : on attend l'arret */
+  function quandOnSarrete(){
+    if(etat!=='attente') return;
+    var m=mesure();
+    if(m.vu>=m.seuil){ etat='joue'; openAndPlay(false); }
+  }
+  /* le rembobinage, lui, est immediat */
+  function verifie(){
+    enAttenteDeFrame=false;
+    if(etat!=='joue') return;
+    var m=mesure();
+    if(m.vu<m.seuil*0.5){
+      etat='attente'; setPause(true,true);
+      stage.classList.remove('is-open'); reset();
+    }
+  }
+  function demande(){
+    clearTimeout(arret); arret=setTimeout(quandOnSarrete,230);
+    if(!enAttenteDeFrame){enAttenteDeFrame=true;requestAnimationFrame(verifie);}
+  }
+  window.addEventListener('scroll',demande,{passive:true});
+  window.addEventListener('resize',demande);
+  demande();
   /* on suspend si l'onglet passe en arrière-plan */
   document.addEventListener('visibilitychange',function(){if(document.hidden&&running&&!paused)setPause(true);});
 })();
