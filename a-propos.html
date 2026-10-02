@@ -62,15 +62,11 @@ a{text-decoration:none;color:inherit}img{max-width:100%;display:block}
 .ap-magic{position:relative;isolation:isolate;}
 .ap-magic > .ap-wrap{position:relative;z-index:2;}
 .ap-magic-bg{position:absolute;inset:0;z-index:0;overflow:hidden;border-radius:inherit;
+  mix-blend-mode:luminosity;opacity:.5;
   background:url('assets/bg/wanderful-bg.jpg') center center/cover no-repeat;}
 .ap-magic-bg video{width:100%;height:100%;object-fit:cover;display:block;
   opacity:0;transition:opacity 1.6s ease;}
 .ap-magic-bg video.on{opacity:1;}
-.ap-magic-bg::after{content:"";position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(78% 62% at 50% 52%, rgba(36,28,60,.90) 0%, rgba(36,28,60,.88) 38%, rgba(40,31,70,.58) 100%),
-    linear-gradient(165deg,rgba(36,28,60,.34) 0%,rgba(53,43,82,.22) 55%,rgba(44,35,80,.38) 100%);}
-@media(max-width:980px){.ap-magic-bg::after{background:linear-gradient(165deg,rgba(36,28,60,.92),rgba(44,35,80,.94));}}
 
 /* nav */
 header{position:sticky;top:0;z-index:60;padding:14px 0;}
@@ -343,19 +339,25 @@ footer{margin-top:76px;padding:54px 0 34px;}
 .ap-formula{margin-top:46px;display:grid;gap:10px;}
 .ap-formula span{font-size:clamp(17px,1.7vw,22px);color:var(--plum);font-weight:400;}
 /* MAGIE — section immersive */
-.ap-magic{background:linear-gradient(165deg,#241C3C,#352B52 55%,#2C2350);color:#fff;
-  padding:clamp(100px,13vw,180px) 0;margin:var(--ap-gap) 0;border-radius:clamp(28px,4vw,52px);overflow:hidden;}
+.ap-magic{background:linear-gradient(135deg,#CED0F2 0%,#AEACF2 50%,#8D7EF2 100%);color:#fff;
+  max-width:1180px;margin:var(--ap-gap) auto;width:calc(100% - 64px);
+  padding:clamp(64px,7vw,100px) 0;border-radius:clamp(24px,3vw,36px);overflow:hidden;
+  box-shadow:0 30px 70px -30px rgba(141,126,242,.55);}
+.ap-magic::before{content:"";position:absolute;z-index:1;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.5),transparent 70%);right:-100px;top:-140px;pointer-events:none;}
+.ap-magic .ap-grad{background:linear-gradient(120deg,#4A2F9E,#5B3FC2 55%,#6E3FB5);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+@media(max-width:760px){.ap-magic{width:calc(100% - 32px);}}
 .ap-magic .ap-h2,.ap-magic .ap-h{color:#fff;}
-.ap-magic .ap-lead{color:rgba(255,255,255,.72);}
-.ap-magic .ap-label{color:#C9BCFF;}
+.ap-magic .ap-lead{color:#fff;font-weight:400;text-shadow:0 1px 12px rgba(74,47,158,.25);}
+.ap-magic .ap-label{color:#fff;}
 .ap-chain{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:14px;margin:60px 0 48px;}
-.ap-chip{font-size:12px;letter-spacing:.16em;font-weight:600;color:rgba(255,255,255,.55);
-  border:1px solid rgba(255,255,255,.2);border-radius:999px;padding:10px 18px;transition:all .5s ease;}
-.ap-chip.lit{color:#fff;border-color:rgba(201,188,255,.75);box-shadow:0 0 26px -6px rgba(174,172,242,.75);
-  background:rgba(255,255,255,.07);}
-.ap-plus{color:rgba(255,255,255,.35);font-weight:300;}
+.ap-chip{font-size:12px;letter-spacing:.16em;font-weight:600;color:rgba(255,255,255,.85);
+  border:1px solid rgba(255,255,255,.5);border-radius:999px;padding:10px 18px;transition:all .5s ease;}
+.ap-chip.lit{color:#fff;border-color:#fff;box-shadow:0 0 26px -6px rgba(255,255,255,.9);
+  background:rgba(255,255,255,.2);}
+.ap-plus{color:rgba(255,255,255,.7);font-weight:300;}
 .ap-effect{text-align:center;font-size:clamp(20px,2.6vw,34px);font-weight:600;letter-spacing:-.01em;
-  background:linear-gradient(120deg,#CED0F2,#B98DF2 60%,#E4C9FF);-webkit-background-clip:text;background-clip:text;
+  background:linear-gradient(120deg,#4A2F9E,#5B3FC2 55%,#6E3FB5);-webkit-background-clip:text;background-clip:text;
   -webkit-text-fill-color:transparent;opacity:0;transform:translateY(12px);transition:all .8s ease;}
 .ap-effect.in{opacity:1;transform:none;}
 .ap-wand{width:clamp(120px,16vw,190px);margin:0 auto 10px;display:block;}
@@ -723,7 +725,7 @@ footer{margin-top:76px;padding:54px 0 34px;}
   </div>
   <div class="ap-wrap" style="text-align:center">
     <svg class="ap-wand" viewBox="0 0 120 90" fill="none" aria-hidden="true">
-      <polygon class="w-star" points="60,6 64,22 80,22 67,32 72,49 60,39 48,49 53,32 40,22 56,22" fill="#E4DBFF"/>
+      <polygon class="w-star" points="60,6 64,22 80,22 67,32 72,49 60,39 48,49 53,32 40,22 56,22" fill="#fff"/>
       <circle cx="26" cy="14" r="2.4" fill="#C9BCFF" opacity=".8"/><circle cx="96" cy="20" r="1.8" fill="#C9BCFF" opacity=".6"/>
       <circle cx="34" cy="38" r="1.6" fill="#C9BCFF" opacity=".5"/>
       <line x1="60" y1="49" x2="24" y2="84" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
