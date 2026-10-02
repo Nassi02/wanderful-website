@@ -184,7 +184,8 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .card-fx:not(.fx-vis) .web-win,
 .card-fx:not(.fx-vis) .web-shine,
 .card-fx:not(.fx-vis) .web-img b,
-.card-fx:not(.fx-vis) .smo-fl{animation-play-state:paused;}
+.card-fx:not(.fx-vis) .smo-fl,
+.card-fx:not(.fx-vis) .smo-o img{animation-play-state:paused;}
 
 /* convergence + onde */
 .card-gads.is-pulse .gads-swarm{animation:gadsConverge .9s cubic-bezier(.3,.8,.3,1);}
@@ -445,38 +446,65 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 /* ── carte Social Media & Contenu ── */
 .smo-glow{position:absolute;left:52%;top:48%;width:120%;height:120%;transform:translate(-50%,-50%);
   background:radial-gradient(circle,rgba(190,172,255,.42),rgba(190,172,255,0) 66%);
-  opacity:0;transition:opacity .45s;pointer-events:none;z-index:0;}
-.card-smo:hover .smo-glow{opacity:1;}
-.smo-o{position:absolute;display:block;opacity:0;
+  opacity:0;transition:opacity .5s;pointer-events:none;z-index:0;}
+.card-smo:hover .smo-glow,.card-smo.is-pulse .smo-glow{opacity:1;}
+
+/* 3 couches : .smo-o = pose (transition), .smo-en = entree, .smo-fl = flottement */
+.smo-o{position:absolute;display:block;
   transform:translate(-50%,-50%) var(--pose,rotate(0deg));
-  transition:transform .55s cubic-bezier(.22,.9,.26,1);}
+  transition:transform .62s cubic-bezier(.34,1.08,.32,1);}
+.smo-en{display:block;opacity:0;}
 .smo-fl{display:block;}
-.smo-o img{display:block;width:100%;height:auto;filter:drop-shadow(0 12px 22px rgba(121,98,220,.28));}
+.smo-o img{display:block;width:100%;height:auto;filter:drop-shadow(0 12px 22px rgba(121,98,220,.28));
+  transition:transform .6s cubic-bezier(.3,.85,.3,1);}
+/* pendant le survol, chaque objet garde une respiration qui lui est propre */
+.card-smo:hover .smo-o img,.card-smo.is-pulse .smo-o img{animation:smoBob var(--bd,3s) ease-in-out infinite;}
+.card-smo .smo-post img{--bd:2.9s;animation-delay:-.4s;}
+.card-smo .smo-play img{--bd:3.7s;animation-delay:-1.6s;}
+.card-smo .smo-chat img{--bd:2.3s;animation-delay:-.9s;}
 
 .card-smo .smo-post{left:50%;top:56%;width:64%;z-index:3;--pose:rotate(-5deg);}
 .card-smo .smo-play{left:31%;top:38%;width:54%;z-index:2;--pose:rotate(-16deg) scale(.96);}
 .card-smo .smo-chat{left:82%;top:19%;width:33%;z-index:4;--pose:rotate(6deg) scale(.86);}
 
 /* entree : 120 ms d'ecart */
-.card-smo.in .smo-o{animation:smoIn .52s cubic-bezier(.22,.9,.26,1) both;}
-.card-smo.in .smo-post{animation-delay:.08s;}
-.card-smo.in .smo-play{animation-delay:.20s;}
-.card-smo.in .smo-chat{animation-delay:.32s;}
+.card-smo.in .smo-en{animation:smoIn .55s cubic-bezier(.22,.9,.26,1) both;}
+.card-smo.in .smo-post .smo-en{animation-delay:.08s;}
+.card-smo.in .smo-play .smo-en{animation-delay:.20s;}
+.card-smo.in .smo-chat .smo-en{animation-delay:.32s;}
+
+/* flottement continu, jamais interrompu — y compris pendant le survol */
 .card-smo.in .smo-fl{animation:smoFloat var(--fd,7s) ease-in-out var(--fdl,.9s) infinite;}
-.card-smo.in .smo-post .smo-fl{--fd:7.5s;--fdl:1.0s;}
-.card-smo.in .smo-play .smo-fl{--fd:9s;--fdl:1.3s;}
-.card-smo.in .smo-chat .smo-fl{--fd:6s;--fdl:1.5s;}
+.card-smo.in .smo-post .smo-fl{--fd:6.4s;--fdl:1.0s;}
+.card-smo.in .smo-play .smo-fl{--fd:8.2s;--fdl:1.35s;}
+.card-smo.in .smo-chat .smo-fl{--fd:5.1s;--fdl:1.6s;}
+@keyframes smoFloat{
+  0%{transform:translate(0,0) rotate(0deg);}
+  25%{transform:translate(2px,-7px) rotate(1.4deg);}
+  50%{transform:translate(0,-10px) rotate(0deg);}
+  75%{transform:translate(-2px,-4px) rotate(-1.4deg);}
+  100%{transform:translate(0,0) rotate(0deg);}}
 
-/* survol / focus : les deux cartes s'ouvrent en eventail, la bulle rebondit */
-.card-smo:hover .smo-post,.card-smo.is-pulse .smo-post{--pose:translate(7%,3%) rotate(3deg) scale(1.05);}
-.card-smo:hover .smo-play,.card-smo.is-pulse .smo-play{--pose:translate(-9%,-8%) rotate(-23deg) scale(1.0);}
-.card-smo:hover .smo-chat,.card-smo.is-pulse .smo-chat{--pose:translate(1%,-9%) rotate(0deg) scale(1.1);
-  transition-timing-function:cubic-bezier(.3,1.6,.5,1);transition-duration:.62s;}
-.card-smo.is-click .smo-post{--pose:translate(9%,2%) rotate(3deg) scale(1.12);transition-duration:.3s;}
+/* survol / focus : eventail en cascade, la bulle avance en dernier avec un rebond */
+.card-smo:hover .smo-post,.card-smo.is-pulse .smo-post{--pose:translate(8%,4%) rotate(4deg) scale(1.06);}
+.card-smo:hover .smo-play,.card-smo.is-pulse .smo-play{--pose:translate(-9%,-9%) rotate(-25deg) scale(1.02);}
+.card-smo:hover .smo-chat,.card-smo.is-pulse .smo-chat{--pose:translate(2%,-10%) rotate(-2deg) scale(1.12);}
+.card-smo .smo-play{transition-delay:0s;}
+.card-smo .smo-post{transition-delay:.05s;}
+.card-smo .smo-chat{transition-delay:.14s;transition-timing-function:cubic-bezier(.3,1.7,.45,1);transition-duration:.66s;}
+/* a la sortie, tout repart ensemble, sans cascade */
+.card-smo:not(:hover) .smo-o{transition-delay:0s;transition-duration:.55s;
+  transition-timing-function:cubic-bezier(.3,.85,.3,1);}
+.card-smo.is-click .smo-post{--pose:translate(10%,3%) rotate(4deg) scale(1.13);transition-duration:.28s;}
 
-@keyframes smoIn{from{opacity:0;transform:translate(-50%,-38%) var(--pose,rotate(0deg)) scale(.84);}
-  to{opacity:1;transform:translate(-50%,-50%) var(--pose,rotate(0deg));}}
-@keyframes smoFloat{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-7px) rotate(1.2deg);}}
+@keyframes smoIn{from{opacity:0;transform:translateY(16px) scale(.84);}
+  to{opacity:1;transform:none;}}
+@keyframes smoBob{
+  0%{transform:translate(0,0) rotate(0deg);}
+  25%{transform:translate(-2px,-5px) rotate(-2deg);}
+  50%{transform:translate(1px,2px) rotate(.8deg);}
+  75%{transform:translate(3px,-3px) rotate(2.2deg);}
+  100%{transform:translate(0,0) rotate(0deg);}}
 
 /* la carte passe en pile des que la colonne devient trop etroite pour deux blocs */
 @media(min-width:981px) and (max-width:1150px){
@@ -495,8 +523,10 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   .card-web .web-win,.card-web .web-phone,.card-web .web-h,.card-web .web-img,
   .card-web .web-l,.card-web .web-btn,.card-web .web-bar i,.card-web .web-bar u{opacity:1;transform:none;}
   .card-web .web-shine,.card-web .web-img b{opacity:0;}
-  .card-smo .smo-o{opacity:1;}
+  .card-smo .smo-en{opacity:1;transform:none;}
   .card-smo .smo-fl{transform:none;}
+  .card-smo .smo-o{transition:none;}
+  .card-smo .smo-o img{transition:none;transform:none;}
   .card-gads .gads-orbit{opacity:1;stroke-dashoffset:0;}
   .card-gads .gads-target{transition:none;transform:none;}
   .card-gads .gb1.f{opacity:.95;transform:translate(-50%,-50%) translate(calc(var(--gs)*.44),calc(var(--gs)*.16)) scale(1.1);}
@@ -916,9 +946,9 @@ footer{margin-top:80px;padding:56px 0 34px;}
       </div>
       <div class="fx-stage smo-stage" aria-hidden="true">
         <span class="smo-glow"></span>
-        <span class="smo-o smo-play"><span class="smo-fl"><img src="assets/smo/play.webp" alt="" width="420" height="350" loading="lazy" decoding="async"></span></span>
-        <span class="smo-o smo-post"><span class="smo-fl"><img src="assets/smo/post.webp" alt="" width="420" height="337" loading="lazy" decoding="async"></span></span>
-        <span class="smo-o smo-chat"><span class="smo-fl"><img src="assets/smo/chat.webp" alt="" width="300" height="241" loading="lazy" decoding="async"></span></span>
+        <span class="smo-o smo-play"><span class="smo-en"><span class="smo-fl"><img src="assets/smo/play.webp" alt="" width="420" height="350" loading="lazy" decoding="async"></span></span></span>
+        <span class="smo-o smo-post"><span class="smo-en"><span class="smo-fl"><img src="assets/smo/post.webp" alt="" width="420" height="337" loading="lazy" decoding="async"></span></span></span>
+        <span class="smo-o smo-chat"><span class="smo-en"><span class="smo-fl"><img src="assets/smo/chat.webp" alt="" width="300" height="241" loading="lazy" decoding="async"></span></span></span>
       </div>
     </a>
     <a href="services/branding.html" class="card reveal"><div class="ico">💜</div><h3>Branding &amp; Design</h3><p>Une identité visuelle premium qui vous rend immédiatement reconnaissable.</p><span class="cmore">Découvrir →</span></a>
