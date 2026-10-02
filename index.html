@@ -137,9 +137,21 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   opacity:0;transform:translateX(-70%);}
 .card-fx:hover::after,.card-fx.is-pulse::after{animation:fxSweep .85s cubic-bezier(.4,.05,.3,1);}
 @keyframes fxSweep{0%{opacity:0;transform:translateX(-70%);}14%{opacity:1;}86%{opacity:1;}100%{opacity:0;transform:translateX(70%);}}
-/* la composition grandit avec la carte */
-.fx-stage{transition:transform .55s cubic-bezier(.2,1.2,.3,1);}
-.card-fx:hover .fx-stage{transform:scale(1.12);}
+/* la composition respire en permanence, et grandit au survol */
+@property --fxs{syntax:'<number>';inherits:true;initial-value:1;}
+.fx-stage{--fxs:1;transition:--fxs .55s cubic-bezier(.2,1.2,.3,1);
+  animation:fxBreath var(--bt,10s) ease-in-out var(--bd,0s) infinite;}
+.card-fx:hover .fx-stage{--fxs:1.12;}
+.card-fx:not(.fx-vis) .fx-stage{animation-play-state:paused;}
+.card-gads .fx-stage{--bt:11s;--bd:0s;}
+.card-ia   .fx-stage{--bt:9.4s;--bd:-2.2s;}
+.card-web  .fx-stage{--bt:12s;--bd:-4s;}
+.card-smo  .fx-stage{--bt:10.6s;--bd:-6s;}
+.card-brd  .fx-stage{--bt:8.8s;--bd:-1.3s;}
+@keyframes fxBreath{
+  0%,100%{transform:translate(0,0) rotate(0deg) scale(var(--fxs));}
+  30%{transform:translate(6px,-13px) rotate(1.6deg) scale(calc(var(--fxs)*1.025));}
+  62%{transform:translate(-6px,8px) rotate(-1.3deg) scale(calc(var(--fxs)*.985));}}
 .card-fx:hover::before{opacity:1;}
 .card-fx:focus-visible{outline:3px solid rgba(141,126,242,.9);outline-offset:3px;}
 .fx-txt{position:relative;z-index:6;}
@@ -178,16 +190,16 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   transform:translate(-50%,-50%);will-change:transform,opacity;}
 
 /* entree au scroll */
-.card-gads.in .gads-tilt{animation:gadsIn .7s cubic-bezier(.22,.9,.26,1) both,gadsFloat 7.5s ease-in-out 1.05s infinite;}
+.card-gads.in .gads-tilt{animation:gadsIn .7s cubic-bezier(.22,.9,.26,1) both,gadsFloat 5.6s ease-in-out 1.05s infinite;}
 .card-gads.in .gads-orbit{animation:gadsDraw .8s ease-out .32s both;}
 .card-gads.in .gads-orbit.o2{animation-delay:.46s;}
 .card-gads.in .gads-b{animation:var(--orb) var(--dur) linear infinite both;}
-.card-gads.in .gb1.f{--orb:gadsOrb1F;--dur:17s;animation-delay:.18s;}
-.card-gads.in .gb1.b{--orb:gadsOrb1B;--dur:17s;animation-delay:.18s;}
-.card-gads.in .gb2.f{--orb:gadsOrb2F;--dur:13s;animation-delay:.30s;}
-.card-gads.in .gb2.b{--orb:gadsOrb2B;--dur:13s;animation-delay:.30s;}
-.card-gads.in .gb3.f{--orb:gadsOrb3F;--dur:21s;animation-delay:.42s;}
-.card-gads.in .gb3.b{--orb:gadsOrb3B;--dur:21s;animation-delay:.42s;}
+.card-gads.in .gb1.f{--orb:gadsOrb1F;--dur:12.5s;animation-delay:.18s;}
+.card-gads.in .gb1.b{--orb:gadsOrb1B;--dur:12.5s;animation-delay:.18s;}
+.card-gads.in .gb2.f{--orb:gadsOrb2F;--dur:9.4s;animation-delay:.30s;}
+.card-gads.in .gb2.b{--orb:gadsOrb2B;--dur:9.4s;animation-delay:.30s;}
+.card-gads.in .gb3.f{--orb:gadsOrb3F;--dur:15.6s;animation-delay:.42s;}
+.card-gads.in .gb3.b{--orb:gadsOrb3B;--dur:15.6s;animation-delay:.42s;}
 
 /* pause hors ecran */
 .card-fx:not(.fx-vis) .gads-tilt,
@@ -198,15 +210,19 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .card-fx:not(.fx-vis) .web-shine,
 .card-fx:not(.fx-vis) .web-img b,
 .card-fx:not(.fx-vis) .smo-fl,
-.card-fx:not(.fx-vis) .smo-o img{animation-play-state:paused;}
+.card-fx:not(.fx-vis) .smo-o img,
+.card-fx:not(.fx-vis) .seo-lens,
+.card-fx:not(.fx-vis) .seo-r img{animation-play-state:paused;}
 
 /* convergence + onde */
 .card-gads.is-pulse .gads-swarm{animation:gadsConverge .9s cubic-bezier(.3,.8,.3,1);}
 .card-gads.is-pulse .gads-ripple{animation:gadsRipple .9s cubic-bezier(.2,.7,.3,1);}
 .card-gads.is-click .gads-ripple{animation:gadsBurst .6s ease-out;}
+.card-gads.in:not(:hover):not(.is-pulse) .gads-ripple{animation:gadsIdleRipple 8s ease-out 2.4s infinite;}
+@keyframes gadsIdleRipple{0%{opacity:0;transform:translate(-50%,-50%) scale(.3);}6%{opacity:.55;}26%{opacity:0;transform:translate(-50%,-50%) scale(1.5);}100%{opacity:0;transform:translate(-50%,-50%) scale(1.5);}}
 
 @keyframes gadsIn{from{opacity:0;transform:translate(-50%,-36%) scale(.86);}to{opacity:1;transform:translate(-50%,-50%) scale(1);}}
-@keyframes gadsFloat{0%,100%{transform:translate(-50%,-50%) translateY(0);}50%{transform:translate(-50%,-50%) translateY(-7px);}}
+@keyframes gadsFloat{0%,100%{transform:translate(-50%,-50%) translateY(0) rotate(0deg);}50%{transform:translate(-50%,-50%) translateY(-11px) rotate(1.6deg);}}
 @keyframes gadsDraw{from{stroke-dashoffset:1;opacity:0;}30%{opacity:1;}to{stroke-dashoffset:0;opacity:1;}}
 @keyframes gadsConverge{0%{transform:scale(1) rotate(0deg);}34%{transform:scale(.3) rotate(26deg);}72%{transform:scale(1.16) rotate(8deg);}100%{transform:scale(1) rotate(0deg);}}
 @keyframes gadsRipple{0%{opacity:0;transform:translate(-50%,-50%) scale(.2);}18%{opacity:1;}100%{opacity:0;transform:translate(-50%,-50%) scale(2.3);}}
@@ -330,9 +346,9 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .ia-net{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:1;}
 .ia-link{fill:none;stroke:rgba(141,126,242,.42);stroke-width:1.4;stroke-linecap:round;
   stroke-dasharray:1;stroke-dashoffset:1;opacity:0;}
-.ia-spark{fill:none;stroke:#fff;stroke-width:2.6;stroke-linecap:round;
-  stroke-dasharray:.14 1;stroke-dashoffset:.14;opacity:0;
-  filter:drop-shadow(0 0 4px rgba(168,146,255,.95));}
+.ia-spark{fill:none;stroke:#fff;stroke-width:3.4;stroke-linecap:round;
+  stroke-dasharray:.2 1;stroke-dashoffset:.2;opacity:0;
+  filter:drop-shadow(0 0 7px rgba(168,146,255,1));}
 .ia-node{position:absolute;display:block;transform:translate(-50%,-50%) scale(var(--ns,1));opacity:0;z-index:2;}
 .ia-node img{display:block;width:100%;height:auto;}
 .ia-halo{position:absolute;left:50%;top:50%;width:200%;height:200%;border-radius:50%;
@@ -345,22 +361,28 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .card-ia .nd5{left:29%;top:26%;width:calc(var(--gs)*.13);}
 
 .card-ia.in .ia-node{animation:iaPop .5s cubic-bezier(.22,.9,.26,1) both,iaDrift var(--df,9s) ease-in-out var(--dd,0s) infinite;}
-.card-ia.in .nd2{animation-delay:.10s,.9s;--df:8s;}
-.card-ia.in .nd1{animation-delay:.20s,1.1s;--df:10s;}
-.card-ia.in .nd3{animation-delay:.28s,1.0s;--df:11s;}
-.card-ia.in .nd5{animation-delay:.36s,1.2s;--df:9.5s;}
-.card-ia.in .nd4{animation-delay:.44s,1.3s;--df:12s;}
+.card-ia.in .nd2{animation-delay:.10s,.9s;--df:5.2s;}
+.card-ia.in .nd1{animation-delay:.20s,1.1s;--df:6.3s;}
+.card-ia.in .nd3{animation-delay:.28s,1.0s;--df:6.9s;}
+.card-ia.in .nd5{animation-delay:.36s,1.2s;--df:5.8s;}
+.card-ia.in .nd4{animation-delay:.44s,1.3s;--df:7.5s;}
 .card-ia.in .ia-link{animation:iaDraw .6s ease-out both;}
 .card-ia.in .k1{animation-delay:.30s;}
 .card-ia.in .k2{animation-delay:.42s;}
 .card-ia.in .k4{animation-delay:.50s;}
 .card-ia.in .k3{animation-delay:.58s;}
 /* impulsion continue, discrete */
-.card-ia.in .ia-spark{animation:iaRun 5.4s cubic-bezier(.5,0,.5,1) infinite;}
-.card-ia.in .p1{animation-delay:1.4s;}
-.card-ia.in .p2{animation-delay:1.74s;}
-.card-ia.in .p4{animation-delay:1.86s;}
-.card-ia.in .p3{animation-delay:2.08s;}
+.card-ia.in .ia-spark{animation:iaRun 3.6s cubic-bezier(.5,0,.5,1) infinite;}
+.card-ia.in:not(:hover):not(.is-pulse) .ia-halo{animation:iaHalo 3.6s ease-out infinite;}
+.card-ia.in:not(:hover):not(.is-pulse) .nd1 .ia-halo{animation-delay:1.1s;}
+.card-ia.in:not(:hover):not(.is-pulse) .nd2 .ia-halo{animation-delay:1.42s;}
+.card-ia.in:not(:hover):not(.is-pulse) .nd3 .ia-halo{animation-delay:1.74s;}
+.card-ia.in:not(:hover):not(.is-pulse) .nd5 .ia-halo{animation-delay:1.6s;}
+.card-ia.in:not(:hover):not(.is-pulse) .nd4 .ia-halo{animation-delay:2s;}
+.card-ia.in .p1{animation-delay:1.2s;}
+.card-ia.in .p2{animation-delay:1.44s;}
+.card-ia.in .p4{animation-delay:1.53s;}
+.card-ia.in .p3{animation-delay:1.68s;}
 /* au survol : relance immediate de l'impulsion + allumage des noeuds */
 .card-ia:hover .ia-spark,.card-ia.is-pulse .ia-spark{animation:iaRunFast 1.15s cubic-bezier(.45,0,.5,1) infinite;}
 .card-ia:hover .p1,.card-ia.is-pulse .p1{animation-delay:0s;}
@@ -378,10 +400,10 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .card-ia.is-click .ia-halo{animation:iaHalo .5s ease-out;}
 
 @keyframes iaPop{from{opacity:0;transform:translate(-50%,-50%) scale(.3);}to{opacity:1;transform:translate(-50%,-50%) scale(1);}}
-@keyframes iaDrift{0%,100%{transform:translate(-50%,-50%) translate(0,0);}33%{transform:translate(-50%,-50%) translate(3px,-5px);}66%{transform:translate(-50%,-50%) translate(-4px,3px);}}
+@keyframes iaDrift{0%,100%{transform:translate(-50%,-50%) translate(0,0) scale(1);}33%{transform:translate(-50%,-50%) translate(13px,-17px) scale(1.2);}66%{transform:translate(-50%,-50%) translate(-14px,13px) scale(.84);}}
 @keyframes iaDraw{from{stroke-dashoffset:1;opacity:0;}25%{opacity:1;}to{stroke-dashoffset:0;opacity:1;}}
-@keyframes iaRun{0%{stroke-dashoffset:.14;opacity:0;}4%{opacity:1;}22%{stroke-dashoffset:-1;opacity:1;}26%{stroke-dashoffset:-1;opacity:0;}100%{stroke-dashoffset:-1;opacity:0;}}
-@keyframes iaRunFast{0%{stroke-dashoffset:.14;opacity:0;}10%{opacity:1;}60%{stroke-dashoffset:-1;opacity:1;}72%{stroke-dashoffset:-1;opacity:0;}100%{opacity:0;}}
+@keyframes iaRun{0%{stroke-dashoffset:.2;opacity:0;}5%{opacity:1;}34%{stroke-dashoffset:-1;opacity:1;}40%{stroke-dashoffset:-1;opacity:0;}100%{stroke-dashoffset:-1;opacity:0;}}
+@keyframes iaRunFast{0%{stroke-dashoffset:.2;opacity:0;}10%{opacity:1;}60%{stroke-dashoffset:-1;opacity:1;}72%{stroke-dashoffset:-1;opacity:0;}100%{opacity:0;}}
 @keyframes iaHalo{0%{opacity:0;transform:translate(-50%,-50%) scale(.4);}26%{opacity:1;}100%{opacity:0;transform:translate(-50%,-50%) scale(2.1);}}
 
 /* ── carte Création de site web ── */
@@ -419,7 +441,7 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .web-ph .ph2{height:34%;width:100%;border-radius:4px;background:linear-gradient(135deg,#cfc0ff,#b9d8ff 50%,#ffc9ea);}
 .web-ph .ph3{height:11%;width:52%;border-radius:999px;background:var(--violet);}
 
-.card-web.in .web-win{animation:webWin .55s cubic-bezier(.22,.9,.26,1) .05s both,webFloat 8s ease-in-out 1.6s infinite;}
+.card-web.in .web-win{animation:webWin .55s cubic-bezier(.22,.9,.26,1) .05s both,webFloat 6s ease-in-out 1.6s infinite;}
 .card-web.in .web-bar i{animation:webFade .3s ease-out both;}
 .card-web.in .web-bar i:nth-child(1){animation-delay:.30s;}
 .card-web.in .web-bar i:nth-child(2){animation-delay:.36s;}
@@ -431,8 +453,8 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .card-web.in .web-l.b{animation:webFade .3s ease-out .74s both;}
 .card-web.in .web-btn{animation:webRise .4s cubic-bezier(.22,.9,.26,1) .82s both;}
 .card-web.in .web-phone{animation:webPhone .5s cubic-bezier(.22,.9,.26,1) .96s both;}
-.card-web.in .web-shine{animation:webShine 7s ease-in-out 2.4s infinite;}
-.card-web.in .web-img b{animation:webShine 7s ease-in-out 2.9s infinite;}
+.card-web.in .web-shine{animation:webShine 4.8s ease-in-out 2s infinite;}
+.card-web.in .web-img b{animation:webShine 4.8s ease-in-out 2.5s infinite;}
 
 .card-web.is-pulse .web-h{animation:webSlide .34s cubic-bezier(.22,.9,.26,1) .02s both;}
 .card-web.is-pulse .web-img{animation:webPop .36s cubic-bezier(.22,.9,.26,1) .12s both;}
@@ -446,7 +468,7 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .card-web.is-click .web-win{animation:webClick .5s ease-out;}
 
 @keyframes webWin{from{opacity:0;transform:translateY(12px) scale(.9);}to{opacity:1;transform:none;}}
-@keyframes webFloat{0%,100%{transform:translateY(0) rotateY(0);}50%{transform:translateY(-6px) rotateY(-3deg);}}
+@keyframes webFloat{0%,100%{transform:translateY(0) rotateY(0) rotateZ(0);}50%{transform:translateY(-10px) rotateY(-7deg) rotateZ(-1deg);}}
 @keyframes webFade{from{opacity:0;}to{opacity:1;}}
 @keyframes webSlide{from{opacity:0;transform:translateX(-8px);}to{opacity:1;transform:none;}}
 @keyframes webPop{from{opacity:0;transform:scale(.9);}to{opacity:1;transform:none;}}
@@ -488,14 +510,14 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 
 /* flottement continu, jamais interrompu — y compris pendant le survol */
 .card-smo.in .smo-fl{animation:smoFloat var(--fd,7s) ease-in-out var(--fdl,.9s) infinite;}
-.card-smo.in .smo-post .smo-fl{--fd:6.4s;--fdl:1.0s;}
-.card-smo.in .smo-play .smo-fl{--fd:8.2s;--fdl:1.35s;}
-.card-smo.in .smo-chat .smo-fl{--fd:5.1s;--fdl:1.6s;}
+.card-smo.in .smo-post .smo-fl{--fd:5.2s;--fdl:1.0s;}
+.card-smo.in .smo-play .smo-fl{--fd:6.6s;--fdl:1.35s;}
+.card-smo.in .smo-chat .smo-fl{--fd:4.2s;--fdl:1.6s;}
 @keyframes smoFloat{
   0%{transform:translate(0,0) rotate(0deg);}
-  25%{transform:translate(2px,-7px) rotate(1.4deg);}
-  50%{transform:translate(0,-10px) rotate(0deg);}
-  75%{transform:translate(-2px,-4px) rotate(-1.4deg);}
+  25%{transform:translate(4px,-11px) rotate(2.6deg);}
+  50%{transform:translate(0,-15px) rotate(0deg);}
+  75%{transform:translate(-4px,-6px) rotate(-2.6deg);}
   100%{transform:translate(0,0) rotate(0deg);}}
 
 /* survol / focus : eventail en cascade, la bulle avance en dernier avec un rebond */
@@ -526,6 +548,10 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   transform:translate(-50%,-50%) rotate(0deg);opacity:0;
   transition:transform .6s cubic-bezier(.3,.9,.3,1);}
 .brd-palette img{display:block;width:100%;height:auto;filter:drop-shadow(0 10px 20px rgba(121,98,220,.3));}
+.card-brd.in .brd-palette img{animation:brdPalDrift 5.4s ease-in-out 1.1s infinite;}
+@keyframes brdPalDrift{0%,100%{transform:translate(0,0) rotate(0deg);}33%{transform:translate(4px,-14px) rotate(-7deg);}66%{transform:translate(-3px,6px) rotate(4deg);}}
+.card-brd.in:not(:hover):not(.is-built) .brd-shine{animation:brdIdleShine 5.4s ease-in-out 2.2s infinite;}
+@keyframes brdIdleShine{0%{opacity:0;transform:translateX(-120%);}5%{opacity:.5;}16%{opacity:.5;}22%{opacity:0;transform:translateX(120%);}100%{opacity:0;transform:translateX(120%);}}
 
 .brd-card{position:absolute;left:60%;top:47%;width:80%;z-index:2;display:block;
   transform:translate(-50%,-50%);opacity:0;}
@@ -579,15 +605,22 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .card-web:hover .web-win{box-shadow:0 26px 52px -16px rgba(121,98,220,.8);}
 .card-web:hover .web-phone{transform:translate(-10px,-14px) scale(1.14);}
 .card-web .web-phone{transition:transform .55s cubic-bezier(.2,1.3,.3,1);}
+.card-web.in .web-ph{animation:webPhFloat 7.4s ease-in-out 2s infinite;display:flex;}
+@keyframes webPhFloat{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-7px) rotate(2deg);}}
 .card-web:hover .web-btn{box-shadow:0 10px 22px -6px rgba(141,126,242,1);}
 
 /* survol spectaculaire — social media : eventail plus large */
 .card-smo:hover .smo-post,.card-smo.is-pulse .smo-post{--pose:translate(13%,11%) rotate(8deg) scale(1.13);}
 .card-smo:hover .smo-play,.card-smo.is-pulse .smo-play{--pose:translate(6%,-22%) rotate(-30deg) scale(1.1);}
-.card-smo:hover .smo-chat,.card-smo.is-pulse .smo-chat{--pose:translate(7%,-15%) rotate(-6deg) scale(1.3);}
+.card-smo:hover .smo-chat,.card-smo.is-pulse .smo-chat{--pose:translate(3%,-15%) rotate(-6deg) scale(1.24);}
 
 /* survol spectaculaire — branding : la carte se redresse, l'etoile eclate */
 .brd-card{transition:transform .6s cubic-bezier(.2,1.15,.3,1);}
+.card-brd.in:not(:hover):not(.is-built) .brd-card{animation:brdIn .6s cubic-bezier(.22,.9,.26,1) .06s both,brdCardIdle 6.6s ease-in-out 1.2s infinite;}
+@keyframes brdCardIdle{
+  0%,100%{transform:translate(-50%,-50%) translate(0,0) rotate(0deg) scale(1);}
+  34%{transform:translate(-50%,-50%) translate(-4%,-6%) rotate(-3deg) scale(1.03);}
+  68%{transform:translate(-50%,-50%) translate(3%,4%) rotate(2.2deg) scale(.985);}}
 .card-brd:hover .brd-card,.card-brd.is-built .brd-card{transform:translate(-50%,-50%) translate(-2%,-3%) scale(1.07) rotate(-1.5deg);}
 .card-brd:hover .brd-palette,.card-brd.is-pulse .brd-palette,.card-brd.is-built .brd-palette{transform:translate(-50%,-50%) translate(9%,-6%) rotate(11deg) scale(1.1);}
 .brd-burst{position:absolute;z-index:5;left:35.68%;top:37.01%;width:20.05%;aspect-ratio:1;border-radius:50%;
@@ -596,6 +629,70 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   box-shadow:0 0 26px 8px rgba(190,172,255,.9),inset 0 0 16px rgba(255,255,255,.9);}
 .card-brd:hover .brd-burst,.card-brd.is-built .brd-burst{animation:brdBurst .7s cubic-bezier(.2,.7,.3,1) .6s;}
 @keyframes brdBurst{0%{opacity:0;transform:translate(-50%,-50%) scale(.25);}22%{opacity:1;}100%{opacity:0;transform:translate(-50%,-50%) scale(3);}}
+
+
+/* ── carte SEO & Visibilité ── */
+.card-seo .fx-stage{--bt:10.2s;--bd:-3.1s;}
+.seo-rows{position:absolute;left:0;top:5%;width:100%;height:100%;display:block;}
+.seo-r{position:absolute;left:1%;width:74%;display:block;opacity:0;
+  transform:translateY(calc(var(--s,0) * 106%)) scale(var(--sc,.9));
+  transform-origin:0 50%;
+  transition:transform .6s cubic-bezier(.3,1.05,.3,1),opacity .5s,filter .5s;}
+.seo-r img{display:block;width:100%;height:auto;filter:drop-shadow(0 8px 16px rgba(121,98,220,.28));}
+.seo-r.sr1{--s:0;--sc:.88;}
+.seo-r.sr2{--s:1;--sc:.88;}
+.seo-r.sr3{--s:2;--sc:1;z-index:3;}
+.card-seo .sr1,.card-seo .sr2{filter:saturate(.6) opacity(.72);}
+.seo-gl{position:absolute;inset:0;pointer-events:none;border-radius:14%/34%;
+  background:linear-gradient(104deg,transparent 40%,rgba(255,255,255,.95) 50%,transparent 60%);
+  opacity:0;transform:translateX(-120%);}
+.seo-lens{position:absolute;left:62%;top:4%;width:44%;display:block;z-index:4;opacity:0;
+  transform:translate(0,calc(var(--ls,0) * 106%));
+  transition:transform .55s cubic-bezier(.3,1.05,.3,1);}
+.seo-lens img{display:block;width:100%;height:auto;filter:drop-shadow(0 10px 20px rgba(121,98,220,.4));}
+
+/* entree : les trois resultats, puis la loupe */
+.card-seo.in .seo-r{animation:seoIn .5s cubic-bezier(.22,.9,.26,1) both;}
+.card-seo.in .sr1{animation-delay:.10s;}
+.card-seo.in .sr2{animation-delay:.22s;}
+.card-seo.in .sr3{animation-delay:.34s;}
+.card-seo.in .seo-lens{animation:seoIn .5s cubic-bezier(.22,.9,.26,1) .46s both,seoIdle 5.6s ease-in-out 1.3s infinite;}
+/* au repos : la loupe balaie lentement, et un eclat passe de resultat en resultat */
+.card-seo.in:not(:hover):not(.is-built) .seo-r img{animation:seoScanGlow 5.2s ease-in-out infinite;}
+.card-seo.in:not(:hover):not(.is-built) .sr1 img{animation-delay:.2s;}
+.card-seo.in:not(:hover):not(.is-built) .sr2 img{animation-delay:.75s;}
+.card-seo.in:not(:hover):not(.is-built) .sr3 img{animation-delay:1.3s;}
+
+/* survol : 1 la loupe cherche, 2 elle s'arrete sur le 3e, 3 il remonte 1er, 4 reflet */
+.card-seo:hover .seo-lens,.card-seo.is-built .seo-lens{
+  animation:seoIn .5s cubic-bezier(.22,.9,.26,1) both,seoHunt 1.15s cubic-bezier(.4,.1,.3,1) forwards;}
+.card-seo:hover .sr3,.card-seo.is-built .sr3{--s:0;--sc:1.14;transition-delay:.5s;}
+.card-seo:hover .sr1,.card-seo.is-built .sr1{--s:1;transition-delay:.5s;}
+.card-seo:hover .sr2,.card-seo.is-built .sr2{--s:2;transition-delay:.5s;}
+.card-seo:hover .sr1,.card-seo:hover .sr2,
+.card-seo.is-built .sr1,.card-seo.is-built .sr2{filter:saturate(.45) opacity(.55);transition-delay:.5s;}
+.card-seo:hover .seo-gl,.card-seo.is-built .seo-gl{animation:seoGl .75s cubic-bezier(.4,.05,.3,1) 1.05s;}
+.card-seo.is-click .sr3{--sc:1.2;transition-duration:.3s;}
+
+@keyframes seoIn{from{opacity:0;transform:translateY(calc(var(--s,0) * 106%)) translateX(-14px) scale(.8);}
+  to{opacity:1;transform:translateY(calc(var(--s,0) * 106%)) scale(var(--sc,.9));}}
+@keyframes seoIdle{
+  0%,100%{transform:translate(0,0);}
+  22%{transform:translate(-9%,34%);}
+  48%{transform:translate(4%,78%);}
+  74%{transform:translate(-5%,38%);}}
+@keyframes seoScanGlow{0%,100%{filter:drop-shadow(0 8px 16px rgba(121,98,220,.28)) brightness(1);}
+  10%{filter:drop-shadow(0 8px 20px rgba(141,126,242,.7)) brightness(1.18);}
+  26%{filter:drop-shadow(0 8px 16px rgba(121,98,220,.28)) brightness(1);}}
+@keyframes seoHunt{
+  0%{transform:translate(0,0) rotate(0deg);}
+  14%{transform:translate(-11%,24%) rotate(-7deg);}
+  28%{transform:translate(5%,58%) rotate(5deg);}
+  40%{transform:translate(-7%,92%) rotate(-5deg);}
+  50%{transform:translate(0,106%) rotate(0deg) scale(1.1);}
+  58%{transform:translate(0,106%) rotate(0deg) scale(1.16);}
+  100%{transform:translate(0,0) rotate(0deg) scale(1.1);}}
+@keyframes seoGl{0%{opacity:0;transform:translateX(-120%);}14%{opacity:1;}86%{opacity:1;}100%{opacity:0;transform:translateX(120%);}}
 
 /* la carte passe en pile des que la colonne devient trop etroite pour deux blocs */
 @media(min-width:981px) and (max-width:1150px){
@@ -622,6 +719,12 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   .card-brd .brd-card img.brd-final{-webkit-mask-image:none!important;mask-image:none!important;transition:none!important;}
   .card-brd .brd-star{opacity:1;transform:translate(-50%,-50%);transition:none;}
   .card-brd .brd-shine,.card-brd .brd-burst{opacity:0;animation:none!important;}
+  .card-seo .seo-r,.card-seo .seo-lens{opacity:1;}
+  .card-seo .sr3{--s:0;--sc:1.14;}
+  .card-seo .sr1{--s:1;}
+  .card-seo .sr2{--s:2;}
+  .card-seo .seo-gl{opacity:0;}
+  .card-seo .seo-lens{transform:translate(0,0);}
   .card-fx::after{opacity:0;animation:none!important;}
   .card-fx .fx-stage{transform:none!important;}
   .card-gads .gads-orbit{opacity:1;stroke-dashoffset:0;}
@@ -1090,7 +1193,21 @@ footer{margin-top:80px;padding:56px 0 34px;}
         </span>
       </div>
     </a>
-    <a href="services/seo.html" class="card reveal"><div class="ico">🔍</div><h3>SEO &amp; Visibilité</h3><p>On vous rend visible sur Google, durablement, là où vos clients cherchent.</p><span class="cmore">Découvrir →</span></a>
+    <a href="services/seo.html" class="card reveal card-fx card-seo" aria-label="SEO et Visibilité — découvrir le service">
+      <div class="fx-txt">
+        <h3>SEO &amp; Visibilité</h3>
+        <p>On vous rend visible sur Google, durablement, là où vos clients cherchent.</p>
+        <span class="cmore">Découvrir →</span>
+      </div>
+      <div class="fx-stage seo-stage" aria-hidden="true">
+        <span class="seo-rows">
+          <span class="seo-r sr1"><img src="assets/seo/ligne.webp" alt="" width="560" height="224" loading="lazy" decoding="async"></span>
+          <span class="seo-r sr2"><img src="assets/seo/ligne.webp" alt="" width="560" height="224" loading="lazy" decoding="async"></span>
+          <span class="seo-r sr3"><img src="assets/seo/ligne.webp" alt="" width="560" height="224" loading="lazy" decoding="async"><span class="seo-gl"></span></span>
+        </span>
+        <span class="seo-lens"><img src="assets/seo/loupe.webp" alt="" width="420" height="281" loading="lazy" decoding="async"></span>
+      </div>
+    </a>
     <a href="services/videos-publicitaires.html" class="card reveal"><div class="ico">🎬</div><h3>Vidéo &amp; Motion</h3><p>Vidéos publicitaires, drone et motion design qui captent l'attention.</p><span class="cmore">Découvrir →</span></a>
     <a href="services/strategie-digitale.html" class="card reveal"><div class="ico">🚀</div><h3>Stratégie de marque</h3><p>Positionnement et plan d'action clairs pour donner une direction à votre croissance.</p><span class="cmore">Découvrir →</span></a>
     <a href="#methode" class="card reveal"><div class="ico">✨</div><h3>Méthode complète</h3><p>Pas sûr de votre besoin ? Découvrez notre parcours en 8 étapes de A à Z.</p><span class="cmore">Voir la méthode →</span></a>
@@ -1488,7 +1605,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   }else{card.classList.add('fx-vis','in');}
 
   /* sur mobile : on joue la construction une fois, puis on garde le resultat */
-  if(!canHover&&!RM&&card.classList.contains('card-brd')){
+  if(!canHover&&!RM&&(card.classList.contains('card-brd')||card.classList.contains('card-seo'))){
     var built=false;
     if('IntersectionObserver' in window){
       var io2=new IntersectionObserver(function(es){
