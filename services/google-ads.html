@@ -134,6 +134,18 @@
               </div>
             </div>
 
+            <!-- étape remerciement -->
+            <div class="ga-view ga-thanks" data-view="thanks">
+              <div class="ga-thanks-in">
+                <svg class="ga-check" viewBox="0 0 96 96" aria-hidden="true">
+                  <circle class="ga-check-ring" cx="48" cy="48" r="40" pathLength="1"/>
+                  <path class="ga-check-mark" d="M29 49.5 L42 62 L68 35" pathLength="1"/>
+                </svg>
+                <h3>Merci pour votre commande</h3>
+                <p>Demande envoyée — le fleuriste vous recontacte.</p>
+              </div>
+            </div>
+
             <!-- étape récapitulatif -->
             <div class="ga-view ga-recap" data-view="recap">
               <div class="ga-steps">
@@ -262,7 +274,7 @@
     typed.textContent=QUERY; bar.classList.add('ga-done');
     [].forEach.call(res,function(r){r.classList.add('is-in');});
     views.site.classList.add('is-bloom'); conf.classList.add('is-on');
-    focus(null); hideTip();
+    views.thanks.classList.add('is-on'); focus(null); hideTip();
     cur.classList.remove('is-on'); show('recap'); views.recap.classList.add('is-on');
   }
   function reset(){
@@ -270,7 +282,7 @@
     [].forEach.call(res,function(r){r.classList.remove('is-in');});
     ad.classList.remove('is-hit'); order.classList.remove('is-hit');
     conf.classList.remove('is-on'); views.site.classList.remove('is-bloom');
-    views.recap.classList.remove('is-on'); focus(null); hideTip();
+    views.recap.classList.remove('is-on'); views.thanks.classList.remove('is-on'); focus(null); hideTip();
     cur.classList.remove('is-on','is-click'); moveCursor(50,78);
     show('serp');
   }
@@ -301,8 +313,9 @@
   steps.push([20600,function(){clickPulse();order.classList.add('is-hit');}]);
   steps.push([20880,function(){order.classList.remove('is-hit');}]);
   steps.push([21100,function(){conf.classList.add('is-on');}]);
-  steps.push([22400,function(){cur.classList.remove('is-on');}]);
-  steps.push([22750,function(){show('recap');views.recap.classList.add('is-on');}]);
+  steps.push([21600,function(){cur.classList.remove('is-on');}]);
+  steps.push([22000,function(){show('thanks');views.thanks.classList.add('is-on');}]);
+  steps.push([25400,function(){show('recap');views.recap.classList.add('is-on');}]);
   steps.sort(function(a,b){return a[0]-b[0];});
 
   var t0=0, acc=0, idx=0, raf=0, paused=false, running=false;

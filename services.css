@@ -218,8 +218,12 @@ h2{
 .ga-res p{font-size:.88em;line-height:1.45;color:var(--ts);opacity:.72;margin:0;}
 .ga-ad{border-color:rgba(123,63,189,.34);box-shadow:0 6px 18px -12px rgba(123,63,189,.8);}
 .ga-ad.is-hit{box-shadow:0 0 0 2.5px rgba(123,63,189,.55),0 10px 24px -12px rgba(123,63,189,1);transform:scale(1.015);}
-.ga-tag{display:inline-block;font-size:.72em;font-weight:700;letter-spacing:.04em;color:#fff;
-  background:var(--p1);border-radius:5px;padding:.14em .5em;margin-bottom:.4em;}
+.ga-tag{display:inline-block;font-size:.8em;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#fff;
+  background:linear-gradient(135deg,var(--p1),var(--p3));border-radius:6px;padding:.24em .7em;margin-bottom:.45em;
+  box-shadow:0 4px 12px -5px rgba(123,63,189,1);}
+.ga-results.ga-focus-ad .ga-tag{animation:gaTagPulse 1.5s ease-in-out infinite;}
+@keyframes gaTagPulse{0%,100%{box-shadow:0 4px 12px -5px rgba(123,63,189,1),0 0 0 0 rgba(123,63,189,.5);}
+  55%{box-shadow:0 4px 12px -5px rgba(123,63,189,1),0 0 0 7px rgba(123,63,189,0);}}
 
 /* page du fleuriste */
 .ga-site{padding:0;}
@@ -267,6 +271,28 @@ h2{
 .ga-tip b{font-weight:700;color:#D9B6F2;white-space:nowrap;}
 .ga-tip.is-seo b{color:#A6E3C0;}
 .ga-tip span{opacity:.92;}
+
+
+/* remerciement */
+.ga-thanks{display:grid;place-items:center;}
+.ga-thanks-in{text-align:center;display:flex;flex-direction:column;align-items:center;}
+.ga-check{width:min(24%,74px);height:auto;margin-bottom:.6em;overflow:visible;}
+.ga-check-ring{fill:rgba(111,181,138,.14);stroke:#6FB58A;stroke-width:5;
+  stroke-dasharray:1;stroke-dashoffset:1;transform-origin:48px 48px;transform:rotate(-90deg);}
+.ga-check-mark{fill:none;stroke:#2E7D5B;stroke-width:7.5;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:1;stroke-dashoffset:1;}
+.ga-thanks.is-on .ga-check-ring{animation:gaRing .55s cubic-bezier(.3,.8,.3,1) .08s forwards;}
+.ga-thanks.is-on .ga-check-mark{animation:gaMark .4s cubic-bezier(.4,.1,.3,1) .5s forwards;}
+.ga-thanks.is-on .ga-check{animation:gaCheckPop .5s cubic-bezier(.3,1.5,.5,1) .85s;}
+@keyframes gaRing{to{stroke-dashoffset:0;}}
+@keyframes gaMark{to{stroke-dashoffset:0;}}
+@keyframes gaCheckPop{0%{transform:scale(1);}45%{transform:scale(1.12);}100%{transform:scale(1);}}
+.ga-thanks h3{font-size:1.4em;font-weight:700;color:var(--p2);line-height:1.2;margin-bottom:.3em;
+  opacity:0;transform:translateY(8px);transition:opacity .4s,transform .45s cubic-bezier(.3,.9,.3,1);}
+.ga-thanks p{font-size:.92em;color:var(--ts);opacity:0;transform:translateY(8px);
+  transition:opacity .4s .1s,transform .45s .1s cubic-bezier(.3,.9,.3,1);}
+.ga-thanks.is-on h3{opacity:1;transform:none;transition-delay:.72s;}
+.ga-thanks.is-on p{opacity:.72;transform:none;transition-delay:.86s;}
 
 /* récapitulatif */
 .ga-recap{display:grid;place-items:center;}
