@@ -216,7 +216,9 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .card-fx:not(.fx-vis) .vid-film,
 .card-fx:not(.fx-vis) .vid-bar,
 .card-fx:not(.fx-vis) .str-needle img,
-.card-fx:not(.fx-vis) .str-gloss::before{animation-play-state:paused;}
+.card-fx:not(.fx-vis) .str-gloss::before,
+.card-fx:not(.fx-vis) .mth-wand img,
+.card-fx:not(.fx-vis) .mth-star img{animation-play-state:paused;}
 
 /* convergence + onde */
 .card-gads.is-pulse .gads-swarm{animation:gadsConverge .9s cubic-bezier(.3,.8,.3,1);}
@@ -822,6 +824,87 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 @keyframes strDot{from{opacity:0;transform:scale(.2);}to{opacity:1;transform:scale(1);}}
 @keyframes strClick{0%{transform:translate(-50%,-50%) scale(1);}40%{transform:translate(-50%,-50%) scale(1.06);}100%{transform:translate(-50%,-50%) scale(1);}}
 
+
+/* ── carte Méthode complète ── */
+.card-mth .fx-stage{--bt:9.8s;--bd:-2.6s;}
+.mth-ring{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:1;}
+.mth-trace{fill:none;stroke:rgba(141,126,242,.9);stroke-width:2.2;stroke-linecap:round;
+  stroke-dasharray:1;stroke-dashoffset:1;opacity:0;
+  transform-origin:100px 100px;transform:rotate(-90deg);
+  filter:drop-shadow(0 0 5px rgba(168,146,255,.85));}
+.mth-stars{position:absolute;inset:0;display:block;z-index:2;}
+.mth-star{position:absolute;width:15%;display:block;transform:translate(-50%,-50%) scale(.82);}
+.mth-star img{display:block;width:100%;height:auto;opacity:.42;
+  filter:saturate(.6) drop-shadow(0 3px 7px rgba(121,98,220,.3));}
+.mth-wand{position:absolute;left:50%;top:50%;width:52%;display:block;z-index:3;
+  transform:translate(-50%,-50%) rotate(0deg);transform-origin:18% 82%;
+  transition:transform .6s cubic-bezier(.3,.9,.3,1);}
+.mth-wand img{display:block;width:100%;height:auto;filter:drop-shadow(0 8px 18px rgba(121,98,220,.45));}
+.card-mth .s1{left:50.00%;top:14.00%;}
+.card-mth .s2{left:75.46%;top:24.54%;}
+.card-mth .s3{left:86.00%;top:50.00%;}
+.card-mth .s4{left:75.46%;top:75.46%;}
+.card-mth .s5{left:50.00%;top:86.00%;}
+.card-mth .s6{left:24.54%;top:75.46%;}
+.card-mth .s7{left:14.00%;top:50.00%;}
+.card-mth .s8{left:24.54%;top:24.54%;}
+
+/* arrivee */
+.card-mth.in .mth-wand{animation:mthIn .6s cubic-bezier(.22,.9,.26,1) .08s both;}
+.card-mth.in .mth-star{animation:mthPop .45s cubic-bezier(.22,.9,.26,1) both;}
+.card-mth.in .s1{animation-delay:.22s;} .card-mth.in .s2{animation-delay:.28s;}
+.card-mth.in .s3{animation-delay:.34s;} .card-mth.in .s4{animation-delay:.40s;}
+.card-mth.in .s5{animation-delay:.46s;} .card-mth.in .s6{animation-delay:.52s;}
+.card-mth.in .s7{animation-delay:.58s;} .card-mth.in .s8{animation-delay:.64s;}
+/* au repos : la baguette respire et les etoiles scintillent a tour de role */
+.card-mth.in .mth-wand img{animation:mthFloat 5.8s ease-in-out 1s infinite;}
+.card-mth.in:not(:hover):not(.is-built) .mth-star img{animation:mthTwinkle 4.4s ease-in-out infinite;}
+.card-mth.in:not(:hover):not(.is-built) .s1 img{animation-delay:0s;}
+.card-mth.in:not(:hover):not(.is-built) .s2 img{animation-delay:.55s;}
+.card-mth.in:not(:hover):not(.is-built) .s3 img{animation-delay:1.1s;}
+.card-mth.in:not(:hover):not(.is-built) .s4 img{animation-delay:1.65s;}
+.card-mth.in:not(:hover):not(.is-built) .s5 img{animation-delay:2.2s;}
+.card-mth.in:not(:hover):not(.is-built) .s6 img{animation-delay:2.75s;}
+.card-mth.in:not(:hover):not(.is-built) .s7 img{animation-delay:3.3s;}
+.card-mth.in:not(:hover):not(.is-built) .s8 img{animation-delay:3.85s;}
+
+/* survol : 1 le geste, 2 le cercle se trace, 3 les 8 etapes s'allument, 4 pulsation finale */
+.card-mth:hover .mth-wand,.card-mth.is-built .mth-wand{animation:mthFlick .55s cubic-bezier(.3,1.3,.4,1) forwards;}
+.card-mth:hover .mth-trace,.card-mth.is-built .mth-trace{animation:mthDraw .9s cubic-bezier(.45,.05,.3,1) .26s forwards;}
+.card-mth:hover .mth-star,.card-mth.is-built .mth-star{animation:mthLight .5s cubic-bezier(.3,1.5,.5,1) forwards;}
+.card-mth:hover .mth-star img,.card-mth.is-built .mth-star img{animation:mthOn .5s ease-out forwards;}
+.card-mth:hover .s1,.card-mth:hover .s1 img,.card-mth.is-built .s1,.card-mth.is-built .s1 img{animation-delay:.30s;}
+.card-mth:hover .s2,.card-mth:hover .s2 img,.card-mth.is-built .s2,.card-mth.is-built .s2 img{animation-delay:.40s;}
+.card-mth:hover .s3,.card-mth:hover .s3 img,.card-mth.is-built .s3,.card-mth.is-built .s3 img{animation-delay:.50s;}
+.card-mth:hover .s4,.card-mth:hover .s4 img,.card-mth.is-built .s4,.card-mth.is-built .s4 img{animation-delay:.60s;}
+.card-mth:hover .s5,.card-mth:hover .s5 img,.card-mth.is-built .s5,.card-mth.is-built .s5 img{animation-delay:.70s;}
+.card-mth:hover .s6,.card-mth:hover .s6 img,.card-mth.is-built .s6,.card-mth.is-built .s6 img{animation-delay:.80s;}
+.card-mth:hover .s7,.card-mth:hover .s7 img,.card-mth.is-built .s7,.card-mth.is-built .s7 img{animation-delay:.90s;}
+.card-mth:hover .s8,.card-mth:hover .s8 img,.card-mth.is-built .s8,.card-mth.is-built .s8 img{animation-delay:1.00s;}
+/* pulsation collective une fois le cercle complet */
+.card-mth:hover .mth-stars,.card-mth.is-built .mth-stars{animation:mthPulse .5s cubic-bezier(.3,.9,.3,1) 1.18s;}
+.card-mth.is-click .mth-wand{animation:mthFlick .45s cubic-bezier(.3,1.3,.4,1) forwards;}
+
+@keyframes mthIn{from{opacity:0;transform:translate(-50%,-50%) scale(.84) rotate(-10deg);}
+  to{opacity:1;transform:translate(-50%,-50%) rotate(0deg);}}
+@keyframes mthPop{from{opacity:0;transform:translate(-50%,-50%) scale(.3);}
+  to{opacity:1;transform:translate(-50%,-50%) scale(.82);}}
+@keyframes mthFloat{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-7px) rotate(-3deg);}}
+@keyframes mthTwinkle{0%,100%{opacity:.42;transform:scale(1);filter:saturate(.6) drop-shadow(0 3px 7px rgba(121,98,220,.3));}
+  7%{opacity:.95;transform:scale(1.18);filter:saturate(1.1) drop-shadow(0 3px 12px rgba(141,126,242,.8));}
+  18%{opacity:.42;transform:scale(1);filter:saturate(.6) drop-shadow(0 3px 7px rgba(121,98,220,.3));}}
+@keyframes mthFlick{0%{transform:translate(-50%,-50%) rotate(0deg);}
+  38%{transform:translate(-50%,-50%) rotate(12deg);}
+  70%{transform:translate(-50%,-50%) rotate(-4deg);}
+  100%{transform:translate(-50%,-50%) rotate(0deg);}}
+@keyframes mthDraw{from{stroke-dashoffset:1;opacity:0;}10%{opacity:1;}to{stroke-dashoffset:0;opacity:1;}}
+@keyframes mthLight{from{transform:translate(-50%,-50%) scale(.82);}
+  55%{transform:translate(-50%,-50%) scale(1.3);}
+  to{transform:translate(-50%,-50%) scale(1.08);}}
+@keyframes mthOn{from{opacity:.42;filter:saturate(.6) drop-shadow(0 3px 7px rgba(121,98,220,.3));}
+  to{opacity:1;filter:saturate(1.15) drop-shadow(0 3px 14px rgba(141,126,242,.95));}}
+@keyframes mthPulse{0%{transform:scale(1);}44%{transform:scale(1.11);}100%{transform:scale(1);}}
+
 /* la carte passe en pile des que la colonne devient trop etroite pour deux blocs */
 @media(min-width:981px) and (max-width:1150px){
   .card-fx{grid-template-columns:1fr;gap:16px;--gs:min(180px,19vw);}
@@ -863,6 +946,11 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   .card-str .str-needle img{transform:none;}
   .card-str .str-path{opacity:1;stroke-dashoffset:0;}
   .card-str .str-dot{opacity:1;transform:none;}
+  .card-mth .mth-wand{opacity:1;transform:translate(-50%,-50%);}
+  .card-mth .mth-wand img{transform:none;}
+  .card-mth .mth-trace{opacity:1;stroke-dashoffset:0;}
+  .card-mth .mth-star{opacity:1;transform:translate(-50%,-50%) scale(1.08);}
+  .card-mth .mth-star img{opacity:1;filter:saturate(1.15) drop-shadow(0 3px 14px rgba(141,126,242,.95));}
   .card-fx::after{opacity:0;animation:none!important;}
   .card-fx .fx-stage{transform:none!important;}
   .card-gads .gads-orbit{opacity:1;stroke-dashoffset:0;}
@@ -1388,7 +1476,29 @@ footer{margin-top:80px;padding:56px 0 34px;}
         </span>
       </div>
     </a>
-    <a href="#methode" class="card reveal"><div class="ico">✨</div><h3>Méthode complète</h3><p>Pas sûr de votre besoin ? Découvrez notre parcours en 8 étapes de A à Z.</p><span class="cmore">Voir la méthode →</span></a>
+    <a href="#methode" class="card reveal card-fx card-mth" aria-label="Méthode complète — voir la méthode">
+      <div class="fx-txt">
+        <h3>Méthode complète</h3>
+        <p>Pas sûr de votre besoin ? Découvrez notre parcours en 8 étapes de A à Z.</p>
+        <span class="cmore">Voir la méthode →</span>
+      </div>
+      <div class="fx-stage mth-stage" aria-hidden="true">
+        <svg class="mth-ring" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" focusable="false">
+          <circle class="mth-trace" cx="100" cy="100" r="72" pathLength="1"/>
+        </svg>
+        <span class="mth-stars">
+          <span class="mth-star s1"><img src="assets/mth/etoile.webp" alt="" width="188" height="200" loading="lazy" decoding="async"></span>
+          <span class="mth-star s2"><img src="assets/mth/etoile.webp" alt="" width="188" height="200" loading="lazy" decoding="async"></span>
+          <span class="mth-star s3"><img src="assets/mth/etoile.webp" alt="" width="188" height="200" loading="lazy" decoding="async"></span>
+          <span class="mth-star s4"><img src="assets/mth/etoile.webp" alt="" width="188" height="200" loading="lazy" decoding="async"></span>
+          <span class="mth-star s5"><img src="assets/mth/etoile.webp" alt="" width="188" height="200" loading="lazy" decoding="async"></span>
+          <span class="mth-star s6"><img src="assets/mth/etoile.webp" alt="" width="188" height="200" loading="lazy" decoding="async"></span>
+          <span class="mth-star s7"><img src="assets/mth/etoile.webp" alt="" width="188" height="200" loading="lazy" decoding="async"></span>
+          <span class="mth-star s8"><img src="assets/mth/etoile.webp" alt="" width="188" height="200" loading="lazy" decoding="async"></span>
+        </span>
+        <span class="mth-wand"><img src="assets/mth/baguette.webp" alt="" width="480" height="454" loading="lazy" decoding="async"></span>
+      </div>
+    </a>
   </div>
 </section>
 
@@ -1783,7 +1893,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   }else{card.classList.add('fx-vis','in');}
 
   /* sur mobile : on joue la construction une fois, puis on garde le resultat */
-  if(!canHover&&!RM&&(card.classList.contains('card-brd')||card.classList.contains('card-seo')||card.classList.contains('card-vid')||card.classList.contains('card-str'))){
+  if(!canHover&&!RM&&(card.classList.contains('card-brd')||card.classList.contains('card-seo')||card.classList.contains('card-vid')||card.classList.contains('card-str')||card.classList.contains('card-mth'))){
     var built=false;
     if('IntersectionObserver' in window){
       var io2=new IntersectionObserver(function(es){
