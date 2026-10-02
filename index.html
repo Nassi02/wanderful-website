@@ -1940,6 +1940,21 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   document.addEventListener('visibilitychange', function(){ if (document.hidden) v.pause(); });
 })();
 </script>
+<script>
+/* sujet prerempli depuis un lien du type index.html?sujet=Audit%20Google%20Ads#contact */
+(function(){
+  var f=document.getElementById('contact-form'); if(!f) return;
+  var champ=f.querySelector('[name="sujet"]'); if(!champ||champ.value) return;
+  var s='';
+  try{ s=new URLSearchParams(location.search).get('sujet')||''; }catch(e){ return; }
+  s=s.replace(/[<>]/g,'').trim().slice(0,80);
+  if(!s) return;
+  champ.value=s;
+  champ.setAttribute('data-sujetPrefill','1');
+  var cible=document.getElementById('contact');
+  if(cible&&!location.hash){ cible.scrollIntoView(); }
+})();
+</script>
 </body>
 </html>
 

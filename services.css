@@ -209,11 +209,11 @@ h2{
   opacity:0;transform:scale(.97);
   transition:opacity .9s ease .35s,transform 1.1s cubic-bezier(.3,.9,.3,1) .35s;
   /* seuls les bords se fondent dans la brume : tout le centre reste net */
-  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 5.5%,#000 94.5%,transparent 100%),
-                     linear-gradient(to bottom,transparent 0,#000 4%,#000 96%,transparent 100%);
+  -webkit-mask-image:linear-gradient(to right,transparent 0,#000 2.5%,#000 97.5%,transparent 100%),
+                     linear-gradient(to bottom,transparent 0,#000 2%,#000 98%,transparent 100%);
   -webkit-mask-composite:source-in;
-  mask-image:linear-gradient(to right,transparent 0,#000 5.5%,#000 94.5%,transparent 100%),
-             linear-gradient(to bottom,transparent 0,#000 4%,#000 96%,transparent 100%);
+  mask-image:linear-gradient(to right,transparent 0,#000 2.5%,#000 97.5%,transparent 100%),
+             linear-gradient(to bottom,transparent 0,#000 2%,#000 98%,transparent 100%);
   mask-composite:intersect;}
 .ga-stage.is-open .ga-screen{opacity:1;transform:none;}
 
@@ -296,9 +296,9 @@ h2{
 .ga-res{transition:opacity .45s,filter .45s,transform .4s cubic-bezier(.3,.9,.3,1),box-shadow .3s,border-color .3s;}
 .ga-results{transition:transform .5s cubic-bezier(.3,.9,.3,1);}
 .ga-results.ga-focus-ad,.ga-results.ga-focus-seo{transform:translateY(-6%);}
-.ga-results.ga-focus-ad .ga-res:not(.ga-ad){opacity:.3;filter:saturate(.3);}
+.ga-results.ga-focus-ad .ga-res:not(.ga-ad){opacity:.66;filter:saturate(.6);}
 .ga-results.ga-focus-ad .ga-ad{box-shadow:0 0 0 2.5px rgba(123,63,189,.5),0 10px 24px -12px rgba(123,63,189,1);}
-.ga-results.ga-focus-seo .ga-ad{opacity:.3;filter:saturate(.3);}
+.ga-results.ga-focus-seo .ga-ad{opacity:.66;filter:saturate(.6);}
 .ga-results.ga-focus-seo .ga-res:not(.ga-ad){border-color:rgba(111,181,138,.75);box-shadow:0 0 0 2px rgba(111,181,138,.35);}
 .ga-tip{position:absolute;left:7.5%;right:7.5%;bottom:6.5%;z-index:5;max-height:34%;overflow:visible;
   display:flex;align-items:baseline;gap:.5em;flex-wrap:wrap;
@@ -988,4 +988,125 @@ html{scroll-behavior:smooth;}
   .ga-page .svc-hero{padding:78px 22px 28px;}
   .ga-page .svc-hero-sub{font-size:1rem;}
   .ga-lede p{font-size:.96rem;}
+}
+
+/* ════════════════════
+   PAGE GOOGLE ADS — parcours en quatre etapes
+════════════════════ */
+.ga-journey{margin-bottom:72px;}
+.gj-steps{
+  list-style:none;position:relative;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:18px;
+  padding-top:52px;
+}
+/* le rail va du centre du premier point au centre du dernier */
+.gj-rail{position:absolute;left:12.5%;right:12.5%;top:17px;height:3px;border-radius:3px;
+  background:rgba(123,63,189,.16);overflow:hidden;}
+@property --p{syntax:'<number>';inherits:false;initial-value:0;}
+.gj-fill{position:absolute;inset:0;--p:0;transform-origin:left center;transform:scaleX(var(--p));
+  background:linear-gradient(90deg,var(--p1),var(--cy));
+  transition:--p .2s linear;}
+.gj-step{position:relative;text-align:center;}
+.gj-node{
+  position:absolute;left:50%;top:-52px;transform:translateX(-50%);
+  width:36px;height:36px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:#fff;border:2px solid rgba(123,63,189,.22);
+  font-size:.7rem;font-weight:800;letter-spacing:.04em;color:rgba(42,17,88,.45);
+  transition:background .35s,border-color .35s,color .35s,transform .35s cubic-bezier(.34,1.56,.64,1),box-shadow .35s;
+}
+.gj-step.is-on .gj-node{
+  background:linear-gradient(135deg,var(--p3),var(--p1));border-color:transparent;color:#fff;
+  transform:translateX(-50%) scale(1.14);box-shadow:0 8px 22px -6px rgba(123,63,189,.75);}
+.gj-card{
+  background:#fff;border:1px solid rgba(207,195,232,.4);border-radius:14px;
+  padding:22px 20px;height:100%;
+  transition:border-color .35s,box-shadow .35s;
+}
+.gj-step.is-on .gj-card{border-color:rgba(123,63,189,.35);box-shadow:0 14px 34px -18px rgba(123,63,189,.75);}
+/* le texte ne bouge pas et ne change pas de couleur : il reste lisible du debut a la fin */
+.gj-card h3{font-size:.95rem;font-weight:700;color:var(--p2);margin-bottom:8px;}
+.gj-card p{font-size:.82rem;color:var(--ts);line-height:1.65;opacity:.84;}
+
+@media(max-width:900px){
+  /* version simple : un rail vertical, une etape apres l'autre */
+  .gj-steps{grid-template-columns:1fr;gap:14px;padding:0 0 0 46px;}
+  .gj-rail{left:17px;right:auto;top:18px;bottom:18px;width:3px;height:auto;}
+  .gj-fill{transform-origin:center top;transform:scaleY(var(--p));
+    background:linear-gradient(180deg,var(--p1),var(--cy));}
+  .gj-step{text-align:left;}
+  .gj-node{left:-46px;top:12px;transform:none;}
+  .gj-step.is-on .gj-node{transform:scale(1.1);}
+}
+@media(prefers-reduced-motion:reduce){
+  .gj-fill{--p:1!important;transition:none;}
+  .gj-node,.gj-card{transition:none;}
+}
+
+/* ════════════════════
+   PAGE GOOGLE ADS — notre approche
+════════════════════ */
+.ga-why{margin-bottom:72px;}
+.ga-why-grid{display:grid;grid-template-columns:1.45fr 1fr;gap:26px;align-items:start;}
+.ga-why-txt{
+  background:#fff;border:1px solid rgba(207,195,232,.45);border-radius:18px;padding:30px 32px;
+}
+.ga-why-txt p{font-size:.93rem;line-height:1.8;color:var(--ts);opacity:.88;}
+.ga-why-txt p+p{margin-top:14px;}
+.ga-why-txt b{color:var(--p2);font-weight:700;}
+.ga-why-txt a{color:var(--p1);font-weight:600;text-decoration:underline;text-underline-offset:2px;}
+.ga-why-txt a:hover{color:var(--p2);}
+.ga-chain{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin:0 0 18px;}
+.ga-chain span{
+  font-size:.78rem;font-weight:700;color:var(--p2);
+  background:rgba(237,224,255,.8);border:1px solid rgba(123,63,189,.18);
+  border-radius:8px;padding:6px 12px;
+}
+.ga-chain i{font-style:normal;color:var(--p4);font-weight:700;}
+.ga-quote{
+  background:linear-gradient(140deg,rgba(255,255,255,.95),rgba(237,224,255,.6));
+  border:1px solid rgba(207,195,232,.55);border-radius:18px;padding:26px 26px;margin:0;
+}
+.ga-quote blockquote{margin:0;font-size:.9rem;line-height:1.75;color:var(--ts);opacity:.9;}
+.ga-quote figcaption{display:flex;align-items:center;gap:12px;margin-top:18px;}
+.ga-quote .ga-av{
+  width:40px;height:40px;border-radius:50%;flex:none;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,var(--p3),var(--p1));color:#fff;font-size:.8rem;font-weight:800;
+}
+.ga-quote b{display:block;font-size:.88rem;color:var(--p2);font-weight:700;}
+.ga-quote .ga-stars{color:#F5A623;letter-spacing:1px;font-size:.8rem;}
+.ga-quote .ga-src{display:block;font-size:.74rem;color:var(--ts);opacity:.6;}
+@media(max-width:900px){.ga-why-grid{grid-template-columns:1fr;}}
+
+/* ════════════════════
+   PAGE GOOGLE ADS — bloc de contact nacre
+════════════════════ */
+.ga-page .cta-box{
+  background:
+    radial-gradient(ellipse 58% 70% at 80% 18%, #F7DDE9 0%, transparent 62%),
+    radial-gradient(ellipse 54% 64% at 16% 80%, #DCE7F8 0%, transparent 58%),
+    radial-gradient(ellipse 85% 85% at 50% 50%, #F0E6FC 0%, transparent 72%),
+    linear-gradient(135deg,#EFEAFB 0%,#E6DFF7 55%,#F2E3EE 100%);
+  border:1px solid rgba(207,195,232,.7);
+}
+.ga-page .cta-box::before{display:none;}
+/* les memes nuages que la demonstration, en decor */
+.ga-page .cta-box > .cta-bg{display:none;}
+.ga-page .cta-cloud{position:absolute;z-index:0;pointer-events:none;opacity:.6;}
+.ga-page .cta-cloud img{display:block;width:100%;height:auto;}
+.ga-page .cta-cloud-l{left:-7%;bottom:-24%;width:34%;}
+.ga-page .cta-cloud-r{right:-6%;top:-26%;width:30%;}
+.ga-page .cta-box h2{color:var(--p2);}
+.ga-page .cta-box p{color:var(--ts);opacity:.86;}
+.ga-page .cta-box .cta-btn{
+  background:linear-gradient(135deg,var(--p3),var(--p1));color:#fff;
+  box-shadow:0 10px 30px rgba(90,40,152,.32);}
+.ga-page .cta-box .cta-btn:hover{box-shadow:0 16px 42px rgba(90,40,152,.4);}
+.ga-page .cta-box .cta-btn-ghost{
+  background:rgba(255,255,255,.6);color:var(--p2);border-color:rgba(61,23,102,.35);}
+.ga-page .cta-box .cta-btn-ghost:hover{background:#fff;border-color:var(--p2);}
+@media(max-width:580px){
+  .ga-page .cta-cloud-l{width:52%;bottom:-16%;}
+  .ga-page .cta-cloud-r{width:46%;top:-14%;}
 }
