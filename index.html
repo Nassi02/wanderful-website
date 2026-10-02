@@ -183,7 +183,8 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .card-fx:not(.fx-vis) .ia-spark,
 .card-fx:not(.fx-vis) .web-win,
 .card-fx:not(.fx-vis) .web-shine,
-.card-fx:not(.fx-vis) .web-img b{animation-play-state:paused;}
+.card-fx:not(.fx-vis) .web-img b,
+.card-fx:not(.fx-vis) .smo-fl{animation-play-state:paused;}
 
 /* convergence + onde */
 .card-gads.is-pulse .gads-swarm{animation:gadsConverge .9s cubic-bezier(.3,.8,.3,1);}
@@ -440,6 +441,43 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 @keyframes webShine{0%{transform:translateX(-130%);}18%,100%{transform:translateX(130%);}}
 @keyframes webClick{0%{transform:scale(1);}35%{transform:scale(1.05);}100%{transform:scale(1);}}
 
+
+/* ── carte Social Media & Contenu ── */
+.smo-glow{position:absolute;left:52%;top:48%;width:120%;height:120%;transform:translate(-50%,-50%);
+  background:radial-gradient(circle,rgba(190,172,255,.42),rgba(190,172,255,0) 66%);
+  opacity:0;transition:opacity .45s;pointer-events:none;z-index:0;}
+.card-smo:hover .smo-glow{opacity:1;}
+.smo-o{position:absolute;display:block;opacity:0;
+  transform:translate(-50%,-50%) var(--pose,rotate(0deg));
+  transition:transform .55s cubic-bezier(.22,.9,.26,1);}
+.smo-fl{display:block;}
+.smo-o img{display:block;width:100%;height:auto;filter:drop-shadow(0 12px 22px rgba(121,98,220,.28));}
+
+.card-smo .smo-post{left:50%;top:56%;width:64%;z-index:3;--pose:rotate(-5deg);}
+.card-smo .smo-play{left:31%;top:38%;width:54%;z-index:2;--pose:rotate(-16deg) scale(.96);}
+.card-smo .smo-chat{left:82%;top:19%;width:33%;z-index:4;--pose:rotate(6deg) scale(.86);}
+
+/* entree : 120 ms d'ecart */
+.card-smo.in .smo-o{animation:smoIn .52s cubic-bezier(.22,.9,.26,1) both;}
+.card-smo.in .smo-post{animation-delay:.08s;}
+.card-smo.in .smo-play{animation-delay:.20s;}
+.card-smo.in .smo-chat{animation-delay:.32s;}
+.card-smo.in .smo-fl{animation:smoFloat var(--fd,7s) ease-in-out var(--fdl,.9s) infinite;}
+.card-smo.in .smo-post .smo-fl{--fd:7.5s;--fdl:1.0s;}
+.card-smo.in .smo-play .smo-fl{--fd:9s;--fdl:1.3s;}
+.card-smo.in .smo-chat .smo-fl{--fd:6s;--fdl:1.5s;}
+
+/* survol / focus : les deux cartes s'ouvrent en eventail, la bulle rebondit */
+.card-smo:hover .smo-post,.card-smo.is-pulse .smo-post{--pose:translate(7%,3%) rotate(3deg) scale(1.05);}
+.card-smo:hover .smo-play,.card-smo.is-pulse .smo-play{--pose:translate(-9%,-8%) rotate(-23deg) scale(1.0);}
+.card-smo:hover .smo-chat,.card-smo.is-pulse .smo-chat{--pose:translate(1%,-9%) rotate(0deg) scale(1.1);
+  transition-timing-function:cubic-bezier(.3,1.6,.5,1);transition-duration:.62s;}
+.card-smo.is-click .smo-post{--pose:translate(9%,2%) rotate(3deg) scale(1.12);transition-duration:.3s;}
+
+@keyframes smoIn{from{opacity:0;transform:translate(-50%,-38%) var(--pose,rotate(0deg)) scale(.84);}
+  to{opacity:1;transform:translate(-50%,-50%) var(--pose,rotate(0deg));}}
+@keyframes smoFloat{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-7px) rotate(1.2deg);}}
+
 /* la carte passe en pile des que la colonne devient trop etroite pour deux blocs */
 @media(min-width:981px) and (max-width:1150px){
   .card-fx{grid-template-columns:1fr;gap:16px;--gs:min(180px,19vw);}
@@ -457,6 +495,8 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   .card-web .web-win,.card-web .web-phone,.card-web .web-h,.card-web .web-img,
   .card-web .web-l,.card-web .web-btn,.card-web .web-bar i,.card-web .web-bar u{opacity:1;transform:none;}
   .card-web .web-shine,.card-web .web-img b{opacity:0;}
+  .card-smo .smo-o{opacity:1;}
+  .card-smo .smo-fl{transform:none;}
   .card-gads .gads-orbit{opacity:1;stroke-dashoffset:0;}
   .card-gads .gads-target{transition:none;transform:none;}
   .card-gads .gb1.f{opacity:.95;transform:translate(-50%,-50%) translate(calc(var(--gs)*.44),calc(var(--gs)*.16)) scale(1.1);}
@@ -868,7 +908,19 @@ footer{margin-top:80px;padding:56px 0 34px;}
         <span class="ia-node nd5"><span class="ia-halo"></span><img src="assets/gads/b2.webp" alt="" width="160" height="133" loading="lazy" decoding="async"></span>
       </div>
     </a>
-    <a href="services/creation-contenu.html" class="card reveal"><div class="ico">📱</div><h3>Social Media &amp; Contenu</h3><p>Stratégie, création et community management pour une vraie communauté.</p><span class="cmore">Découvrir →</span></a>
+    <a href="services/creation-contenu.html" class="card reveal card-fx card-smo" aria-label="Social Media et Contenu — découvrir le service">
+      <div class="fx-txt">
+        <h3>Social Media &amp; Contenu</h3>
+        <p>Stratégie, création et community management pour une vraie communauté.</p>
+        <span class="cmore">Découvrir →</span>
+      </div>
+      <div class="fx-stage smo-stage" aria-hidden="true">
+        <span class="smo-glow"></span>
+        <span class="smo-o smo-play"><span class="smo-fl"><img src="assets/smo/play.webp" alt="" width="420" height="350" loading="lazy" decoding="async"></span></span>
+        <span class="smo-o smo-post"><span class="smo-fl"><img src="assets/smo/post.webp" alt="" width="420" height="337" loading="lazy" decoding="async"></span></span>
+        <span class="smo-o smo-chat"><span class="smo-fl"><img src="assets/smo/chat.webp" alt="" width="300" height="241" loading="lazy" decoding="async"></span></span>
+      </div>
+    </a>
     <a href="services/branding.html" class="card reveal"><div class="ico">💜</div><h3>Branding &amp; Design</h3><p>Une identité visuelle premium qui vous rend immédiatement reconnaissable.</p><span class="cmore">Découvrir →</span></a>
     <a href="services/creation-sites-web.html" class="card reveal card-fx card-web" aria-label="Création de site web — découvrir le service">
       <div class="fx-txt">
