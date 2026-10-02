@@ -338,6 +338,23 @@ footer{margin-top:76px;padding:54px 0 34px;}
 .ap-orbit .ap-disc:hover{opacity:1;transform:translateY(-3px);}
 .ap-formula{margin-top:46px;display:grid;gap:10px;}
 .ap-formula span{font-size:clamp(17px,1.7vw,22px);color:var(--plum);font-weight:400;}
+
+/* logo qui s'ecrit (bloc magie) */
+.ap-write{position:relative;width:clamp(220px,26vw,320px);margin:0 auto 34px;}
+.ap-write img{display:block;width:100%;height:auto;
+  -webkit-mask-image:linear-gradient(90deg,#000 45%,transparent 55%);mask-image:linear-gradient(90deg,#000 45%,transparent 55%);
+  -webkit-mask-size:260% 100%;mask-size:260% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:100% 0;mask-position:100% 0;}
+.ap-pen{position:absolute;left:0;top:46%;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;opacity:0;
+  background:radial-gradient(circle,#fff 0 30%,rgba(255,255,255,.6) 45%,transparent 70%);
+  box-shadow:0 0 18px 6px rgba(255,255,255,.75),0 0 40px 12px rgba(201,188,255,.6);}
+.ap-write.go img{animation:apWrite 2.8s cubic-bezier(.55,.1,.35,1) forwards;}
+.ap-write.go .ap-pen{animation:apPen 2.8s cubic-bezier(.55,.1,.35,1) forwards,apPenBob .35s ease-in-out 8 alternate;}
+@keyframes apWrite{from{-webkit-mask-position:100% 0;mask-position:100% 0}to{-webkit-mask-position:0 0;mask-position:0 0}}
+@keyframes apPen{0%{left:0;opacity:0}6%{opacity:1}88%{opacity:1}100%{left:100%;opacity:0}}
+@keyframes apPenBob{from{margin-top:-14px}to{margin-top:4px}}
+.ap-write.done img{-webkit-mask-image:none;mask-image:none;}
+@media(prefers-reduced-motion:reduce){.ap-write img{-webkit-mask-image:none;mask-image:none;}.ap-pen{display:none;}}
 /* MAGIE — section immersive */
 .ap-magic{background:linear-gradient(135deg,#CED0F2 0%,#AEACF2 50%,#8D7EF2 100%);color:#fff;
   max-width:1180px;margin:var(--ap-gap) auto;width:calc(100% - 64px);
@@ -724,13 +741,10 @@ footer{margin-top:76px;padding:54px 0 34px;}
     <video id="apMagicVideo" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1"></video>
   </div>
   <div class="ap-wrap" style="text-align:center">
-    <svg class="ap-wand" viewBox="0 0 120 90" fill="none" aria-hidden="true">
-      <polygon class="w-star" points="60,6 64,22 80,22 67,32 72,49 60,39 48,49 53,32 40,22 56,22" fill="#fff"/>
-      <circle cx="26" cy="14" r="2.4" fill="#C9BCFF" opacity=".8"/><circle cx="96" cy="20" r="1.8" fill="#C9BCFF" opacity=".6"/>
-      <circle cx="34" cy="38" r="1.6" fill="#C9BCFF" opacity=".5"/>
-      <line x1="60" y1="49" x2="24" y2="84" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
-      <line x1="33" y1="75" x2="25" y2="84" stroke="#B98DF2" stroke-width="5" stroke-linecap="round"/>
-    </svg>
+    <div class="ap-write" id="apWrite" role="img" aria-label="Wanderful Marketing Agency">
+      <img src="assets/logo.png" alt="" width="576" height="240">
+      <span class="ap-pen" aria-hidden="true"></span>
+    </div>
     <h2 class="ap-h ap-rev" style="max-width:none">La magie, oui.<br>
       <span class="ap-grad">Mais jamais par hasard.</span></h2>
     <p class="ap-lead ap-rev" data-d="2" style="margin:30px auto 0;text-align:center;">On aime appeler ça de la magie.
@@ -1123,5 +1137,18 @@ if(t&&m)t.addEventListener('click',()=>{const open=getComputedStyle(m).display!=
 })();
 </script>
 <script src="/assistant.js" defer></script>
+<script>
+/* logo qui s'ecrit */
+(function(){
+  var w=document.getElementById('apWrite'); if(!w) return;
+  if('IntersectionObserver' in window){
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){
+      if(e.isIntersecting){ w.classList.add('go'); io.disconnect();
+        setTimeout(function(){ w.classList.add('done'); },2900); }
+    });},{threshold:.6});
+    io.observe(w);
+  } else { w.classList.add('done'); }
+})();
+</script>
 </body>
 </html>
