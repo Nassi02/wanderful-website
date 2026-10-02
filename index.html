@@ -214,7 +214,9 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .card-fx:not(.fx-vis) .seo-lens,
 .card-fx:not(.fx-vis) .seo-r img,
 .card-fx:not(.fx-vis) .vid-film,
-.card-fx:not(.fx-vis) .vid-bar{animation-play-state:paused;}
+.card-fx:not(.fx-vis) .vid-bar,
+.card-fx:not(.fx-vis) .str-needle img,
+.card-fx:not(.fx-vis) .str-gloss::before{animation-play-state:paused;}
 
 /* convergence + onde */
 .card-gads.is-pulse .gads-swarm{animation:gadsConverge .9s cubic-bezier(.3,.8,.3,1);}
@@ -766,6 +768,60 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 @keyframes vidShine{0%{opacity:0;transform:translateX(-120%);}14%{opacity:1;}86%{opacity:1;}100%{opacity:0;transform:translateX(120%);}}
 @keyframes vidClick{0%{transform:translate(-50%,-50%) scale(1);}40%{transform:translate(-50%,-50%) scale(1.05);}100%{transform:translate(-50%,-50%) scale(1);}}
 
+
+/* ── carte Stratégie de marque ── */
+.card-str .fx-stage{--bt:12.6s;--bd:-7.4s;}
+/* le trajet, en SVG, derriere la boussole */
+.str-route{position:absolute;inset:0;width:100%;height:100%;overflow:visible;z-index:1;}
+.str-path{fill:none;stroke:rgba(141,126,242,.85);stroke-width:2.2;stroke-linecap:round;
+  stroke-dasharray:1;stroke-dashoffset:1;opacity:0;
+  filter:drop-shadow(0 0 5px rgba(168,146,255,.8));}
+.str-dot{fill:#fff;stroke:var(--violet);stroke-width:2.4;opacity:0;transform-box:fill-box;transform-origin:center;}
+/* la boussole */
+.str-compass{position:absolute;left:50%;top:48%;width:82%;display:block;z-index:2;
+  transform:translate(-50%,-50%);opacity:0;}
+.str-dial{display:block;width:100%;height:auto;filter:drop-shadow(0 12px 26px rgba(121,98,220,.34));}
+.str-gloss{position:absolute;left:50%;top:50%;width:76%;height:76%;border-radius:50%;pointer-events:none;
+  transform:translate(-50%,-50%);overflow:hidden;}
+.str-gloss::before{content:"";position:absolute;left:-30%;top:-30%;width:70%;height:70%;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.85),rgba(255,255,255,0) 68%);
+  transform-origin:114% 114%;}
+.str-needle{position:absolute;left:50%;top:50%;width:17.8%;display:block;
+  transform:translate(-50%,-50%) rotate(-35deg);transform-origin:50% 50%;
+  transition:transform .75s cubic-bezier(.3,.9,.3,1);}
+.str-needle img{display:block;width:100%;height:auto;transform-origin:50% 50%;
+  filter:drop-shadow(0 3px 8px rgba(121,98,220,.5));}
+
+/* arrivee */
+.card-str.in .str-compass{animation:strIn .6s cubic-bezier(.22,.9,.26,1) .08s both;}
+/* au repos : l'aiguille oscille comme une vraie boussole, un reflet tourne sur le verre */
+.card-str.in .str-needle img{animation:strWaver 3.4s ease-in-out 1s infinite;}
+.card-str.in .str-gloss::before{animation:strGloss 9s linear 1s infinite;}
+
+/* survol : l'aiguille cherche son cap, puis le trajet se dessine */
+.card-str:hover .str-needle,.card-str.is-built .str-needle{animation:strSeek .85s cubic-bezier(.3,.8,.3,1) forwards;}
+.card-str:hover .str-path,.card-str.is-built .str-path{animation:strDraw .85s ease-out .7s forwards;}
+.card-str:hover .str-dot,.card-str.is-built .str-dot{animation:strDot .5s cubic-bezier(.3,1.7,.5,1) forwards;}
+.card-str:hover .d1,.card-str.is-built .d1{animation-delay:.72s;}
+.card-str:hover .d2,.card-str.is-built .d2{animation-delay:1.08s;}
+.card-str:hover .d3,.card-str.is-built .d3{animation-delay:1.44s;}
+.card-str.is-click .str-compass{animation:strClick .5s ease-out;}
+
+@keyframes strIn{from{opacity:0;transform:translate(-50%,-50%) scale(.86) rotate(-12deg);}
+  to{opacity:1;transform:translate(-50%,-50%);}}
+@keyframes strWaver{0%,100%{transform:rotate(0deg);}28%{transform:rotate(5.5deg);}62%{transform:rotate(-4.5deg);}}
+@keyframes strGloss{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+@keyframes strSeek{
+  0%{transform:translate(-50%,-50%) rotate(-35deg);}
+  34%{transform:translate(-50%,-50%) rotate(55deg);}
+  62%{transform:translate(-50%,-50%) rotate(22deg);}
+  78%{transform:translate(-50%,-50%) rotate(36deg);}
+  90%{transform:translate(-50%,-50%) rotate(27deg);}
+  100%{transform:translate(-50%,-50%) rotate(30deg);}}
+@keyframes strDraw{from{stroke-dashoffset:1;opacity:0;}18%{opacity:1;}to{stroke-dashoffset:0;opacity:1;}}
+@keyframes strDot{from{opacity:0;transform:scale(.2);}to{opacity:1;transform:scale(1);}}
+@keyframes strClick{0%{transform:translate(-50%,-50%) scale(1);}40%{transform:translate(-50%,-50%) scale(1.06);}100%{transform:translate(-50%,-50%) scale(1);}}
+
 /* la carte passe en pile des que la colonne devient trop etroite pour deux blocs */
 @media(min-width:981px) and (max-width:1150px){
   .card-fx{grid-template-columns:1fr;gap:16px;--gs:min(180px,19vw);}
@@ -776,7 +832,7 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   .fx-stage{justify-self:center;order:-1;}
 }
 @media(prefers-reduced-motion:reduce){
-  .card-fx *,.card-fx{animation:none!important;}
+  .card-fx *,.card-fx,.card-fx::before,.card-fx::after,.card-fx *::before,.card-fx *::after{animation:none!important;}
   .card-ia .ia-node{opacity:1;}
   .card-ia .ia-link{opacity:1;stroke-dashoffset:0;}
   .card-ia .ia-spark{opacity:0;}
@@ -802,6 +858,11 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   .card-vid .vid-bar{transform:rotate(0deg);}
   .card-vid .vid-film{transform:translateY(-50%) translateX(0);}
   .card-vid .vid-shine{opacity:0;}
+  .card-str .str-compass{opacity:1;transform:translate(-50%,-50%);}
+  .card-str .str-needle{transform:translate(-50%,-50%) rotate(30deg);transition:none;}
+  .card-str .str-needle img{transform:none;}
+  .card-str .str-path{opacity:1;stroke-dashoffset:0;}
+  .card-str .str-dot{opacity:1;transform:none;}
   .card-fx::after{opacity:0;animation:none!important;}
   .card-fx .fx-stage{transform:none!important;}
   .card-gads .gads-orbit{opacity:1;stroke-dashoffset:0;}
@@ -1305,7 +1366,28 @@ footer{margin-top:80px;padding:56px 0 34px;}
         </span>
       </div>
     </a>
-    <a href="services/strategie-digitale.html" class="card reveal"><div class="ico">🚀</div><h3>Stratégie de marque</h3><p>Positionnement et plan d'action clairs pour donner une direction à votre croissance.</p><span class="cmore">Découvrir →</span></a>
+    <a href="services/strategie-digitale.html" class="card reveal card-fx card-str" aria-label="Stratégie de marque — découvrir le service">
+      <div class="fx-txt">
+        <h3>Stratégie de marque</h3>
+        <p>Positionnement et plan d'action clairs pour donner une direction à votre croissance.</p>
+        <span class="cmore">Découvrir →</span>
+      </div>
+      <div class="fx-stage str-stage" aria-hidden="true">
+        <svg class="str-route" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid meet" focusable="false">
+          <path class="str-path" d="M16 182 C 70 198, 140 196, 176 170 S 196 82, 186 22" pathLength="1"/>
+          <g class="str-dots">
+            <circle class="str-dot d1" cx="16" cy="182" r="5.4"/>
+            <circle class="str-dot d2" cx="176" cy="170" r="5.4"/>
+            <circle class="str-dot d3" cx="186" cy="22" r="5.4"/>
+          </g>
+        </svg>
+        <span class="str-compass">
+          <img class="str-dial" src="assets/str/cadran.webp" alt="" width="520" height="507" loading="lazy" decoding="async">
+          <span class="str-gloss"></span>
+          <span class="str-needle"><img src="assets/str/aiguille.webp" alt="" width="108" height="400" loading="lazy" decoding="async"></span>
+        </span>
+      </div>
+    </a>
     <a href="#methode" class="card reveal"><div class="ico">✨</div><h3>Méthode complète</h3><p>Pas sûr de votre besoin ? Découvrez notre parcours en 8 étapes de A à Z.</p><span class="cmore">Voir la méthode →</span></a>
   </div>
 </section>
@@ -1701,7 +1783,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   }else{card.classList.add('fx-vis','in');}
 
   /* sur mobile : on joue la construction une fois, puis on garde le resultat */
-  if(!canHover&&!RM&&(card.classList.contains('card-brd')||card.classList.contains('card-seo')||card.classList.contains('card-vid'))){
+  if(!canHover&&!RM&&(card.classList.contains('card-brd')||card.classList.contains('card-seo')||card.classList.contains('card-vid')||card.classList.contains('card-str'))){
     var built=false;
     if('IntersectionObserver' in window){
       var io2=new IntersectionObserver(function(es){
