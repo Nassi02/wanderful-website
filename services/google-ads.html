@@ -285,24 +285,24 @@
   steps.push([2600,function(){res[1].classList.add('is-in');}]);
   steps.push([3050,function(){res[2].classList.add('is-in');}]);
   /* comparaison annonce / referencement naturel */
-  steps.push([3700,function(){focus('ad');showTip('Annonce','Vous apparaissez tout de suite, et vous payez seulement quand on clique.');}]);
-  steps.push([5600,function(){hideTip();}]);
-  steps.push([5900,function(){focus('seo');showTip('R\u00e9sultats naturels','Gratuits, mais c\'est le r\u00e9f\u00e9rencement : il faut des mois pour y arriver.',true);}]);
-  steps.push([7800,function(){hideTip();}]);
-  steps.push([8100,function(){focus(null);}]);
+  steps.push([3700,function(){focus('ad');showTip('Annonce','Vous apparaissez tout de suite. Vous payez seulement au clic.');}]);
+  steps.push([8100,function(){hideTip();}]);
+  steps.push([8500,function(){focus('seo');showTip('R\u00e9sultats naturels','Gratuits, mais il faut des mois de r\u00e9f\u00e9rencement pour y arriver.',true);}]);
+  steps.push([12900,function(){hideTip();}]);
+  steps.push([13300,function(){focus(null);}]);
   /* le clic sur l'annonce, en prenant le temps */
-  steps.push([8500,function(){cur.classList.add('is-on');moveCursor(80,92);}]);
-  steps.push([8700,function(){moveCursor(36,34);}]);
-  steps.push([9800,function(){ad.classList.add('is-hit');}]);
-  steps.push([10500,function(){clickPulse();}]);
-  steps.push([11300,function(){show('site');}]);
-  steps.push([11700,function(){views.site.classList.add('is-bloom');}]);
-  steps.push([13100,function(){moveCursor(50,76);}]);
-  steps.push([14100,function(){clickPulse();order.classList.add('is-hit');}]);
-  steps.push([14350,function(){order.classList.remove('is-hit');}]);
-  steps.push([14550,function(){conf.classList.add('is-on');}]);
-  steps.push([15500,function(){cur.classList.remove('is-on');}]);
-  steps.push([15800,function(){show('recap');views.recap.classList.add('is-on');}]);
+  steps.push([13700,function(){cur.classList.add('is-on');moveCursor(80,92);}]);
+  steps.push([13950,function(){moveCursor(36,34);}]);
+  steps.push([15200,function(){ad.classList.add('is-hit');}]);
+  steps.push([16000,function(){clickPulse();}]);
+  steps.push([16900,function(){show('site');}]);
+  steps.push([17350,function(){views.site.classList.add('is-bloom');}]);
+  steps.push([19400,function(){moveCursor(50,76);}]);
+  steps.push([20600,function(){clickPulse();order.classList.add('is-hit');}]);
+  steps.push([20880,function(){order.classList.remove('is-hit');}]);
+  steps.push([21100,function(){conf.classList.add('is-on');}]);
+  steps.push([22400,function(){cur.classList.remove('is-on');}]);
+  steps.push([22750,function(){show('recap');views.recap.classList.add('is-on');}]);
   steps.sort(function(a,b){return a[0]-b[0];});
 
   var t0=0, acc=0, idx=0, raf=0, paused=false, running=false;
