@@ -506,6 +506,60 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   75%{transform:translate(3px,-3px) rotate(2.2deg);}
   100%{transform:translate(0,0) rotate(0deg);}}
 
+
+/* ── carte Branding & Design ── */
+.brd-stage{--rev:100%;}
+.brd-palette{position:absolute;left:11%;top:58%;width:25%;z-index:1;display:block;
+  transform:translate(-50%,-50%) rotate(0deg);opacity:0;
+  transition:transform .6s cubic-bezier(.3,.9,.3,1);}
+.brd-palette img{display:block;width:100%;height:auto;filter:drop-shadow(0 10px 20px rgba(121,98,220,.3));}
+
+.brd-card{position:absolute;left:60%;top:47%;width:80%;z-index:2;display:block;
+  transform:translate(-50%,-50%);opacity:0;}
+.brd-card img.brd-vide,.brd-card img.brd-final{display:block;width:100%;height:auto;
+  filter:drop-shadow(0 12px 24px rgba(121,98,220,.3));}
+/* les deux cartes sont superposees au pixel pres : meme cadrage source */
+.brd-card img.brd-final{position:absolute;left:0;top:0;
+  -webkit-mask-image:linear-gradient(100deg,#000 0 34%,rgba(0,0,0,0) 56%);
+  mask-image:linear-gradient(100deg,#000 0 34%,rgba(0,0,0,0) 56%);
+  -webkit-mask-size:280% 100%;mask-size:280% 100%;
+  -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+  -webkit-mask-position:var(--rev) 0;mask-position:var(--rev) 0;
+  transition:-webkit-mask-position .72s cubic-bezier(.4,.05,.2,1),mask-position .72s cubic-bezier(.4,.05,.2,1);}
+/* reflet confine a la forme de la carte */
+.brd-shine{position:absolute;left:0;top:0;right:0;bottom:0;pointer-events:none;z-index:3;
+  background:linear-gradient(104deg,transparent 40%,rgba(255,255,255,.85) 50%,transparent 60%);
+  -webkit-mask-image:url(assets/brd/carte-vide.webp);mask-image:url(assets/brd/carte-vide.webp);
+  -webkit-mask-size:100% 100%;mask-size:100% 100%;
+  opacity:0;transform:translateX(-120%);}
+.brd-star{position:absolute;display:block;z-index:4;width:20.05%;height:auto;left:35.68%;top:37.01%;
+  transform:translate(-50%,-50%) translateY(-26%) scale(.82);opacity:0;
+  transition:transform .5s cubic-bezier(.3,1.75,.5,1),opacity .3s;}
+
+/* arrivee au scroll : la carte vide, puis la palette 150 ms plus tard */
+.card-brd.in .brd-card{animation:brdIn .6s cubic-bezier(.22,.9,.26,1) .06s both;}
+.card-brd.in .brd-palette{animation:brdInPal .6s cubic-bezier(.22,.9,.26,1) .21s both;}
+
+/* survol / focus : 1 palette, 2 reflet, 3 revelation, 4 etoile */
+.card-brd:hover .brd-palette,.card-brd.is-pulse .brd-palette,.card-brd.is-built .brd-palette{transform:translate(-50%,-50%) translate(6%,-3%) rotate(7deg);}
+.card-brd:hover .brd-shine,.card-brd.is-pulse .brd-shine,.card-brd.is-built .brd-shine{animation:brdShine .8s cubic-bezier(.4,.05,.3,1) .1s;}
+.card-brd:hover .brd-stage,.card-brd.is-pulse .brd-stage,.card-brd.is-built .brd-stage{--rev:0%;}
+.card-brd:hover .brd-final,.card-brd.is-pulse .brd-final,.card-brd.is-built .brd-final{transition-delay:.22s;}
+.card-brd:hover .brd-star,.card-brd.is-pulse .brd-star,.card-brd.is-built .brd-star{opacity:1;
+  transform:translate(-50%,-50%) translateY(0) scale(1);transition-delay:.62s,.55s;}
+/* sortie : tout revient en douceur, sans rebond */
+.card-brd:not(:hover):not(.is-built) .brd-star{transition:transform .45s cubic-bezier(.3,.85,.3,1),opacity .35s;transition-delay:0s;}
+.card-brd:not(:hover):not(.is-built) .brd-final{transition-delay:0s;transition-duration:.5s;}
+.card-brd.is-click .brd-card{animation:brdClick .5s ease-out;}
+
+@keyframes brdIn{from{opacity:0;transform:translate(-50%,-50%) translateY(14px) scale(.9);}
+  to{opacity:1;transform:translate(-50%,-50%);}}
+@keyframes brdInPal{from{opacity:0;transform:translate(-50%,-50%) translate(-14%,8px) scale(.86);}
+  to{opacity:1;transform:translate(-50%,-50%) rotate(0deg);}}
+@keyframes brdShine{0%{opacity:0;transform:translateX(-120%);}
+  12%{opacity:1;}88%{opacity:1;}100%{opacity:0;transform:translateX(120%);}}
+@keyframes brdClick{0%{transform:translate(-50%,-50%) scale(1);}40%{transform:translate(-50%,-50%) scale(1.045);}100%{transform:translate(-50%,-50%) scale(1);}}
+
 /* la carte passe en pile des que la colonne devient trop etroite pour deux blocs */
 @media(min-width:981px) and (max-width:1150px){
   .card-fx{grid-template-columns:1fr;gap:16px;--gs:min(180px,19vw);}
@@ -527,6 +581,10 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
   .card-smo .smo-fl{transform:none;}
   .card-smo .smo-o{transition:none;}
   .card-smo .smo-o img{transition:none;transform:none;}
+  .card-brd .brd-card,.card-brd .brd-palette{opacity:1;}
+  .card-brd .brd-card img.brd-final{-webkit-mask-image:none!important;mask-image:none!important;transition:none!important;}
+  .card-brd .brd-star{opacity:1;transform:translate(-50%,-50%);transition:none;}
+  .card-brd .brd-shine{opacity:0;}
   .card-gads .gads-orbit{opacity:1;stroke-dashoffset:0;}
   .card-gads .gads-target{transition:none;transform:none;}
   .card-gads .gb1.f{opacity:.95;transform:translate(-50%,-50%) translate(calc(var(--gs)*.44),calc(var(--gs)*.16)) scale(1.1);}
@@ -951,7 +1009,22 @@ footer{margin-top:80px;padding:56px 0 34px;}
         <span class="smo-o smo-chat"><span class="smo-en"><span class="smo-fl"><img src="assets/smo/chat.webp" alt="" width="300" height="241" loading="lazy" decoding="async"></span></span></span>
       </div>
     </a>
-    <a href="services/branding.html" class="card reveal"><div class="ico">💜</div><h3>Branding &amp; Design</h3><p>Une identité visuelle premium qui vous rend immédiatement reconnaissable.</p><span class="cmore">Découvrir →</span></a>
+    <a href="services/branding.html" class="card reveal card-fx card-brd" aria-label="Branding et Design — découvrir le service">
+      <div class="fx-txt">
+        <h3>Branding &amp; Design</h3>
+        <p>Une identité visuelle premium qui vous rend immédiatement reconnaissable.</p>
+        <span class="cmore">Découvrir →</span>
+      </div>
+      <div class="fx-stage brd-stage" aria-hidden="true">
+        <span class="brd-palette"><img src="assets/brd/palette.webp" alt="" width="300" height="247" loading="lazy" decoding="async"></span>
+        <span class="brd-card">
+          <img class="brd-vide" src="assets/brd/carte-vide.webp" alt="" width="620" height="409" loading="lazy" decoding="async">
+          <img class="brd-final" src="assets/brd/carte-finale.webp" alt="" width="620" height="409" loading="lazy" decoding="async">
+          <span class="brd-shine"></span>
+          <img class="brd-star" src="assets/brd/etoile.webp" alt="" width="280" height="268" loading="lazy" decoding="async">
+        </span>
+      </div>
+    </a>
     <a href="services/creation-sites-web.html" class="card reveal card-fx card-web" aria-label="Création de site web — découvrir le service">
       <div class="fx-txt">
         <h3>Création de site web</h3>
@@ -1373,6 +1446,20 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       es.forEach(function(e){card.classList.toggle('fx-vis',e.isIntersecting);});
     },{threshold:0}).observe(card);
   }else{card.classList.add('fx-vis','in');}
+
+  /* sur mobile : on joue la construction une fois, puis on garde le resultat */
+  if(!canHover&&!RM&&card.classList.contains('card-brd')){
+    var built=false;
+    if('IntersectionObserver' in window){
+      var io2=new IntersectionObserver(function(es){
+        es.forEach(function(e){
+          if(e.isIntersecting&&!built){built=true;io2.disconnect();
+            setTimeout(function(){card.classList.add('is-built');},620);}
+        });
+      },{threshold:.35});
+      io2.observe(card);
+    }else{card.classList.add('is-built');}
+  }
 
   if(RM||!canHover) return;
 
