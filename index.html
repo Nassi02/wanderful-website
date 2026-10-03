@@ -1968,7 +1968,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   var started=false;
   function play(){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); }
   function start(){ if(started) return; started=true;
-    [['assets/bg/wave.webm','video/webm'],['assets/bg/wave.mp4','video/mp4']].forEach(function(s){
+    [['assets/bg/wave.webm?v=2','video/webm'],['assets/bg/wave.mp4?v=2','video/mp4']].forEach(function(s){
       var e=document.createElement('source'); e.src=s[0]; e.type=s[1]; v.appendChild(e); });
     v.addEventListener('canplay',function(){ v.classList.add('on'); },{once:true});
     v.load(); play(); }
