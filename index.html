@@ -937,8 +937,10 @@ a.card{text-decoration:none;color:inherit;}
 
 /* stats band */
 .stats{position:relative;border-radius:var(--r-lg);overflow:hidden;margin-top:26px;padding:54px 30px;background-size:cover;background-position:center;box-shadow:var(--shadow-card);}
-.stats::before{content:"";position:absolute;inset:0;background:rgba(247,245,253,.30);backdrop-filter:blur(2px);}
-.stats-grid{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center;}
+.stats-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.2s ease;}
+.stats-video.on{opacity:1;}
+.stats::before{content:"";position:absolute;inset:0;z-index:1;background:rgba(247,245,253,.30);backdrop-filter:blur(2px);}
+.stats-grid{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center;}
 .stat .ico{font-size:26px;margin-bottom:8px;}
 .stat .n{font-size:clamp(32px,3.6vw,46px);font-weight:700;color:var(--plum);line-height:1;}
 .stat .l{font-size:13px;color:var(--ink);margin-top:8px;font-weight:400;}
@@ -1579,6 +1581,7 @@ footer{margin-top:80px;padding:56px 0 34px;}
   </div>
   <!-- STATS -->
   <div class="stats reveal" style="background-image:url('assets/wave.jpg')">
+    <video id="statsVideo" class="stats-video" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1" aria-hidden="true"></video>
     <div class="stats-grid">
       <div class="stat"><div class="ico">🪐</div><div class="n">2×</div><div class="l">Plus de conversions à budget égal (Carewell)</div></div>
       <div class="stat"><div class="ico">✨</div><div class="n">10+</div><div class="l">Leviers marketing maîtrisés</div></div>
@@ -1960,9 +1963,9 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 })();
 </script>
 <script>
-/* fond liquide en mouvement (Notre approche) */
-(function(){
-  var v=document.getElementById('waveVideo'); if(!v) return;
+/* fond liquide en mouvement (Notre approche + bande de chiffres) */
+['waveVideo','statsVideo'].forEach(function(id){
+  var v=document.getElementById(id); if(!v) return;
   if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   var c=navigator.connection||{}; if(c.saveData===true) return;
   var started=false;
@@ -1977,7 +1980,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
       if(e.isIntersecting){ start(); play(); } else if(started){ v.pause(); } }); },{rootMargin:'300px 0px'}).observe(v.parentNode);
   } else { start(); }
   document.addEventListener('visibilitychange',function(){ if(document.hidden) v.pause(); });
-})();
+});
 </script>
 </body>
 </html>
