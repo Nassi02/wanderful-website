@@ -36,34 +36,47 @@
   var TURN_X=.3,TURN_Y=.17; // rotation du blob vers le curseur (rad)
 
   var VS='attribute vec3 aPos;attribute vec3 aNrm;attribute vec3 aCen;attribute vec3 aOff;attribute vec3 aRot;attribute float aCav;attribute float aFade;'+
-    'uniform mat3 uR;uniform vec2 uImg;uniform vec2 uCanvas;uniform vec2 uShift;uniform vec2 uC;uniform float uScale;uniform vec2 uPad;uniform float uK;'+
+    'uniform mat3 uR;uniform vec2 uImg;uniform vec2 uCanvas;uniform vec2 uShift;uniform vec2 uC;uniform float uScale;uniform vec2 uPad;uniform float uK;uniform mediump float uTime;'+
     'varying vec3 vN;varying vec2 vUv;varying float vFront;varying float vCav;varying float vFade;'+
     'vec3 rod(vec3 p,vec3 r){float a=length(r);if(a<.0001)return p;vec3 k=r/a;float c=cos(a),s=sin(a);return p*c+cross(k,p)*s+k*dot(k,p)*(1.-c);}'+
     'void main(){'+
-    'vec3 p=aCen+rod(aPos-aCen,aRot)+aOff;vec3 pv=uR*p;vN=uR*rod(aNrm,aRot);'+
+    // relief organique : ondulations lentes le long de la normale (matiere liquide, pas un ballon),
+    // avec la normale corrigee par le gradient pour que les reflets suivent le relief
+    'vec3 k1=vec3(2.7,3.7,-1.8),k2=vec3(-4.9,2.3,4.),k3=vec3(5.,-3.8,5.9);'+
+    'float a1=dot(k1,aPos)+uTime*.5,a2=dot(k2,aPos)+uTime*.37+1.7,a3=dot(k3,aPos)+uTime*.61+4.1;'+
+    'float f=.024*sin(a1)+.017*sin(a2)+.007*sin(a3);'+
+    'vec3 g=.024*cos(a1)*k1+.017*cos(a2)*k2+.007*cos(a3)*k3;'+
+    'vec3 P=aPos+aNrm*f;vec3 N=normalize(aNrm-(g-dot(g,aNrm)*aNrm));'+
+    'vec3 p=aCen+rod(P-aCen,aRot)+aOff;vec3 pv=uR*p;vN=uR*rod(N,aRot);'+
     'float ps=1./(1.-pv.z*'+PERSP.toFixed(3)+');'+
     'vec2 d=(uC+vec2(pv.x,-pv.y)*uK*ps)*uScale+uPad+uShift;'+
     'gl_Position=vec4(d.x/uCanvas.x*2.-1.,1.-d.y/uCanvas.y*2.,-pv.z*.35,1.);'+
     'float rs=1./(1.-aPos.z*'+PERSP.toFixed(3)+');'+
-    'vUv=(uC+vec2(aPos.x,-aPos.y)*uK*rs)/uImg;vFront=aNrm.z;vCav=aCav;vFade=aFade;}';
+    'vUv=(uC+vec2(aPos.x,-aPos.y)*uK*rs)/uImg;vFront=aNrm.z;vCav=aCav-f*6.;vFade=aFade;}';
   var FS='precision mediump float;uniform sampler2D uTex;uniform float uTime;'+
     'varying vec3 vN;varying vec2 vUv;varying float vFront;varying float vCav;varying float vFade;'+
     'void main(){'+
     'vec3 n=normalize(vN);vec3 col;'+
     'if(gl_FrontFacing){'+
-      'float ndv=clamp(n.z,0.,1.);float fr=pow(1.-ndv,2.2);'+
-      // nacre : palette lilas / rose / bleu glace qui glisse selon l'angle de vue
-      'float t=n.y*.34+n.x*.26+fr*.55+uTime*.015;'+
-      'vec3 pal=vec3(.80,.74,.98)+vec3(.13,.12,.03)*cos(6.2832*(t+vec3(0.,.33,.6)));'+
-      'pal=mix(pal,vec3(.49,.43,.96),clamp(vCav*1.6,0.,1.)*.7);'+          // violet profond dans les plis
-      'vec3 l1=normalize(vec3(-.45,.65,.62));'+
-      'pal*=mix(.86,1.05,.5+.5*dot(n,l1));'+
-      'float sp=pow(max(dot(n,normalize(l1+vec3(0.,0.,1.))),0.),26.)*.5+pow(max(dot(n,normalize(vec3(.5,.2,.85))),0.),60.)*.3;'+
-      // l'image d'origine, projetee sur la face avant, garde les couleurs exactes du blob
-      'vec4 tx=texture2D(uTex,vUv);float w=tx.a*smoothstep(.05,.45,vFront)*.78;'+
+      'float fr=1.-clamp(n.z,0.,1.);'+
+      'vec3 r=vec3(2.*n.z*n.x,2.*n.z*n.y,2.*n.z*n.z-1.);'+               // direction du reflet
+      // nacre : violet / rose / bleu glace, en bandes serrees qui glissent avec l'angle de vue
+      'float ph=n.y*.5+n.x*.34+fr*.8+.07*sin(n.x*3.+n.y*2.+uTime*.12);'+
+      'vec3 pal=vec3(.79,.70,.97)+vec3(.17,.10,.03)*cos(6.2832*(ph*.95+vec3(0.,.36,.62)));'+
+      // creux : violet plus profond, moins de lumiere
+      'float cv=clamp(vCav,0.,1.);'+
+      'pal=mix(pal,vec3(.40,.33,.90),cv*.75);pal*=1.-.18*cv;'+
+      'pal*=mix(.9,1.04,smoothstep(.1,.95,r.y*.5+.5));'+
+      // lumiere : bandes courbes qui suivent le relief (pas de gros points blancs)
+      'float b1=smoothstep(.5,.98,sin(r.y*3.1+sin(r.x*2.2+1.3)*1.2+r.z*1.3+uTime*.05)*.5+.5);'+
+      'float b2=smoothstep(.65,1.,sin(r.x*2.6-r.y*1.7+sin(r.y*2.4)*1.+2.1)*.5+.5);'+
+      'float li=(b1*.26+b2*.11)*(1.-cv*.8);'+
+      // l'image d'origine, projetee sur la face avant, ne sert plus que de teinte
+      'vec4 tx=texture2D(uTex,vUv);float w=tx.a*smoothstep(.05,.45,vFront)*.35;'+
       'col=mix(pal,tx.rgb/max(tx.a,.001),w);'+
-      'col+=sp*(1.-w*.55);'+
-      'col=mix(col,vec3(1.,.94,1.),fr*.42);'+
+      'col+=vec3(1.,.97,1.)*li*(1.-w*.4);'+
+      'col+=max(-vCav,0.)*.04;'+
+      'col=mix(col,vec3(1.,.95,1.),pow(fr,3.5)*.55);'+                   // lisere clair, fin
     '}else{'+
       // interieur des eclats : lueur lilas / rose
       'float k=clamp(-n.z,0.,1.);col=mix(vec3(.63,.56,.97),vec3(.96,.82,.99),k);'+
