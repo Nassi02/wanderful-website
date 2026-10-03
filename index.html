@@ -83,6 +83,8 @@ header{position:sticky;top:0;z-index:60;padding:14px 0;}
 .hero-visual{position:relative;display:flex;align-items:center;justify-content:center;min-height:480px;}
 .hero-visual img{width:108%;max-width:none;filter:drop-shadow(0 40px 70px rgba(141,126,242,.45));animation:float 8s ease-in-out infinite;}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
+/* intro du blob : l'image reste masquee le temps que les fragments s'assemblent (assets/hero-fragments.js) */
+.blob-intro .hero-visual img{opacity:0;}
 .badge{position:absolute;background:var(--glass-strong);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.75);border-radius:20px;padding:14px 20px;box-shadow:var(--shadow-card);}
 .badge .n{font-size:24px;font-weight:700;color:var(--violet);line-height:1;}
 .badge .l{font-size:12px;color:var(--muted);margin-top:3px;}
@@ -1138,6 +1140,7 @@ footer{margin-top:80px;padding:56px 0 34px;}
 }
 @media(max-width:560px){.frow{grid-template-columns:1fr;}}
 </style>
+<script>(function(){try{if(window.WebGLRenderingContext&&!matchMedia('(prefers-reduced-motion: reduce)').matches){var d=document.documentElement;d.classList.add('blob-intro');setTimeout(function(){if(!window.__blobFx)d.classList.remove('blob-intro');},3000);}}catch(e){}})();</script>
 <link rel="canonical" href="https://wanderful-marketing.com/">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
@@ -1255,7 +1258,7 @@ footer{margin-top:80px;padding:56px 0 34px;}
     </div>
   </div>
   <div class="hero-visual reveal in">
-    <img loading="lazy" decoding="async" src="assets/blob-hero.png" alt="Objet holographique 3D">
+    <img decoding="async" src="assets/blob-hero.png" alt="Objet holographique 3D">
     <div class="badge b1"><div class="n">2×</div><div class="l">plus de conversions à budget égal (Carewell)</div></div>
     <div class="badge b2"><div class="n">100%</div><div class="l">sur-mesure &amp; boosté à l'IA</div></div>
   </div>
@@ -1982,4 +1985,5 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
 </body>
 </html>
 
+<script src="/assets/hero-blob3d.js" defer></script>
 <script src="/assistant.js" defer></script>
