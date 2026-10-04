@@ -312,8 +312,8 @@ footer{margin-top:76px;padding:54px 0 34px;}
 
 /* FONDATRICE */
 .ap-founder{padding:var(--ap-gap) 0;}
-.ap-founder-grid{display:grid;grid-template-columns:38% 1fr;gap:64px;align-items:center;}
-.ap-photo{aspect-ratio:4/5;border-radius:var(--r-lg);overflow:hidden;position:relative;
+.ap-founder-grid{display:grid;grid-template-columns:minmax(0,320px) 1fr;gap:56px;align-items:start;}
+.ap-photo{aspect-ratio:4/5;max-width:320px;border-radius:var(--r-lg);overflow:hidden;position:relative;margin-top:8px;
   background:#E8E4FB;box-shadow:var(--shadow-card);}
 .ap-photo img{width:100%;height:100%;object-fit:cover;display:block;}
 .ap-photo .ap-photo-hint{position:absolute;inset:auto 0 0 0;padding:18px;font-size:12px;
@@ -471,7 +471,8 @@ footer{margin-top:76px;padding:54px 0 34px;}
 @media(max-width:980px){
   .ap-sticky-grid{grid-template-columns:1fr;gap:40px;}
   .ap-sticky-vis{position:relative;top:0;height:auto;margin-bottom:10px;}
-  .ap-founder-grid{grid-template-columns:1fr;gap:36px;}
+  .ap-founder-grid{grid-template-columns:1fr;gap:32px;}
+  .ap-photo{max-width:260px;margin:0 auto;}
   .ap-three,.ap-stats{grid-template-columns:1fr;gap:28px;}
   .ap-princ{grid-template-columns:1fr 1fr;}
   .ap-orbit{grid-template-columns:1fr;gap:12px;}
@@ -705,7 +706,7 @@ footer{margin-top:76px;padding:54px 0 34px;}
   <div class="ap-wrap">
     <div class="ap-founder-grid">
       <div class="ap-photo ap-rev">
-        <img src="assets/nassima.jpg" width="720" height="900" loading="lazy" decoding="async"
+        <img src="assets/nassima.jpg" width="640" height="800" loading="lazy" decoding="async"
              alt="Nassima Rizzotti, fondatrice de Wanderful Marketing">
       </div>
       <div>
@@ -713,8 +714,9 @@ footer{margin-top:76px;padding:54px 0 34px;}
         <h2 class="ap-h2 ap-rev" data-d="1">Une marketeuse formée à comprendre le
           <span class="ap-grad">« pourquoi »</span>, pas seulement le « comment ».</h2>
         <p class="ap-lead ap-rev" data-d="2" style="margin-top:26px;">Fondatrice de Wanderful Marketing,
-          Nassima Rizzotti est diplômée en Management et poursuit une spécialisation avancée en marketing
-          à HEC Lausanne. Une formation multidisciplinaire, prolongée par la pratique sur des mandats réels.</p>
+          Nassima Rizzotti est diplômée en Management et a créé l'agence en 2024, pendant son Master
+          en marketing à HEC Lausanne. Une formation multidisciplinaire, prolongée par la pratique
+          sur des mandats réels.</p>
 
         <div class="ap-orbit ap-rev" data-d="3">
           <div class="ap-orbit-center">MARKETING</div>
