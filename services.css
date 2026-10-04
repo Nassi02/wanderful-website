@@ -1111,3 +1111,19 @@ html{scroll-behavior:smooth;}
   .ga-page .cta-cloud-l{width:52%;bottom:-16%;}
   .ga-page .cta-cloud-r{width:46%;top:-14%;}
 }
+
+/* Google Ads : bandeau compact, la demo arrive tout de suite */
+.ga-page .svc-hero{padding:92px 40px 26px;}
+.ga-page .svc-hero-inner{max-width:760px;display:grid;grid-template-columns:auto 1fr;align-items:center;column-gap:26px;text-align:left;}
+.ga-page .svc-hero-icon.ga-ico{--gs:96px;margin:0;grid-row:1 / span 3;}
+.ga-page .svc-hero .svc-eyebrow{margin:0 0 6px;justify-self:start;}
+.ga-page .svc-hero h1{margin:0;font-size:clamp(2.2rem,4vw,3rem);line-height:1.05;}
+.ga-page .svc-hero-sub{margin:6px 0 0;max-width:none;}
+.ga-page .ga-demo{padding-top:22px;}
+.ga-page .ga-demo-txt h2{font-size:1.4rem;margin-bottom:6px;}
+.ga-page .ga-demo-ctrl{margin-top:4px;}
+@media(max-width:760px){
+  .ga-page .svc-hero{padding:76px 18px 18px;}
+  .ga-page .svc-hero-inner{column-gap:16px;}
+  .ga-page .svc-hero-icon.ga-ico{--gs:64px;}
+}

@@ -10,7 +10,7 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#8D7EF2">
-<link rel="stylesheet" href="../services.css?v=9"/>
+<link rel="stylesheet" href="../services.css?v=10"/>
 <link rel="canonical" href="https://wanderful-marketing.com/services/google-ads.html">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
@@ -102,14 +102,6 @@
 
       <h1>Google Ads</h1>
       <p class="svc-hero-sub">Soyez visible quand vos futurs clients vous cherchent.</p>
-
-      <div class="ga-lede">
-        <p>Des campagnes pensées pour attirer vos futurs clients, avec un suivi clair des résultats.</p>
-        <a href="#demo-scene" class="ga-scroll-cue">
-          Voir comment ça fonctionne
-          <svg viewBox="0 0 15 15" fill="none" aria-hidden="true"><path d="M7.5 2.5v10M3.5 9l4 4 4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </a>
-      </div>
     </div>
     <div class="hero-blob"></div>
   </header>
@@ -123,10 +115,6 @@
       <div class="ga-demo-txt">
         <h2 id="ga-demo-h">Comment ça marche, concrètement&nbsp;?</h2>
         <p>Une personne cherche ce que vous proposez. Votre annonce peut lui présenter votre entreprise et la diriger vers votre site pour acheter, réserver ou vous contacter.</p>
-        <div class="ga-demo-ctrl">
-          <button type="button" class="ga-btn-ghost" id="gaReplay">Revoir la démo</button>
-          <button type="button" class="ga-btn-ghost" id="gaPause" aria-pressed="false">Pause</button>
-        </div>
       </div>
 
       <div class="ga-demo-scene" id="demo-scene">
@@ -214,6 +202,10 @@
         <p class="ga-note">Exemple fictif d'une annonce sur Google&nbsp;Search. Chaque clic ne débouche pas nécessairement sur une demande ou une vente.</p>
       </div>
 
+      <div class="ga-demo-ctrl ga-demo-ctrl--after">
+          <button type="button" class="ga-btn-ghost" id="gaReplay">Revoir la démo</button>
+          <button type="button" class="ga-btn-ghost" id="gaPause" aria-pressed="false">Pause</button>
+        </div>
     </div>
   </section>
 
@@ -636,7 +628,7 @@
   function mesure(){
     var r=stage.getBoundingClientRect(), vh=window.innerHeight||0;
     var vu=Math.max(0,Math.min(r.bottom,vh)-Math.max(r.top,0));
-    return {vu:vu, seuil:Math.min(r.height,vh)*0.85};
+    return {vu:vu, seuil:Math.min(r.height,vh*0.6)*0.55};
   }
   /* on ne lance rien pendant que ca defile : on attend l'arret */
   function quandOnSarrete(){
