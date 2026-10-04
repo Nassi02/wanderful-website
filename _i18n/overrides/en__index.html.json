@@ -1,0 +1,22 @@
+[
+ [
+  "btn.textContent=open?'Réduire ↑':'Voir plus →'",
+  "btn.textContent=open?'Show less ↑':'See more →'"
+ ],
+ [
+  "✅ Message envoyé ! Nous vous répondrons sous 48h.",
+  "✅ Message sent! We’ll get back to you within 48 hours."
+ ],
+ [
+  "Une erreur est survenue. Réessayez ou écrivez-nous par e-mail.",
+  "Something went wrong. Please try again or email us."
+ ],
+ [
+  "Erreur réseau. Contactez-nous directement par e-mail.",
+  "Network error. Please email us directly."
+ ],
+ [
+  "ec.textContent=\"Espace client\";",
+  "ec.textContent=\"Client area\";"
+ ]
+]

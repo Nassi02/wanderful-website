@@ -25,11 +25,12 @@ cards.forEach(c => {
 // and pauses/mutes all others (only one with sound at a time).
 document.querySelectorAll('.portfolio-item video').forEach(video => {
   const item = video.closest('.portfolio-item');
+  const EN = (document.documentElement.lang || '').indexOf('en') === 0;
   const btn = document.createElement('button');
   btn.className = 'video-sound-btn';
   btn.type = 'button';
   btn.innerHTML = '🔇';
-  btn.setAttribute('aria-label', 'Activer le son');
+  btn.setAttribute('aria-label', (EN ? 'Unmute' : 'Activer le son'));
   item.appendChild(btn);
 
   btn.addEventListener('click', (e) => {
@@ -47,11 +48,11 @@ document.querySelectorAll('.portfolio-item video').forEach(video => {
       video.currentTime = 0; // restart from beginning so user hears full audio
       video.play();
       btn.innerHTML = '🔊';
-      btn.setAttribute('aria-label', 'Couper le son');
+      btn.setAttribute('aria-label', (EN ? 'Mute' : 'Couper le son'));
     } else {
       video.muted = true;
       btn.innerHTML = '🔇';
-      btn.setAttribute('aria-label', 'Activer le son');
+      btn.setAttribute('aria-label', (EN ? 'Unmute' : 'Activer le son'));
     }
   });
 });

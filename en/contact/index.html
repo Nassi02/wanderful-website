@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="Contact Wanderful Marketing, digital marketing agency in Yvonand (Vaud), Switzerland. Book a call or send us your project." name="description"/>
+<meta content="Contact — Digital marketing agency in Yvonand | Wanderful" property="og:title"/>
+<meta content="Contact Wanderful Marketing, digital marketing agency in Yvonand (Vaud), Switzerland. Book a call or send us your project." property="og:description"/>
+<meta content="/Icon.svg" property="og:image"/>
+<meta content="https://wanderful-marketing.com/en/contact/" property="og:url"/>
+<meta content="website" property="og:type"/>
+<title>Contact — Digital marketing agency in Yvonand | Wanderful</title>
+<link href="/favicon.ico?v=2" rel="icon" sizes="32x32"/>
+<link href="/favicon.svg?v=2" rel="icon" type="image/svg+xml"/>
+<link href="/apple-touch-icon.png?v=2" rel="apple-touch-icon"/>
+<link href="/site.webmanifest" rel="manifest"/>
+<meta content="#8D7EF2" name="theme-color"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    :root{
+      --p1:#7B3FBD;--p2:#3D1766;--cy:#7EC8D4;
+      --bg:#F4F2FF;--card:#fff;
+      --ts:#5a4a7a;
+      --font:'Outfit',sans-serif;
+    }
+    *{margin:0;padding:0;box-sizing:border-box;}
+    html,body{font-family:var(--font);background:var(--bg);color:var(--p2);}
+    html{scroll-behavior:smooth;}
+
+    /* ── HEADER ── */
+    header{
+      height:64px;position:fixed;top:0;width:100%;z-index:1000;
+      display:flex;justify-content:space-between;align-items:center;
+      padding:0 48px;
+      background:rgba(244,242,255,.92);
+      backdrop-filter:blur(12px);
+      border-bottom:1px solid rgba(123,63,189,.08);
+    }
+    .logo{display:flex;align-items:center;gap:6px;text-decoration:none;}
+    .nav-logo-img{height:42px;width:auto;}
+    nav a{
+      text-decoration:none;color:var(--p2);margin-left:2rem;
+      font-weight:700;font-size:.82rem;letter-spacing:.1em;text-transform:uppercase;
+      transition:color .2s;
+    }
+    nav a:hover{color:var(--p1);}
+
+    /* ── PAGE LAYOUT ── */
+    .page-wrap{
+      max-width:1100px;margin:0 auto;
+      padding:110px 48px 80px;
+    }
+
+    /* ── HERO BAND ── */
+    .contact-hero{
+      text-align:center;margin-bottom:64px;
+    }
+    .contact-eyebrow{
+      display:inline-block;
+      font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;
+      color:var(--p1);margin-bottom:16px;
+    }
+    .contact-hero h1{
+      font-size:clamp(2rem,4vw,3rem);font-weight:800;
+      color:var(--p2);line-height:1.1;letter-spacing:-.02em;margin-bottom:16px;
+    }
+    .contact-hero h1 em{font-style:italic;font-weight:300;color:var(--p1);}
+    .contact-hero p{
+      font-size:1rem;color:var(--ts);line-height:1.7;
+      max-width:560px;margin:0 auto;
+    }
+
+    /* ── INFO PILLS ── */
+    .info-pills{
+      display:flex;flex-wrap:wrap;justify-content:center;gap:12px;
+      margin:28px 0 0;
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 18px;border-radius:50px;
+      background:#fff;border:1px solid rgba(123,63,189,.15);
+      font-size:.82rem;font-weight:600;color:var(--p2);
+    }
+    .pill-dot{
+      width:7px;height:7px;border-radius:50%;
+      background:var(--p1);flex-shrink:0;
+    }
+
+    /* ── GRID ── */
+    .contact-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:28px;
+      align-items:start;
+    }
+
+    /* ── CARDS ── */
+    .contact-card{
+      background:#fff;
+      border:1px solid rgba(123,63,189,.1);
+      border-radius:20px;
+      padding:36px 32px;
+      box-shadow:0 4px 24px rgba(123,63,189,.06);
+    }
+    .card-label{
+      font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+      color:var(--p1);margin-bottom:20px;display:flex;align-items:center;gap:8px;
+    }
+    .card-label::before{
+      content:'';display:block;width:20px;height:2px;
+      background:linear-gradient(90deg,var(--p1),var(--cy));
+      border-radius:2px;
+    }
+
+    /* ── FORM ── */
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px;}
+    .field label{font-size:.78rem;font-weight:600;color:var(--p2);}
+    .field input,.field textarea,.field select{
+      padding:12px 14px;
+      font-size:.92rem;font-family:var(--font);
+      border:1.5px solid rgba(123,63,189,.2);
+      border-radius:10px;width:100%;
+      background:#FAFAFF;color:var(--p2);
+      transition:border-color .2s,box-shadow .2s;
+      outline:none;
+    }
+    .field input:focus,.field textarea:focus,.field select:focus{
+      border-color:var(--p1);
+      box-shadow:0 0 0 3px rgba(123,63,189,.1);
+    }
+    .field textarea{resize:vertical;min-height:110px;}
+    .btn-send{
+      display:flex;align-items:center;justify-content:center;gap:10px;
+      width:100%;padding:14px;border-radius:12px;border:none;
+      background:linear-gradient(135deg,var(--p1),#5A2898);
+      color:#fff;font-family:var(--font);font-size:1rem;font-weight:700;
+      cursor:pointer;letter-spacing:.03em;
+      transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;
+      margin-top:6px;
+    }
+    .btn-send:hover{
+      transform:translateY(-2px) scale(1.02);
+      box-shadow:0 8px 30px rgba(123,63,189,.35);
+    }
+    #form-message{
+      display:none;margin-top:14px;padding:12px;
+      border-radius:10px;background:#F0EAFF;
+      color:var(--p1);font-weight:600;text-align:center;font-size:.9rem;
+    }
+
+    /* ── INFO SIDE ── */
+    .info-block{display:flex;flex-direction:column;gap:20px;}
+    .info-item{
+      display:flex;align-items:flex-start;gap:14px;
+      padding:18px;border-radius:14px;
+      background:#FAFAFF;border:1px solid rgba(123,63,189,.07);
+    }
+    .info-icon{
+      width:40px;height:40px;border-radius:10px;flex-shrink:0;
+      background:linear-gradient(135deg,#EDE0FF,#D9D6F2);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .info-icon svg{width:18px;height:18px;}
+    .info-text h3{font-size:.82rem;font-weight:700;color:var(--p2);margin-bottom:3px;}
+    .info-text p{font-size:.82rem;color:var(--ts);line-height:1.5;}
+    .info-text a{color:var(--p1);text-decoration:none;font-weight:600;}
+    .info-text a:hover{text-decoration:underline;}
+
+    /* LinkedIn pill */
+    .linkedin-pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 16px;border-radius:10px;
+      background:#0A66C2;color:#fff !important;
+      font-size:.82rem;font-weight:600;text-decoration:none;
+      transition:transform .2s,box-shadow .2s;
+    }
+    .linkedin-pill:hover{
+      transform:translateY(-2px);
+      box-shadow:0 6px 20px rgba(10,102,194,.35);
+    }
+
+    /* ── BOOKING SECTION ── */
+    .booking-section{
+      margin-top:28px;
+      background:#fff;
+      border:1px solid rgba(123,63,189,.1);
+      border-radius:20px;
+      padding:36px 32px;
+      box-shadow:0 4px 24px rgba(123,63,189,.06);
+      grid-column:1/-1;
+    }
+    .booking-header{
+      display:flex;align-items:center;justify-content:space-between;
+      flex-wrap:wrap;gap:16px;margin-bottom:28px;
+    }
+    .booking-title-wrap{}
+    .booking-title-wrap .card-label{margin-bottom:8px;}
+    .booking-title-wrap h2{
+      font-size:1.4rem;font-weight:800;color:var(--p2);
+      letter-spacing:-.01em;line-height:1.2;
+    }
+    .booking-title-wrap h2 em{font-style:italic;font-weight:300;color:var(--p1);}
+    .booking-badges{display:flex;flex-wrap:wrap;gap:10px;}
+    .booking-badge{
+      display:inline-flex;align-items:center;gap:6px;
+      padding:6px 14px;border-radius:6px;
+      background:#F0EAFF;font-size:.74rem;font-weight:600;color:var(--p2);
+    }
+    .booking-badge svg{width:13px;height:13px;flex-shrink:0;}
+
+    /* ── BOOKING CTA ── */
+    .booking-body{
+      background:linear-gradient(135deg,#F4F1FF,#EDE8FF);
+      border-radius:16px;
+      padding:40px 36px;
+      display:flex;flex-direction:column;align-items:center;gap:32px;
+    }
+    .book-steps{
+      display:flex;align-items:flex-start;justify-content:center;
+      gap:0;flex-wrap:wrap;width:100%;
+    }
+    .book-step{
+      flex:1;min-width:160px;max-width:220px;
+      text-align:center;padding:0 20px;
+    }
+    .step-circle{
+      width:40px;height:40px;border-radius:50%;
+      background:var(--p1);color:#fff;
+      font-weight:800;font-size:1rem;
+      display:flex;align-items:center;justify-content:center;
+      margin:0 auto 14px;
+      box-shadow:0 4px 16px rgba(123,63,189,.35);
+    }
+    .book-step p{font-size:.88rem;color:var(--ts);line-height:1.55;}
+    .book-step p strong{color:var(--p2);}
+    .step-arrow{
+      font-size:1.4rem;color:var(--p1);opacity:.4;
+      padding:0 4px;margin-top:12px;
+      flex-shrink:0;align-self:flex-start;
+    }
+    @media(max-width:680px){.step-arrow{display:none;}.book-step{min-width:130px;}}
+
+    .book-cta-btn{
+      display:inline-flex;align-items:center;gap:14px;
+      padding:18px 40px;border-radius:14px;
+      background:linear-gradient(135deg,var(--p1),var(--p2));
+      color:#fff;font-weight:700;font-size:1.05rem;
+      text-decoration:none;letter-spacing:.02em;
+      box-shadow:0 8px 28px rgba(123,63,189,.5);
+      transition:transform .25s cubic-bezier(.34,1.56,.64,1),box-shadow .25s;
+    }
+    .book-cta-btn:hover{
+      transform:translateY(-3px) scale(1.03);
+      box-shadow:0 12px 36px rgba(123,63,189,.65);
+    }
+    .book-cta-btn svg{flex-shrink:0;}
+    .book-note{
+      font-size:.78rem;color:var(--ts);opacity:.65;
+      letter-spacing:.04em;text-align:center;
+    }
+
+    /* ── FOOTER ── */
+    footer{
+      background:#F0EAFF;text-align:center;
+      padding:2rem 1rem;font-size:.85rem;color:var(--ts);
+    }
+    footer span{color:var(--p1);font-weight:600;}
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:860px){
+      header{padding:0 20px;}
+      .page-wrap{padding:88px 16px 60px;}
+      .contact-grid{grid-template-columns:1fr;gap:20px;}
+      .form-row{grid-template-columns:1fr;}
+      .booking-section{grid-column:1;margin-top:0;padding:28px 20px;}
+      .booking-header{flex-direction:column;align-items:flex-start;gap:14px;margin-bottom:20px;}
+      .booking-badges{gap:8px;}
+      .booking-badge{font-size:.7rem;padding:5px 10px;}
+    }
+    @media(max-width:600px){
+      .contact-hero{margin-bottom:40px;}
+      .contact-hero h1{font-size:1.7rem;}
+      .contact-hero p{font-size:.92rem;}
+      .info-pills{gap:8px;}
+      .pill{font-size:.75rem;padding:6px 12px;}
+      .contact-card{padding:22px 16px;}
+      .booking-section{padding:22px 16px;}
+      .booking-title-wrap h2{font-size:1.15rem;}
+      .booking-body{padding:24px 16px;gap:24px;}
+      .book-steps{gap:16px;flex-direction:column;align-items:center;}
+      .book-step{min-width:unset;max-width:100%;width:100%;padding:0;
+        display:flex;align-items:flex-start;gap:14px;text-align:left;}
+      .step-circle{margin:0;flex-shrink:0;}
+      .step-arrow{display:none;}
+      .book-cta-btn{width:100%;justify-content:center;padding:16px 24px;font-size:.95rem;}
+      .book-note{font-size:.72rem;}
+      .info-item{padding:14px;}
+      .info-icon{width:34px;height:34px;}
+    }
+    @media(max-width:380px){
+      header{padding:0 14px;}
+      .page-wrap{padding:80px 12px 48px;}
+      nav a{margin-left:1.2rem;font-size:.75rem;}
+    }
+  
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 56px;
+  background:linear-gradient(180deg,rgba(217,214,242,.96) 0%,rgba(217,214,242,.0) 100%);
+  backdrop-filter:blur(8px);
+}
+.nav-logo{display:flex;align-items:center;gap:4px;}
+
+/* Wand icon */
+.logo-wand{position:relative;display:flex;align-items:flex-end;margin-right:2px;}
+.logo-wand svg{display:block;}
+
+/* "Wande" in script style + "rful" in bold caps — like the real logo */
+.logo-wande{
+  font-family:'Outfit',sans-serif;
+  font-size:1.55rem;font-weight:800;
+  color:var(--p2);letter-spacing:-.02em;
+  line-height:1;
+}
+.logo-rful{
+  font-family:'Outfit',sans-serif;
+  font-size:1.55rem;font-weight:800;
+  color:var(--p1);letter-spacing:-.02em;
+  line-height:1;
+}
+.logo-sub{
+  display:block;font-size:.55rem;font-weight:600;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ts);opacity:.55;margin-top:1px;
+  line-height:1;
+}
+nav ul{list-style:none;display:flex;gap:30px;align-items:center;}
+nav a{color:var(--ts);text-decoration:none;font-size:.82rem;
+  font-weight:500;letter-spacing:.07em;text-transform:uppercase;transition:color .2s;}
+nav a:hover{color:var(--p1);}
+.nav-cta{
+  padding:10px 22px;border-radius:8px;
+  background:linear-gradient(135deg,var(--p1),var(--p3));
+  color:#fff !important;font-weight:600 !important;
+  text-transform:none !important;letter-spacing:.03em !important;
+  box-shadow:0 4px 20px rgba(123,63,189,.5);
+  transition:box-shadow .2s,transform .15s !important;
+}
+.nav-cta:hover{box-shadow:0 6px 28px rgba(123,63,189,.7)!important;transform:translateY(-1px);}
+</style>
+<link href="https://wanderful-marketing.com/en/contact/" rel="canonical"/>
+<meta content="index, follow, max-image-preview:large" name="robots"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ContactPage",
+  "@id": "https://wanderful-marketing.com/en/contact/#page",
+  "url": "https://wanderful-marketing.com/en/contact/",
+  "name": "Contact",
+  "inLanguage": "en",
+  "about": {
+    "@id": "https://wanderful-marketing.com/en/#organization"
+  }
+}
+</script>
+<link href="https://wanderful-marketing.com/contact/" hreflang="fr" rel="alternate"/>
+<link href="https://wanderful-marketing.com/en/contact/" hreflang="en" rel="alternate"/>
+<link href="https://wanderful-marketing.com/contact/" hreflang="x-default" rel="alternate"/>
+<script defer="" src="/lang.js"></script>
+</head>
+<body>
+<nav>
+<a href="/en/" style="text-decoration:none;display:inline-flex;align-items:center;padding:0;">
+<img alt="Wanderful Marketing" src="/assets/logo.png" style="height:48px;width:auto;display:block;"/>
+</a>
+<ul>
+<li><a href="/en/#a-propos">About</a></li>
+<li><a href="/en/#services">Services</a></li>
+<li><a class="nav-cta" href="/en/contact/">Contact us →</a></li>
+</ul>
+</nav>
+<div class="page-wrap">
+<!-- Hero -->
+<div class="contact-hero">
+<span class="contact-eyebrow">Let's talk about your project</span>
+<h1>Got an idea?<br/><em>Let’s make it happen together.</em></h1>
+<p>Wanderful Marketing agency, based in Yvonand — we help Swiss SMEs grow digitally.</p>
+<div class="info-pills">
+<span class="pill"><span class="pill-dot"></span>Reply within 48h</span>
+<span class="pill"><span class="pill-dot" style="background:#7EC8D4"></span>Available 8am – 8pm</span>
+<span class="pill"><span class="pill-dot" style="background:#F4A7C3"></span>SMEs in French-speaking Switzerland</span>
+</div>
+</div>
+<!-- Grid -->
+<div class="contact-grid">
+<!-- Form card -->
+<div class="contact-card">
+<div class="card-label">Contact form</div>
+<form action="https://formspree.io/f/xqabevew" id="contact-form" method="POST">
+<div class="form-row">
+<div class="field">
+<label>First name</label>
+<input name="prenom" placeholder="Marie" required="" type="text"/>
+</div>
+<div class="field">
+<label>Last name</label>
+<input name="name" placeholder="Dupont" required="" type="text"/>
+</div>
+</div>
+<div class="field">
+<label>Email address</label>
+<input name="email" placeholder="marie@entreprise.ch" required="" type="email"/>
+</div>
+<div class="field">
+<label>Subject</label>
+<input name="sujet" placeholder="E.g. Website redesign" required="" type="text"/>
+</div>
+<div class="field">
+<label>Message</label>
+<textarea name="message" placeholder="Tell us about your project or ask us anything…" required="" rows="5"></textarea>
+</div>
+<button class="btn-send" type="submit"><svg fill="none" height="16" viewbox="0 0 16 16" width="16"><path d="M2 8h12M9 4l4 4-4 4" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"></path></svg> Send my message</button>
+<div id="form-message"></div>
+</form>
+</div>
+<!-- Info card -->
+<div class="contact-card">
+<div class="card-label">Practical information</div>
+<div class="info-block">
+<div class="info-item">
+<div class="info-icon">
+<svg fill="none" viewbox="0 0 24 24">
+<circle cx="12" cy="12" r="9" stroke="#7B3FBD" stroke-width="1.8"></circle>
+<path d="M12 7v5l3 3" stroke="#7B3FBD" stroke-linecap="round" stroke-width="1.8"></path>
+</svg>
+</div>
+<div class="info-text">
+<h3>Availability</h3>
+<p>Monday – Friday: <strong>8:00am – 8:00pm</strong><br/>Guaranteed reply within 48 working hours</p>
+</div>
+</div>
+<div class="info-item">
+<div class="info-icon">
+<svg fill="none" viewbox="0 0 24 24">
+<path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" stroke="#7B3FBD" stroke-width="1.8"></path>
+<circle cx="12" cy="9" r="2.5" stroke="#7B3FBD" stroke-width="1.8"></circle>
+</svg>
+</div>
+<div class="info-text">
+<h3>Location</h3>
+<p>Yvonand, Vaud — Switzerland<br/>Serving all of French-speaking Switzerland</p>
+</div>
+</div>
+<div class="info-item">
+<div class="info-icon">
+<svg fill="none" viewbox="0 0 24 24">
+<rect height="14" rx="2" stroke="#7B3FBD" stroke-width="1.8" width="18" x="3" y="5"></rect>
+<path d="M3 9l9 5 9-5" stroke="#7B3FBD" stroke-linecap="round" stroke-width="1.8"></path>
+</svg>
+</div>
+<div class="info-text">
+<h3>Direct contact</h3>
+<p><a href="mailto:hello@wanderful-marketing.com">hello@wanderful-marketing.com</a></p>
+</div>
+</div>
+<div class="info-item">
+<div class="info-icon">
+<svg fill="none" viewbox="0 0 24 24">
+<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" stroke="#7B3FBD" stroke-linecap="round" stroke-width="1.8"></path>
+<rect height="12" rx="1" stroke="#7B3FBD" stroke-width="1.8" width="4" x="2" y="9"></rect>
+<circle cx="4" cy="4" r="2" stroke="#7B3FBD" stroke-width="1.8"></circle>
+</svg>
+</div>
+<div class="info-text">
+<h3>LinkedIn</h3>
+<a class="linkedin-pill" href="https://www.linkedin.com/in/nassima-rizzotti-58b4a6226/" rel="noopener" target="_blank"><svg fill="white" height="14" viewbox="0 0 24 24" width="14"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2zM4 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"></path></svg> Nassima Rizzotti</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Booking section -->
+<div class="booking-section">
+<div class="booking-header">
+<div class="booking-title-wrap">
+<div class="card-label">Book a call</div>
+<h2>Schedule a <em>Google Meet</em> call</h2>
+</div>
+<div class="booking-badges">
+<span class="booking-badge"><svg fill="none" viewbox="0 0 24 24"><circle cx="12" cy="12" r="9" stroke="#7B3FBD" stroke-width="2"></circle><path d="M12 7v5l3 3" stroke="#7B3FBD" stroke-linecap="round" stroke-width="2"></path></svg> 30 minutes</span>
+<span class="booking-badge"><svg fill="none" viewbox="0 0 24 24"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87v6.26a1 1 0 01-1.447.894L15 14M4 9h11v8a1 1 0 01-1 1H5a1 1 0 01-1-1V9z" stroke="#7B3FBD" stroke-linecap="round" stroke-width="1.8"></path></svg> Google Meet</span>
+<span class="booking-badge"><svg fill="none" viewbox="0 0 24 24"><rect height="18" rx="2" stroke="#7B3FBD" stroke-width="1.8" width="18" x="3" y="4"></rect><path d="M16 2v4M8 2v4M3 10h18" stroke="#7B3FBD" stroke-linecap="round" stroke-width="1.8"></path></svg> 8am – 8pm · Mon–Fri</span>
+<span class="booking-badge"><svg fill="none" viewbox="0 0 24 24"><path d="M5 12l5 5L20 7" stroke="#7B3FBD" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg> Free</span>
+</div>
+</div>
+<div class="booking-body">
+<!-- 3 steps -->
+<div class="book-steps">
+<div class="book-step">
+<div class="step-circle">1</div>
+<p>Choose an <strong>available slot</strong> in the calendar</p>
+</div>
+<div class="step-arrow">→</div>
+<div class="book-step">
+<div class="step-circle">2</div>
+<p>Enter your <strong>details</strong> — instant confirmation</p>
+</div>
+<div class="step-arrow">→</div>
+<div class="book-step">
+<div class="step-circle">3</div>
+<p>Receive a <strong>Google Meet link</strong> by email automatically</p>
+</div>
+</div>
+<a class="book-cta-btn" href="https://calendar.app.google/eGQ1Qci8t8Vc9xas7" rel="noopener" target="_blank"><svg fill="none" height="22" viewbox="0 0 24 24" width="22">
+<rect height="18" rx="2" stroke="#fff" stroke-width="2" width="18" x="3" y="4"></rect>
+<path d="M16 2v4M8 2v4M3 10h18" stroke="#fff" stroke-linecap="round" stroke-width="2"></path>
+<path d="M8 15h2v2H8z" fill="#fff"></path>
+<path d="M11 15h2v2h-2z" fill="#fff"></path>
+<path d="M14 15h2v2h-2z" fill="#fff"></path>
+</svg> See available slots</a>
+<p class="book-note">Opens in Google Calendar · Automatic email confirmation · Free</p>
+</div>
+</div>
+</div>
+</div>
+<footer>© 2025 <span>Wanderful Marketing</span> — Yvonand, Switzerland — All rights reserved</footer>
+<script>
+/* Form submission */
+const form = document.getElementById('contact-form');
+const msg  = document.getElementById('form-message');
+form.addEventListener('submit', async e => {
+  e.preventDefault();
+  const fd = new FormData(form);
+  try {
+    const r = await fetch(form.action,{method:'POST',headers:{Accept:'application/json'},body:fd});
+    msg.style.display='block';
+    if(r.ok){
+      msg.textContent='✅ Message sent! We’ll get back to you within 48 hours.';
+      msg.style.background='#E6F9F0';msg.style.color='#1a7a4a';
+      form.reset();
+    } else {
+      msg.textContent='Something went wrong. Please try again or contact us by email.';
+      msg.style.background='#FFE8E8';msg.style.color='#c0392b';
+    }
+  } catch(_){
+    msg.style.display='block';
+    msg.textContent='Network error. Please contact us directly by email.';
+    msg.style.background='#FFE8E8';msg.style.color='#c0392b';
+  }
+});
+
+</script>
+<script defer="" src="/assistant.js"></script>
+</body>
+</html>

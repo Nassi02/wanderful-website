@@ -12,6 +12,9 @@
 /* Wanderful Assistant — v1.0 */
 (function () {
   "use strict";
+  // Langue de la page (les pages /en/ ont <html lang="en">)
+  const EN = (document.documentElement.lang || "").toLowerCase().indexOf("en") === 0;
+  const T = (fr, en) => (EN ? en : fr);
 
   // ⚠️ À REMPLACER par l'URL de ton Worker (ex : https://wanderful-assistant.ton-sous-domaine.workers.dev)
   const WORKER_URL = "https://wanderful-assistant.marketingwanderful.workers.dev";
@@ -36,7 +39,7 @@
 
       // form-urlencoded = requête "simple" : pas de préflight CORS, donc sendBeacon passe.
       const fd = new URLSearchParams();
-      fd.append("_subject", "Nouvelle conversation chatbot" + (emailMatch ? " — " + emailMatch[0] : ""));
+      fd.append("_subject", T("Nouvelle conversation chatbot", "Nouvelle conversation chatbot (EN)") + (emailMatch ? " — " + emailMatch[0] : ""));
       fd.append("email_visiteur", emailMatch ? emailMatch[0] : "(non fourni)");
       fd.append("page", location.pathname);
       fd.append("conversation", transcript);
@@ -60,9 +63,12 @@
   };
 
   const GREETING =
-    "Bonjour et bienvenue chez Wanderful ✦ Je suis votre assistant. " +
+    T("Bonjour et bienvenue chez Wanderful ✦ Je suis votre assistant. " +
     "Dites-moi ce que vous cherchez à améliorer — Google Ads, SEO, site web, contenu… — " +
-    "et je vous oriente vers la bonne solution.";
+    "et je vous oriente vers la bonne solution.",
+    "Hello and welcome to Wanderful ✦ I'm your assistant. " +
+    "Tell me what you'd like to improve — Google Ads, SEO, your website, content… — " +
+    "and I'll point you to the right solution.");
 
   // Historique de conversation envoyé au proxy
   const history = [];
@@ -173,7 +179,7 @@
 
   const launch = document.createElement("button");
   launch.className = "wfc-launch";
-  launch.setAttribute("aria-label", "Ouvrir l'assistant Wanderful");
+  launch.setAttribute("aria-label", T("Ouvrir l'assistant Wanderful", "Open the Wanderful assistant"));
   launch.innerHTML = WAND_SVG + '<span class="wfc-badge"></span>';
   document.body.appendChild(launch);
 
@@ -183,25 +189,25 @@
     <div class="wfc-head">
       <div class="wfc-avatar">${WAND_SVG}</div>
       <div>
-        <h4>Assistant Wanderful</h4>
-        <div class="wfc-status"><span class="wfc-dot"></span> En ligne · réponse immédiate</div>
+        <h4>${T("Assistant Wanderful", "Wanderful Assistant")}</h4>
+        <div class="wfc-status"><span class="wfc-dot"></span> ${T("En ligne · réponse immédiate", "Online · instant reply")}</div>
       </div>
       <button class="wfc-close" aria-label="Fermer">×</button>
     </div>
     <div class="wfc-body"></div>
     <div class="wfc-quick">
-      <button class="wfc-chip">Améliorer mes Google Ads</button>
-      <button class="wfc-chip">Refaire mon site web</button>
-      <button class="wfc-chip">Audit gratuit</button>
+      <button class="wfc-chip">${T("Améliorer mes Google Ads", "Improve my Google Ads")}</button>
+      <button class="wfc-chip">${T("Refaire mon site web", "Redesign my website")}</button>
+      <button class="wfc-chip">${T("Audit gratuit", "Free audit")}</button>
     </div>
     <div class="wfc-foot">
       <div class="wfc-inrow">
-        <textarea class="wfc-input" rows="1" placeholder="Écrivez votre message…"></textarea>
+        <textarea class="wfc-input" rows="1" placeholder="${T("Écrivez votre message…", "Type your message…")}"></textarea>
         <button class="wfc-send" aria-label="Envoyer">
           <svg viewBox="0 0 24 24" fill="none"><path d="M4 12l16-8-6 16-2-6-8-2z" fill="#fff"/></svg>
         </button>
       </div>
-      <div class="wfc-legal">Propulsé par l'IA · vérifiez les infos importantes</div>
+      <div class="wfc-legal">${T("Propulsé par l'IA · vérifiez les infos importantes", "Powered by AI · double-check important information")}</div>
     </div>`;
   document.body.appendChild(panel);
 
@@ -274,13 +280,13 @@
       });
       const data = await res.json();
       typing.remove();
-      const reply = data.reply || "Désolé, une erreur est survenue. Réessayez ou passez par la page Contact.";
+      const reply = data.reply || T("Désolé, une erreur est survenue. Réessayez ou passez par la page Contact.", "Sorry, something went wrong. Please try again or use the Contact page.");
       addMsg(reply, "bot");
       history.push({ role: "assistant", content: reply });
       scheduleIdleSend();
     } catch (e) {
       typing.remove();
-      addMsg("Connexion impossible pour le moment. Vous pouvez nous joindre via la page Contact.", "bot");
+      addMsg(T("Connexion impossible pour le moment. Vous pouvez nous joindre via la page Contact.", "Unable to connect right now. You can reach us via the Contact page."), "bot");
     } finally {
       sendBtn.disabled = false;
       input.focus();
