@@ -340,6 +340,70 @@ footer{margin-top:76px;padding:54px 0 34px;}
 .ap-formula{margin-top:46px;display:grid;gap:10px;}
 .ap-formula span{font-size:clamp(17px,1.7vw,22px);color:var(--plum);font-weight:400;}
 
+/* ===== premier ecran : elle, puis l'agence ===== */
+.ap-hero-me{min-height:auto;padding:clamp(104px,12vh,150px) 0 clamp(50px,7vh,90px);}
+.ap-me{display:grid;grid-template-columns:minmax(0,350px) 1fr;gap:clamp(34px,5vw,66px);align-items:center;}
+.ap-me-photo{position:relative;}
+.ap-me-photo img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;display:block;
+  border-radius:var(--r-lg);box-shadow:0 30px 70px -30px rgba(74,47,158,.45);}
+/* l'element iridescent, discret, derriere la photo */
+.ap-me-photo img{position:relative;z-index:1;}
+.ap-me-halo{position:absolute;z-index:0;width:72%;aspect-ratio:1;right:-16%;top:-11%;
+  background:conic-gradient(from 210deg,#F6DCE8,#DCE7F8,#EDE0FF,#F6DCE8);
+  filter:blur(28px);opacity:.75;border-radius:50%;
+  animation:apHalo 16s ease-in-out infinite;}
+.ap-me-ring{position:absolute;z-index:2;right:-7%;bottom:-6%;width:34%;max-width:120px;opacity:.92;
+  animation:apRing 13s ease-in-out infinite;pointer-events:none;}
+.ap-me-ring img{width:100%;height:auto;display:block;}
+@keyframes apHalo{0%,100%{transform:translate(0,0) scale(1);}50%{transform:translate(-5%,4%) scale(1.07);}}
+@keyframes apRing{0%,100%{transform:translateY(0) rotate(0deg);}50%{transform:translateY(-12px) rotate(7deg);}}
+@media(prefers-reduced-motion:reduce){.ap-me-halo,.ap-me-ring{animation:none;}}
+.ap-me-signe{position:relative;aspect-ratio:1;display:flex;align-items:center;justify-content:center;}
+.ap-me-signe .ap-me-halo{position:absolute;z-index:0;inset:8%;right:auto;top:auto;width:84%;aspect-ratio:1;}
+.ap-me-signe img{position:relative;z-index:1;display:block;}
+.ap-me-o1{width:58%;max-width:230px;animation:apRing 13s ease-in-out infinite;}
+.ap-me-o2{position:absolute;z-index:2;width:24%;max-width:92px;right:6%;bottom:12%;opacity:.95;
+  animation:apRing 17s ease-in-out -4s infinite;}
+@media(prefers-reduced-motion:reduce){.ap-me-o1,.ap-me-o2{animation:none;}}
+
+/* le portrait, plus bas dans la page et a sa juste place */
+.ap-portrait{float:right;width:min(32%,250px);margin:6px 0 24px 36px;}
+.ap-portrait img{width:100%;height:auto;aspect-ratio:4/5;object-fit:cover;display:block;
+  border-radius:var(--r-lg);box-shadow:0 22px 50px -26px rgba(74,47,158,.4);}
+.ap-portrait figcaption{margin-top:11px;font-size:12px;letter-spacing:.04em;color:var(--muted);
+  font-weight:400;text-align:center;}
+@media(max-width:860px){
+  .ap-portrait{float:none;width:min(62%,210px);margin:0 auto 28px;}
+}
+.ap-me-txt .ap-h{max-width:14ch;}
+.ap-me-txt .ap-lead{margin-top:26px;max-width:46ch;}
+@media(max-width:860px){
+  .ap-me{grid-template-columns:1fr;gap:18px;}
+  .ap-me-signe{max-width:190px;margin:0 0 4px;}
+}
+
+/* ===== l'histoire ===== */
+.ap-story{padding:var(--ap-gap) 0;}
+.ap-story-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,56px);align-items:start;margin-top:34px;}
+.ap-story-grid p{font-size:clamp(16px,1.35vw,18.5px);line-height:1.75;color:var(--muted);font-weight:300;}
+.ap-story-grid p+p{margin-top:16px;}
+.ap-story-grid b{color:var(--plum);font-weight:600;}
+@media(max-width:860px){.ap-story-grid{grid-template-columns:1fr;}}
+
+/* ===== ce que le parcours apporte : trois idees ===== */
+.ap-trio{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:40px;}
+.ap-trio .ap-card{padding:26px 24px;border-radius:var(--r-sm);background:var(--glass-strong);
+  border:1px solid rgba(141,126,242,.22);}
+.ap-trio h4{font-size:15px;font-weight:600;color:var(--plum);margin-bottom:9px;line-height:1.3;}
+.ap-trio p{font-size:14px;line-height:1.62;color:var(--muted);font-weight:300;}
+@media(max-width:860px){.ap-trio{grid-template-columns:1fr;}}
+
+/* ===== l'IA en pratique, dans « comment je travaille » ===== */
+.ap-ia-live{margin-top:48px;padding-top:34px;border-top:1px solid rgba(141,126,242,.22);}
+.ap-ia-live > p{font-size:clamp(16px,1.35vw,18.5px);line-height:1.7;color:var(--muted);font-weight:300;max-width:62ch;}
+.ap-ia-live h3{font-size:clamp(19px,1.9vw,24px);font-weight:600;color:var(--plum);margin-bottom:14px;letter-spacing:-.02em;}
+
+
 /* logo qui s'ecrit (bloc magie) */
 .ap-write{position:relative;width:clamp(220px,26vw,320px);margin:0 auto 34px;}
 .ap-write img{display:block;width:100%;height:auto;
@@ -592,133 +656,88 @@ footer{margin-top:76px;padding:54px 0 34px;}
 </svg>
 </div>
 <!-- ================= HERO ================= -->
-<section class="ap-hero" id="apHero">
-<div aria-hidden="true" class="ap-cloud">
-<span class="ap-tok" style="left:6%;top:18%">PROMPT</span>
-<span class="ap-tok" style="left:78%;top:14%">IMAGE</span>
-<span class="ap-tok" style="left:84%;top:38%">VIDEO</span>
-<span class="ap-tok" style="left:71%;top:62%">COPY</span>
-<span class="ap-tok" style="left:88%;top:78%">SEO</span>
-<span class="ap-tok" style="left:10%;top:74%">ADS</span>
-<span class="ap-tok" style="left:3%;top:47%">AUTOMATION</span>
-<span class="ap-tok" style="left:62%;top:86%">DATA</span>
-</div>
+<section class="ap-hero ap-hero-me" id="apHero">
 <div class="ap-wrap">
-<div class="ap-label ap-rev">About Wanderful</div>
-<h1 class="ap-h ap-rev" data-d="1">Anyone can do marketing now. <span class="ap-hero-l2 ap-grad">That's exactly the problem.</span></h1>
-<p class="ap-lead ap-rev" data-d="3" style="margin-top:32px;">AI has made creation faster, more accessible and almost limitless. But when everyone has the same tools, knowing how to use them is no longer enough.</p>
-<a class="ap-scroll ap-rev" data-d="4" href="#ap-01">Find out why <span class="a">↓</span></a>
+<div class="ap-me">
+<div aria-hidden="true" class="ap-me-signe ap-rev">
+<span class="ap-me-halo"></span>
+<img alt="" class="ap-me-o1" decoding="async" height="200" src="../assets/disciplines/anneaux.webp" width="200"/>
+<img alt="" class="ap-me-o2" decoding="async" height="160" src="../assets/disciplines/etoile.webp" width="160"/>
 </div>
-</section>
-<!-- ============ 01 — LE NOUVEAU MARKETING ============ -->
-<section class="ap-sticky" id="ap-01">
-<div class="ap-wrap">
-<div class="ap-label ap-rev">01 — The new marketing</div>
-<div class="ap-sticky-grid">
-<div class="ap-steps" id="apSteps">
-<h2 class="ap-h2 ap-rev" style="margin-bottom:34px;">Producing has never been easier.</h2>
-<p class="ap-lead ap-rev" data-d="1" style="opacity:1;margin-bottom:48px;">A campaign in seconds. An image in minutes. Dozens of content ideas before your first coffee.</p>
-<p data-step="0"><b>So the value has shifted.</b></p>
-<p data-step="1">Understanding the market.</p>
-<p data-step="2">Understanding people.</p>
-<p data-step="3">Choosing the right message.</p>
-<p data-step="4">Turning data into decisions.</p>
-<p data-step="5">Building the right systems.</p>
-<p data-step="6">Measuring what actually works.</p>
+<div class="ap-me-txt">
+<div class="ap-label ap-rev">About</div>
+<h1 class="ap-h ap-rev" data-d="1">Creativity.<br/> <span class="ap-grad">With real thinking behind it.</span></h1>
+<p class="ap-lead ap-rev" data-d="2">I'm Nassima, founder of Wanderful Marketing. I bring together strategy, creativity, data and technology to help brands find their direction — and make it real.</p>
+<a class="ap-scroll ap-rev" data-d="3" href="#ap-story">Get to know me <span class="a">↓</span></a>
 </div>
-<div class="ap-sticky-vis">
-<div class="apd-pad">
-<div aria-label="Wanderful's five disciplines around the star: strategy, human understanding, creativity, data and technology" class="apd-stage" id="apdStage" role="img">
-<svg aria-hidden="true" class="apd-traj" viewbox="0 0 100 100">
-<circle class="apd-orbit" cx="50" cy="50" r="34"></circle>
-<path class="apd-tr" d="M 50.0 50.0 Q 55.0 33.0 50.0 16.0" id="apd-tr-strategie" style="--dl3:0.90s"></path>
-<path class="apd-tr" d="M 50.0 50.0 Q 67.7 49.5 82.3 39.5" id="apd-tr-humain" style="--dl3:1.02s"></path>
-<path class="apd-tr" d="M 50.0 50.0 Q 55.9 66.7 70.0 77.5" id="apd-tr-technologie" style="--dl3:1.14s"></path>
-<path class="apd-tr" d="M 50.0 50.0 Q 36.0 60.8 30.0 77.5" id="apd-tr-donnees" style="--dl3:1.26s"></path>
-<path class="apd-tr" d="M 50.0 50.0 Q 35.4 40.0 17.7 39.5" id="apd-tr-creativite" style="--dl3:1.38s"></path>
-<g transform="translate(52.4 28.9)"><g class="apd-sp" style="--i:0"><path d="M 0 -1.9 C .17 -.74, .74 -.17, 1.9 0 C .74 .17, .17 .74, 0 1.9 C -.17 .74, -.74 .17, -1.9 0 C -.74 -.17, -.17 -.74, 0 -1.9 Z"></path></g></g>
-<g transform="translate(70.8 45.7)"><g class="apd-sp" style="--i:1"><path d="M 0 -1.9 C .17 -.74, .74 -.17, 1.9 0 C .74 .17, .17 .74, 0 1.9 C -.17 .74, -.74 .17, -1.9 0 C -.74 -.17, -.17 -.74, 0 -1.9 Z"></path></g></g>
-<g transform="translate(60.5 68.4)"><g class="apd-sp" style="--i:2"><path d="M 0 -1.9 C .17 -.74, .74 -.17, 1.9 0 C .74 .17, .17 .74, 0 1.9 C -.17 .74, -.74 .17, -1.9 0 C -.74 -.17, -.17 -.74, 0 -1.9 Z"></path></g></g>
-<g transform="translate(35.7 65.7)"><g class="apd-sp" style="--i:3"><path d="M 0 -1.9 C .17 -.74, .74 -.17, 1.9 0 C .74 .17, .17 .74, 0 1.9 C -.17 .74, -.74 .17, -1.9 0 C -.74 -.17, -.17 -.74, 0 -1.9 Z"></path></g></g>
-<g transform="translate(30.7 41.2)"><g class="apd-sp" style="--i:4"><path d="M 0 -1.9 C .17 -.74, .74 -.17, 1.9 0 C .74 .17, .17 .74, 0 1.9 C -.17 .74, -.74 .17, -1.9 0 C -.74 -.17, -.17 -.74, 0 -1.9 Z"></path></g></g>
-</svg>
-<div class="apd-core"><div class="apd-corein"><div class="apd-corefloat"><img alt="" decoding="async" draggable="false" height="512" src="../assets/disciplines/etoile.webp" width="512"/></div></div></div>
-<div class="apd-orb" data-k="strategie" style="--ax:50.0;--ay:16.0;--k:0.9;--dl:0.25s;--dl2:1.25s">
-<div class="apd-in"><div class="apd-float" style="--fd:8.4s;--fdel:0s"><img alt="" decoding="async" draggable="false" height="384" loading="lazy" src="../assets/disciplines/boussole.webp" width="384"/></div></div>
-<div class="apd-lbl apd-top">Strategy</div>
-</div>
-<div class="apd-orb" data-k="humain" style="--ax:82.3;--ay:39.5;--k:1.15;--dl:0.38s;--dl2:1.33s">
-<div class="apd-in"><div class="apd-float" style="--fd:9.7s;--fdel:-2.1s"><img alt="" decoding="async" draggable="false" height="384" loading="lazy" src="../assets/disciplines/anneaux.webp" width="384"/></div></div>
-<div class="apd-lbl apd-top">Human understanding</div>
-</div>
-<div class="apd-orb" data-k="technologie" style="--ax:70.0;--ay:77.5;--k:0.8;--dl:0.51s;--dl2:1.41s">
-<div class="apd-in"><div class="apd-float" style="--fd:7.9s;--fdel:-4.3s"><img alt="" decoding="async" draggable="false" height="384" loading="lazy" src="../assets/disciplines/molecule.webp" width="384"/></div></div>
-<div class="apd-lbl apd-bottom">Technology</div>
-</div>
-<div class="apd-orb" data-k="donnees" style="--ax:30.0;--ay:77.5;--k:1.0;--dl:0.64s;--dl2:1.49s">
-<div class="apd-in"><div class="apd-float" style="--fd:10.6s;--fdel:-1.2s"><img alt="" decoding="async" draggable="false" height="384" loading="lazy" src="../assets/disciplines/prismes.webp" width="384"/></div></div>
-<div class="apd-lbl apd-bottom">Data</div>
-</div>
-<div class="apd-orb" data-k="creativite" style="--ax:17.7;--ay:39.5;--k:1.25;--dl:0.77s;--dl2:1.57s">
-<div class="apd-in"><div class="apd-float" style="--fd:9.1s;--fdel:-3.4s"><img alt="" decoding="async" draggable="false" height="384" loading="lazy" src="../assets/disciplines/ruban.webp" width="384"/></div></div>
-<div class="apd-lbl apd-top">Creativity</div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<p class="ap-punch ap-rev">The difference is made <span class="ap-grad">before the prompt.</span></p>
-</div>
-</section>
-<!-- ============ TRANSITION ============ -->
-<section class="ap-birth">
-<div class="ap-wrap">
-<h2 class="ap-h2 ap-rev">That's the space where <span class="ap-grad">Wanderful was born.</span></h2>
-<p class="ap-lead ap-rev" data-d="2" style="margin:26px auto 0;text-align:center;">Between what technology can produce and what humans still need to decide.</p>
-<div aria-hidden="true" class="ap-mark ap-rev" data-d="3">
-<img alt="" decoding="async" height="734" id="apMarkStill" src="../assets/bg/blob.jpg" width="1100"/>
-<video disablepictureinpicture="" height="734" id="apMarkVideo" loop="" muted="" playsinline="" preload="none" tabindex="-1" width="1100"></video>
 </div>
 </div>
 </section>
-<!-- ============ 02 — L'HISTOIRE ============ -->
-<section class="ap-ai" style="padding-top:0">
+<!-- ============ 01 — L'HISTOIRE ============ -->
+<section class="ap-story" id="ap-story">
 <div class="ap-wrap">
-<div class="ap-label ap-rev">02 — The story</div>
-<h2 class="ap-h2 ap-rev" data-d="1">Not an agency built to produce more.<br/> <span class="ap-grad">An agency built to think better.</span></h2>
-<p class="ap-lead ap-rev" data-d="2" style="margin-top:30px;">Wanderful was born from a conviction: the best marketing never comes from a single tool. It happens when consumer understanding, creativity, data and technology work together.</p>
-<p class="ap-lead ap-rev" data-d="3" style="margin-top:22px;">It's the approach Nassima Rizzotti developed at HEC Lausanne before putting it to the test in the real world by founding Wanderful Marketing.</p>
+<div class="ap-label ap-rev">01 — The story</div>
+<h2 class="ap-h2 ap-rev" data-d="1">Wanderful started <span class="ap-grad">while I was still studying.</span></h2>
+<div class="ap-story-grid">
+<div class="ap-rev" data-d="2">
+<p>I founded Wanderful Marketing in 2024, in Yvonand, during my Master's in marketing at HEC Lausanne.</p>
+</div>
+<div class="ap-rev" data-d="3">
+<p>Since then I've worked with companies across French-speaking Switzerland on real projects: brand identity, websites, Google and Meta campaigns, SEO and automation.</p>
+</div>
+</div>
 </div>
 </section>
 <!-- ============ LA FONDATRICE ============ -->
 <section class="ap-founder">
 <div class="ap-wrap">
-<div class="ap-founder-grid">
-<div class="ap-photo ap-rev">
+<figure class="ap-portrait ap-rev">
 <img alt="Nassima Rizzotti, founder of Wanderful Marketing" decoding="async" height="800" loading="lazy" src="../assets/nassima.jpg" width="640"/>
+<figcaption>Nassima Rizzotti — founder</figcaption>
+</figure>
+<div class="ap-label ap-rev">02 — What my background brings you</div>
+<h2 class="ap-h2 ap-rev" data-d="1">Trained to understand the <span class="ap-grad">“why”</span>, not just the “how”.</h2>
+<p class="ap-lead ap-rev" data-d="2" style="margin-top:26px;">I hold a degree in Management and founded the agency in 2024, during my Master's in marketing at HEC Lausanne. Here is what that changes for you in practice.</p>
+<div class="ap-trio">
+<div class="ap-card ap-rev" data-d="1">
+<h4>Understanding what makes people act</h4>
+<p>I work on what makes people trust you, click, book or buy — not just on what looks good.</p>
 </div>
-<div>
-<div class="ap-label ap-rev">The founder</div>
-<h2 class="ap-h2 ap-rev" data-d="1">A marketer trained to understand the <span class="ap-grad">“why”</span>, not just the “how”.</h2>
-<p class="ap-lead ap-rev" data-d="2" style="margin-top:26px;">Founder of Wanderful Marketing, Nassima Rizzotti holds a degree in Management and launched the agency in 2024 while completing her Master's in Marketing at HEC Lausanne. A multidisciplinary education, extended through hands-on work on real client projects.</p>
-<div class="ap-orbit ap-rev" data-d="3">
-<div class="ap-orbit-center">MARKETING</div>
-<div class="ap-disc">
-<h4>Strategy</h4><p>Strategic marketing, positioning, business decisions.</p></div>
-<div class="ap-disc">
-<h4>Behaviour</h4><p>Consumer psychology, behavioural insights, understanding how decisions are made.</p></div>
-<div class="ap-disc">
-<h4>Data</h4><p>Marketing science, statistical methods, analysis and experimentation.</p></div>
-<div class="ap-disc">
-<h4>Technology</h4><p>Tracking, automation, AI, marketing systems — built in the field.</p></div>
-<div class="ap-disc">
-<h4>Creative</h4><p>Concept, content, motion, brand experience.</p></div>
+<div class="ap-card ap-rev" data-d="2">
+<h4>Analysing and testing</h4>
+<p>A creative hunch becomes a hypothesis, a campaign becomes a test, and the results decide what we improve next.</p>
 </div>
-<div class="ap-formula ap-rev" data-d="4">
-<span>A creative intuition becomes a <b>hypothesis</b>.</span>
-<span>A campaign becomes a <b>test</b>.</span>
-<span>The <b>data</b> decides what comes next.</span>
+<div class="ap-card ap-rev" data-d="3">
+<h4>Turning ideas into working things</h4>
+<p>Ideas become content, websites and systems that actually run — not recommendations that stay in a document.</p>
 </div>
+</div>
+</div>
+</section>
+<!-- ============ 03 — COMMENT JE TRAVAILLE ============ -->
+<section class="ap-work">
+<div class="ap-wrap">
+<div class="ap-label ap-rev">03 — How I work</div>
+<h2 class="ap-h2 ap-rev" data-d="1">Small team. <span class="ap-grad">Big commitment.</span></h2>
+<p class="ap-lead ap-rev" data-d="2" style="margin-top:24px;">The person you set the strategy with is the one who carries it out and answers to you for it.</p>
+<div class="ap-princ">
+<div class="ap-mini ap-rev" data-d="1"><h4>Direct contact</h4>
+<p>You talk to me, not to a middleman. Your questions get an answer without going through three people.</p></div>
+<div class="ap-mini ap-rev" data-d="2"><h4>From strategy to execution</h4>
+<p>What we decide together is what ships. Nothing gets lost between the intention and the launch.</p></div>
+<div class="ap-mini ap-rev" data-d="3"><h4>Decisions you can follow</h4>
+<p>You know what changed, why, and what came of it — including when the answer is “that did not work, we are stopping it”.</p></div>
+</div>
+<div class="ap-ia-live ap-rev" data-d="1">
+<h3>AI, where it genuinely helps</h3>
+<p>It does not replace thinking — it frees up time for it. In practice, I use it for three things.</p>
+<div class="ap-three">
+<div class="ap-mini ap-rev" data-d="1"><h4>Explore</h4>
+<p>Running through twenty creative angles for a campaign before keeping two worth testing.</p></div>
+<div class="ap-mini ap-rev" data-d="2"><h4>Automate</h4>
+<p>Letting repetitive work run on its own — performance pulls, follow-ups, report formatting.</p></div>
+<div class="ap-mini ap-rev" data-d="3"><h4>Analyse</h4>
+<p>Reading large volumes of data quickly to spot what is drifting — then deciding by hand.</p></div>
 </div>
 </div>
 </div>
@@ -734,68 +753,14 @@ footer{margin-top:76px;padding:54px 0 34px;}
 <span aria-hidden="true" class="ap-pen"></span>
 </div>
 <h2 class="ap-h ap-rev" style="max-width:none">Magic, yes.<br/> <span class="ap-grad">But never by chance.</span></h2>
-<p class="ap-lead ap-rev" data-d="2" style="margin:30px auto 0;text-align:center;">We like to call it magic. But behind a campaign that seems to work like magic, there's rarely a stroke of luck.</p>
-<div class="ap-chain" id="apChain">
-<span class="ap-chip">INSIGHT</span><span class="ap-plus">+</span>
-<span class="ap-chip">STRATEGY</span><span class="ap-plus">+</span>
-<span class="ap-chip">CREATIVE</span><span class="ap-plus">+</span>
-<span class="ap-chip">DATA</span><span class="ap-plus">+</span>
-<span class="ap-chip">TECHNOLOGY</span><span class="ap-plus">+</span>
-<span class="ap-chip">TESTING</span>
-</div>
-<div class="ap-effect" id="apEffect">✦ The Wanderful effect</div>
-<p class="ap-h2 ap-rev" data-d="3" style="margin-top:70px;">The wand is only <span class="ap-grad">the visible part.</span></p>
-</div>
-</section>
-<!-- ============ 03 — L'IA AVEC INTENTION ============ -->
-<section class="ap-ai">
-<div class="ap-wrap">
-<div class="ap-label ap-rev">03 — AI, with intent</div>
-<h2 class="ap-h2 ap-rev" data-d="1">AI accelerates.<br/><span class="ap-grad">Strategy leads.</span></h2>
-<p class="ap-lead ap-rev" data-d="2" style="margin-top:28px;">At Wanderful, AI is neither a sales pitch nor a substitute for thinking. It lets us explore faster, automate what doesn't need to be manual, analyse more data and spend more time on the decisions that really matter.</p>
-<div class="ap-swap ap-h2 ap-rev" data-d="3" id="apSwap" style="margin-top:64px;">
-<span class="s1">We don't use AI to make more content.</span>
-<span class="s2 ap-grad">We use it to make better marketing.</span>
-</div>
-<div class="ap-three">
-<div class="ap-mini ap-rev" data-d="1"><h4>Explore</h4>
-<p>Explore more angles, hypotheses and opportunities.</p></div>
-<div class="ap-mini ap-rev" data-d="2"><h4>Automate</h4>
-<p>Automate repetitive tasks and connect systems.</p></div>
-<div class="ap-mini ap-rev" data-d="3"><h4>Analyse</h4>
-<p>Turn more data into actionable insights.</p></div>
-</div>
-</div>
-</section>
-<!-- ============ HUMAIN + MACHINE ============ -->
-<section class="ap-human">
-<div class="ap-wrap">
-<h2 class="ap-h2 ap-rev">The more machines can produce, the more <span class="ap-grad">valuable</span> understanding humans becomes.</h2>
-<p class="ap-lead ap-rev" data-d="2">Because at the end of every campaign, landing page or automated journey, there's always a human decision: to look, to trust, to click, to book, to buy.</p>
-<div aria-hidden="true" class="ap-flow ap-rev" data-d="3">
-<svg viewbox="0 0 600 140">
-<g class="fdot" fill="#AEACF2">
-<circle cx="20" cy="30" r="3"></circle><circle cx="60" cy="72" r="3"></circle><circle cx="34" cy="108" r="3"></circle>
-<circle cx="104" cy="44" r="3"></circle><circle cx="140" cy="96" r="3"></circle><circle cx="178" cy="60" r="3"></circle>
-<circle cx="216" cy="102" r="3"></circle><circle cx="248" cy="38" r="3"></circle>
-</g>
-<path d="M20 30 C 180 30, 240 70, 300 70" fill="none" stroke="#CED0F2" stroke-width="1.2"></path>
-<path d="M34 108 C 190 108, 240 74, 300 70" fill="none" stroke="#CED0F2" stroke-width="1.2"></path>
-<path d="M178 60 C 230 60, 260 68, 300 70" fill="none" stroke="#CED0F2" stroke-width="1.2"></path>
-<circle cx="318" cy="70" fill="#8D7EF2" r="9"></circle>
-<path d="M336 70 L 470 70" stroke="#8D7EF2" stroke-dasharray="4 5" stroke-width="1.6"></path>
-<circle cx="520" cy="70" fill="none" r="26" stroke="#8D7EF2" stroke-width="1.6"></circle>
-<circle cx="520" cy="60" fill="#8D7EF2" r="8"></circle>
-<path d="M506 86 a14 14 0 0 1 28 0" fill="#8D7EF2"></path>
-</svg>
-</div>
+<p class="ap-lead ap-rev" data-d="2" style="margin:30px auto 0;text-align:center;">We like to call it magic. But behind a campaign that seems to run by itself there is never luck: there is an intention, a series of tests, and what we learned from the ones before.</p>
 </div>
 </section>
 <!-- ============ 04 — LA PREUVE ============ -->
 <section class="ap-proof" id="apProof">
 <div class="ap-wrap">
-<div class="ap-label ap-rev">04 — The proof</div>
-<h2 class="ap-h2 ap-rev" data-d="1">And when everything works together?</h2>
+<div class="ap-label ap-rev">04 — Real proof</div>
+<h2 class="ap-h2 ap-rev" data-d="1">One client, one system, <span class="ap-grad">measured results.</span></h2>
 <div class="ap-pipe ap-rev" data-d="2" style="margin-top:34px;">
 <span>ADS</span><span>SEO</span><span>LANDING PAGES</span><span>TRACKING</span>
 <span>AUTOMATION</span><span>OPTIMISATION</span>
@@ -809,25 +774,7 @@ footer{margin-top:76px;padding:54px 0 34px;}
 <small>organic traffic in 9 months</small></div>
 </div>
 <p class="ap-lead ap-rev">Carewell — healthcare recruitment in Switzerland. Paid acquisition, SEO, landing pages, tracking, automation and continuous optimisation brought together in a single system.</p>
-<p class="ap-h2 ap-rev" data-d="2" style="margin-top:46px;font-size:clamp(24px,3.2vw,40px)">No magic formula. <span class="ap-grad">A system that works.</span></p>
 <a class="btn btn-primary ap-rev" data-d="3" href="carewell.html" style="margin-top:34px;display:inline-flex;">See the case study →</a>
-</div>
-</section>
-<!-- ============ COMMENT ON TRAVAILLE ============ -->
-<section class="ap-work">
-<div class="ap-wrap">
-<h2 class="ap-h2 ap-rev">Small team. <span class="ap-grad">Big commitment.</span></h2>
-<p class="ap-lead ap-rev" data-d="1" style="margin-top:24px;">You're not passed from a salesperson to a project manager to a junior. The person you shape the strategy with stays involved in delivering it.</p>
-<div class="ap-princ">
-<div class="ap-mini ap-rev" data-d="1"><h4>Direct</h4>
-<p>You speak to the person who thinks through and runs your strategy.</p></div>
-<div class="ap-mini ap-rev" data-d="2"><h4>Measurable</h4>
-<p>What can be measured, is. What doesn't work gets challenged.</p></div>
-<div class="ap-mini ap-rev" data-d="3"><h4>Agile</h4>
-<p>Fewer layers, fewer pointless meetings, more time on the work that matters.</p></div>
-<div class="ap-mini ap-rev" data-d="4"><h4>Curious</h4>
-<p>Testing new tools isn't a strategy. Knowing when to use them is.</p></div>
-</div>
 </div>
 </section>
 <!-- ============ 05 — CTA ============ -->
@@ -860,18 +807,9 @@ footer{margin-top:76px;padding:54px 0 34px;}
   }, {threshold:.18, rootMargin:'0px 0px -8% 0px'});
   document.querySelectorAll('.ap-rev').forEach(function(el){ io.observe(el); });
 
-  /* hero : nuage de tokens puis flou */
+  /* premier ecran */
   var hero = document.getElementById('apHero');
-  if (hero) {
-    requestAnimationFrame(function(){ hero.classList.add('in'); });
-    document.querySelectorAll('.ap-tok').forEach(function(t, i){
-      t.style.transitionDelay = (0.5 + i * 0.16) + 's';
-    });
-    if (!reduce) setTimeout(function(){
-      document.querySelectorAll('.ap-tok').forEach(function(t){ t.style.transitionDelay = '0s'; });
-      hero.classList.add('blurred');
-    }, 3400);
-  }
+  if (hero) requestAnimationFrame(function(){ hero.classList.add('in'); });
 
   /* 01 : etapes + bascule de la composition */
   var steps = [].slice.call(document.querySelectorAll('#apSteps p[data-step]'));
