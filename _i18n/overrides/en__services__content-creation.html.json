@@ -1,0 +1,26 @@
+[
+ [
+  " data-resume=\"Reprendre\"",
+  " data-resume=\"Resume\""
+ ],
+ [
+  "data-w=\"Semaine 1\"",
+  "data-w=\"Week 1\""
+ ],
+ [
+  "data-w=\"Semaine 3\"",
+  "data-w=\"Week 3\""
+ ],
+ [
+  "data-w=\"Semaine 4\"",
+  "data-w=\"Week 4\""
+ ],
+ [
+  "data-w=\"Fin du mois\"",
+  "data-w=\"End of month\""
+ ],
+ [
+  "<span>M</span><span>T</span><span>T</span><span>T</span><span>F</span><span>S</span><span>S</span>",
+  "<span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span>"
+ ]
+]
