@@ -1036,11 +1036,12 @@ footer{margin-top:80px;padding:56px 0 34px;}
 
 /* ===== Interactive journey ===== */
 .journey{position:relative;height:460vh;}
-.journey-intro{text-align:center;padding:24px 0 0;}
-.journey-pin{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden;}
-.journey-stage{position:relative;width:100%;max-width:1080px;margin:0 auto;padding:0 32px;height:84vh;display:grid;grid-template-columns:.82fr 1.18fr;gap:36px;align-items:center;}
+.journey-intro{text-align:center;padding:0;flex:none;}
+.journey-intro h2{font-size:clamp(30px,3.4vw,46px)!important;}
+.journey-pin{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;align-items:stretch;padding-top:112px;overflow:hidden;}
+.journey-stage{position:relative;width:100%;max-width:1080px;margin:0 auto;padding:0 32px;flex:1;min-height:0;display:grid;grid-template-columns:.82fr 1.18fr;gap:36px;align-items:center;}
 /* sphere column */
-.j-orb-col{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;height:100%;}
+.j-orb-col{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;height:100%;padding-bottom:18%;}
 .j-orb{position:relative;width:250px;max-width:88%;z-index:3;transition:transform .7s cubic-bezier(.34,1.4,.5,1);will-change:transform;}
 .j-orb>img{width:100%;filter:drop-shadow(0 30px 60px rgba(141,126,242,.55));animation:orbSpin 18s ease-in-out infinite;}
 @keyframes orbSpin{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-12px) rotate(4deg)}}
@@ -1053,9 +1054,9 @@ footer{margin-top:80px;padding:56px 0 34px;}
 .j-counter{font-size:13px;color:var(--muted);font-weight:600;letter-spacing:.12em;}
 .j-counter b{color:var(--violet);font-size:18px;}
 /* steps vertical carousel */
-.j-viewport{position:relative;height:84vh;overflow:hidden;
-  -webkit-mask:linear-gradient(180deg,transparent 0,#000 17%,#000 83%,transparent 100%);
-  mask:linear-gradient(180deg,transparent 0,#000 17%,#000 83%,transparent 100%);}
+.j-viewport{position:relative;height:100%;align-self:stretch;overflow:hidden;
+  -webkit-mask:linear-gradient(180deg,transparent 0,#000 8%,#000 80%,transparent 100%);
+  mask:linear-gradient(180deg,transparent 0,#000 8%,#000 80%,transparent 100%);}
 .j-track{position:absolute;left:0;right:0;top:0;transition:transform .7s cubic-bezier(.4,0,.2,1);will-change:transform;}
 .j-step{padding:11px 0;opacity:.32;transform:scale(.93);transition:opacity .5s ease,transform .5s ease;}
 .j-step.active{opacity:1;transform:scale(1);}
@@ -1465,12 +1466,12 @@ footer{margin-top:80px;padding:56px 0 34px;}
 </section>
 <!-- METHODE — parcours interactif -->
 <section class="journey" id="methode">
+<div class="journey-pin">
 <div class="wrap journey-intro reveal">
 <div class="eyebrow">Our method</div>
 <h2 style="font-size:clamp(32px,4vw,52px);">An <span class="grad">8-step journey.</span></h2>
-<p style="max-width:560px;margin:14px auto 0;color:var(--ink);font-weight:300;">Follow the sphere: it guides you through every step of our approach, from strategy all the way to sales.</p>
+<p style="max-width:560px;margin:14px auto 0;color:var(--ink);font-weight:300;">Every project follows the same path, so nothing is left to chance: from brand strategy all the way to sales. Scroll down — the sphere guides you from one step to the next.</p>
 </div>
-<div class="journey-pin">
 <div class="journey-stage">
 <div class="j-orb-col">
 <div class="j-orb" id="jOrb">
@@ -1742,7 +1743,7 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   function centerActive(){
     if(isMobile()||current<0) return;
     const card=steps[current];
-    const y=vp.clientHeight/2-(card.offsetTop+card.offsetHeight/2);
+    const y=vp.clientHeight*0.4-(card.offsetTop+card.offsetHeight/2);
     track.style.transform='translateY('+y+'px)';
   }
 
