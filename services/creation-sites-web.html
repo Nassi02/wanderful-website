@@ -10,7 +10,7 @@
   <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
   <link rel="manifest" href="/site.webmanifest">
   <meta name="theme-color" content="#8D7EF2">
-<link rel="stylesheet" href="../services.css?v=12"/>
+<link rel="stylesheet" href="../services.css?v=14"/>
 <link rel="canonical" href="https://wanderful-marketing.com/services/creation-sites-web.html">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="website">
@@ -516,7 +516,7 @@
   }
   function build(){
     skT.forEach(clearTimeout); skT=[];
-    sks.forEach(function(el,i){skT.push(setTimeout(function(){el.classList.add('is-in');},120+i*110));});
+    sks.forEach(function(el,i){skT.push(setTimeout(function(){el.classList.add('is-in');},60+i*55));});
   }
 
   function reset(){
@@ -537,37 +537,37 @@
 
   var steps=[
     [0,function(){step(0);build();}],
-    [4200,function(){step(1);st(['s-design'],['s-wire']);}],
+    [1900,function(){step(1);st(['s-design'],['s-wire']);}],
     /* 3D et animation : la bague apparaît, puis les sections se révèlent au défilement */
-    [8000,function(){step(2);st(['s-3d']);var g=G();if(g)g.intro();}],
-    [10800,function(){scrollTo(true);st(['s-scroll']);}],
-    [13800,function(){scrollTo(false);}],
+    [5700,function(){step(2);st(['s-3d']);var g=G();if(g)g.intro();}],
+    [8500,function(){scrollTo(true);st(['s-scroll']);}],
+    [11500,function(){scrollTo(false);}],
     /* interaction : le curseur prend la bague, puis change le métal */
-    [15000,function(){step(3);cur.classList.add('is-on');moveTo(obj,.55,.55);}],
-    [16000,function(){moveTo(obj,.22,.32);tilt(-.9,-.6);}],
-    [17100,function(){moveTo(obj,.8,.7);tilt(.9,.6);}],
-    [18200,function(){moveTo(sws[1],.5,.5);tilt(0,0);}],
-    [19200,function(){click();color('nacre');}],
-    [20100,function(){moveTo(sws[2],.5,.5);}],
-    [21100,function(){click();color('rose');}],
-    [22000,function(){moveTo(sws[0],.5,.5);}],
-    [23000,function(){click();color('or');}],
-    [23600,function(){cur.classList.remove('is-on');}],
+    [12700,function(){step(3);cur.classList.add('is-on');moveTo(obj,.55,.55);}],
+    [13700,function(){moveTo(obj,.22,.32);tilt(-.9,-.6);}],
+    [14800,function(){moveTo(obj,.8,.7);tilt(.9,.6);}],
+    [15900,function(){moveTo(sws[1],.5,.5);tilt(0,0);}],
+    [16900,function(){click();color('nacre');}],
+    [17800,function(){moveTo(sws[2],.5,.5);}],
+    [18800,function(){click();color('rose');}],
+    [19700,function(){moveTo(sws[0],.5,.5);}],
+    [20700,function(){click();color('or');}],
+    [21300,function(){cur.classList.remove('is-on');}],
     /* version mobile */
-    [24200,function(){step(4);st(['s-mobile']);}],
-    [26600,function(){scrollTo(true);}],
-    [28400,function(){scrollTo(false);}],
-    [29800,function(){st([],['s-mobile']);}],
+    [21900,function(){step(4);st(['s-mobile']);}],
+    [24300,function(){scrollTo(true);}],
+    [26100,function(){scrollTo(false);}],
+    [27500,function(){st([],['s-mobile']);}],
     /* la demande */
-    [30900,function(){step(5);cur.classList.add('is-on');moveTo(btn,.5,.55);}],
-    [32200,function(){click();btn.classList.add('is-hit');}],
-    [32500,function(){btn.classList.remove('is-hit');vp.classList.add('is-modal');modal.classList.add('is-on');}],
-    [33300,function(){cur.classList.remove('is-on');speed.classList.add('is-on');}],
-    [36300,function(){modal.classList.remove('is-on');vp.classList.remove('is-modal');}],
-    [36900,function(){lis.forEach(function(li){li.classList.remove('is-on');li.classList.add('is-done');});hint.classList.add('is-on');speed.classList.remove('is-on');}]
+    [28600,function(){step(5);cur.classList.add('is-on');moveTo(btn,.5,.55);}],
+    [29900,function(){click();btn.classList.add('is-hit');}],
+    [30200,function(){btn.classList.remove('is-hit');vp.classList.add('is-modal');modal.classList.add('is-on');}],
+    [31000,function(){cur.classList.remove('is-on');speed.classList.add('is-on');}],
+    [34000,function(){modal.classList.remove('is-on');vp.classList.remove('is-modal');}],
+    [34600,function(){lis.forEach(function(li){li.classList.remove('is-on');li.classList.add('is-done');});hint.classList.add('is-on');speed.classList.remove('is-on');}]
   ];
   steps.sort(function(a,b){return a[0]-b[0];});
-  var LOOP=42000;
+  var LOOP=39700;
 
   var t0=0,acc=0,idx=0,raf=0,paused=false,running=false;
   function frame(now){

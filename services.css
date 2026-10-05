@@ -1878,3 +1878,9 @@ html{scroll-behavior:smooth;}
   .br-words span,.br-mood i,.br-pal span,.br-type,.br-app,.br-msg,.br-ask,.br-word{transition:none!important;}
   .br-logo svg *{stroke-dashoffset:0;}
 }
+
+/* structure : un reflet qui passe sur les blocs, pour qu'on voie que ça se construit */
+.wb-screen.s-wire .sk{background-image:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.75) 50%,transparent 70%)!important;
+  background-size:220% 100%!important;background-repeat:no-repeat!important;animation:wbShimmer 1.1s ease-in-out infinite;}
+@keyframes wbShimmer{0%{background-position:130% 0;}100%{background-position:-30% 0;}}
+@media(prefers-reduced-motion:reduce){.wb-screen.s-wire .sk{animation:none;}}
