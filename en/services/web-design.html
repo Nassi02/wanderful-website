@@ -512,7 +512,7 @@
   }
   function build(){
     skT.forEach(clearTimeout); skT=[];
-    sks.forEach(function(el,i){skT.push(setTimeout(function(){el.classList.add('is-in');},60+i*55));});
+    sks.forEach(function(el,i){skT.push(setTimeout(function(){el.classList.add('is-in');},20+i*25));});
   }
 
   function reset(){
@@ -533,37 +533,37 @@
 
   var steps=[
     [0,function(){step(0);build();}],
-    [1900,function(){step(1);st(['s-design'],['s-wire']);}],
+    [800,function(){step(1);st(['s-design'],['s-wire']);}],
     /* 3D et animation : la bague apparaît, puis les sections se révèlent au défilement */
-    [5700,function(){step(2);st(['s-3d']);var g=G();if(g)g.intro();}],
-    [8500,function(){scrollTo(true);st(['s-scroll']);}],
-    [11500,function(){scrollTo(false);}],
+    [4600,function(){step(2);st(['s-3d']);var g=G();if(g)g.intro();}],
+    [7400,function(){scrollTo(true);st(['s-scroll']);}],
+    [10400,function(){scrollTo(false);}],
     /* interaction : le curseur prend la bague, puis change le métal */
-    [12700,function(){step(3);cur.classList.add('is-on');moveTo(obj,.55,.55);}],
-    [13700,function(){moveTo(obj,.22,.32);tilt(-.9,-.6);}],
-    [14800,function(){moveTo(obj,.8,.7);tilt(.9,.6);}],
-    [15900,function(){moveTo(sws[1],.5,.5);tilt(0,0);}],
-    [16900,function(){click();color('nacre');}],
-    [17800,function(){moveTo(sws[2],.5,.5);}],
-    [18800,function(){click();color('rose');}],
-    [19700,function(){moveTo(sws[0],.5,.5);}],
-    [20700,function(){click();color('or');}],
-    [21300,function(){cur.classList.remove('is-on');}],
+    [11600,function(){step(3);cur.classList.add('is-on');moveTo(obj,.55,.55);}],
+    [12600,function(){moveTo(obj,.22,.32);tilt(-.9,-.6);}],
+    [13700,function(){moveTo(obj,.8,.7);tilt(.9,.6);}],
+    [14800,function(){moveTo(sws[1],.5,.5);tilt(0,0);}],
+    [15800,function(){click();color('nacre');}],
+    [16700,function(){moveTo(sws[2],.5,.5);}],
+    [17700,function(){click();color('rose');}],
+    [18600,function(){moveTo(sws[0],.5,.5);}],
+    [19600,function(){click();color('or');}],
+    [20200,function(){cur.classList.remove('is-on');}],
     /* version mobile */
-    [21900,function(){step(4);st(['s-mobile']);}],
-    [24300,function(){scrollTo(true);}],
-    [26100,function(){scrollTo(false);}],
-    [27500,function(){st([],['s-mobile']);}],
+    [20800,function(){step(4);st(['s-mobile']);}],
+    [23200,function(){scrollTo(true);}],
+    [25000,function(){scrollTo(false);}],
+    [26400,function(){st([],['s-mobile']);}],
     /* la demande */
-    [28600,function(){step(5);cur.classList.add('is-on');moveTo(btn,.5,.55);}],
-    [29900,function(){click();btn.classList.add('is-hit');}],
-    [30200,function(){btn.classList.remove('is-hit');vp.classList.add('is-modal');modal.classList.add('is-on');}],
-    [31000,function(){cur.classList.remove('is-on');speed.classList.add('is-on');}],
-    [34000,function(){modal.classList.remove('is-on');vp.classList.remove('is-modal');}],
-    [34600,function(){lis.forEach(function(li){li.classList.remove('is-on');li.classList.add('is-done');});hint.classList.add('is-on');speed.classList.remove('is-on');}]
+    [27500,function(){step(5);cur.classList.add('is-on');moveTo(btn,.5,.55);}],
+    [28800,function(){click();btn.classList.add('is-hit');}],
+    [29100,function(){btn.classList.remove('is-hit');vp.classList.add('is-modal');modal.classList.add('is-on');}],
+    [29900,function(){cur.classList.remove('is-on');speed.classList.add('is-on');}],
+    [32900,function(){modal.classList.remove('is-on');vp.classList.remove('is-modal');}],
+    [33500,function(){lis.forEach(function(li){li.classList.remove('is-on');li.classList.add('is-done');});hint.classList.add('is-on');speed.classList.remove('is-on');}]
   ];
   steps.sort(function(a,b){return a[0]-b[0];});
-  var LOOP=39700;
+  var LOOP=38600;
 
   var t0=0,acc=0,idx=0,raf=0,paused=false,running=false;
   function frame(now){
