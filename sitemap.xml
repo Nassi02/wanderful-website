@@ -131,36 +131,6 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/services/videos-publicitaires.html"/>
   </url>
   <url>
-    <loc>https://wanderful-marketing.com/services/videos-saas.html</loc>
-    <lastmod>2026-09-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/services/videos-saas.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/services/saas-videos.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/services/videos-saas.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/services/personal-branding.html</loc>
-    <lastmod>2026-09-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/services/personal-branding.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/services/personal-branding.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/services/personal-branding.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/services/drone.html</loc>
-    <lastmod>2026-09-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/services/drone.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/services/drone.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/services/drone.html"/>
-  </url>
-  <url>
     <loc>https://wanderful-marketing.com/sante.html</loc>
     <lastmod>2026-09-12</lastmod>
     <changefreq>monthly</changefreq>
@@ -375,36 +345,6 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/services/videos-publicitaires.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/services/video-ads.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/services/videos-publicitaires.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/en/services/saas-videos.html</loc>
-    <lastmod>2026-09-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/services/videos-saas.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/services/saas-videos.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/services/videos-saas.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/en/services/personal-branding.html</loc>
-    <lastmod>2026-09-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/services/personal-branding.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/services/personal-branding.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/services/personal-branding.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/en/services/drone.html</loc>
-    <lastmod>2026-09-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/services/drone.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/services/drone.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/services/drone.html"/>
   </url>
   <url>
     <loc>https://wanderful-marketing.com/en/healthcare.html</loc>
