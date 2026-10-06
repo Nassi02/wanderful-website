@@ -1,0 +1,42 @@
+[
+ [
+  " data-resume=\"Reprendre\"",
+  " data-resume=\"Resume\""
+ ],
+ [
+  "data-w=\"Semaine 1\"",
+  "data-w=\"Week 1\""
+ ],
+ [
+  "data-w=\"Semaine 2\"",
+  "data-w=\"Week 2\""
+ ],
+ [
+  "data-w=\"Semaine 3\"",
+  "data-w=\"Week 3\""
+ ],
+ [
+  "data-w=\"Livraison\"",
+  "data-w=\"Delivery\""
+ ],
+ [
+  "data-w=\"Le mois suivant\"",
+  "data-w=\"The next month\""
+ ],
+ [
+  "data-w=\"Aujourd'hui\"",
+  "data-w=\"Today\""
+ ],
+ [
+  "data-w=\"12 secondes plus tard\"",
+  "data-w=\"12 seconds later\""
+ ],
+ [
+  "data-w=\"Chaque semaine\"",
+  "data-w=\"Every week\""
+ ],
+ [
+  "v+'\\u00a0%'",
+  "v+'%'"
+ ]
+]
