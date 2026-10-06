@@ -191,32 +191,6 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/pme-locales.html"/>
   </url>
   <url>
-    <loc>https://wanderful-marketing.com/mentions-legales.html</loc>
-    <lastmod>2026-09-12</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/mentions-legales.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/legal-notice.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/mentions-legales.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/politique-de-confidentialite.html</loc>
-    <lastmod>2026-09-12</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/politique-de-confidentialite.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/privacy-policy.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/politique-de-confidentialite.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/terms.html</loc>
-    <lastmod>2026-09-12</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
     <loc>https://wanderful-marketing.com/en/</loc>
     <lastmod>2026-09-12</lastmod>
     <changefreq>weekly</changefreq>
@@ -405,25 +379,5 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/pme-locales.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/local-businesses.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/pme-locales.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/en/legal-notice.html</loc>
-    <lastmod>2026-09-12</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/mentions-legales.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/legal-notice.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/mentions-legales.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/en/privacy-policy.html</loc>
-    <lastmod>2026-09-12</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/politique-de-confidentialite.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/privacy-policy.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/politique-de-confidentialite.html"/>
   </url>
 </urlset>
