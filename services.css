@@ -2376,6 +2376,8 @@ html{scroll-behavior:smooth;}
 
 /* productions : deux vidéos */
 .portfolio-grid.sa-grid2{grid-template-columns:repeat(2,minmax(0,1fr));max-width:540px;margin-left:auto;margin-right:auto;}
+.portfolio-item.sa-feat{aspect-ratio:16/9;max-width:900px;margin:0 auto 14px;border-radius:16px;box-shadow:0 30px 70px -28px rgba(141,126,242,.55);}
+.portfolio-item.sa-feat:hover{transform:translateY(-3px);}
 
 @media(prefers-reduced-motion:reduce){
   .sa-acts li,.sa-acts li i::after,.sa-line1,.sa-fr,.sa-new,.sa-cursor,.sa-sub span,.sa-play,.sa-prog i,.sa-feed li,.sa-caps i,.sa-q,.sa-week i{transition:none!important;}
