@@ -162,6 +162,24 @@ footer{margin-top:76px;padding:54px 0 34px;}
   .foot-grid{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:560px){.wrap{padding:0 20px;}.grid-3,.foot-grid{grid-template-columns:1fr;}}
+
+/* icones dessinees + sections secteur (ajout) */
+.card .ico svg{width:27px;height:27px;}
+.sol .n svg{width:23px;height:23px;}
+.chips a{letter-spacing:.01em;}
+.sec-ctx{max-width:760px;margin:0 auto;}
+.sec-ctx p{font-size:16.5px;line-height:1.75;color:var(--ink);font-weight:300;margin-bottom:18px;}
+.sec-faq{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.sec-faq .qa{background:var(--glass-strong);border:1px solid rgba(255,255,255,.7);border-radius:var(--r-card);padding:26px 28px;box-shadow:var(--shadow-soft);}
+.sec-faq .qa h3{font-size:16.5px;margin-bottom:10px;line-height:1.4;}
+.sec-faq .qa p{font-size:14.5px;color:var(--ink);font-weight:300;line-height:1.7;}
+.sec-preuve{max-width:760px;margin:0 auto;background:var(--glass-strong);border:1px solid rgba(255,255,255,.7);border-left:3px solid var(--violet);border-radius:var(--r-card);padding:30px 32px;box-shadow:var(--shadow-soft);}
+.sec-preuve p{font-size:15.5px;line-height:1.75;color:var(--ink);font-weight:300;}
+.sec-preuve .kpis{display:flex;flex-wrap:wrap;gap:26px;margin:20px 0 18px;}
+.sec-preuve .kpis div b{display:block;font-size:26px;font-weight:700;color:var(--violet);line-height:1.1;}
+.sec-preuve .kpis div span{font-size:13px;color:var(--ink);font-weight:300;}
+.sec-preuve a{color:var(--violet);font-weight:600;text-decoration:underline;text-underline-offset:2px;}
+@media(max-width:880px){.sec-faq{grid-template-columns:1fr;}}
 </style>
 <link rel="canonical" href="https://wanderful-marketing.com/sante.html">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -230,12 +248,12 @@ footer{margin-top:76px;padding:54px 0 34px;}
 
 <div class="wrap" style="padding-top:18px;">
   <div class="chips reveal in">
-    <a href="restaurants.html">🍽️ Restaurants & cafés</a>
-    <a href="immobilier.html">🏠 Immobilier</a>
-    <a href="sante.html" class="on">🩺 Santé</a>
-    <a href="ecommerce.html">🛍️ E-commerce</a>
-    <a href="formation.html">🎓 Formation</a>
-    <a href="pme-locales.html">🏪 PME locales</a>
+    <a href="restaurants.html">Restaurants & cafés</a>
+    <a href="immobilier.html">Immobilier</a>
+    <a href="sante.html" class="on">Santé</a>
+    <a href="ecommerce.html">E-commerce</a>
+    <a href="formation.html">Formation</a>
+    <a href="pme-locales.html">PME locales</a>
   </div>
 </div>
 
@@ -261,12 +279,12 @@ footer{margin-top:76px;padding:54px 0 34px;}
     <p>Parlons d'abord de votre quotidien.</p>
   </div>
   <div class="grid-3">
-    <div class="card reveal"><div class="ico">📅</div><h3>Agenda irrégulier</h3><p>Des creux dans le planning et des annulations qui pèsent sur l'activité.</p></div>
-    <div class="card reveal"><div class="ico">🔍</div><h3>Peu visible en ligne</h3><p>Les patients du coin ne vous trouvent pas quand ils cherchent un praticien.</p></div>
-    <div class="card reveal"><div class="ico">🤝</div><h3>Manque de confiance</h3><p>Sans présence pro, difficile d'inspirer confiance avant le premier rendez-vous.</p></div>
-    <div class="card reveal"><div class="ico">⭐</div><h3>Peu d'avis</h3><p>Peu d'avis récents, alors qu'ils rassurent énormément les nouveaux patients.</p></div>
-    <div class="card reveal"><div class="ico">📱</div><h3>Réseaux inexistants</h3><p>Pas le temps de communiquer sur votre expertise et vos services.</p></div>
-    <div class="card reveal"><div class="ico">🔒</div><h3>Sujet sensible</h3><p>Communiquer dans la santé demande tact et conformité — pas évident seul.</p></div>
+    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 8h18M7 3v4M17 3v4M4 5h16a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z"/></svg></div><h3>Des creux dans l’agenda</h3><p>Une annulation la veille, un créneau qui reste vide, et la semaine devient déficitaire. Dans un cabinet, le planning est le chiffre d’affaires : ce qui n’est pas rempli ne se rattrape pas.</p></div>
+    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3"/></svg></div><h3>Invisible sur la recherche locale</h3><p>Un patient qui cherche un praticien tape le métier et la commune, puis clique dans les trois premiers résultats de la carte. Si votre fiche est incomplète ou mal classée, vous n’existez pas à ce moment-là.</p></div>
+    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 3v5.5c0 4.3-2.9 7.6-7 8.9-4.1-1.3-7-4.6-7-8.9V6z"/><path d="M9 12l2.2 2.2L15.5 10"/></svg></div><h3>La confiance se joue avant l’appel</h3><p>On choisit un soignant comme on choisit à qui confier quelque chose d’intime. Sans photo, sans présentation claire de votre approche, le visiteur passe au cabinet suivant.</p></div>
+    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></div><h3>Peu d’avis, et souvent anciens</h3><p>Les avis Google pèsent deux fois : ils rassurent le patient et ils font monter la fiche dans la carte. Un cabinet à quatre avis vieux de trois ans part avec un handicap réel.</p></div>
+    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></div><h3>Pas le temps de communiquer</h3><p>Entre les consultations et l’administratif, personne n’ouvre Instagram le soir. C’est normal — et c’est précisément pour cela que cette partie doit être déléguée et planifiée.</p></div>
+    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10" width="15" height="10.5" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div><h3>Un domaine où l’on ne dit pas n’importe quoi</h3><p>Promesse de résultat, témoignage de patient, photo avant-après : les règles déontologiques varient selon la profession et le canton. Communiquer sans les connaître expose à un vrai risque.</p></div>
   </div>
 </section>
 
@@ -277,12 +295,55 @@ footer{margin-top:76px;padding:54px 0 34px;}
     <p>Les bons leviers pour une communication santé efficace et éthique.</p>
   </div>
   <div class="solution">
-    <div class="sol reveal"><div class="n">📍</div><div><h4>Visibilité locale (Google)</h4><p>Fiche Google et SEO local pour apparaître en tête des recherches de praticiens.</p></div></div>
-    <div class="sol reveal"><div class="n">💻</div><div><h4>Site & prise de rdv</h4><p>Un site clair et rassurant avec réservation simple pour vos patients.</p></div></div>
-    <div class="sol reveal"><div class="n">⭐</div><div><h4>Avis & e-réputation</h4><p>Stratégie d'avis pour renforcer la confiance et votre référencement.</p></div></div>
-    <div class="sol reveal"><div class="n">📝</div><div><h4>Contenu pédagogique</h4><p>Articles et vidéos qui expliquent vos soins et installent votre expertise.</p></div></div>
-    <div class="sol reveal"><div class="n">🎯</div><div><h4>Publicité ciblée & éthique</h4><p>Campagnes locales conformes pour faire connaître vos services.</p></div></div>
-    <div class="sol reveal"><div class="n">💌</div><div><h4>Rappels & fidélisation</h4><p>Communication patient pour limiter les annulations et fidéliser.</p></div></div>
+    <div class="sol reveal"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/></svg></div><div><h4>La recherche locale d’abord</h4><p>Fiche Google complète et tenue à jour, horaires, photos, prestations, zone d’intervention, et pages optimisées pour les recherches du type métier plus commune. C’est le levier le plus rentable du secteur.</p></div></div>
+    <div class="sol reveal"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="19" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg></div><div><h4>Un site qui prend le rendez-vous</h4><p>Pages claires, présentation de l’équipe, tarifs et prise en charge, et surtout une prise de rendez-vous en ligne qui fonctionne du téléphone, sans appel.</p></div></div>
+    <div class="sol reveal"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg></div><div><h4>Une collecte d’avis organisée</h4><p>Un moment précis dans le parcours patient, un message simple, et une réponse systématique aux avis reçus. Le volume compte, la régularité compte davantage.</p></div></div>
+    <div class="sol reveal"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L17 4l3 3L8 19z"/><path d="M15 6l3 3"/></svg></div><div><h4>Du contenu qui explique vos soins</h4><p>Expliquer une prise en charge, une durée de traitement, un remboursement : c’est ce que les gens cherchent, et c’est ce qui installe votre expertise avant la première consultation.</p></div></div>
+    <div class="sol reveal"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg></div><div><h4>De la publicité locale et conforme</h4><p>Des campagnes limitées à votre bassin de patientèle, sur des intentions précises, avec des messages relus au regard des règles de votre profession.</p></div></div>
+    <div class="sol reveal"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div><div><h4>Moins d’annulations</h4><p>Rappels de rendez-vous, relance des patients perdus de vue, informations pratiques avant la venue. Une annulation évitée vaut un nouveau patient, pour bien moins cher.</p></div></div>
+  </div>
+</section>
+
+
+<section class="wrap section">
+  <div class="s-head reveal">
+    <div class="eyebrow">Le contexte</div>
+    <h2>Ce qui change dans la santé<span class="grad">.</span></h2>
+  </div>
+  <div class="sec-ctx reveal">
+    <p>La santé n’est pas un secteur comme un autre pour le marketing, pour une raison simple : la demande existe déjà. Personne n’a besoin d’être convaincu qu’il lui faut un dentiste ou un physiothérapeute. Le travail ne consiste donc pas à créer un besoin, mais à être celui que l’on trouve et que l’on choisit au moment précis où ce besoin apparaît. C’est pour cela que la recherche locale et les avis prèsent davantage ici que partout ailleurs, et que les réseaux sociaux viennent en second.</p>
+    <p>La seconde particularité est le cadre. Selon que vous soyez médecin, thérapeute, EMS ou clinique, ce que vous avez le droit d’écrire change. Nous travaillons avec cette contrainte plutôt que contre elle : un discours sobre, factuel et pédagogique inspire de toute façon plus confiance qu’une promesse commerciale, dans ce domaine-là.</p>
+    <p>Enfin, beaucoup d’institutions romandes ne cherchent pas des patients mais du personnel. La pénurie de soignants fait du recrutement le vrai sujet des EMS, des cliniques et des services de soins à domicile. Les méthodes sont les mêmes que pour l’acquisition de clients, appliquées à un autre public — et c’est le terrain sur lequel nous avons le plus de recul.</p>
+  </div>
+</section>
+
+<section class="wrap section">
+  <div class="s-head reveal">
+    <div class="eyebrow">Un cas r&eacute;el</div>
+    <h2>Ce que &ccedil;a donne, <span class="grad">en chiffres.</span></h2>
+  </div>
+  <div class="sec-preuve reveal">
+    <p>Carewell est une plateforme suisse de recrutement de personnel soignant. Nous avons pilot&eacute; son acquisition sur deux march&eacute;s linguistiques, du premier clic jusqu&rsquo;&agrave; l&rsquo;inscription du candidat.</p>
+    <div class="kpis">
+      <div><b>2&nbsp;800+</b><span>candidats inscrits en 14&nbsp;mois</span></div>
+      <div><b>3&nbsp;CHF</b><span>co&ucirc;t par inscription</span></div>
+      <div><b>+79&nbsp;%</b><span>de trafic organique</span></div>
+      <div><b>11&nbsp;%</b><span>de taux de clic</span></div>
+    </div>
+    <p>Fran&ccedil;ais et allemand, campagnes structur&eacute;es par m&eacute;tier, suivi de conversion sur mesure. <a href="carewell.html">Lire l&rsquo;&eacute;tude de cas compl&egrave;te</a>.</p>
+  </div>
+</section>
+
+<section class="wrap section">
+  <div class="s-head reveal">
+    <div class="eyebrow">Questions fr&eacute;quentes</div>
+    <h2>Ce qu&rsquo;on nous demande <span class="grad">souvent.</span></h2>
+  </div>
+  <div class="sec-faq">
+    <div class="qa reveal"><h3>Est-ce que j’ai le droit de faire de la publicité pour mon cabinet ?</h3><p>Oui, dans les limites fixées par votre profession et votre canton. Ce qui est généralement encadré, ce sont les promesses de résultat, la comparaison avec des confrères et certains témoignages. Informer sur vos prestations, vos horaires et votre approche ne pose pas de problème. Nous relisons chaque message avec vous avant publication, et nous écartons ce qui est douteux plutôt que de tenter le coup.</p></div>
+    <div class="qa reveal"><h3>Combien de temps avant de voir arriver de nouveaux patients ?</h3><p>La fiche Google et les avis produisent un effet en quelques semaines, parce qu’ils agissent sur des gens qui cherchent déjà. Le référencement d’un site demande plusieurs mois. La publicité est immédiate mais s’arrête avec le budget. En pratique, on commence par ce qui agit vite, puis on construit ce qui dure.</p></div>
+    <div class="qa reveal"><h3>Je suis seul·e dans mon cabinet, est-ce que c’est pour moi ?</h3><p>Souvent davantage que pour une grande structure. Un praticien indépendant dépend entièrement de sa visibilité locale, et c’est là que l’effort est le plus rentable. À l’inverse, si votre agenda est déjà plein six mois à l’avance, nous vous le dirons : ce n’est pas le moment.</p></div>
+    <div class="qa reveal"><h3>Et si mon besoin, c’est de recruter ?</h3><p>C’est le sujet de beaucoup d’établissements romands aujourd’hui, et la démarche est très proche : comprendre ce que cherchent les candidats, construire des pages qui leur parlent, et acheter de la visibilité là où ils cherchent. C’est ce que nous avons mené pour Carewell, en français et en allemand.</p></div>
   </div>
 </section>
 
@@ -290,7 +351,7 @@ footer{margin-top:76px;padding:54px 0 34px;}
   <div class="method reveal">
     <div class="eyebrow">Notre méthode</div>
     <h2>La même rigueur, <span class="grad">adaptée à vous.</span></h2>
-    <p>Notre processus ne change pas : ce qui change, c'est la façon dont on l'applique à votre réalité. De la stratégie jusqu'à la vente, en 8 étapes.</p>
+    <p>Une méthode en huit étapes, de la stratégie jusqu’à la vente, appliquée aux contraintes d’un cabinet ou d’un établissement de soins.</p>
     <div class="steps-mini">
       <span>1 · Stratégie</span><span>2 · Marché</span><span>3 · Offres</span><span>4 · Identité</span><span>5 · Site</span><span>6 · Contenu</span><span>7 · Acquisition</span><span>8 · Vente</span>
     </div>

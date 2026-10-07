@@ -162,6 +162,24 @@ footer{margin-top:76px;padding:54px 0 34px;}
   .foot-grid{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:560px){.wrap{padding:0 20px;}.grid-3,.foot-grid{grid-template-columns:1fr;}}
+
+/* icones dessinees + sections secteur (ajout) */
+.card .ico svg{width:27px;height:27px;}
+.sol .n svg{width:23px;height:23px;}
+.chips a{letter-spacing:.01em;}
+.sec-ctx{max-width:760px;margin:0 auto;}
+.sec-ctx p{font-size:16.5px;line-height:1.75;color:var(--ink);font-weight:300;margin-bottom:18px;}
+.sec-faq{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.sec-faq .qa{background:var(--glass-strong);border:1px solid rgba(255,255,255,.7);border-radius:var(--r-card);padding:26px 28px;box-shadow:var(--shadow-soft);}
+.sec-faq .qa h3{font-size:16.5px;margin-bottom:10px;line-height:1.4;}
+.sec-faq .qa p{font-size:14.5px;color:var(--ink);font-weight:300;line-height:1.7;}
+.sec-preuve{max-width:760px;margin:0 auto;background:var(--glass-strong);border:1px solid rgba(255,255,255,.7);border-left:3px solid var(--violet);border-radius:var(--r-card);padding:30px 32px;box-shadow:var(--shadow-soft);}
+.sec-preuve p{font-size:15.5px;line-height:1.75;color:var(--ink);font-weight:300;}
+.sec-preuve .kpis{display:flex;flex-wrap:wrap;gap:26px;margin:20px 0 18px;}
+.sec-preuve .kpis div b{display:block;font-size:26px;font-weight:700;color:var(--violet);line-height:1.1;}
+.sec-preuve .kpis div span{font-size:13px;color:var(--ink);font-weight:300;}
+.sec-preuve a{color:var(--violet);font-weight:600;text-decoration:underline;text-underline-offset:2px;}
+@media(max-width:880px){.sec-faq{grid-template-columns:1fr;}}
 </style>
 <link rel="canonical" href="https://wanderful-marketing.com/ecommerce.html">
 <meta name="robots" content="index, follow, max-image-preview:large">
@@ -230,12 +248,12 @@ footer{margin-top:76px;padding:54px 0 34px;}
 
 <div class="wrap" style="padding-top:18px;">
   <div class="chips reveal in">
-    <a href="restaurants.html">🍽️ Restaurants & cafés</a>
-    <a href="immobilier.html">🏠 Immobilier</a>
-    <a href="sante.html">🩺 Santé</a>
-    <a href="ecommerce.html" class="on">🛍️ E-commerce</a>
-    <a href="formation.html">🎓 Formation</a>
-    <a href="pme-locales.html">🏪 PME locales</a>
+    <a href="restaurants.html">Restaurants & cafés</a>
+    <a href="immobilier.html">Immobilier</a>
+    <a href="sante.html">Santé</a>
+    <a href="ecommerce.html" class="on">E-commerce</a>
+    <a href="formation.html">Formation</a>
+    <a href="pme-locales.html">PME locales</a>
   </div>
 </div>
 
@@ -261,12 +279,12 @@ footer{margin-top:76px;padding:54px 0 34px;}
     <p>Parlons de ce qui bloque votre boutique.</p>
   </div>
   <div class="grid-3">
-    <div class="card reveal"><div class="ico">🛒</div><h3>Paniers abandonnés</h3><p>Des visiteurs qui ajoutent au panier mais ne finalisent jamais l'achat.</p></div>
-    <div class="card reveal"><div class="ico">💸</div><h3>Pub non rentable</h3><p>Vous dépensez en publicité sans vraiment savoir ce que ça rapporte.</p></div>
-    <div class="card reveal"><div class="ico">📉</div><h3>Conversion faible</h3><p>Beaucoup de trafic, trop peu de ventes au bout du tunnel.</p></div>
-    <div class="card reveal"><div class="ico">📸</div><h3>Fiches produits fades</h3><p>Visuels et descriptions qui ne donnent pas envie d'acheter.</p></div>
-    <div class="card reveal"><div class="ico">🔁</div><h3>Pas de récurrence</h3><p>On achète une fois et on ne revient pas.</p></div>
-    <div class="card reveal"><div class="ico">📊</div><h3>Données dans le flou</h3><p>Difficile de savoir quels produits et canaux performent vraiment.</p></div>
+    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h2.2l2.3 11h10l2.2-8H6"/><circle cx="9.5" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg></div><h3>Du trafic, mais peu de commandes</h3><p>Les visites montent, le chiffre d’affaires ne suit pas. Entre la fiche produit, les frais de port découverts trop tard et un tunnel trop long, la perte se fait toujours au même endroit — encore faut-il savoir lequel.</p></div>
+    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16l-6 8v7l-4 2v-9z"/></svg></div><h3>Des paniers abandonnés</h3><p>La majorité des paniers créés ne sont jamais payés. Sans relance ni raison de revenir, ce sont des clients déjà convaincus que l’on laisse partir.</p></div>
+    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17l5-5 4 3 8-9"/><path d="M15 6h5v5"/></svg></div><h3>Un coût d’acquisition qui monte</h3><p>La publicité coûte plus cher chaque année. Si le panier moyen et le taux de réachat ne bougent pas, la marge se referme sans que le chiffre d’affaires baisse.</p></div>
+    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6.5" width="19" height="13" rx="2.5"/><circle cx="12" cy="13" r="3.6"/><path d="M8.5 6.5l1.4-2.4h4.2l1.4 2.4"/></svg></div><h3>Des visuels qui ne vendent pas</h3><p>Une photo sur fond blanc montre le produit, elle ne donne pas envie. En ligne, on achète ce qu’on peut se projeter en train d’utiliser.</p></div>
+    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4.3-4.3"/></svg></div><h3>Invisible sur les recherches produit</h3><p>Les fiches reprennent le texte du fournisseur, les catégories n’ont pas de contenu propre : le référencement naturel ne décolle pas et tout repose sur la publicité payée.</p></div>
+    <div class="card reveal"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M6 20h12M4 9l4-4 4 4M12 9l4-4 4 4"/><path d="M4 9a2.6 2.6 0 0 0 4 0M16 9a2.6 2.6 0 0 0 4 0"/></svg></div><h3>Des chiffres qu’on ne sait pas lire</h3><p>La plateforme dit une chose, la régie une autre, le tableur une troisième. Sans suivi propre, impossible de savoir quelle campagne a réellement produit quelle vente.</p></div>
   </div>
 </section>
 
@@ -277,12 +295,38 @@ footer{margin-top:76px;padding:54px 0 34px;}
     <p>Les leviers qui transforment le trafic en chiffre d'affaires.</p>
   </div>
   <div class="solution">
-    <div class="sol reveal"><div class="n">🎯</div><div><h4>Meta & Google Ads</h4><p>Campagnes pilotées par la data, optimisées pour un retour réel (ROAS).</p></div></div>
-    <div class="sol reveal"><div class="n">📸</div><div><h4>Contenu produit qui vend</h4><p>Photos, vidéos et UGC qui donnent envie de cliquer sur « acheter ».</p></div></div>
-    <div class="sol reveal"><div class="n">🛒</div><div><h4>Optimisation du tunnel</h4><p>On fluidifie le parcours d'achat pour réduire les abandons de panier.</p></div></div>
-    <div class="sol reveal"><div class="n">💌</div><div><h4>Email & SMS automatisés</h4><p>Relances panier, fidélité et up-sell qui boostent la récurrence.</p></div></div>
-    <div class="sol reveal"><div class="n">🔍</div><div><h4>SEO produit</h4><p>Visibilité durable sur Google pour vos catégories et produits.</p></div></div>
-    <div class="sol reveal"><div class="n">📊</div><div><h4>Tracking & data</h4><p>Mesure précise pour investir là où ça rapporte vraiment.</p></div></div>
+    <div class="sol reveal"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v16M6 20h12M4 9l4-4 4 4M12 9l4-4 4 4"/><path d="M4 9a2.6 2.6 0 0 0 4 0M16 9a2.6 2.6 0 0 0 4 0"/></svg></div><div><h4>Une mesure sur laquelle s’appuyer</h4><p>Suivi des événements d’achat, attribution des sources, réconciliation avec vos ventes réelles. Tant que les chiffres ne sont pas fiables, toute décision est une devinette.</p></div></div>
+    <div class="sol reveal"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h2.2l2.3 11h10l2.2-8H6"/><circle cx="9.5" cy="20" r="1.4"/><circle cx="17" cy="20" r="1.4"/></svg></div><div><h4>Un tunnel d’achat allégé</h4><p>Frais de port annoncés tôt, moyens de paiement locaux, commande possible sans création de compte, et une fiche produit qui répond aux objections avant qu’elles arrivent.</p></div></div>
+    <div class="sol reveal"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div><div><h4>Relance des paniers et des clients</h4><p>Séquences automatiques de relance, retour des clients inactifs, recommandation après achat. C’est là que se trouve le chiffre d’affaires le moins cher du commerce en ligne.</p></div></div>
+    <div class="sol reveal"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg></div><div><h4>Des campagnes pilotées à la marge</h4><p>Search et Shopping structurés par marge et par rotation, pas seulement par volume. Vendre plus en gagnant moins n’est pas un objectif.</p></div></div>
+    <div class="sol reveal"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="6.5" width="19" height="13" rx="2.5"/><circle cx="12" cy="13" r="3.6"/><path d="M8.5 6.5l1.4-2.4h4.2l1.4 2.4"/></svg></div><div><h4>Des visuels et des vidéos produit</h4><p>Photos en situation, vidéos courtes, démonstrations d’usage. C’est le poste qui fait le plus bouger le taux de conversion d’une fiche.</p></div></div>
+    <div class="sol reveal"><div class="n"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L17 4l3 3L8 19z"/><path d="M15 6l3 3"/></svg></div><div><h4>Des pages de catégorie qui existent</h4><p>Du vrai contenu sur les pages qui comptent, des descriptions réécrites, une structure que les moteurs comprennent. L’objectif est de faire baisser la part du trafic payé.</p></div></div>
+  </div>
+</section>
+
+
+<section class="wrap section">
+  <div class="s-head reveal">
+    <div class="eyebrow">Le contexte</div>
+    <h2>Ce qui change en e-commerce<span class="grad">.</span></h2>
+  </div>
+  <div class="sec-ctx reveal">
+    <p>Le commerce en ligne est le seul secteur où tout est mesurable de bout en bout, du premier clic jusqu’au montant encaissé. C’est une chance : on peut arrêter de débattre et regarder. Encore faut-il que la mesure soit juste, et c’est rarement le cas au départ. Nous commençons presque toujours par remettre le suivi d’aplomb avant de toucher aux campagnes.</p>
+    <p>Le marché suisse a ses propres règles. Un panier moyen plus élevé qu’ailleurs, des acheteurs exigeants sur la livraison et le service, des moyens de paiement locaux attendus, et souvent deux ou trois langues à gérer. Transposer une recette française ou américaine sans l’adapter donne des résultats décevants.</p>
+    <p>Enfin, la croissance d’une boutique vient rarement d’un seul levier. Elle vient du produit du trafic, du taux de conversion et du panier moyen : améliorer chacun de dix pour cent fait plus qu’un tiers de trafic en plus, et coûte souvent moins cher. C’est sur cette arithmétique que nous construisons les priorités.</p>
+  </div>
+</section>
+
+<section class="wrap section">
+  <div class="s-head reveal">
+    <div class="eyebrow">Questions fr&eacute;quentes</div>
+    <h2>Ce qu&rsquo;on nous demande <span class="grad">souvent.</span></h2>
+  </div>
+  <div class="sec-faq">
+    <div class="qa reveal"><h3>Vous travaillez avec quelles plateformes ?</h3><p>La logique est la même quelle que soit la solution : ce qui compte est l’accès au suivi, au catalogue et au tunnel. Si votre plateforme empêche de mesurer correctement les ventes, nous vous le dirons avant de lancer quoi que ce soit, parce que cela conditionne tout le reste.</p></div>
+    <div class="qa reveal"><h3>Faut-il faire du Google Shopping ou des réseaux sociaux ?</h3><p>Les deux ne servent pas à la même chose. Shopping capte une intention d’achat qui existe déjà, les réseaux la créent pour des produits qu’on ne cherche pas spontanément. Le bon mélange dépend de votre catégorie ; on commence généralement par l’intention existante, moins chère à convertir.</p></div>
+    <div class="qa reveal"><h3>Mon catalogue est petit, est-ce un problème ?</h3><p>Non, c’est parfois un avantage. Peu de références permet de soigner chaque fiche, de produire de vrais visuels et de construire une marque plutôt qu’un entrepôt. Les boutiques à dix produits bien racontés convertissent souvent mieux que celles à mille.</p></div>
+    <div class="qa reveal"><h3>Au bout de combien de temps peut-on juger ?</h3><p>Pour la publicité, comptez six à huit semaines pour sortir de la phase d’apprentissage et disposer de données exploitables. Pour le référencement et le contenu, plusieurs mois. Les gains sur le tunnel de commande, eux, se voient parfois en quelques jours.</p></div>
   </div>
 </section>
 
@@ -290,7 +334,7 @@ footer{margin-top:76px;padding:54px 0 34px;}
   <div class="method reveal">
     <div class="eyebrow">Notre méthode</div>
     <h2>La même rigueur, <span class="grad">adaptée à vous.</span></h2>
-    <p>Notre processus ne change pas : ce qui change, c'est la façon dont on l'applique à votre réalité. De la stratégie jusqu'à la vente, en 8 étapes.</p>
+    <p>Une méthode en huit étapes, de la stratégie jusqu’à la vente, branchée sur vos chiffres de commandes plutôt que sur des indicateurs de surface.</p>
     <div class="steps-mini">
       <span>1 · Stratégie</span><span>2 · Marché</span><span>3 · Offres</span><span>4 · Identité</span><span>5 · Site</span><span>6 · Contenu</span><span>7 · Acquisition</span><span>8 · Vente</span>
     </div>
