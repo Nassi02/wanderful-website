@@ -163,6 +163,24 @@ footer{margin-top:76px;padding:54px 0 34px;}
   .foot-grid{grid-template-columns:1fr 1fr;}
 }
 @media(max-width:560px){.wrap{padding:0 20px;}.grid-3,.foot-grid{grid-template-columns:1fr;}}
+
+/* icones dessinees + sections secteur (ajout) */
+.card .ico svg{width:27px;height:27px;}
+.sol .n svg{width:23px;height:23px;}
+.chips a{letter-spacing:.01em;}
+.sec-ctx{max-width:760px;margin:0 auto;}
+.sec-ctx p{font-size:16.5px;line-height:1.75;color:var(--ink);font-weight:300;margin-bottom:18px;}
+.sec-faq{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.sec-faq .qa{background:var(--glass-strong);border:1px solid rgba(255,255,255,.7);border-radius:var(--r-card);padding:26px 28px;box-shadow:var(--shadow-soft);}
+.sec-faq .qa h3{font-size:16.5px;margin-bottom:10px;line-height:1.4;}
+.sec-faq .qa p{font-size:14.5px;color:var(--ink);font-weight:300;line-height:1.7;}
+.sec-preuve{max-width:760px;margin:0 auto;background:var(--glass-strong);border:1px solid rgba(255,255,255,.7);border-left:3px solid var(--violet);border-radius:var(--r-card);padding:30px 32px;box-shadow:var(--shadow-soft);}
+.sec-preuve p{font-size:15.5px;line-height:1.75;color:var(--ink);font-weight:300;}
+.sec-preuve .kpis{display:flex;flex-wrap:wrap;gap:26px;margin:20px 0 18px;}
+.sec-preuve .kpis div b{display:block;font-size:26px;font-weight:700;color:var(--violet);line-height:1.1;}
+.sec-preuve .kpis div span{font-size:13px;color:var(--ink);font-weight:300;}
+.sec-preuve a{color:var(--violet);font-weight:600;text-decoration:underline;text-underline-offset:2px;}
+@media(max-width:880px){.sec-faq{grid-template-columns:1fr;}}
 </style>
 <link href="https://wanderful-marketing.com/en/local-businesses.html" rel="canonical"/>
 <meta content="index, follow, max-image-preview:large" name="robots"/>
@@ -227,12 +245,12 @@ footer{margin-top:76px;padding:54px 0 34px;}
 </header>
 <div class="wrap" style="padding-top:18px;">
 <div class="chips reveal in">
-<a href="restaurants.html">🍽️ Restaurants &amp; cafés</a>
-<a href="real-estate.html">🏠 Real estate</a>
-<a href="healthcare.html">🩺 Healthcare</a>
-<a href="ecommerce.html">🛍️ E-commerce</a>
-<a href="education.html">🎓 Education</a>
-<a class="on" href="local-businesses.html">🏪 Local SMEs</a>
+<a href="restaurants.html">Restaurants &amp; cafés</a>
+<a href="real-estate.html">Real estate</a>
+<a href="healthcare.html">Healthcare</a>
+<a href="ecommerce.html">E-commerce</a>
+<a href="education.html">Training &amp; education</a>
+<a class="on" href="local-businesses.html">Local SMEs</a>
 </div>
 </div>
 <section class="wrap hero">
@@ -256,12 +274,12 @@ footer{margin-top:76px;padding:54px 0 34px;}
 <p>Let's start with your day-to-day as a business owner.</p>
 </div>
 <div class="grid-3">
-<div class="card reveal"><div class="ico">🏪</div><h3>Not enough customers</h3><p>A business running in low gear for lack of new, regular customers.</p></div>
-<div class="card reveal"><div class="ico">🔍</div><h3>Invisible on Google</h3><p>When people search for your service locally, it's your competitor who shows up.</p></div>
-<div class="card reveal"><div class="ico">🌐</div><h3>No website (or an outdated one)</h3><p>No credible online shop window to reassure and convert.</p></div>
-<div class="card reveal"><div class="ico">📱</div><h3>Neglected social media</h3><p>No time to communicate regularly about your business.</p></div>
-<div class="card reveal"><div class="ico">⭐</div><h3>Few reviews</h3><p>An online reputation that doesn't reflect the quality of your work.</p></div>
-<div class="card reveal"><div class="ico">🧭</div><h3>No strategy</h3><p>One-off actions with no real marketing direction.</p></div>
+<div class="card reveal"><div class="ico"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-4.3-4.3"></path></svg></div><h3>People cannot find you</h3><p>Your customers exist and are searching for your service, but they type a trade and a town. If you appear neither on the map nor in the first results, the call goes to a competitor you will never hear about.</p></div>
+<div class="card reveal"><div class="ico"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M4 9.5h16V20H4z"></path><path d="M3 9.5L5 4h14l2 5.5"></path><path d="M10 20v-5h4v5"></path></svg></div><h3>Everything rests on word of mouth</h3><p>It is an excellent foundation, but it is a channel you do not control. When a large client stops or a season is quiet, there is no tap to turn on.</p></div>
+<div class="card reveal"><div class="ico"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><circle cx="12" cy="12" r="8.5"></circle><path d="M3.5 12h17M12 3.5c2.4 2.4 3.6 5.3 3.6 8.5S14.4 18.1 12 20.5c-2.4-2.4-3.6-5.3-3.6-8.5S9.6 5.9 12 3.5z"></path></svg></div><h3>A website that sleeps</h3><p>An online brochure never updated, with no visible way to request a quote, generating nothing. It costs hosting every year and brings in no contacts.</p></div>
+<div class="card reveal"><div class="ico"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><circle cx="12" cy="13.5" r="7.5"></circle><path d="M12 9.5v4l2.5 2M9.5 2.5h5"></path></svg></div><h3>Nobody to take care of it</h3><p>Between jobs, quotes and invoicing, communication comes last. It happens in fits and starts, usually when business slows down — which is to say too late.</p></div>
+<div class="card reveal"><div class="ico"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M6 3h7l5 5v13H6z"></path><path d="M13 3v5h5"></path><path d="M9 13h6M9 17h4"></path></svg></div><h3>Quotes that go unanswered</h3><p>The problem is not always the price. A quote sent with no follow-up, no references and no clear scope compares badly with one from a better-presented competitor.</p></div>
+<div class="card reveal"><div class="ico"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M12 4v16M6 20h12M4 9l4-4 4 4M12 9l4-4 4 4"></path><path d="M4 9a2.6 2.6 0 0 0 4 0M16 9a2.6 2.6 0 0 0 4 0"></path></svg></div><h3>No way of knowing what works</h3><p>A flyer, an ad in the local paper, a sponsorship: without measurement, every outlay is a bet. A year later, nobody knows what to do again.</p></div>
 </div>
 </section>
 <section class="wrap section" id="solutions">
@@ -271,19 +289,42 @@ footer{margin-top:76px;padding:54px 0 34px;}
 <p>Practical levers for an SME that wants to grow locally.</p>
 </div>
 <div class="solution">
-<div class="sol reveal"><div class="n">📍</div><div><h4>Local visibility (Google)</h4><p>Google Business Profile and local SEO so nearby customers can find you.</p></div></div>
-<div class="sol reveal"><div class="n">🌐</div><div><h4>Professional showcase website</h4><p>A simple, fast, credible website that turns visitors into customers.</p></div></div>
-<div class="sol reveal"><div class="n">🎯</div><div><h4>Geo-targeted advertising</h4><p>Campaigns targeted to your area, on a controlled budget.</p></div></div>
-<div class="sol reveal"><div class="n">📱</div><div><h4>Social media</h4><p>A regular presence that keeps your business top of mind.</p></div></div>
-<div class="sol reveal"><div class="n">⭐</div><div><h4>Reviews &amp; reputation</h4><p>We gather positive reviews that strengthen your credibility.</p></div></div>
-<div class="sol reveal"><div class="n">💌</div><div><h4>Customer loyalty</h4><p>Emailing and offers that bring your customers back.</p></div></div>
+<div class="sol reveal"><div class="n"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"></path><circle cx="12" cy="10" r="2.6"></circle></svg></div><div><h4>Local visibility, first</h4><p>A complete Google listing, real photographs, service area, opening hours, reviews. It is free, it is what your customers look at, and it is almost always the first gain.</p></div></div>
+<div class="sol reveal"><div class="n"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><rect height="13" rx="2" width="19" x="2.5" y="4"></rect><path d="M8 21h8M12 17v4"></path></svg></div><div><h4>A site that asks for the quote</h4><p>A few well-made pages beat a large empty site: what you do, for whom, in which region, at roughly what price, and a form that genuinely lands in your inbox.</p></div></div>
+<div class="sol reveal"><div class="n"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><circle cx="12" cy="12" r="8.5"></circle><circle cx="12" cy="12" r="4"></circle><circle cx="12" cy="12" r="1"></circle></svg></div><div><h4>Advertising limited to your area</h4><p>Campaigns confined to the radius you actually serve, on the searches that precede a purchase. Everything coming from too far away is cut.</p></div></div>
+<div class="sol reveal"><div class="n"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"></path></svg></div><div><h4>Reviews as an asset</h4><p>Asking for a review is part of finishing the job. We put the habit, the wording and the reply in place: it is what tips the balance against a competitor with no track record.</p></div></div>
+<div class="sol reveal"><div class="n"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M4 20l1-4L17 4l3 3L8 19z"></path><path d="M15 6l3 3"></path></svg></div><div><h4>A steady presence, not a heroic one</h4><p>Two posts a week kept up for a year beat a spectacular campaign followed by six months of silence. We produce and we schedule.</p></div></div>
+<div class="sol reveal"><div class="n"><svg aria-hidden="true" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" viewbox="0 0 24 24"><path d="M3 17l5-5 4 3 8-9"></path><path d="M15 6h5v5"></path></svg></div><div><h4>One figure a month</h4><p>How many enquiries, from where, at what cost. One page, readable in two minutes, that tells you what to keep and what to stop.</p></div></div>
+</div>
+</section>
+<section class="wrap section">
+<div class="s-head reveal">
+<div class="eyebrow">The context</div>
+<h2>What makes a local business different<span class="grad">.</span></h2>
+</div>
+<div class="sec-ctx reveal">
+<p>A local business has an advantage larger organisations do not: its market is small and identifiable. You know where the customers are, you know roughly how many, and you can stop paying for a useless audience. The whole approach consists of drawing the area tightly, then being unavoidable inside it rather than vaguely present everywhere.</p>
+<p>The second point is time. In a company of two to fifteen people, there is nobody whose job this is. A setup that demands an hour a day will not survive, however willing everyone is. So we build things that run without you, and we save your time for the two or three moments where it cannot be replaced: your expertise, your face, your work.</p>
+<p>Finally, budgets are real but limited. That does not stop us working, it changes the order: we start with what costs almost nothing and pays off quickly, we measure, and we only raise the spend on what has already proved something.</p>
+</div>
+</section>
+<section class="wrap section">
+<div class="s-head reveal">
+<div class="eyebrow">Frequently asked questions</div>
+<h2>What people <span class="grad">ask us.</span></h2>
+</div>
+<div class="sec-faq">
+<div class="qa reveal"><h3>What budget should I plan for?</h3><p>There is no single answer, and be wary of anyone who gives you one before listening to you. What is true is that the first gains — Google listing, reviews, well-made pages — take work rather than media budget. Advertising comes afterwards, once we know what converts. We quote after the first conversation, not before.</p></div>
+<div class="qa reveal"><h3>I have no website — should I start there?</h3><p>Not always. For many service trades, a complete Google listing with recent reviews brings in more calls than a new site nobody finds. The site becomes essential as soon as you need to explain, reassure, or help someone choose between several services.</p></div>
+<div class="qa reveal"><h3>Does this work outside the big towns?</h3><p>Often better. In a village or a small region, competition in local search is weak: becoming the first result there is far quicker than in Lausanne. The volume is lower, but so is the cost of winning a customer.</p></div>
+<div class="qa reveal"><h3>I am already working at full capacity — what is the point?</h3><p>Choosing your clients rather than taking what comes. When demand exceeds capacity, the issue is no longer volume but the quality of the work and the level of your prices. That is a different job, and we will say so if it is your situation.</p></div>
 </div>
 </section>
 <section class="wrap section">
 <div class="method reveal">
 <div class="eyebrow">Our method</div>
 <h2>The same rigour, <span class="grad">tailored to you.</span></h2>
-<p>Our process doesn't change: what changes is how we apply it to your reality. From strategy to sale, in 8 steps.</p>
+<p>An eight-step method, from strategy through to the sale, cut for a team with nobody dedicated to marketing.</p>
 <div class="steps-mini">
 <span>1 · Strategy</span><span>2 · Market</span><span>3 · Offers</span><span>4 · Identity</span><span>5 · Website</span><span>6 · Content</span><span>7 · Acquisition</span><span>8 · Sales</span>
 </div>
