@@ -1,6 +1,7 @@
 /* Mesure Wanderful Marketing — GA4 + 3 conversions.
    Posee sur toutes les pages via une seule ligne dans le <head>.
-   Suit : formulaire envoye (uniquement en cas de succes), clic e-mail, clic telephone. */
+   Suit cinq evenements : prise de rendez-vous, formulaire commence, formulaire envoye
+   (uniquement en cas de succes), clic e-mail, clic telephone. */
 (function(){
   var ID = 'G-RZM7GFLT2K';
 
@@ -34,6 +35,8 @@
       envoie('clic_email', { adresse: href.replace(/^mailto:/i,'').split('?')[0] });
     } else if(/^tel:/i.test(href)){
       envoie('clic_telephone', { numero: href.replace(/^tel:/i,'') });
+    } else if(/calendar\.app\.google|appointment-schedule/i.test(href)){
+      envoie('clic_rdv', { libelle: (a.textContent || '').replace(/\s+/g,' ').trim().slice(0,80) });
     }
   }, true);
 
@@ -62,6 +65,21 @@
       sujet: sujet
     });
   }
+
+  /* ---- 4. Formulaire commence ----
+     Premiere saisie reelle dans un formulaire, comptee une seule fois par page.
+     Compare au nombre d'envois, cela donne le taux d'abandon du formulaire. */
+  var formulairesCommences = [];
+  document.addEventListener('focusin', function(e){
+    var champ = e.target;
+    if(!champ || !champ.form) return;
+    if(['INPUT','TEXTAREA','SELECT'].indexOf(champ.tagName) === -1) return;
+    if(champ.type === 'hidden' || champ.type === 'submit') return;
+    var f = champ.form;
+    if(formulairesCommences.indexOf(f) !== -1) return;
+    formulairesCommences.push(f);
+    decrit(f, 'formulaire_commence');
+  }, true);
 
   var fetchOrigine = window.fetch;
   if(typeof fetchOrigine === 'function'){
