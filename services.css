@@ -2376,6 +2376,7 @@ html{scroll-behavior:smooth;}
 
 /* productions : deux vidéos */
 .portfolio-grid.sa-grid2{grid-template-columns:repeat(2,minmax(0,1fr));max-width:540px;margin-left:auto;margin-right:auto;}
+.portfolio-grid.sa-grid2.sa-grid3{grid-template-columns:repeat(3,minmax(0,1fr));max-width:810px;}
 .portfolio-item.sa-feat{aspect-ratio:16/9;max-width:900px;margin:0 auto 14px;border-radius:16px;box-shadow:0 30px 70px -28px rgba(141,126,242,.55);}
 .portfolio-item.sa-feat:hover{transform:translateY(-3px);}
 
