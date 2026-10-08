@@ -1,0 +1,44 @@
+# Wanderful Marketing
+
+> Wanderful Marketing Sàrl est une agence de marketing digital AI-native en Suisse romande, fondée en 2024 par Nassima Rizzotti (formée en marketing et psychologie du consommateur à HEC Lausanne). Basée à Yvonand, près d'Yverdon-les-Bains (Vaud), elle accompagne des PME et des startups à Lausanne, Neuchâtel, Fribourg, Genève, dans le Valais et le Jura bernois, en français, en allemand et en anglais.
+
+Points clés :
+- Spécialités : Google Ads, SEO et visibilité dans les assistants IA, création de sites web, automatisation par l'IA, contenu et réseaux sociaux, branding, vidéo.
+- Outil maison connecté à l'API Google Ads (compte Manager / MCC) pour piloter les campagnes.
+- Secteurs : santé et recrutement médical, assurances, restaurants et cafés, e-commerce, immobilier, formation, PME locales.
+- Cas client principal : Carewell, plateforme suisse de recrutement dans la santé. Depuis juin 2025 : visibilité Google ×9,4 en 15 mois (position moyenne de 32 à 7,8), coût par clic Google Ads −26 %, inscriptions mensuelles de 426 (mai 2026) à 806 (septembre 2026).
+- Contact : hello@wanderful-marketing.com · premier appel de 30 minutes gratuit.
+
+## Pages principales
+
+- [Accueil](https://wanderful-marketing.com/): présentation de l'agence et de ses services
+- [Agence marketing IA en Suisse romande](https://wanderful-marketing.com/agence-marketing-ia-suisse-romande.html): qui est Wanderful, comment l'IA est utilisée, FAQ
+- [À propos](https://wanderful-marketing.com/a-propos.html): la fondatrice et l'approche
+- [Étude de cas Carewell](https://wanderful-marketing.com/carewell.html): SEO et Google Ads pour une plateforme de recrutement santé
+- [Réalisations](https://wanderful-marketing.com/realisations.html)
+- [Contact](https://wanderful-marketing.com/contact/)
+
+## Services
+
+- [Google Ads](https://wanderful-marketing.com/services/google-ads.html)
+- [SEO & visibilité](https://wanderful-marketing.com/services/seo.html)
+- [Création de site web](https://wanderful-marketing.com/services/creation-sites-web.html)
+- [IA & automatisation](https://wanderful-marketing.com/services/intelligence-artificielle.html)
+- [Social media & contenu](https://wanderful-marketing.com/services/creation-contenu.html)
+- [Branding & design](https://wanderful-marketing.com/services/branding.html)
+- [Vidéos publicitaires](https://wanderful-marketing.com/services/videos-publicitaires.html)
+- [Vidéos SaaS](https://wanderful-marketing.com/services/videos-saas.html)
+- [Stratégie digitale](https://wanderful-marketing.com/services/strategie-digitale.html)
+
+## Secteurs
+
+- [Santé](https://wanderful-marketing.com/sante.html)
+- [Restaurants & cafés](https://wanderful-marketing.com/restaurants.html)
+- [Immobilier](https://wanderful-marketing.com/immobilier.html)
+- [E-commerce](https://wanderful-marketing.com/ecommerce.html)
+- [Formation](https://wanderful-marketing.com/formation.html)
+- [PME locales](https://wanderful-marketing.com/pme-locales.html)
+
+## English
+
+- [English version](https://wanderful-marketing.com/en/)

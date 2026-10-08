@@ -2,7 +2,6 @@
 User-agent: *
 Allow: /
 Disallow: /espace-client/
-Disallow: /preview-da.html
 
 # Crawlers IA — visibilite ChatGPT / Perplexity / Claude
 User-agent: GPTBot
