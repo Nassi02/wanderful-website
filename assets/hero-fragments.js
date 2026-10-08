@@ -14,7 +14,7 @@
   var LITE=!matchMedia('(hover:hover) and (pointer:fine)').matches||matchMedia('(max-width:980px)').matches;
 
   /* reglages */
-  var CELL=LITE?26:15;  // taille d'un eclat, en px de l'image source
+  var CELL=LITE?34:15;  // taille d'un eclat, en px de l'image source
   var JITTER=.38;       // irregularite de la decoupe
   var RADIUS=120;       // rayon d'influence du curseur (px image)
   var PUSH=64;          // ecartement maximal (px image)
@@ -23,8 +23,8 @@
   var SWEEP=1.5;        // part de la vitesse du curseur transmise aux eclats
   var PAD=LITE?40:90;   // marge du canvas autour de l'image (px ecran)
   var SHADOW_PAD=170;
-  var INTRO=2.6;        // duree totale de l'introduction (s)
-  var INTRO_STAGGER=.8; // decalage maximal entre eclats (s)
+  var INTRO=LITE?1.6:2.6; // duree totale de l'introduction (s) - plus courte sur mobile
+  var INTRO_STAGGER=LITE?.45:.8; // decalage maximal entre eclats (s)
   var INTRO_DIST=LITE?[60,170]:[110,330]; // distance de depart (px image)
   var INTRO_MIN_X=.12;  // les eclats ne partent jamais a gauche de cette part de l'image (cote texte)
 

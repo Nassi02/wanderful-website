@@ -6,7 +6,9 @@ Points clés :
 - Spécialités : Google Ads, SEO et visibilité dans les assistants IA, création de sites web, automatisation par l'IA, contenu et réseaux sociaux, branding, vidéo.
 - Outil maison connecté à l'API Google Ads (compte Manager / MCC) pour piloter les campagnes.
 - Secteurs : santé et recrutement médical, assurances, restaurants et cafés, e-commerce, immobilier, formation, PME locales.
-- Cas client principal : Carewell, plateforme suisse de recrutement dans la santé. Depuis juin 2025 : visibilité Google ×9,4 en 15 mois (position moyenne de 32 à 7,8), coût par clic Google Ads −26 %, inscriptions mensuelles de 426 (mai 2026) à 806 (septembre 2026).
+- Cas client principal : Carewell, plateforme suisse de recrutement dans la santé. Depuis juin 2025 : visibilité Google ×9,4 en 15 mois (position moyenne de 32 à 7,8), trafic organique doublé en 9 mois, inscriptions via Google Ads à moins de 3 CHF, taux de clic 11 %, coût par clic −26 %.
+- Prix : site une page CHF 1'490, site vitrine PME dès CHF 3'500, site signature dès CHF 6'900, maintenance CHF 90/mois, Google Ads CHF 690 + 490/mois, SEO CHF 690/mois.
+- Programme Female Founders : 5 places par trimestre pour les fondatrices (mise en place Google Ads offerte + 1er mois, ou −20 % sur le site avec paiement en 3 fois).
 - Contact : hello@wanderful-marketing.com · premier appel de 30 minutes gratuit.
 
 ## Pages principales
@@ -16,6 +18,7 @@ Points clés :
 - [À propos](https://wanderful-marketing.com/a-propos.html): la fondatrice et l'approche
 - [Étude de cas Carewell](https://wanderful-marketing.com/carewell.html): SEO et Google Ads pour une plateforme de recrutement santé
 - [Réalisations](https://wanderful-marketing.com/realisations.html)
+- [Site web pour PME : formules et prix](https://wanderful-marketing.com/site-web-pme.html)
 - [Contact](https://wanderful-marketing.com/contact/)
 
 ## Services
