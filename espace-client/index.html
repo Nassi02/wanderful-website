@@ -848,7 +848,7 @@ async function loadProfileAndBoot(){
   if(!profile){profile={email:user.email,role:'client',client_id:null};}
   state.profile=profile;await bootApp();
 }
-async function fetchClients(){if(DEMO)return DEMO_CLIENTS;const {data}=await sb.from('clients').select('*').order('name');return data||[];}
+async function fetchClients(){if(DEMO)return DEMO_CLIENTS;const {data}=await sb.from('clients').select('*').neq('status','Archivé').order('name');return data||[];}
 async function fetchClient(id){if(DEMO)return DEMO_CLIENTS.find(c=>c.id===id)||null;const {data}=await sb.from('clients').select('*').eq('id',id).single();return data;}
 const DEMO_KEY={content_items:'content',social_accounts:'social',documents:'documents',activity:'activity'};
 async function fetchTable(table,id){if(DEMO){const d=demoDataFor(id);return d[DEMO_KEY[table]||table]||[];}const {data}=await sb.from(table).select('*').eq('client_id',id);return data||[];}
