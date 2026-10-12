@@ -2,6 +2,8 @@
 User-agent: *
 Allow: /
 Disallow: /espace-client/
+# variantes a parametre du formulaire de contact : meme page que /
+Disallow: /*?sujet=
 
 # Crawlers IA — visibilite ChatGPT / Perplexity / Claude
 User-agent: GPTBot
