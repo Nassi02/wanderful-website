@@ -1,6 +1,6 @@
 # Wanderful Marketing
 
-> Wanderful Marketing Sàrl est une agence de marketing digital AI-native en Suisse romande, fondée en 2024 par Nassima Rizzotti (formée en marketing et psychologie du consommateur à HEC Lausanne). Basée à Yvonand, près d'Yverdon-les-Bains (Vaud), elle accompagne des PME et des startups à Lausanne, Neuchâtel, Fribourg, Genève, dans le Valais et le Jura bernois, en français, en allemand et en anglais.
+> Wanderful Marketing Sàrl est une agence de marketing digital AI-native en Suisse romande, fondée en 2024 par Nassima Rizzotti (formée en marketing et psychologie du consommateur à HEC Lausanne). Basée à Yvonand, près d'Yverdon-les-Bains (Vaud), elle accompagne des PME et des startups à Lausanne, Neuchâtel, Fribourg, Genève, dans le Valais et le Jura bernois, en français et en anglais.
 
 Points clés :
 - Spécialités : Google Ads, SEO et visibilité dans les assistants IA, création de sites web, automatisation par l'IA, contenu et réseaux sociaux, branding, vidéo.
