@@ -23,14 +23,14 @@
   var SHARDS=440;       // nombre d'eclats
   var KPX=579,CX=726.5,CY=342.5; // placement du modele dans l'image source : px par unite, centre du blob
   var PERSP=.22;        // force de la perspective
-  var RADIUS=.25;       // rayon d'influence du curseur (unites modele, ~145 px image)
-  var PUSH=.3;          // ecartement maximal
-  var LIFT=.55;         // avancee vers l'oeil
+  var RADIUS=.3;        // rayon d'influence du curseur (unites modele, ~145 px image)
+  var PUSH=.62;         // ecartement maximal
+  var LIFT=.95;         // avancee vers l'oeil
   var K_OUT=95,K_BACK=20; // raideur : depart vif, retour lent
   var DAMP=.92;         // 1 = amortissement critique (pas de rebond)
-  var SWEEP=1.5;        // part de la vitesse du curseur transmise aux eclats
-  var PAD=190;          // marge du canvas autour de l'image (px ecran)
-  var MINIS=34;         // nombre de petits blobs autour du grand
+  var SWEEP=2.2;        // part de la vitesse du curseur transmise aux eclats
+  var PAD=320;          // marge du canvas autour de l'image (px ecran)
+  var MINIS=42;         // nombre de petits blobs autour du grand
   var SHADOW_PAD=170;
   var INTRO=3.2,INTRO_STAGGER=1;   // duree totale de l'introduction et decalage maximal entre eclats (s)
   var SPIN=.39;         // rotation continue du blob sur lui-meme (rad/s, ~1 tour en 16 s)
@@ -326,8 +326,8 @@
       // repartition : la plupart en couronne autour du grand blob, le reste disperse jusque derriere le texte
       var items=[];
       for(q=0;q<MINIS;q++){
-        var near=q<MINIS*.55,o={seed:Math.random(),ph:Math.random()*6.2832,w1:.25+Math.random()*.35,w2:.2+Math.random()*.3,
-          amp:6+Math.random()*14,spin:(Math.random()*2-1)*.5,tilt:Math.random()*1.2-.6,ox:0,oy:0,depth:.3+Math.random()*.7,delay:q*.045+Math.random()*.4};
+        var near=q<MINIS*.35,o={seed:Math.random(),ph:Math.random()*6.2832,w1:.25+Math.random()*.35,w2:.2+Math.random()*.3,
+          amp:6+Math.random()*14,spin:(Math.random()*2-1)*.5,tilt:Math.random()*1.2-.6,ox:0,oy:0,px:0,py:0,vx:0,vy:0,hover:0,tw:0,pop:0,popT:0,grow:1,held:false,ring:60+Math.random()*110,ang:Math.random()*6.2832,orb:(Math.random()<.5?-1:1)*(.8+Math.random()*.6),depth:.3+Math.random()*.7,delay:q*.045+Math.random()*.4};
         if(near){var an=Math.random()*6.2832,rr=.62+Math.random()*.75;o.near=true;o.u=Math.cos(an)*rr;o.v=Math.sin(an)*rr*.9;o.size=7+Math.random()*Math.random()*30;o.alpha=.95;}
         else{o.near=false;o.u=Math.random();o.v=.08+Math.random()*.86;o.size=5+Math.random()*Math.random()*24;o.alpha=.62+Math.random()*.25;}
         items.push(o);
@@ -338,18 +338,75 @@
         if(getComputedStyle(ch).position==='static') ch.style.position='relative';
         ch.style.zIndex='1';raised.push(ch);}
       hero.insertBefore(c,hero.firstChild);
+      /* interactions souris :
+         - le curseur pousse les gouttes, et sa vitesse les entraine
+         - survol d'une goutte : elle grossit et ondule plus vite
+         - clic sur une goutte : elle eclate en gouttelettes, puis se reforme
+         - clic maintenu ailleurs : les gouttes se rassemblent en orbite autour du curseur ; au relachement elles sont projetees */
+      var press=false,pressT=0,mvX=0,mvY=0,lpx=null,lpy=null,parts=[];
+      function interactive(el){return el&&el.closest&&el.closest('a,button,input,textarea,select,label,[role=button]');}
+      function local(e){var rc=c.getBoundingClientRect();return [e.clientX-rc.left,e.clientY-rc.top];}
+      function hitItem(lx,ly){var best=null,bd=1e9;
+        items.forEach(function(o){if(o.pop||o.lx===undefined) return;var dx=o.lx-lx,dy=o.ly-ly,d=Math.sqrt(dx*dx+dy*dy);
+          if(d<Math.max(o.size*1.4,16)&&d<bd){bd=d;best=o;}});return best;}
+      function burst(o){
+        o.pop=1;o.popT=0;
+        var n=7+((Math.random()*5)|0);
+        for(var j=0;j<n;j++){var a=Math.random()*6.2832,sp=150+Math.random()*280;
+          parts.push({x:o.lx,y:o.ly,vx:Math.cos(a)*sp,vy:Math.sin(a)*sp,size:o.size*(.16+Math.random()*.2)+2.5,life:0,max:.8+Math.random()*.6,seed:Math.random(),tw:0});}
+        if(parts.length>180) parts.splice(0,parts.length-180);
+      }
+      hero.addEventListener('pointerdown',function(e){
+        if(e.button!==0||interactive(e.target)) return;
+        var p=local(e),o=hitItem(p[0],p[1]);
+        if(o){burst(o);return;}
+        press=true;pressT=0;
+      });
+      window.addEventListener('pointerup',function(e){
+        if(!press) return;press=false;
+        var p=local(e),pw=Math.min(1,pressT/.7)*950+250;
+        items.forEach(function(o){if(!o.held) return;o.held=false;
+          var dx=o.lx-p[0],dy=o.ly-p[1],d=Math.sqrt(dx*dx+dy*dy)||1;o.vx+=dx/d*pw;o.vy+=dy/d*pw;});
+      });
+      window.addEventListener('blur',function(){press=false;items.forEach(function(o){o.held=false;});});
       // onde de choc venue du titre (« impact. ») : les gouttes proches sont projetees puis reviennent
       window.addEventListener('wf-impact',function(ev){
         var rc=c.getBoundingClientRect(),ix=ev.detail.x-rc.left,iy=ev.detail.y-rc.top,pw=ev.detail.power||1;
         items.forEach(function(o){if(o.lx===undefined) return;
           var dx=o.lx-ix,dy=o.ly-iy,d=Math.sqrt(dx*dx+dy*dy)||1;
-          if(d<760){var p=1-d/760;p=p*p*1100*pw;o.kvx=(o.kvx||0)+dx/d*p;o.kvy=(o.kvy||0)+dy/d*p;}});
+          if(d<760){var p=1-d/760;p=p*p*1100*pw;o.vx+=dx/d*p;o.vy+=dy/d*p;}});
       });
-      var W=0,Hh=0,m3=new Float32Array(9);
+      var W=0,Hh=0,m3=new Float32Array(9),placed=false;
+      // repartition : on degage le texte, les gouttes se concentrent sur les bords et autour du grand blob
+      function place(bx,by,br){
+        var rc=c.getBoundingClientRect(),col=(hero.querySelector('h1')||hero).parentElement.getBoundingClientRect();
+        var tl=col.left-rc.left-28,tt=col.top-rc.top-24,tr2=col.right-rc.left+28,tb=col.bottom-rc.top+24;
+        function inText(x,y){return x>tl&&x<tr2&&y>tt&&y<tb;}
+        items.forEach(function(o){
+          if(o.near){
+            // en couronne autour du grand blob, jamais sur le texte
+            for(var k=0;k<12;k++){var x=bx+o.u*br*1.9,y=by+o.v*br*1.9;if(!inText(x,y)) break;
+              var an=Math.random()*6.2832,rr=.62+Math.random()*.75;o.u=Math.cos(an)*rr;o.v=Math.sin(an)*rr*.9;}
+            return;
+          }
+          // sur les bords, a gauche comme a droite du texte, et sous les boutons
+          var r=Math.random(),lw=Math.max(0,tl-10);
+          if(r<.38&&lw>24){
+            o.ex=10+Math.random()*(lw-10);o.ey=20+Math.random()*(Hh-40);
+            o.size=Math.min(o.size,Math.max(6,lw*.32));
+          }else if(r<.52&&Hh-20>tb+30){
+            o.ex=Math.random()*tr2;o.ey=tb+10+Math.random()*(Hh-30-tb);
+          }else{
+            var rx=Math.max(tr2+10,W*.5);o.ex=rx+Math.random()*(W-rx-10);o.ey=20+Math.random()*(Hh-40);
+          }
+        });
+        placed=true;
+      }
+
       mini={
         layout:function(){
           var cw=document.documentElement.clientWidth,dpr=Math.min(window.devicePixelRatio||1,2);
-          W=cw;Hh=hero.offsetHeight+60;
+          W=cw;Hh=hero.offsetHeight+60;placed=false;
           c.style.left=(-pageLeft(hero))+'px';c.style.top='-20px';c.style.width=W+'px';c.style.height=Hh+'px';
           c.width=Math.round(W*dpr);c.height=Math.round(Hh*dpr);
           g.viewport(0,0,c.width,c.height);g.uniform2f(u.uCv,W,Hh);
@@ -359,25 +416,64 @@
           // centre et rayon du grand blob dans ce canvas
           var bx=pgL+CX*scale,by=pgT+CY*scale-pageTop(hero)+20+fl,br=KPX*scale*.5;
           var left=Math.max(40,pgL-40);
-          g.clear(g.COLOR_BUFFER_BIT|g.DEPTH_BUFFER_BIT);g.uniform1f(u.uTime,T);
+          if(!placed) place(bx,by-fl,br);
+          var cx0=ptrX-rc.left,cy0=ptrY-rc.top,hov=null;
+          // vitesse du curseur (lissee)
+          if(ptrIn&&lpx!==null){var ivx=(cx0-lpx)/dt,ivy=(cy0-lpy)/dt,spd=Math.sqrt(ivx*ivx+ivy*ivy);
+            if(spd>2600){ivx*=2600/spd;ivy*=2600/spd;}mvX+=(ivx-mvX)*.4;mvY+=(ivy-mvY)*.4;}else{mvX*=.8;mvY*=.8;}
+          lpx=ptrIn?cx0:null;lpy=ptrIn?cy0:null;
+          if(press) pressT+=dt;
+          g.clear(g.COLOR_BUFFER_BIT|g.DEPTH_BUFFER_BIT);
           for(var i=0;i<items.length;i++){
             var o=items[i],k=(T-1.6-o.delay)/.9;if(k<=0) continue;if(k>1) k=1;k=k*k*(3-2*k);
-            var x=o.near?bx+o.u*br*1.9:30+o.u*left,y=o.near?by+o.v*br*1.9:o.v*(Hh-40)+20;
+            var x=o.near?bx+o.u*br*1.9:o.ex,y=o.near?by+o.v*br*1.9:o.ey;
             x+=Math.sin(T*o.w1+o.ph)*o.amp;y+=Math.cos(T*o.w2+o.ph*1.7)*o.amp-sc*60*o.depth;
-            // la souris les ecarte doucement
-            var tx=0,ty=0;
-            if(ptrIn){var dx=x-(ptrX-rc.left),dy=y-(ptrY-rc.top),d=Math.sqrt(dx*dx+dy*dy);
-              if(d<150&&d>.5){var p=(1-d/150);p=p*p*46;tx=dx/d*p;ty=dy/d*p;}}
-            var e=1-Math.exp(-dt*4);o.ox+=(tx-o.ox)*e;o.oy+=(ty-o.oy)*e;
-            if(o.kvx||o.kvy||o.kx||o.ky){var dk=Math.exp(-dt*3.2),dr=Math.exp(-dt*1.3);
-              o.kvx=(o.kvx||0)*dk;o.kvy=(o.kvy||0)*dk;o.kx=((o.kx||0)+o.kvx*dt)*dr;o.ky=((o.ky||0)+o.kvy*dt)*dr;}
-            o.lx=x+o.ox+(o.kx||0);o.ly=y+o.oy+(o.ky||0);
-            var ay=T*o.spin+o.ph,ax=o.tilt,cy=Math.cos(ay),sy=Math.sin(ay),cx=Math.cos(ax),sx=Math.sin(ax);
+            // ressort qui ramene la goutte chez elle
+            var kS=7,dmp=2.4,fx=-kS*o.px,fy=-kS*o.py,isH=false;
+            var curX=x+o.px,curY=y+o.py;
+            if(ptrIn&&!o.pop){
+              var dx=curX-cx0,dy=curY-cy0,d=Math.sqrt(dx*dx+dy*dy)||1;
+              if(press&&(o.held||d<430)){
+                // rassemblement : orbite autour du curseur
+                o.held=true;var an=o.ang+T*o.orb;
+                var tx=cx0+Math.cos(an)*o.ring*.85-x,ty=cy0+Math.sin(an)*o.ring*.68-y;
+                fx=24*(tx-o.px);fy=24*(ty-o.py);dmp=6;
+              }else if(d<o.size*1.5+12){
+                // sous le curseur : la goutte se laisse attraper (elle colle un peu au curseur)
+                isH=true;hov=o;fx+=-dx*10;fy+=-dy*10;
+              }else if(d<190){
+                // un geste rapide les bouscule, un curseur lent les ecarte a peine
+                var spd2=Math.sqrt(mvX*mvX+mvY*mvY),f=1-d/190;f*=f;
+                var pw=1500+Math.min(1,spd2/900)*5200;
+                fx+=dx/d*f*pw;fy+=dy/d*f*pw;
+                o.vx+=mvX*f*dt*5;o.vy+=mvY*f*dt*5;          // le geste entraine les gouttes
+              }
+            }
+            var dd=Math.exp(-dmp*dt);
+            o.vx=(o.vx+fx*dt)*dd;o.vy=(o.vy+fy*dt)*dd;o.px+=o.vx*dt;o.py+=o.vy*dt;
+            o.hover+=((isH?1:0)-o.hover)*(1-Math.exp(-dt*8));
+            o.tw+=dt*(1+o.hover*3.5);
+            o.lx=x+o.px;o.ly=y+o.py;
+            if(o.pop){o.popT+=dt;if(o.popT<2.4) continue;o.pop=0;o.grow=0;o.px=o.py=o.vx=o.vy=0;}
+            if(o.grow<1) o.grow=Math.min(1,o.grow+dt*1.3);
+            var gr=o.grow*o.grow*(3-2*o.grow);
+            var ay=T*o.spin+o.ph+o.hover*.6,ax=o.tilt,cy=Math.cos(ay),sy=Math.sin(ay),cx=Math.cos(ax),sx=Math.sin(ax);
             m3[0]=cy;m3[1]=0;m3[2]=-sy;m3[3]=sy*sx;m3[4]=cx;m3[5]=cy*sx;m3[6]=sy*cx;m3[7]=-sx;m3[8]=cy*cx;
-            g.uniformMatrix3fv(u.uR,false,m3);
-            g.uniform3f(u.uPS,o.lx,o.ly,o.size*(.4+.6*k));g.uniform1f(u.uSeed,o.seed);g.uniform1f(u.uAlpha,o.alpha*k);
+            g.uniformMatrix3fv(u.uR,false,m3);g.uniform1f(u.uTime,o.tw);
+            g.uniform3f(u.uPS,o.lx,o.ly,o.size*(.4+.6*k)*(1+.38*o.hover)*gr);g.uniform1f(u.uSeed,o.seed);g.uniform1f(u.uAlpha,o.alpha*k);
             g.drawElements(g.TRIANGLES,F.length,g.UNSIGNED_SHORT,0);
           }
+          // gouttelettes d'eclatement
+          for(var j=parts.length-1;j>=0;j--){
+            var pt=parts[j];pt.life+=dt;if(pt.life>=pt.max){parts.splice(j,1);continue;}
+            var dk=Math.exp(-dt*2.6);pt.vx*=dk;pt.vy*=dk;pt.x+=pt.vx*dt;pt.y+=pt.vy*dt;pt.tw+=dt*3;
+            var lf=1-pt.life/pt.max;
+            m3[0]=1;m3[1]=0;m3[2]=0;m3[3]=0;m3[4]=1;m3[5]=0;m3[6]=0;m3[7]=0;m3[8]=1;
+            g.uniformMatrix3fv(u.uR,false,m3);g.uniform1f(u.uTime,pt.tw);
+            g.uniform3f(u.uPS,pt.x,pt.y,pt.size*(.5+.5*lf));g.uniform1f(u.uSeed,pt.seed);g.uniform1f(u.uAlpha,.9*lf);
+            g.drawElements(g.TRIANGLES,F.length,g.UNSIGNED_SHORT,0);
+          }
+          hero.style.cursor=press?'grabbing':(hov?'pointer':'');
         },
         remove:function(){c.remove();raised.forEach(function(ch){ch.style.zIndex='';});var x=g.getExtension('WEBGL_lose_context');if(x) x.loseContext();}
       };
@@ -472,7 +568,7 @@
               var p=PUSH*f*rPush[s],gx=ux*p,gy=uy*p,gz=LIFT*f*rPush[s];
               // cible et elan ramenes dans le repere du modele (R transposee)
               tx=R[0]*gx+R[1]*gy+R[2]*gz;ty=R[3]*gx+R[4]*gy+R[5]*gz;tz=R[6]*gx+R[7]*gy+R[8]*gz;
-              var a2=1.5*f;ta=qy[s]*a2;tb=qz[s]*a2;tc=qx[s]*a2;kk=K_OUT;
+              var a2=2.4*f;ta=qy[s]*a2;tb=qz[s]*a2;tc=qx[s]*a2;kk=K_OUT;
               var hx=mvx*f*SWEEP*dt*rPush[s],hy=mvy*f*SWEEP*dt*rPush[s];
               vx[s]+=R[0]*hx+R[1]*hy;vy[s]+=R[3]*hx+R[4]*hy;vz[s]+=R[6]*hx+R[7]*hy;
               awake[s]=1;
