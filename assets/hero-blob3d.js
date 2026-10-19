@@ -30,7 +30,7 @@
   var DAMP=.92;         // 1 = amortissement critique (pas de rebond)
   var SWEEP=2.2;        // part de la vitesse du curseur transmise aux eclats
   var PAD=320;          // marge du canvas autour de l'image (px ecran)
-  var MINIS=42;         // nombre de petits blobs autour du grand
+  var MINIS=72;         // nombre de petits blobs autour du grand
   var SHADOW_PAD=170;
   var INTRO=3.2,INTRO_STAGGER=1;   // duree totale de l'introduction et decalage maximal entre eclats (s)
   var SPIN=.39;         // rotation continue du blob sur lui-meme (rad/s, ~1 tour en 16 s)
@@ -327,9 +327,9 @@
       var items=[];
       for(q=0;q<MINIS;q++){
         var near=q<MINIS*.35,o={seed:Math.random(),ph:Math.random()*6.2832,w1:.25+Math.random()*.35,w2:.2+Math.random()*.3,
-          amp:6+Math.random()*14,spin:(Math.random()*2-1)*.5,tilt:Math.random()*1.2-.6,ox:0,oy:0,px:0,py:0,vx:0,vy:0,hover:0,tw:0,pop:0,popT:0,grow:1,held:false,ring:60+Math.random()*110,ang:Math.random()*6.2832,orb:(Math.random()<.5?-1:1)*(.8+Math.random()*.6),depth:.3+Math.random()*.7,delay:q*.045+Math.random()*.4};
-        if(near){var an=Math.random()*6.2832,rr=.62+Math.random()*.75;o.near=true;o.u=Math.cos(an)*rr;o.v=Math.sin(an)*rr*.9;o.size=7+Math.random()*Math.random()*30;o.alpha=.95;}
-        else{o.near=false;o.u=Math.random();o.v=.08+Math.random()*.86;o.size=5+Math.random()*Math.random()*24;o.alpha=.62+Math.random()*.25;}
+          amp:6+Math.random()*14,spin:(Math.random()*2-1)*.5,tilt:Math.random()*1.2-.6,ox:0,oy:0,px:0,py:0,vx:0,vy:0,hover:0,tw:0,pop:0,popT:0,grow:1,held:false,ring:60+Math.random()*110,ang:Math.random()*6.2832,orb:(Math.random()<.5?-1:1)*(.8+Math.random()*.6),depth:.3+Math.random()*.7,delay:Math.random()*.7};
+        if(near){var an=Math.random()*6.2832,rr=.62+Math.random()*.75;o.near=true;o.u=Math.cos(an)*rr;o.v=Math.sin(an)*rr*.9;o.size=8+Math.random()*Math.random()*32;o.alpha=.95;}
+        else{o.near=false;o.u=Math.random();o.v=.08+Math.random()*.86;o.size=6+Math.random()*Math.random()*28;o.alpha=.62+Math.random()*.25;}
         items.push(o);
       }
       // le texte, les boutons et le visuel passent au-dessus de ce calque
@@ -376,12 +376,20 @@
           var dx=o.lx-ix,dy=o.ly-iy,d=Math.sqrt(dx*dx+dy*dy)||1;
           if(d<760){var p=1-d/760;p=p*p*1100*pw;o.vx+=dx/d*p;o.vy+=dy/d*p;}});
       });
-      var W=0,Hh=0,m3=new Float32Array(9),placed=false;
+      var W=0,Hh=0,m3=new Float32Array(9),placed=false,parX=0,parY=0;
       // repartition : on degage le texte, les gouttes se concentrent sur les bords et autour du grand blob
       function place(bx,by,br){
         var rc=c.getBoundingClientRect(),col=(hero.querySelector('h1')||hero).parentElement.getBoundingClientRect();
-        var tl=col.left-rc.left-28,tt=col.top-rc.top-24,tr2=col.right-rc.left+28,tb=col.bottom-rc.top+24;
-        function inText(x,y){return x>tl&&x<tr2&&y>tt&&y<tb;}
+        var tl=col.left-rc.left-8,tt=col.top-rc.top-8,tr2=col.right-rc.left+8,tb=col.bottom-rc.top+8;
+        // zones a laisser libres : chaque ligne de texte, chaque bouton (marge de 14 px)
+        var boxes=[],colEl=(hero.querySelector('h1')||hero).parentElement;
+        [].forEach.call(colEl.children,function(el){
+          var rs;
+          if(/^(H1|P)$/.test(el.tagName)||el.classList.contains('pill')){var rg=document.createRange();rg.selectNodeContents(el);rs=rg.getClientRects();}
+          else rs=[].map.call(el.querySelectorAll('a,span,img,button'),function(x){return x.getBoundingClientRect();});
+          [].forEach.call(rs,function(b){if(b.width>2&&b.height>2) boxes.push([b.left-rc.left-14,b.top-rc.top-14,b.right-rc.left+14,b.bottom-rc.top+14]);});
+        });
+        function inText(x,y){for(var bi=0;bi<boxes.length;bi++){var b=boxes[bi];if(x>b[0]&&x<b[2]&&y>b[1]&&y<b[3]) return true;}return false;}
         items.forEach(function(o){
           if(o.near){
             // en couronne autour du grand blob, jamais sur le texte
@@ -391,6 +399,14 @@
           }
           // sur les bords, a gauche comme a droite du texte, et sous les boutons
           var r=Math.random(),lw=Math.max(0,tl-10);
+          if(r<.3){
+            for(var tt2=0;tt2<80;tt2++){
+              var nx=tl-60+Math.random()*(tr2-tl+120),ny=tt-40+Math.random()*(tb-tt+80);
+              if(!inText(nx,ny)&&!inText(nx-o.size*.7,ny)&&!inText(nx+o.size*.7,ny)&&!inText(nx,ny-o.size*.7)&&!inText(nx,ny+o.size*.7)){
+                o.ex=nx;o.ey=ny;o.size=Math.min(o.size,18);o.alpha=.85;return;}
+            }
+          }
+          r=Math.random();
           if(r<.38&&lw>24){
             o.ex=10+Math.random()*(lw-10);o.ey=20+Math.random()*(Hh-40);
             o.size=Math.min(o.size,Math.max(6,lw*.32));
@@ -418,6 +434,9 @@
           var left=Math.max(40,pgL-40);
           if(!placed) place(bx,by-fl,br);
           var cx0=ptrX-rc.left,cy0=ptrY-rc.top,hov=null;
+          // parallaxe : des que la souris bouge, toutes les gouttes glissent un peu avec elle (effet de profondeur)
+          var pe=1-Math.exp(-dt*3.5),tpx=ptrIn?(ptrX/window.innerWidth-.5)*-70:0,tpy=ptrIn?(ptrY/window.innerHeight-.5)*-46:0;
+          parX+=(tpx-parX)*pe;parY+=(tpy-parY)*pe;
           // vitesse du curseur (lissee)
           if(ptrIn&&lpx!==null){var ivx=(cx0-lpx)/dt,ivy=(cy0-lpy)/dt,spd=Math.sqrt(ivx*ivx+ivy*ivy);
             if(spd>2600){ivx*=2600/spd;ivy*=2600/spd;}mvX+=(ivx-mvX)*.4;mvY+=(ivy-mvY)*.4;}else{mvX*=.8;mvY*=.8;}
@@ -425,9 +444,9 @@
           if(press) pressT+=dt;
           g.clear(g.COLOR_BUFFER_BIT|g.DEPTH_BUFFER_BIT);
           for(var i=0;i<items.length;i++){
-            var o=items[i],k=(T-1.6-o.delay)/.9;if(k<=0) continue;if(k>1) k=1;k=k*k*(3-2*k);
+            var o=items[i],k=(T-.35-o.delay)/.7;if(k<=0) continue;if(k>1) k=1;k=k*k*(3-2*k);
             var x=o.near?bx+o.u*br*1.9:o.ex,y=o.near?by+o.v*br*1.9:o.ey;
-            x+=Math.sin(T*o.w1+o.ph)*o.amp;y+=Math.cos(T*o.w2+o.ph*1.7)*o.amp-sc*60*o.depth;
+            x+=Math.sin(T*o.w1+o.ph)*o.amp+parX*o.depth;y+=Math.cos(T*o.w2+o.ph*1.7)*o.amp-sc*60*o.depth+parY*o.depth;
             // ressort qui ramene la goutte chez elle
             var kS=7,dmp=2.4,fx=-kS*o.px,fy=-kS*o.py,isH=false;
             var curX=x+o.px,curY=y+o.py;
@@ -441,10 +460,10 @@
               }else if(d<o.size*1.5+12){
                 // sous le curseur : la goutte se laisse attraper (elle colle un peu au curseur)
                 isH=true;hov=o;fx+=-dx*10;fy+=-dy*10;
-              }else if(d<190){
+              }else if(d<260){
                 // un geste rapide les bouscule, un curseur lent les ecarte a peine
-                var spd2=Math.sqrt(mvX*mvX+mvY*mvY),f=1-d/190;f*=f;
-                var pw=1500+Math.min(1,spd2/900)*5200;
+                var spd2=Math.sqrt(mvX*mvX+mvY*mvY),f=1-d/260;f*=f;
+                var pw=3200+Math.min(1,spd2/900)*6000;
                 fx+=dx/d*f*pw;fy+=dy/d*f*pw;
                 o.vx+=mvX*f*dt*5;o.vy+=mvY*f*dt*5;          // le geste entraine les gouttes
               }
