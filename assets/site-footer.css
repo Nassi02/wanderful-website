@@ -4,7 +4,7 @@
   font-family:'Poppins',system-ui,-apple-system,sans-serif;color:var(--wf-ink);font-size:14.5px;line-height:1.5;position:relative;z-index:1;}
 .wf-foot *{box-sizing:border-box;}
 .wf-foot .wf-in{max-width:1200px;margin:0 auto;padding:0 24px;}
-.wf-foot .wf-grid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1fr 1.2fr;gap:36px;padding-bottom:36px;border-bottom:1px solid rgba(53,43,82,.12);}
+.wf-foot .wf-grid{display:grid;grid-template-columns:1.7fr 1fr 1fr 1.2fr;gap:36px;padding-bottom:36px;border-bottom:1px solid rgba(53,43,82,.12);}
 .wf-foot .wf-brand img{height:46px;width:auto;display:block;margin:0 0 14px;}
 .wf-foot .wf-tag{font-size:15px;color:var(--wf-ink);font-style:italic;}
 .wf-foot .wf-desc{font-size:14px;color:var(--wf-muted);font-weight:300;margin:12px 0 0;max-width:280px;}

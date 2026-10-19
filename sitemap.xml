@@ -141,66 +141,6 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/services/videos-saas.html"/>
   </url>
   <url>
-    <loc>https://wanderful-marketing.com/sante.html</loc>
-    <lastmod>2026-10-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/sante.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/healthcare.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/sante.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/restaurants.html</loc>
-    <lastmod>2026-10-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/restaurants.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/restaurants.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/restaurants.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/immobilier.html</loc>
-    <lastmod>2026-10-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/immobilier.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/real-estate.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/immobilier.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/ecommerce.html</loc>
-    <lastmod>2026-10-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/ecommerce.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/ecommerce.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/ecommerce.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/formation.html</loc>
-    <lastmod>2026-10-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/formation.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/education.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/formation.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/pme-locales.html</loc>
-    <lastmod>2026-10-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/pme-locales.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/local-businesses.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/pme-locales.html"/>
-  </url>
-  <url>
     <loc>https://wanderful-marketing.com/agence-marketing-digital-lausanne.html</loc>
     <lastmod>2026-10-17</lastmod>
     <changefreq>monthly</changefreq>
@@ -371,66 +311,6 @@
     <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/services/videos-saas.html"/>
     <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/services/saas-videos.html"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/services/videos-saas.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/en/healthcare.html</loc>
-    <lastmod>2026-10-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/sante.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/healthcare.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/sante.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/en/restaurants.html</loc>
-    <lastmod>2026-10-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/restaurants.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/restaurants.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/restaurants.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/en/real-estate.html</loc>
-    <lastmod>2026-10-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/immobilier.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/real-estate.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/immobilier.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/en/ecommerce.html</loc>
-    <lastmod>2026-10-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/ecommerce.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/ecommerce.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/ecommerce.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/en/education.html</loc>
-    <lastmod>2026-10-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/formation.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/education.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/formation.html"/>
-  </url>
-  <url>
-    <loc>https://wanderful-marketing.com/en/local-businesses.html</loc>
-    <lastmod>2026-10-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  
-    <xhtml:link rel="alternate" hreflang="fr" href="https://wanderful-marketing.com/pme-locales.html"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://wanderful-marketing.com/en/local-businesses.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://wanderful-marketing.com/pme-locales.html"/>
   </url>
   <url>
     <loc>https://wanderful-marketing.com/en/digital-marketing-agency-lausanne.html</loc>
