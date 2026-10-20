@@ -389,6 +389,26 @@ footer{margin-top:76px;padding:54px 0 34px;}
   .ap-me-signe{max-width:190px;margin:0 0 4px;}
 }
 
+/* ===== premier ecran anime (../assets/apropos-hero.js) ===== */
+.ap-hero-me{position:relative;}
+.ap-hero-me .ap-wrap{position:relative;z-index:1;}
+.ap-hero-me .ap-me{grid-template-columns:1fr;}
+.ap-hero-me .ap-me-txt{text-align:center;max-width:1000px;margin:0 auto;}
+.ap-hero-me .ap-me-txt .ap-h{max-width:none;margin:0 auto;}
+.ap-hero-me .ap-me-txt .ap-lead{margin:28px auto 0;}
+.aph-field{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;display:block;}
+.aph-w{display:inline-block;white-space:nowrap;}
+.aph-c{display:inline-block;will-change:transform;}
+.aph-g{background-image:var(--grad-text);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;}
+.aph-mask{overflow:hidden;vertical-align:top;padding:.12em .04em .14em;margin:-.12em -.04em -.14em;}
+.aph-wi{display:inline-block;transform:translateY(110%);}
+.aph-s{opacity:0;filter:blur(8px);transform:translate(var(--x),var(--y)) rotate(var(--r)) scale(.85);}
+.ap-h.aph-go .aph-s{opacity:1;filter:none;transform:none;
+  transition:opacity .9s ease var(--d),filter 1s ease var(--d),transform 1.25s cubic-bezier(.2,1.25,.35,1) var(--d);}
+.ap-h.aph-go .aph-wi{transform:none;transition:transform 1s cubic-bezier(.22,1,.36,1) var(--d);}
+.ap-h.aph-live .aph-s,.ap-h.aph-live .aph-wi{transition:none;}
+@media(prefers-reduced-motion:reduce){.aph-s,.aph-wi{opacity:1!important;filter:none!important;transform:none!important;}}
+
 /* ===== l'histoire ===== */
 .ap-story{padding:var(--ap-gap) 0;}
 .ap-story-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,4vw,56px);align-items:start;margin-top:34px;}
@@ -665,14 +685,9 @@ footer{margin-top:76px;padding:54px 0 34px;}
 <section class="ap-hero ap-hero-me" id="apHero">
 <div class="ap-wrap">
 <div class="ap-me">
-<div aria-hidden="true" class="ap-me-signe ap-rev">
-<span class="ap-me-halo"></span>
-<img alt="" class="ap-me-o1" decoding="async" height="200" src="../assets/disciplines/anneaux.webp" width="200"/>
-<img alt="" class="ap-me-o2" decoding="async" height="160" src="../assets/disciplines/etoile.webp" width="160"/>
-</div>
 <div class="ap-me-txt">
 <div class="ap-label ap-rev">About</div>
-<h1 class="ap-h ap-rev" data-d="1">Creativity.<br/> <span class="ap-grad">With real thinking behind it.</span></h1>
+<h1 class="ap-h">Creativity.<br/> <span class="ap-grad">With real thinking behind it.</span></h1>
 <p class="ap-lead ap-rev" data-d="2">I'm Nassima, founder of Wanderful Marketing. I lead every project, working with collaborators who step in as each one needs them — design, content, production. Together we bring strategy, creativity, data and technology into one place, to help brands find their direction and make it real.</p>
 <a class="ap-scroll ap-rev" data-d="3" href="#ap-story">Get to know me <span class="a">↓</span></a>
 </div>
@@ -921,7 +936,7 @@ footer{margin-top:76px;padding:54px 0 34px;}
 <div class="foot-col">
 <h5>Navigation</h5>
 <a href="/en/">Home</a><a href="/en/#methode">Method</a>
-<a class="on" href="about.html">About</a><a href="/en/#realisations">Our work</a><a href="../agence-marketing-ia-suisse-romande.html">AI marketing agency</a><a href="../site-web-pme.html">SME website · pricing</a><a href="digital-marketing-agency-lausanne.html">Marketing agency Lausanne</a><a href="digital-marketing-agency-yverdon.html">Marketing agency Yverdon</a><a href="/en/contact/">Contact</a>
+<a class="on" href="about.html">About</a><a href="/en/#realisations">Our work</a><a href="ai-marketing-agency-switzerland.html">AI marketing agency</a><a href="website-for-smes.html">SME website · pricing</a><a href="digital-marketing-agency-lausanne.html">Marketing agency Lausanne</a><a href="digital-marketing-agency-yverdon.html">Marketing agency Yverdon</a><a href="/en/contact/">Contact</a>
 </div>
 <div class="foot-col">
 <h5>Contact</h5>
@@ -1036,6 +1051,7 @@ if(t&&m)t.addEventListener('click',()=>{const open=getComputedStyle(m).display!=
   document.addEventListener('visibilitychange', function(){ if (document.hidden) v.pause(); });
 })();
 </script>
+<script defer="" src="/assets/apropos-hero.js"></script>
 <script defer="" src="/assistant.js"></script>
 <script>
 /* logo qui s'ecrit */
