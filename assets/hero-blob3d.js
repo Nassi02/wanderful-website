@@ -30,7 +30,7 @@
   var DAMP=.92;         // 1 = amortissement critique (pas de rebond)
   var SWEEP=2.2;        // part de la vitesse du curseur transmise aux eclats
   var PAD=320;          // marge du canvas autour de l'image (px ecran)
-  var MINIS=105;         // nombre de petits blobs autour du grand
+  var MINIS=70;          // nombre de petits blobs autour du grand
   var SHADOW_PAD=170;
   var INTRO=3.2,INTRO_STAGGER=1;   // duree totale de l'introduction et decalage maximal entre eclats (s)
   var SPIN=.39;         // rotation continue du blob sur lui-meme (rad/s, ~1 tour en 16 s)
@@ -452,7 +452,7 @@
           var left=Math.max(40,pgL-40);
           if(!placed) place(bx,by-fl,br);
           var cx0=ptrX-rc.left,cy0=ptrY-rc.top,hov=null;
-          var dp=(T-1.5)/1.5,demoOn=dp>0&&dp<1,demoX=0,demoY=0;
+          var dp=0,demoOn=false,demoX=0,demoY=0;
           if(demoOn){var de=dp*dp*(3-2*dp);demoX=W*(.04+.92*de);demoY=Hh*(.5+.18*Math.sin(dp*6.2832));}
           // aureole et invitation
           if(ptrIn&&cy0>-40&&cy0<Hh){aura.classList.add('on');aura.style.transform='translate('+(cx0-pageLeft(hero)).toFixed(1)+'px,'+(cy0-20).toFixed(1)+'px)';}
@@ -464,7 +464,7 @@
             hint.classList.add('on');setTimeout(hideHint,9000);
           }
           // parallaxe : des que la souris bouge, toutes les gouttes glissent un peu avec elle (effet de profondeur)
-          var pe=1-Math.exp(-dt*6),tpx=ptrIn?(ptrX/window.innerWidth-.5)*-130:0,tpy=ptrIn?(ptrY/window.innerHeight-.5)*-80:0;
+          var pe=1-Math.exp(-dt*1.6),tpx=ptrIn?(ptrX/window.innerWidth-.5)*-24:0,tpy=ptrIn?(ptrY/window.innerHeight-.5)*-14:0;
           parX+=(tpx-parX)*pe;parY+=(tpy-parY)*pe;
           // vitesse du curseur (lissee)
           if(ptrIn&&lpx!==null){var ivx=(cx0-lpx)/dt,ivy=(cy0-lpy)/dt,spd=Math.sqrt(ivx*ivx+ivy*ivy);
@@ -491,19 +491,18 @@
               }else if(d<o.size*1.5+12){
                 // sous le curseur : la goutte se laisse attraper (elle colle un peu au curseur)
                 isH=true;hov=o;fx+=-dx*10;fy+=-dy*10;
-              }else if(d<260){
+              }else if(d<170){
                 // un geste rapide les bouscule, un curseur lent les ecarte a peine
-                var spd2=Math.sqrt(mvX*mvX+mvY*mvY),f=1-d/260;f*=f;
-                var pw=3200+Math.min(1,spd2/900)*6000;
+                var spd2=Math.sqrt(mvX*mvX+mvY*mvY),f=1-d/170;f*=f;
+                var pw=1800+Math.min(1,spd2/900)*3800;
                 fx+=dx/d*f*pw;fy+=dy/d*f*pw;
                 o.vx+=mvX*f*dt*5;o.vy+=mvY*f*dt*5;          // le geste entraine les gouttes
               }
             }
-            if(ptrIn&&!o.held){var wk=2.4*(.45+o.depth);o.vx+=mvX*wk*dt;o.vy+=mvY*wk*dt;}
             var dd=Math.exp(-dmp*dt);
             o.vx=(o.vx+fx*dt)*dd;o.vy=(o.vy+fy*dt)*dd;o.px+=o.vx*dt;o.py+=o.vy*dt;
             o.hover+=((isH?1:0)-o.hover)*(1-Math.exp(-dt*8));
-            o.tw+=dt*(1+o.hover*3.5+Math.min(2.5,Math.sqrt(mvX*mvX+mvY*mvY)/500));
+            o.tw+=dt*(1+o.hover*3.5);
             o.lx=x+o.px;o.ly=y+o.py;
             if(o.pop){o.popT+=dt;if(o.popT<2.4) continue;o.pop=0;o.grow=0;o.px=o.py=o.vx=o.vy=0;}
             if(o.grow<1) o.grow=Math.min(1,o.grow+dt*1.3);
