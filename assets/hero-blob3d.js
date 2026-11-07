@@ -1,3 +1,4 @@
+/* perles calmes — version du 7 novembre 2026 */
 /* Hero : blob holographique en vraie 3D (WebGL, sans librairie).
    - assets/blob-3d.bin : forme du blob (modele 3D genere a partir de blob-hero.png, allege)
    - la matiere nacree est calculee en temps reel ; l'image d'origine est projetee sur la face avant
