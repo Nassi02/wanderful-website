@@ -31,7 +31,7 @@
   var DAMP=.92;         // 1 = amortissement critique (pas de rebond)
   var SWEEP=2.2;        // part de la vitesse du curseur transmise aux eclats
   var PAD=320;          // marge du canvas autour de l'image (px ecran)
-  var MINIS=70;          // nombre de petits blobs autour du grand
+  var MINIS=40;          // nombre de petits blobs autour du grand
   var SHADOW_PAD=170;
   var INTRO=3.2,INTRO_STAGGER=1;   // duree totale de l'introduction et decalage maximal entre eclats (s)
   var SPIN=.39;         // rotation continue du blob sur lui-meme (rad/s, ~1 tour en 16 s)
@@ -330,8 +330,8 @@
       for(q=0;q<NM;q++){
         var near=q<NM*.35,o={seed:Math.random(),ph:Math.random()*6.2832,w1:.25+Math.random()*.35,w2:.2+Math.random()*.3,
           amp:6+Math.random()*14,spin:(Math.random()*2-1)*.5,tilt:Math.random()*1.2-.6,ox:0,oy:0,px:0,py:0,vx:0,vy:0,hover:0,tw:0,pop:0,popT:0,grow:1,held:false,ring:60+Math.random()*110,ang:Math.random()*6.2832,orb:(Math.random()<.5?-1:1)*(.8+Math.random()*.6),depth:.3+Math.random()*.7,delay:Math.random()*.7};
-        if(near){var an=Math.random()*6.2832,rr=.62+Math.random()*.75;o.near=true;o.u=Math.cos(an)*rr;o.v=Math.sin(an)*rr*.9;o.size=10+Math.pow(Math.random(),1.6)*28;o.alpha=.95;}
-        else{o.near=false;o.u=Math.random();o.v=.08+Math.random()*.86;o.size=8+Math.pow(Math.random(),1.6)*24;o.alpha=.75+Math.random()*.2;}
+        if(near){var an=Math.random()*6.2832,rr=.62+Math.random()*.75;o.near=true;o.u=Math.cos(an)*rr;o.v=Math.sin(an)*rr*.9;o.size=9+Math.pow(Math.random(),1.8)*22;o.alpha=.95;}
+        else{o.near=false;o.u=Math.random();o.v=.08+Math.random()*.86;o.size=7+Math.pow(Math.random(),1.8)*18;o.alpha=.75+Math.random()*.2;}
         items.push(o);
       }
       // le texte, les boutons et le visuel passent au-dessus de ce calque
@@ -422,7 +422,7 @@
             for(var tt2=0;tt2<80;tt2++){
               var nx=tl-60+Math.random()*(tr2-tl+120),ny=tt-40+Math.random()*(tb-tt+80);
               if(!inText(nx,ny)&&!inText(nx-o.size*.7,ny)&&!inText(nx+o.size*.7,ny)&&!inText(nx,ny-o.size*.7)&&!inText(nx,ny+o.size*.7)){
-                o.ex=nx;o.ey=ny;o.size=Math.max(9,Math.min(o.size,22));o.alpha=.9;return;}
+                o.ex=nx;o.ey=ny;o.size=Math.max(8,Math.min(o.size,16));o.alpha=.9;return;}
             }
           }
           r=Math.random();
