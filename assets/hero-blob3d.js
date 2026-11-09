@@ -408,6 +408,9 @@
           else rs=[].map.call(el.querySelectorAll('a,span,img,button'),function(x){return x.getBoundingClientRect();});
           [].forEach.call(rs,function(b){if(b.width>2&&b.height>2) boxes.push([b.left-rc.left-14,b.top-rc.top-14,b.right-rc.left+14,b.bottom-rc.top+14]);});
         });
+        // bande « Ils nous font confiance » : on laisse libres le titre et les logos
+        var trs=document.querySelector('.trust');
+        if(trs) [].forEach.call(trs.querySelectorAll('.lbl,.logos > *'),function(el){var b=el.getBoundingClientRect();if(b.width>2&&b.height>2) boxes.push([b.left-rc.left-18,b.top-rc.top-18,b.right-rc.left+18,b.bottom-rc.top+18]);});
         function inText(x,y){for(var bi=0;bi<boxes.length;bi++){var b=boxes[bi];if(x>b[0]&&x<b[2]&&y>b[1]&&y<b[3]) return true;}return false;}
         items.forEach(function(o){
           if(o.near){
@@ -429,7 +432,7 @@
           if(r<.38&&lw>24){
             o.ex=10+Math.random()*(lw-10);o.ey=20+Math.random()*(Hh-40);
             o.size=Math.min(o.size,Math.max(6,lw*.32));
-          }else if(r<.52&&Hh-20>tb+30){
+          }else if(r<.62&&Hh-20>tb+30){
             o.ex=Math.random()*tr2;o.ey=tb+10+Math.random()*(Hh-30-tb);
           }else{
             var rx=Math.max(tr2+10,W*.5);o.ex=rx+Math.random()*(W-rx-10);o.ey=20+Math.random()*(Hh-40);
@@ -441,7 +444,7 @@
       mini={
         layout:function(){
           var cw=document.documentElement.clientWidth,dpr=Math.min(window.devicePixelRatio||1,2);
-          W=cw;Hh=hero.offsetHeight+60;placed=false;
+          var trs2=document.querySelector('.trust');W=cw;Hh=hero.offsetHeight+60+(trs2?Math.round(trs2.offsetHeight*.85):0);placed=false;
           c.style.left=(-pageLeft(hero))+'px';c.style.top='-20px';c.style.width=W+'px';c.style.height=Hh+'px';
           c.width=Math.round(W*dpr);c.height=Math.round(Hh*dpr);
           g.viewport(0,0,c.width,c.height);g.uniform2f(u.uCv,W,Hh);
