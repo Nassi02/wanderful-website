@@ -2893,7 +2893,7 @@ function openContentModal(id){
   const prod=`${reqAlert(it)}<div class="bd-lbl" style="margin-bottom:8px">${canEdit?'📤 Ta production':'📤 Production (agence) — dépose ici le montage'}</div>
     <div class="prod-media">${media||'<div class="prod-empty">Aucun fichier déposé pour l\'instant.</div>'}</div>
     <input type="file" id="prodFile" accept="image/*,video/*" multiple style="display:none" onchange="uploadContentMedia('${it.id}')">
-    <button class="sbtn ok" id="prodBtn" style="width:100%;margin-top:10px" onclick="document.getElementById('prodFile').click()">${it.media_url?'🔁 Remplacer le fichier':'📎 Déposer mon montage / mon carrousel'}</button>
+    ${it.media_url?`<button class="sbtn" style="width:100%;margin-top:10px;background:#6A55D6;color:#fff" onclick="dlMedia('${it.id}')">⬇️ Télécharger${mediaList(it).length>1?' les '+mediaList(it).length+' fichiers':' le fichier'}</button>`:''}<button class="sbtn ok" id="prodBtn" style="width:100%;margin-top:10px" onclick="document.getElementById('prodFile').click()">${it.media_url?'🔁 Remplacer le fichier':'📎 Déposer mon montage / mon carrousel'}</button>
     <div style="font-size:11px;color:var(--muted);margin-top:5px">Pour un carrousel : sélectionne les slides d'un coup (elles seront rangées par ordre de nom).<br>Taille maximale : <b>50 Mo par fichier</b>.</div>
     <div id="prodProg" style="font-size:12px;color:var(--muted);margin-top:6px"></div>
     <div class="field" style="margin-top:16px"><label>📅 Date et heure de publication</label>
