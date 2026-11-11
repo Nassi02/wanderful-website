@@ -1,0 +1,160 @@
+/* Accueil (FR + EN) — retouches téléphone & tablette.
+   Chargé après le <style> de la page : ne fait que corriger / compléter.
+   Repères : ≤980px tablette & téléphone, ≤745px cartes services compactes, ≤560px téléphone. */
+
+/* ── Logos « Ils nous font confiance » : deux cartes identiques, logos de poids visuel égal ── */
+.trust .logos{gap:22px;}
+.trust-logo{display:inline-flex;align-items:center;justify-content:center;width:260px;height:80px;
+  background:var(--glass-strong);border:1px solid rgba(255,255,255,.7);border-radius:20px;
+  padding:16px 28px;box-shadow:var(--shadow-soft);}
+.trust-logo img{display:block;width:auto;max-width:100%;}
+.trust-logo .tl-carewell{height:32px;}
+.trust-logo .tl-neuchatel{height:40px;}
+
+/* « .section » remettait les marges latérales de « .wrap » à zéro : sur tablette, le contenu collait aux bords */
+@media(max-width:1264px){
+  .wrap.section,.wrap.hero{padding-left:32px;padding-right:32px;}
+}
+/* tablette paysage / petit portable : le blob et ses badges restent dans l'écran */
+@media(min-width:981px) and (max-width:1264px){
+  .hero-visual img{width:100%;}
+  .badge.b1{right:0;max-width:250px;}
+  .badge.b2{left:0;}
+}
+
+/* chiffres clés du hero : version compacte, visible seulement quand le visuel passe au-dessus du texte */
+.hero-chips{display:none;}
+
+/* écrans tactiles : pas d'effet de survol « collé » après un tap */
+@media (hover:none){
+  .card-fx:hover{transform:none;box-shadow:0 26px 60px -30px rgba(141,126,242,.6);}
+  .card-fx:hover .fx-stage{--fxs:1;}
+  .port:hover{transform:none;}
+}
+
+/* ═════════ Tablette & téléphone ═════════ */
+@media(max-width:980px){
+  .menu{max-height:calc(100vh - 120px);overflow-y:auto;}
+
+  /* hero : le blob en vedette, sans badges par-dessus ; titre visible dès l'arrivée */
+  .hero{grid-template-columns:minmax(0,1fr);gap:0;padding-top:4px;overflow-x:clip;}
+  /* l'image source place le blob à 73 % de sa largeur : on la décale pour le centrer à l'écran */
+  .hero-visual{min-height:0;justify-content:flex-start;margin:-6px 0 4px;}
+  .hero-visual img{position:relative;width:min(125%,600px);max-width:none;height:auto;left:calc(50% - min(91.25%,438px));}
+  .hero-visual .badge{display:none;}
+  .hero .pill{margin-bottom:16px;}
+  .hero-chips{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:22px;}
+  .hero-chips span{display:inline-flex;align-items:baseline;gap:6px;background:var(--glass-strong);
+    border:1px solid rgba(255,255,255,.75);border-radius:999px;padding:8px 15px;font-size:12.5px;
+    color:var(--muted);box-shadow:var(--shadow-soft);}
+  .hero-chips b{color:var(--violet);font-size:15px;font-weight:700;}
+  .social-row{justify-content:center;}
+
+  /* méthode : carrousel horizontal à faire glisser (au lieu de 8 cartes empilées) */
+  .journey-pin{padding:0 0 10px;}
+  .journey-stage{padding:0;}
+  .journey-intro{padding:0 32px;}
+  .j-orb-col{margin:4px 0 10px;padding-bottom:0;}
+  .j-orb{width:86px;}
+  .j-orb-num{font-size:28px;}
+  .j-counter::after{content:"  ·  glissez →";font-weight:500;letter-spacing:.04em;color:var(--violet);}
+  :lang(en) .j-counter::after{content:"  ·  swipe →";}
+  .j-viewport{height:auto;overflow:visible;}
+  .j-track{display:flex;gap:14px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
+    padding:6px 32px 16px;scroll-padding:0 32px;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+  .j-track::-webkit-scrollbar{display:none;}
+  .j-step{flex:0 0 min(78%,440px);margin:0;padding:0;scroll-snap-align:start;opacity:.5;transform:scale(.97);
+    transition:opacity .35s ease,transform .35s ease;}
+  .j-step.active{opacity:1;transform:none;}
+  .j-card{height:100%;padding:24px 24px 22px;}
+  .j-dots{display:flex;position:static;transform:none;flex-direction:row;justify-content:center;gap:10px;margin-top:4px;}
+  .j-dots b{width:8px;height:8px;}
+
+  /* portfolio & avis : carrousels horizontaux */
+  .port-grid,.reviews{display:flex;gap:14px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;
+    margin-left:-32px;margin-right:-32px;padding:4px 32px 16px;scroll-padding:0 32px;scrollbar-width:none;}
+  .port-grid::-webkit-scrollbar,.reviews::-webkit-scrollbar{display:none;}
+  .port-grid>*{flex:0 0 min(42%,300px);scroll-snap-align:start;}
+  .reviews>*{flex:0 0 min(70%,420px);scroll-snap-align:start;}
+  .port-grid .reveal,.reviews .reveal{opacity:1;transform:none;}
+
+  .gads .media{min-height:220px;}
+}
+
+/* ═════════ Cartes services compactes (≤745px) : visuel à gauche, texte à droite ═════════ */
+@media(max-width:745px){
+  .grid-3{gap:12px;}
+  .card-fx,.grid-3 .card-mth{--gs:92px;grid-template-columns:var(--gs) minmax(0,1fr);gap:16px;
+    padding:16px 18px 16px 12px;align-items:center;}
+  .card-fx .fx-stage,.grid-3 .card-mth .fx-stage{order:-1;justify-self:center;}
+  .card-fx h3,.grid-3 .card-mth h3{font-size:17.5px;margin-bottom:4px;}
+  .card-fx p{font-size:13.5px;line-height:1.45;}
+  .card-fx .cmore{margin-top:6px;font-size:13px;}
+}
+
+/* ═════════ Téléphone ═════════ */
+@media(max-width:560px){
+  .section{padding-top:46px;padding-bottom:46px;}
+  .wrap.section,.wrap.hero{padding-left:22px;padding-right:22px;}
+  .s-head{margin-bottom:22px;gap:12px;}
+  .s-head h2{font-size:clamp(26px,7.4vw,32px);}
+  .s-head p{font-size:15px;}
+
+  /* hero */
+  .hero h1{font-size:clamp(34px,10vw,40px);}
+  .h1-kicker{font-size:13px;margin-bottom:10px;}
+  .hero p.lead{font-size:15.5px;margin:14px auto 22px;}
+  .cta-row{flex-direction:column;gap:10px;}
+  .cta-row .btn{justify-content:center;width:100%;}
+  .social-row{margin-top:18px;}
+
+  /* logos clients : côte à côte, même taille */
+  .trust{padding-top:30px;padding-bottom:26px;}
+  .trust .logos{gap:10px;flex-wrap:nowrap;margin-top:16px;}
+  .trust-logo{flex:1 1 0;width:auto;min-width:0;height:64px;padding:10px 14px;border-radius:16px;}
+  .trust-logo .tl-carewell{height:auto;width:100%;max-width:128px;}
+  .trust-logo .tl-neuchatel{height:auto;width:100%;max-width:124px;}
+
+  /* méthode */
+  .journey-intro{padding:0 22px;}
+  .journey-intro h2{font-size:clamp(26px,7.4vw,32px)!important;}
+  .journey-intro p{font-size:15px;}
+  .j-track{padding:6px 22px 14px;scroll-padding:0 22px;}
+  .j-step{flex-basis:84%;}
+  .j-card{padding:22px 20px 20px;}
+  .j-card h3{font-size:20px;}
+  .j-num{width:38px;height:38px;font-size:15px;margin-bottom:10px;}
+
+  /* approche + chiffres */
+  .feature .txt{padding:28px 22px 18px;}
+  .feature .txt p{margin:14px 0 20px;}
+  .feature .txt .btn{width:100%;justify-content:center;margin:0 0 10px!important;}
+  .feature .media{height:170px;}
+  .stats{padding:26px 14px;margin-top:16px;}
+  .stats-grid{gap:20px 10px;}
+  .stat .ico{font-size:20px;margin-bottom:4px;}
+  .stat .n{font-size:26px;}
+  .stat .l{font-size:12px;margin-top:5px;}
+
+  /* portfolio & avis */
+  .port-grid,.reviews{margin-left:-22px;margin-right:-22px;padding:4px 22px 14px;scroll-padding:0 22px;}
+  .port-grid>*{flex-basis:70%;}
+  .port{padding:16px;}
+  .port .meta h4{font-size:17px;}
+  .port .tag{font-size:10px;}
+  .reviews>*{flex-basis:86%;}
+  .reviews .quote{padding:22px 20px;}
+  .reviews .quote p{font-size:14.5px;}
+
+  /* FAQ, contact, Google Ads */
+  .hfaq-item{padding:15px 18px;}
+  .c-card{padding:26px 20px;}
+  .gads .txt{padding:28px 22px;}
+  .gads .media{min-height:0;padding:22px 18px;}
+  .gads .media .glasspanel{width:100%;padding:16px 18px;}
+
+  /* pied de page sur deux colonnes */
+  .foot-grid{grid-template-columns:1fr 1fr;gap:26px 18px;}
+  .foot-grid>:first-child{grid-column:1 / -1;}
+  .foot-col a{font-size:14px;margin-bottom:9px;}
+}

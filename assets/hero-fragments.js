@@ -2,7 +2,7 @@
    Fragmentation de l'image existante (assets/blob-hero.png) en petits eclats
    triangulaires textures, avec profondeur simulee (WebGL, sans librairie).
    - ordinateur : introduction + interaction souris + leger effet au scroll
-   - mobile / tactile : introduction allegee, puis retour a l'image d'origine
+   - mobile / tactile : introduction allegee, puis fragmentation sous le doigt
    - prefers-reduced-motion : rien, l'image reste affichee telle quelle */
 (function(){
   'use strict';
@@ -16,8 +16,8 @@
   /* reglages */
   var CELL=LITE?34:15;  // taille d'un eclat, en px de l'image source
   var JITTER=.38;       // irregularite de la decoupe
-  var RADIUS=120;       // rayon d'influence du curseur (px image)
-  var PUSH=64;          // ecartement maximal (px image)
+  var RADIUS=LITE?250:120; // rayon d'influence du curseur / du doigt (px image)
+  var PUSH=LITE?110:64; // ecartement maximal (px image)
   var K_OUT=95,K_BACK=20; // raideur : depart vif, retour lent
   var DAMP=.92;         // 1 = amortissement critique (pas de rebond)
   var SWEEP=1.5;        // part de la vitesse du curseur transmise aux eclats
@@ -51,7 +51,6 @@
     if(!IW||!IH){unhide();return;}
     // l'intro ne joue que si l'image est encore masquee (chargement normal) et que le hero est a l'ecran
     var playIntro=root.classList.contains('blob-intro')&&window.scrollY<visual.offsetHeight*.6;
-    if(LITE&&!playIntro){unhide();return;}
 
     /* 1. decoupe : grille irreguliere, on ne garde que les cellules qui contiennent de la matiere */
     var alpha;
@@ -210,6 +209,15 @@
       window.addEventListener('pointermove',function(e){ptrX=e.clientX;ptrY=e.clientY;ptrIn=true;},{passive:true});
       document.documentElement.addEventListener('pointerleave',function(){ptrIn=false;});
       window.addEventListener('blur',function(){ptrIn=false;});
+    }else{
+      // tactile : le blob se fragmente sous le doigt (tap ou glissement), puis se reconstitue
+      var tUp=0;
+      var tMove=function(e){var t=e.touches&&e.touches[0];if(!t) return;clearTimeout(tUp);ptrX=t.clientX;ptrY=t.clientY;ptrIn=true;play();};
+      var tEnd=function(){clearTimeout(tUp);tUp=setTimeout(function(){ptrIn=false;},260);};
+      visual.addEventListener('touchstart',tMove,{passive:true});
+      visual.addEventListener('touchmove',tMove,{passive:true});
+      visual.addEventListener('touchend',tEnd,{passive:true});
+      visual.addEventListener('touchcancel',tEnd,{passive:true});
     }
 
     /* 6. boucle */
@@ -230,17 +238,17 @@
         if(introLeft&&!root.classList.contains('blob-intro')){
           for(var q0=0;q0<N;q0++){inIntro[q0]=0;put(q0,0,0,0,0,1);}
           introLeft=0;playIntro=false;shd.style.opacity='1';
-          if(LITE){restore();return;}
         }
       }
       var dt=Math.min((now-last)/1000,1/30);last=now;
       if(dt<=0) dt=1/60;
 
-      var sy=0,sway=0;
+      // flottement (identique a l'animation d'origine : 0 -> -20px, 8s) et oscillation lente
+      var fl=-10*(1-Math.cos((now-t0)/8000*6.2832));
+      var sway=.02*Math.sin((now-t0)/5600*6.2832);
+      var sy=fl;
       if(!LITE){
-        // flottement (identique a l'animation d'origine : 0 -> -20px, 8s), oscillation lente, leger effet au scroll
-        var fl=-10*(1-Math.cos((now-t0)/8000*6.2832));
-        sway=.02*Math.sin((now-t0)/5600*6.2832);
+        // leger effet au scroll
         var sp=Math.max(0,Math.min(1,window.scrollY/Math.max(1,hero.offsetHeight)));
         var e=1-Math.exp(-dt*6);
         rot+=(sp*.13-rot)*e;
@@ -318,7 +326,6 @@
       if(playIntro&&it<INTRO+.3){var so=(it-.25)/(INTRO-.25);shd.style.opacity=so<0?'0':so>1?'1':so.toFixed(3);}
 
       if(!shown){shown=true;window.__blobFx=true;img.style.opacity='0';img.style.animation='none';img.style.filter='none';unhide();}
-      if(LITE&&!introLeft&&it>INTRO+.05){restore();return;}   // mobile : on rend la main a l'image d'origine
       if(visible) raf=requestAnimationFrame(frame);
     }
     function play(){if(!dead&&!raf&&visible&&!document.hidden){last=performance.now();raf=requestAnimationFrame(frame);}}
