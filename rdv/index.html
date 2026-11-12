@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<script src="/analytics.js?v=2"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, follow">
+<title>Réserver un appel — Wanderful Marketing</title>
+<meta name="description" content="Réservez un appel découverte gratuit de 30 minutes avec Nassima Rizzotti, Wanderful Marketing.">
+<link rel="icon" href="/favicon.ico?v=2" sizes="32x32">
+<link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2">
+<meta name="theme-color" content="#8D7EF2">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F3FC;--plum:#352B52;--ink:#463b66;--muted:#6a5f88;--violet:#8D7EF2;--pink:#C28BEC;--line:rgba(53,43,82,.10)}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{overflow-x:hidden}
+body{font-family:'Poppins',sans-serif;background:radial-gradient(130% 90% at 50% 0%,#fff 0%,var(--bg) 60%,#ECE6FA 100%);color:var(--plum);min-height:100vh;display:flex;justify-content:center}
+.wrap{width:100%;max-width:560px;padding:28px 22px 48px;position:relative;overflow:hidden}
+.blob{position:absolute;width:220px;right:-70px;top:-50px;transform:rotate(-20deg);pointer-events:none;opacity:.95}
+.top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:28px;position:relative}
+.logo{width:150px;display:block}
+.lang{display:flex;gap:2px;padding:3px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid var(--line)}
+.lang button{font:600 12px Poppins,sans-serif;color:var(--muted);background:none;border:0;border-radius:999px;padding:7px 10px;min-width:40px;min-height:32px;cursor:pointer}
+.lang button[aria-pressed=true]{background:linear-gradient(90deg,var(--pink),var(--violet));color:#fff}
+.host{display:flex;align-items:center;gap:14px}
+.host img{width:60px;height:60px;border-radius:50%;object-fit:cover;border:3px solid #fff;box-shadow:0 6px 18px rgba(91,70,160,.18)}
+h1{font-size:24px;font-weight:600;line-height:1.2}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 22px}
+.meta span{font-size:12.5px;font-weight:500;padding:6px 12px;border-radius:999px;background:#fff;border:1px solid var(--line)}
+.card{background:rgba(255,255,255,.88);border:1px solid var(--line);border-radius:20px;padding:18px;box-shadow:0 10px 30px rgba(91,70,160,.08)}
+.step{font-size:12px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--violet);margin-bottom:10px}
+.days{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;scrollbar-width:thin}
+.day{flex:none;min-width:64px;padding:10px 8px;border-radius:14px;border:1px solid var(--line);background:#fff;text-align:center;cursor:pointer;font-family:inherit;color:var(--plum)}
+.day b{display:block;font-size:18px;font-weight:600}
+.day small{font-size:11.5px;color:var(--muted);text-transform:capitalize}
+.day[aria-pressed=true]{background:linear-gradient(135deg,var(--pink),var(--violet));color:#fff;border-color:transparent}
+.day[aria-pressed=true] small{color:#fff}
+.slots{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}
+.slot{padding:11px 4px;border-radius:12px;border:1px solid rgba(141,126,242,.45);background:#fff;font:600 14px Poppins,sans-serif;color:#5a49c9;cursor:pointer;min-height:44px}
+.slot[aria-pressed=true]{background:var(--violet);color:#fff;border-color:var(--violet)}
+.period{grid-column:1/-1;font-size:12px;color:var(--muted);margin-top:4px}
+form{display:none;margin-top:16px}
+form.on{display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{display:block;font-size:12.5px;font-weight:500;color:var(--ink);margin:10px 0 5px}
+input,textarea{width:100%;font:15px Poppins,sans-serif;color:var(--plum);padding:12px 13px;border-radius:12px;border:1px solid rgba(53,43,82,.16);background:#fff}
+input:focus,textarea:focus{outline:2px solid rgba(141,126,242,.5);border-color:var(--violet)}
+textarea{resize:vertical;min-height:80px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.summary{margin-top:14px;padding:12px 14px;border-radius:12px;background:#F3EEFD;font-size:14px}
+.btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:15px 18px;border-radius:14px;font:600 15px Poppins,sans-serif;border:0;cursor:pointer;margin-top:16px;background:linear-gradient(90deg,var(--pink),var(--violet));color:#fff;box-shadow:0 10px 24px rgba(141,126,242,.35)}
+.btn[disabled]{opacity:.6;cursor:wait}
+.note{font-size:12px;color:var(--muted);margin-top:10px;text-align:center}
+.msg{font-size:14px;color:var(--muted);padding:16px 4px;text-align:center}
+.err{color:#b4235a}
+.done{text-align:center;padding:10px 4px}
+.done .ico{width:56px;height:56px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--pink),var(--violet));color:#fff}
+.done h2{font-size:21px;margin-bottom:8px}
+.done p{font-size:14.5px;color:var(--ink);line-height:1.55}
+.done a{color:#5a49c9;font-weight:600}
+.alt{display:block;text-align:center;margin-top:18px;font-size:13.5px;color:var(--muted)}
+.alt a{color:#5a49c9;font-weight:600}
+svg{width:18px;height:18px;flex:none}
+@media(max-width:420px){.grid2{grid-template-columns:1fr}.slots{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <img class="blob" src="/assets/blob-hero.png" alt="" aria-hidden="true">
+  <div class="top">
+    <a href="/"><img class="logo" src="/assets/logo.png" alt="Wanderful Marketing Agency"></a>
+    <nav class="lang" aria-label="Langue / Language / Sprache"><button type="button" data-l="fr">FR</button><button type="button" data-l="en">EN</button><button type="button" data-l="de">DE</button></nav>
+  </div>
+
+  <div class="host">
+    <img src="/assets/nassima.jpg" alt="Nassima Rizzotti">
+    <div><h1 data-t="title">Réserver un appel découverte</h1>
+    <div style="font-size:13px;color:var(--muted)">Nassima Rizzotti · Wanderful Marketing</div></div>
+  </div>
+  <div class="meta"><span data-t="m1">30 min</span><span>Google Meet</span><span data-t="m2">Gratuit</span><span data-t="m3">Heure suisse</span></div>
+
+  <section class="card" id="card">
+    <div id="pick">
+      <div class="step" data-t="s1">1 · Choisissez un jour</div>
+      <div class="days" id="days"><div class="msg" data-t="loading">Chargement des disponibilités…</div></div>
+      <div class="slots" id="slots"></div>
+    </div>
+
+    <form id="f" novalidate>
+      <div class="summary" id="sum"></div>
+      <div class="step" style="margin-top:16px" data-t="s2">2 · Vos coordonnées</div>
+      <div class="grid2">
+        <div><label for="prenom" data-t="fn">Prénom</label><input id="prenom" name="prenom" autocomplete="given-name" required></div>
+        <div><label for="nom" data-t="ln">Nom</label><input id="nom" name="nom" autocomplete="family-name" required></div>
+      </div>
+      <label for="email" data-t="em">E-mail</label><input id="email" name="email" type="email" autocomplete="email" required>
+      <label for="entreprise" data-t="co">Entreprise (facultatif)</label><input id="entreprise" name="entreprise" autocomplete="organization">
+      <label for="message" data-t="ms">De quoi aimeriez-vous parler ? (facultatif)</label><textarea id="message" name="message"></textarea>
+      <label for="code" data-t="cp">Code promo (facultatif)</label><input id="code" name="code" autocomplete="off" style="text-transform:uppercase">
+      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn" id="go" type="submit"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg><span data-t="cta">Confirmer le rendez-vous</span></button>
+      <div class="note" data-t="nt">Vous recevrez une invitation avec le lien Google Meet par e-mail.</div>
+      <div class="msg err" id="err" hidden></div>
+    </form>
+
+    <div class="done" id="done" hidden>
+      <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l5 5L20 7"/></svg></div>
+      <h2 data-t="ok1">C'est réservé&nbsp;!</h2>
+      <p id="okTxt"></p>
+    </div>
+  </section>
+
+  <div class="alt"><span data-t="alt">Aucun créneau ne vous convient ?</span> <a id="altLink" href="/contact/#contact-form" data-t="altl">Écrivez-moi</a></div>
+</main>
+
+<script>
+(function(){
+  /* URL du moteur de réservation (Google Apps Script du compte Wanderful) */
+  var API = 'https://script.google.com/macros/s/AKfycbyNi-H1FTGBPxVC4c_dqqcJTQMd3Uvf4lZKhzmP1EhsN9Z-Q4eOLE1k12I9QCFKRU7_pg/exec';
+
+  var T = {
+    fr:{title:'Réserver un appel découverte',m1:'30 min',m2:'Gratuit',m3:'Heure suisse',s1:'1 · Choisissez un jour',loading:'Chargement des disponibilités…',s2:'2 · Vos coordonnées',fn:'Prénom',ln:'Nom',em:'E-mail',co:'Entreprise (facultatif)',ms:'De quoi aimeriez-vous parler ? (facultatif)',cp:'Code promo (facultatif)',cta:'Confirmer le rendez-vous',nt:'Vous recevrez une invitation avec le lien Google Meet par e-mail.',ok1:'C\'est réservé&nbsp;!',alt:'Aucun créneau ne vous convient ?',altl:'Écrivez-moi',
+        morning:'Matin',afternoon:'Après-midi',evening:'Soir',none:'Plus de créneau disponible pour le moment.',fail:'Impossible de charger les disponibilités.',taken:'Ce créneau vient d\'être pris, choisissez-en un autre.',req:'Merci de remplir prénom, nom et e-mail valides.',err:'Une erreur est survenue, réessayez ou écrivez-moi.',sending:'Réservation…',
+        sum:function(d){return '📅 <b>'+d+'</b> · 30 min · Google Meet';},done:function(d,m){return 'Votre appel est prévu le <b>'+d+'</b> (heure suisse). L\'invitation est partie par e-mail'+(m?' — <a href="'+m+'" target="_blank" rel="noopener">lien Google Meet</a>':'')+'. À très vite&nbsp;!';}},
+    en:{title:'Book a discovery call',m1:'30 min',m2:'Free',m3:'Swiss time',s1:'1 · Pick a day',loading:'Loading availability…',s2:'2 · Your details',fn:'First name',ln:'Last name',em:'Email',co:'Company (optional)',ms:'What would you like to talk about? (optional)',cp:'Promo code (optional)',cta:'Confirm the call',nt:'You will receive an invitation with the Google Meet link by email.',ok1:'You\'re booked!',alt:'No time works for you?',altl:'Write to me',
+        morning:'Morning',afternoon:'Afternoon',evening:'Evening',none:'No time slots available right now.',fail:'Could not load availability.',taken:'This slot was just taken, please pick another one.',req:'Please fill in first name, last name and a valid email.',err:'Something went wrong, try again or write to me.',sending:'Booking…',
+        sum:function(d){return '📅 <b>'+d+'</b> · 30 min · Google Meet';},done:function(d,m){return 'Your call is scheduled for <b>'+d+'</b> (Swiss time). The invitation has been emailed'+(m?' — <a href="'+m+'" target="_blank" rel="noopener">Google Meet link</a>':'')+'. Talk soon!';}},
+    de:{title:'Kennenlerngespräch buchen',m1:'30 Min.',m2:'Kostenlos',m3:'Schweizer Zeit',s1:'1 · Tag wählen',loading:'Verfügbarkeiten werden geladen…',s2:'2 · Ihre Angaben',fn:'Vorname',ln:'Nachname',em:'E-Mail',co:'Unternehmen (optional)',ms:'Worüber möchten Sie sprechen? (optional)',cp:'Promo-Code (optional)',cta:'Termin bestätigen',nt:'Sie erhalten eine Einladung mit dem Google-Meet-Link per E-Mail.',ok1:'Termin gebucht!',alt:'Kein passender Termin?',altl:'Schreiben Sie mir',
+        morning:'Vormittag',afternoon:'Nachmittag',evening:'Abend',none:'Derzeit keine freien Termine.',fail:'Verfügbarkeiten konnten nicht geladen werden.',taken:'Dieser Termin wurde gerade vergeben, bitte wählen Sie einen anderen.',req:'Bitte Vorname, Nachname und eine gültige E-Mail angeben.',err:'Es ist ein Fehler aufgetreten, bitte erneut versuchen oder mir schreiben.',sending:'Wird gebucht…',
+        sum:function(d){return '📅 <b>'+d+'</b> · 30 Min. · Google Meet';},done:function(d,m){return 'Ihr Gespräch ist am <b>'+d+'</b> (Schweizer Zeit) geplant. Die Einladung wurde per E-Mail verschickt'+(m?' — <a href="'+m+'" target="_blank" rel="noopener">Google-Meet-Link</a>':'')+'. Bis bald!';}}
+  };
+  var LOC = {fr:'fr-CH',en:'en-GB',de:'de-CH'};
+  var TZ = 'Europe/Zurich';
+
+  /* Provenance : paramètres d'URL ou mémorisée par /hello/ */
+  var qs = new URLSearchParams(location.search), prov = {};
+  try{ prov = JSON.parse(localStorage.getItem('wf_provenance')||'{}'); }catch(e){}
+  var source = qs.get('utm_source') || prov.source || (document.referrer ? document.referrer.replace(/^https?:\/\//,'').split('/')[0] : 'direct');
+  var lieu = qs.get('utm_campaign') || prov.lieu || '';
+  var code = (qs.get('code') || prov.code || '').toUpperCase();
+  document.getElementById('code').value = code;
+
+  var lang, slots = [], byDay = {}, dayKeys = [], curDay = null, curSlot = null;
+  var $ = function(id){ return document.getElementById(id); };
+
+  function fmt(iso, opts){ return new Intl.DateTimeFormat(LOC[lang], Object.assign({timeZone:TZ}, opts)).format(new Date(iso)); }
+  function keyOf(iso){ return new Intl.DateTimeFormat('en-CA',{timeZone:TZ,year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(iso)); }
+  function hourOf(iso){ return Number(new Intl.DateTimeFormat('en-GB',{timeZone:TZ,hour:'2-digit',hour12:false}).format(new Date(iso))); }
+  function longDate(iso){ return fmt(iso,{weekday:'long',day:'numeric',month:'long'}) + ' · ' + fmt(iso,{hour:'2-digit',minute:'2-digit'}); }
+
+  function applyLang(l){
+    lang = l; document.documentElement.lang = l;
+    document.querySelectorAll('[data-t]').forEach(function(el){ var v=T[l][el.getAttribute('data-t')]; if(typeof v==='string') el.innerHTML=v; });
+    document.querySelectorAll('.lang button').forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.l===l); });
+    $('altLink').href = (l==='fr' ? '/contact/' : '/en/contact/') + '#contact-form';
+    if(dayKeys.length) renderDays();
+    if(curSlot) $('sum').innerHTML = T[lang].sum(longDate(curSlot));
+  }
+
+  function renderDays(){
+    var box=$('days'); box.innerHTML='';
+    if(!dayKeys.length){ box.innerHTML='<div class="msg">'+T[lang].none+'</div>'; return; }
+    dayKeys.forEach(function(k){
+      var iso=byDay[k][0], b=document.createElement('button');
+      b.type='button'; b.className='day'; b.setAttribute('aria-pressed', k===curDay);
+      b.innerHTML='<small>'+fmt(iso,{weekday:'short'})+'</small><b>'+fmt(iso,{day:'numeric'})+'</b><small>'+fmt(iso,{month:'short'})+'</small>';
+      b.onclick=function(){ curDay=k; curSlot=null; $('f').classList.remove('on'); renderDays(); };
+      box.appendChild(b);
+    });
+    renderSlots();
+  }
+
+  function renderSlots(){
+    var box=$('slots'); box.innerHTML=''; if(!curDay) return;
+    var last=null;
+    byDay[curDay].forEach(function(iso){
+      var h=hourOf(iso), p = h<12 ? 'morning' : (h<17 ? 'afternoon' : 'evening');
+      if(p!==last){ var t=document.createElement('div'); t.className='period'; t.textContent=T[lang][p]; box.appendChild(t); last=p; }
+      var b=document.createElement('button'); b.type='button'; b.className='slot';
+      b.textContent=fmt(iso,{hour:'2-digit',minute:'2-digit'}); b.setAttribute('aria-pressed', iso===curSlot);
+      b.onclick=function(){ curSlot=iso; renderSlots(); $('sum').innerHTML=T[lang].sum(longDate(iso)); $('f').classList.add('on'); $('err').hidden=true; $('prenom').focus({preventScroll:true}); $('f').scrollIntoView({behavior:'smooth',block:'start'});
+        try{ gtag('event','rdv_creneau_choisi',{source:source,lieu:lieu}); }catch(e){} };
+      box.appendChild(b);
+    });
+  }
+
+  function load(){
+    fetch(API+'?action=slots').then(function(r){return r.json();}).then(function(d){
+      slots=d.slots||[]; byDay={}; dayKeys=[];
+      slots.forEach(function(iso){ var k=keyOf(iso); if(!byDay[k]){byDay[k]=[];dayKeys.push(k);} byDay[k].push(iso); });
+      if(!curDay || !byDay[curDay]) curDay=dayKeys[0]||null;
+      renderDays();
+    }).catch(function(){ $('days').innerHTML='<div class="msg err">'+T[lang].fail+'</div>'; });
+  }
+
+  $('f').addEventListener('submit', function(e){
+    e.preventDefault();
+    var f=e.target, data={start:curSlot, prenom:f.prenom.value.trim(), nom:f.nom.value.trim(), email:f.email.value.trim(),
+      entreprise:f.entreprise.value.trim(), message:f.message.value.trim(), code:f.code.value.trim(), source:source, lieu:lieu, lang:lang, website:f.website.value};
+    if(!data.start || !data.prenom || !data.nom || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(data.email)){ $('err').textContent=T[lang].req; $('err').hidden=false; return; }
+    var go=$('go'); go.disabled=true; go.querySelector('span').textContent=T[lang].sending;
+    fetch(API,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)})
+      .then(function(r){return r.json();}).then(function(r){
+        if(r.ok){
+          try{ gtag('event','rdv_reserve',{source:source, lieu:lieu, code_promo:data.code||'aucun', langue:lang}); }catch(e){}
+          $('pick').hidden=true; f.classList.remove('on'); f.style.display='none';
+          $('okTxt').innerHTML=T[lang].done(longDate(r.start||data.start), r.meet); $('done').hidden=false;
+          window.scrollTo({top:0,behavior:'smooth'});
+        } else if(r.error==='pris'){
+          $('err').textContent=T[lang].taken; $('err').hidden=false; curSlot=null; f.classList.remove('on'); load();
+        } else { throw new Error(r.error); }
+      }).catch(function(){ $('err').textContent=T[lang].err; $('err').hidden=false; })
+      .finally(function(){ go.disabled=false; go.querySelector('span').innerHTML=T[lang].cta; });
+  });
+
+  var saved=null; try{ saved=localStorage.getItem('wf_lang'); }catch(e){}
+  var nav=(navigator.language||'fr').slice(0,2).toLowerCase();
+  applyLang(qs.get('lang') || saved || (T[nav] ? nav : 'en'));
+  document.querySelectorAll('.lang button').forEach(function(b){ b.addEventListener('click',function(){ applyLang(b.dataset.l); try{ localStorage.setItem('wf_lang',b.dataset.l); }catch(e){} }); });
+  load();
+})();
+</script>
+</body>
+</html>

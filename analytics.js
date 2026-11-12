@@ -35,7 +35,7 @@
       envoie('clic_email', { adresse: href.replace(/^mailto:/i,'').split('?')[0] });
     } else if(/^tel:/i.test(href)){
       envoie('clic_telephone', { numero: href.replace(/^tel:/i,'') });
-    } else if(/calendar\.app\.google|appointment-schedule/i.test(href)){
+    } else if(/calendar\.app\.google|appointment-schedule|\/rdv\//i.test(href)){
       envoie('clic_rdv', { libelle: (a.textContent || '').replace(/\s+/g,' ').trim().slice(0,80) });
     }
   }, true);
