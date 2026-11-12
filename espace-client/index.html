@@ -613,6 +613,36 @@
   .tt-bg{background:#16161d;color:#fff}
   @media(max-width:1100px){.grid.g3.igg{grid-template-columns:1fr}}
 </style>
+<style>
+.v2-banner{background:#6a52d8;color:#fff;font-size:12.5px;font-weight:600;text-align:center;padding:6px 10px}
+.v2-banner a{color:#fff;text-decoration:underline}
+.soc-tabs{display:flex;gap:4px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-radius:16px;padding:4px;margin:0 0 18px}
+.soc-tabs button{border:0;background:transparent;font:inherit;font-size:13px;font-weight:600;padding:8px 14px;border-radius:12px;cursor:pointer;color:var(--muted);min-height:38px}
+.soc-tabs button.on{background:#6a52d8;color:#fff}.soc-tabs .badge{margin-left:4px}
+.stg-bar{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:0 0 14px}
+@media(max-width:760px){.stg-bar{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.stg{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;display:flex;gap:10px;align-items:center}
+.stg.warn{border-color:#e7a3a3;background:#fff8f8}.stg>b{font-size:21px}.stg span{font-size:12.5px;line-height:1.3}
+.mi-txt{min-width:0;display:flex;flex-direction:column}
+.ctag{font-style:normal;font-size:9.5px;font-weight:800;background:#463b66;color:#fff;border-radius:4px;padding:1px 4px;margin-right:4px}
+@media(max-width:760px){.soc-tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch}.soc-tabs button{flex-shrink:0}}
+.mcal-i .na{display:block;font-style:normal;font-size:10.5px;font-weight:600;color:#5b5378;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mcal-i.st-idee{background:#fff;border:1px dashed #b6aee0;border-left:3px solid #b6aee0}
+.mcal-i.st-prod{background:#fdf4e0;border-left-color:#f2b230}
+.mcal-i.st-val{background:#efeafe;border-left-color:#8D7EF2}
+.mcal-i.st-pret{background:#eaf0fe;border-left-color:#3b82f6}
+.mcal-i.st-pub{background:#e7f8f0;border-left-color:#1fb57a}
+.mcal-i.st-late{background:#fff1f1;border-left-color:#d65c5c}.mcal-i.st-late .na{color:#a12828}
+.lg{display:inline-flex;align-items:center;gap:5px}.lg:before{content:'';width:11px;height:11px;border-radius:3px;display:inline-block}
+.lg.st-idee:before{background:#fff;border:1px dashed #8a82b5}.lg.st-prod:before{background:#fbe3a6}.lg.st-val:before{background:#ddd3fb}.lg.st-pret:before{background:#cfdcfb}.lg.st-pub:before{background:#c6ecd9}.lg.st-late:before{background:#f6c9c9}
+.td-row{display:flex;gap:14px;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}.td-row:last-child{border-bottom:0}
+.td-row .tm{font-size:20px;font-weight:700;min-width:66px}.td-row.done{opacity:.55}
+.td-main{flex:1 1 260px;min-width:0}.td-act{display:flex;gap:6px;flex-wrap:wrap}
+.td-cl{font-size:11px;font-weight:700;background:#f1eff7;border-radius:6px;padding:2px 7px}
+.td-net{font-size:11px;font-weight:700;border-radius:6px;padding:2px 7px}
+.td-late{font-size:11.5px;font-weight:700;color:#a12828;background:#fbe1e1;border-radius:6px;padding:2px 7px}
+.td-warn{font-size:11.5px;font-weight:700;color:#7a4f00;background:#fdf4e0;border-radius:6px;padding:2px 7px}
+</style>
 </head>
 <body>
 <div id="demoBanner" class="demo-banner hidden">⚡ Mode démonstration — données fictives. Renseigne <b>config.js</b> avec tes clés Supabase pour la vraie connexion.</div>
@@ -996,7 +1026,7 @@ function setClientCard(c){
 
 /* =================== NAV =================== */
 const ICO={home:'<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',onb:'<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',val:'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/>',cal:'<rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/>',soc:'<rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18M9 3v18"/>',stat:'<path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/>',web:'<rect x="2" y="3" width="20" height="16" rx="2"/><path d="M2 8h20M6 5.5h.01M9 5.5h.01"/>',seo:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>',proj:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',res:'<path d="M4 4h6l2 3h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/>',doc:'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/>',lock:'<rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',key:'<circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.5 12.5L21 2M17 6l3 3M14 9l2 2"/>',plus:'<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>',compass:'<circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/>',bulb:'<path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2h6c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/>',login:'<path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/>',gauge:'<path d="M3.5 15a9 9 0 1 1 17 0"/><path d="M12 15l4.5-4"/><circle cx="12" cy="15" r="1.5"/>'};
-const NAV=[{g:'Espace projet'},{k:'home',t:'Accueil',i:'home'},{k:'onboarding',t:'Onboarding',i:'onb'},{k:'strategy',t:'Stratégie',i:'compass'},{g:'Pilotage'},{k:'stats',t:'Statistiques',i:'stat'},{g:'Contenu & social'},{k:'plan',t:'Plan réseaux',i:'gauge'},{k:'ideas',t:'Idées de contenu',i:'bulb'},{k:'validation',t:'Validation contenu',i:'val',badge:true},{k:'calendar',t:'Calendrier éditorial',i:'cal'},{k:'published',t:'Posts publiés',i:'soc'},{k:'feed',t:'Aperçu du feed',i:'soc'},{k:'social',t:'Réseaux & publication',i:'soc'},{g:'Site & visibilité'},{k:'website',t:'Site web',i:'web'},{k:'seo',t:'SEO / Référencement',i:'seo'},{g:'Projet & ressources'},{k:'tracking',t:'Suivi de projet',i:'proj'},{k:'resources',t:'Ressources & fichiers',i:'res'},{k:'documents',t:'Documents',i:'doc'}];
+const NAV=[{g:'Espace projet'},{k:'home',t:'Accueil',i:'home'},{k:'onboarding',t:'Onboarding',i:'onb'},{k:'strategy',t:'Stratégie',i:'compass'},{g:'Pilotage'},{k:'stats',t:'Statistiques',i:'stat'},{g:'Contenu & social'},{k:'calendar',t:'Social',i:'cal',badge:true,soc:1},{g:'Site & visibilité'},{k:'website',t:'Site web',i:'web'},{k:'seo',t:'SEO / Référencement',i:'seo'},{g:'Projet & ressources'},{k:'tracking',t:'Suivi de projet',i:'proj'},{k:'resources',t:'Ressources & fichiers',i:'res'},{k:'documents',t:'Documents',i:'doc'}];
 /* ---- Contrôle d'accès (cadenas) ---- */
 const LOCKABLE=['onboarding','strategy','plan','published','ideas','validation','calendar','feed','social','stats','website','seo','tracking','resources','documents'];
 function isAgency(){return state.profile&&state.profile.role==='agency';}
@@ -1033,13 +1063,13 @@ function renderNav(content){
     const locked=!isUnlocked(n.k);
     const badge=n.badge&&pend&&!locked?`<span class="badge">${pend}</span>`:'';
     const lk=locked?`<span class="lock"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${ICO.lock}</svg></span>`:'';
-    return `<button class="nav-item ${n.k===state.section?'active':''} ${locked?'locked':''}" onclick="go('${n.k}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO[n.i]}</svg>${n.t}${badge}${lk}</button>`;
+    return `<button class="nav-item ${(n.k===state.section||(n.soc&&SOC_KEYS.includes(state.section)))?'active':''} ${locked?'locked':''}" onclick="go('${n.k}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">${ICO[n.i]}</svg>${n.t}${badge}${lk}</button>`;
   }).join('');
 }
 function lockedView(){return `<div class="locked-view"><div class="lk-ico"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">${ICO.lock}</svg></div><h3>Section verrouillée 🔒</h3><p>Cette partie de votre espace sera débloquée par votre agence <b>Wanderful</b> au fur et à mesure de votre accompagnement. Vous serez prévenu·e dès qu'elle sera disponible.</p></div>`;}
 function toggleNav(){document.body.classList.toggle('nav-open');}
 function closeNav(){document.body.classList.remove('nav-open');}
-function go(k){state.section=k;renderNav(state.data?state.data.content:[]);document.getElementById('content').innerHTML=previewBar()+agencyToolbar(k)+(isUnlocked(k)?(VIEWS[k]||VIEWS.home)():lockedView());window.scrollTo(0,0);closeNav();}
+function go(k){state.section=k;renderNav(state.data?state.data.content:[]);document.getElementById('content').innerHTML=previewBar()+(SOC_KEYS.includes(k)?socTabs(k):'')+agencyToolbar(k)+(isUnlocked(k)?(VIEWS[k]||VIEWS.home)():lockedView());window.scrollTo(0,0);closeNav();}
 const PICO={instagram:['ig-bg','◉'],facebook:['fb-bg','f'],tiktok:['tt-bg','♪'],youtube:['yt-bg','▶'],linkedin:['li-bg','in'],google:['gg-bg','G']};
 function pico(p){const x=PICO[p]||['tt-bg','•'];return `<div class="pico ${x[0]}">${x[1]}</div>`;}
 function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._x);t._x=setTimeout(()=>t.classList.remove('show'),2400);}
@@ -2414,17 +2444,19 @@ const VIEWS={
     return h;
   },
   calendar(){
-    const items=(state.data.content||[]).slice().sort((a,b)=>(new Date(a.scheduled_at))-(new Date(b.scheduled_at)));
+    const allMode=isAgencyView()&&state.calAll;if(allMode&&!state._allContent){loadAllContent();return socAllToggle()+'<div class="card">Chargement de tous les clients…</div>';}
+    const items=(allMode?state._allContent:(state.data.content||[])).slice().sort((a,b)=>(new Date(a.scheduled_at))-(new Date(b.scheduled_at)));
     if(!items.length)return `<div class="sec-head"><h3>Calendrier éditorial</h3><p>Ton planning apparaîtra ici.</p></div><div class="card empty">Aucun contenu planifié.</div>`;
     const fitems=applyChanFilter(items);const byWeek={};fitems.forEach(it=>{const w=it.week||0;(byWeek[w]=byWeek[w]||[]).push(it);});
     const view=state.calView||'month';
-    let h=`<div class="sec-head"><h3>Calendrier éditorial</h3><p>Ton planning. Clique sur un contenu pour voir le brief, <b>déposer ton montage / carrousel</b> et écrire la légende à publier.</p></div><div class="vt"><button class="${view==='month'?'on':''}" onclick="state.calView='month';go('calendar')">📅 Mois</button><button class="${view==='list'?'on':''}" onclick="state.calView='list';go('calendar')">☰ Liste</button></div>`+chanFilterBar(items);
-    if(view==='month')return h+monthCal(fitems);
+    let h=`<div class="sec-head"><h3>Calendrier</h3><p>Chaque contenu affiche sa <b>prochaine action</b> et pour qui. Clique dessus pour le brief, le montage et la légende.</p></div>${socAllToggle()}<div class="vt"><button class="${view==='month'?'on':''}" onclick="state.calView='month';go('calendar')">📅 Mois</button><button class="${view==='list'?'on':''}" onclick="state.calView='list';go('calendar')">☰ Liste</button></div>`+chanFilterBar(items);
+    if(view==='month')return h+stageBar(items)+monthCal(fitems);
     Object.keys(byWeek).map(Number).sort((a,b)=>a-b).forEach(w=>{
       h+=`<div class="cal-week"><div class="cal-wlabel">Semaine ${w}</div>${byWeek[w].map(it=>`<div class="cal-item" onclick="openContentModal('${it.id}')">${ctBadgeN(it)}<div class="cal-main"><b>${esc(it.title)}</b><small>${esc(it.pillar||'')}</small><div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:5px">${chanBadges(it,1)}</div></div>${it.media_url?('<span class="cal-media">'+(mediaList(it).length>1?('🖼️ '+mediaList(it).length+' slides'):'📎 fichier prêt')+'</span>'):''}<span class="ct-status s-${it.status}">${statusLabel(it.status)}</span><span class="cal-date">${fmtDate(it.scheduled_at)}</span></div>`).join('')}</div>`;
     });
     return h;
   },
+  today(){if(!isAgencyView())return VIEWS.calendar();setTimeout(loadToday,0);return `<div class="sec-head"><h3>Aujourd'hui</h3><p>Tout ce qui doit partir aujourd'hui, <b>tous clients confondus</b> (heure suisse), plus les posts en retard. Le bot Telegram t'envoie les mêmes rappels à l'heure.</p></div><div id="todayBox" class="card">Chargement…</div>`;},
   feed(){return '<div class="s2-wrap">'+feedView()+'</div>';},
   social(){return '<div class="s2-wrap">'+socialView()+'</div>';
   },
@@ -2663,9 +2695,9 @@ function monthCal(items){
   const nd=items.filter(i=>!itDay(i));
   let h=`<div class="mcal-nav"><button onclick="calShift(-1)">‹</button><b>${m.toLocaleDateString('fr-FR',{month:'long',year:'numeric'})}</b><button onclick="calShift(1)">›</button><button style="width:auto;padding:0 12px;font-size:12px;font-weight:700" onclick="state.calMonth=null;go('calendar')">Aujourd'hui</button></div><div class="mcal">`+['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'].map(x=>`<div class="mcal-h">${x}</div>`).join('');
   const dim=new Date(m.getFullYear(),m.getMonth()+1,0).getDate(),cells=Math.ceil((((first.getDay()+6)%7)+dim)/7)*7;for(let i=0;i<cells;i++){const d=new Date(start);d.setDate(start.getDate()+i);const k=ymd(d),L=by[k]||[];
-    h+=`<div class="mcal-d${d.getMonth()!==m.getMonth()?' out':''}${k===today?' today':''}${L.length?'':' empty'}"><div class="mcal-n">${d.toLocaleDateString('fr-FR',{weekday:'short'}).replace('.','')} ${d.getDate()}</div>${L.map(it=>{const ml=mediaList(it),u=ml[0],ch=chansOf(it),ic=(CHAN[ch[0]]||['•'])[0];const th=u&&!isVideo(u,it)&&!/\.pdf(\?|$)/i.test(u)?`<img src="${esc(u)}" loading="lazy" alt="">`:`<div class="ph">${u&&isVideo(u,it)?'🎥':(u&&/\.pdf/i.test(u)?'📄':ic)}</div>`;return `<div class="mcal-i s-${esc(it.status)}" title="${esc(it.title)} — ${esc(statusLabel(it.status))}" onclick="openContentModal('${it.id}')">${th}<span>${esc(ic)} ${esc(it.title)}</span></div>`;}).join('')}</div>`;}
-  h+=`</div><div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:10px"><span><b style="color:var(--line)">▍</b> Idée</span><span><b style="color:#f59e0b">▍</b> À valider</span><span><b style="color:#3b82f6">▍</b> Validé</span><span><b style="color:var(--green)">▍</b> Publié</span></div>`;
-  if(nd.length)h+=`<div class="section-title" style="margin-top:16px">Sans date</div>`+nd.map(it=>`<div class="cal-item" onclick="openContentModal('${it.id}')"><div class="cal-main"><b>${esc(it.title)}</b></div><span class="ct-status s-${it.status}">${statusLabel(it.status)}</span></div>`).join('');
+    h+=`<div class="mcal-d${d.getMonth()!==m.getMonth()?' out':''}${k===today?' today':''}${L.length?'':' empty'}"><div class="mcal-n">${d.toLocaleDateString('fr-FR',{weekday:'short'}).replace('.','')} ${d.getDate()}</div>${L.map(it=>{const ml=mediaList(it),u=ml[0],ch=chansOf(it),ic=(CHAN[ch[0]]||['•'])[0];const th=u&&!isVideo(u,it)&&!/\.pdf(\?|$)/i.test(u)?`<img src="${esc(u)}" loading="lazy" alt="">`:`<div class="ph">${u&&isVideo(u,it)?'🎥':(u&&/\.pdf/i.test(u)?'📄':ic)}</div>`;const na=nextAct(it),tm=String((it.brief||{}).time||'');return `<div class="mcal-i s-${esc(it.status)} st-${na[0]}" title="${esc(it.title)} — ${esc(na[1])}" onclick="calOpen('${it.id}','${it.client_id}')">${th}<div class="mi-txt"><span>${state.calAll&&isAgencyView()?'<i class="ctag">'+esc(cliTag(it.client_id))+'</i>':''}${/^\d{2}:\d{2}$/.test(tm)?'<b>'+esc(tm.replace(':','h'))+'</b> ':''}${esc(ic)} ${esc(it.title)}</span><em class="na">${esc(na[1])}</em></div></div>`;}).join('')}</div>`;}
+  h+=`</div><div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:10px"><span class="lg st-idee">Idée</span><span class="lg st-prod">À produire / modif</span><span class="lg st-val">Chez le client</span><span class="lg st-pret">Prêt (le bot s'en charge)</span><span class="lg st-pub">Publié</span><span class="lg st-late">En retard</span></div>`;
+  h+=`<div class="section-title" style="margin-top:18px">Sans date <span style="font-weight:500;color:var(--muted);font-size:12.5px">· idées à planifier${isAgencyView()?' (les liens envoyés au bot Telegram arrivent ici) — ouvre une idée et donne-lui une date':''}</span></div>`+(nd.length?nd.map(it=>{const insp=(it.brief||{}).inspiration;return `<div class="cal-item" onclick="openContentModal('${it.id}')"><div class="cal-main"><b>${esc(it.title)}</b>${insp?`<small><a href="${esc(insp)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Voir la vidéo d'inspiration ↗</a></small>`:''}</div><span class="ct-status s-${it.status}">${statusLabel(it.status)}</span></div>`;}).join(''):'<div class="card empty" style="padding:14px">Aucune idée en attente.</div>');
   return h;
 }
 function plFollowers(o){const S={instagram:state.ig,facebook:state.fb,tiktok:state.tt};const x=S[o.k];if(x&&x.followers!=null)return {v:+x.followers,auto:true};return {v:o.current!=null?+o.current:o.start,auto:false};}
@@ -2690,6 +2722,52 @@ function planView(){
   <div class="section-title" style="margin-top:20px">Objectifs d'abonnés</div><div class="pl-grid">${obj}</div>
   <div class="section-title" style="margin-top:20px">À venir <button class="sbtn" style="margin-left:8px" onclick="state.calView='month';go('calendar')">Voir le calendrier →</button></div>${nx.map(it=>`<div class="cal-item" onclick="openContentModal('${it.id}')">${ctBadgeN(it)}<div class="cal-main"><b>${esc(it.title)}</b><div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:5px">${chanBadges(it,1)}</div></div><span class="ct-status s-${it.status}">${statusLabel(it.status)}</span><span class="cal-date">${fmtDate(it.scheduled_at)}</span></div>`).join('')||'<div class="card empty">Rien de prévu.</div>'}`;
 }
+
+/* ==== V2 : espace Social (onglets, étapes, aujourd'hui) ==== */
+const SOC_TABS=[['today',"Aujourd'hui",1],['calendar','Calendrier'],['validation','À valider'],['ideas','Idées'],['plan','Plan'],['feed','Feed'],['published','Publiés'],['social','Réseaux',1]];
+const SOC_KEYS=SOC_TABS.map(t=>t[0]);
+
+function socAllToggle(){if(!isAgencyView())return '';const a=!!state.calAll;return `<div class="vt" style="margin-bottom:10px"><button class="${a?'':'on'}" onclick="state.calAll=false;go('calendar')">Ce client</button><button class="${a?'on':''}" onclick="state.calAll=true;state._allContent=null;go('calendar')">👥 Tous les clients</button></div>`;}
+async function loadAllContent(){if(DEMO){state._allContent=state.data.content||[];go('calendar');return;}
+  const [r1,r2]=await Promise.all([sb.from('content_items').select('*'),sb.from('clients').select('id,name,initials')]);
+  if(r1.error){toast('Erreur : '+r1.error.message);state.calAll=false;go('calendar');return;}
+  state._clients=r2.data||[];state._allContent=(r1.data||[]).filter(it=>{const c=state._clients.find(x=>x.id===it.client_id);return it.client_id!=='11111111-1111-1111-1111-111111111111'&&!(c&&/test/i.test(c.name));});go('calendar');}
+function cliTag(id){const c=(state._clients||[]).find(x=>x.id===id);if(!c)return '';return c.initials||c.name.split(/\s+/).map(w=>w[0]).join('').slice(0,3).toUpperCase();}
+async function calOpen(id,cid){if(!state.client||!cid||cid===state.client.id){openContentModal(id);return;}
+  toast('Ouverture du client…');await selectClient(cid);const sw=document.getElementById('clientSwitch');if(sw)sw.value=cid;openContentModal(id);}
+function socTabs(k){const c=(state.data&&state.data.content)||[];const pend=c.filter(x=>x.status==='pending'||x.status==='changes_requested').length;
+  return `<div class="soc-tabs">`+SOC_TABS.filter(t=>(!t[2]||isAgencyView())&&isUnlocked(t[0])).map(t=>`<button class="${t[0]===k?'on':''}" onclick="go('${t[0]}')">${t[1]}${t[0]==='validation'&&pend?` <span class="badge">${pend}</span>`:''}</button>`).join('')+`</div>`;}
+function nextAct(it){const ag=isAgencyView(),d=itDay(it),tm=String((it.brief||{}).time||''),past=d&&d<ymd(new Date()),h=/^\d{2}:\d{2}$/.test(tm)?' à '+tm.replace(':','h'):'';
+  switch(it.status){
+    case 'idea':return ['idee',ag?'À toi : on la fait ?':'Idée'];
+    case 'produced':return ['prod',ag?'À toi : envoyer en validation':'En préparation'];
+    case 'changes_requested':return ['prod',ag?'À toi : modif demandée':'Modif demandée'];
+    case 'pending':return ['val',ag?'Chez le client':'À vous de valider'];
+    case 'approved':return past?['late',ag?'En retard : publié ?':'Validé']:['pret',ag?"Le bot t'écrit"+h:'Validé, prêt'];
+    case 'published':return ['pub','Publié'];}
+  return ['idee',statusLabel(it.status)];}
+function stageBar(items){const today=ymd(new Date());const c={late:0,idee:0,prod:0,val:0,pret:0};
+  (items||[]).forEach(it=>{const d=itDay(it);if(it.status==='published')return;const k=nextAct(it)[0];if(k==='pret'&&d&&d<today)c.late++;else if(c[k]!=null)c[k]++;});
+  const ag=isAgencyView();const box=(n,col,l,w)=>`<div class="stg${n&&col==='#a12828'?' warn':''}"><b style="color:${col}">${n}</b><span>${l}<br><b>${w}</b></span></div>`;
+  return `<div class="stg-bar">${box(c.late,'#a12828','en retard',ag?'à publier':'')}${box(c.idee,'#463b66','idées',ag?'à décider':'')}${box(c.prod,'#7a4f00','à produire',ag?'à toi':'')}${box(c.val,'#4a36a8','chez le client',ag?'validation':'à valider')}${box(c.pret,'#2a4a9e','prêts',ag?'le bot s\'en charge':'')}</div>`;}
+async function loadToday(){
+  const box=document.getElementById('todayBox');if(!box)return;
+  const zd=s=>new Intl.DateTimeFormat('en-CA',{timeZone:'Europe/Zurich'}).format(new Date(s));const today=zd(new Date());
+  if(DEMO){box.innerHTML='Disponible avec les vraies données.';return;}
+  const from=new Date(Date.now()-3*864e5).toISOString(),to=new Date(Date.now()+2*864e5).toISOString();
+  const [r1,r2]=await Promise.all([sb.from('content_items').select('*').gte('scheduled_at',from).lte('scheduled_at',to),sb.from('clients').select('id,name')]);
+  if(r1.error){box.innerHTML='Erreur : '+esc(r1.error.message);return;}
+  const nm=id=>(((r2.data||[]).find(c=>c.id===id)||{}).name||'').replace(/\s*Sàrl$/,'');
+  const rows=[];
+  (r1.data||[]).forEach(it=>{const d=zd(it.scheduled_at);const late=it.status==='approved'&&d<today;if(d!==today&&!late)return;const pl=String(it.platform||'instagram').toLowerCase();const n=[pl.includes('tiktok')?'tiktok':pl.includes('linkedin')?'linkedin':pl.includes('face')?'facebook':'instagram'];const tm=String((it.brief||{}).time||'');n.forEach(net=>rows.push({it,net,late,t:/^\d{2}:\d{2}$/.test(tm)?tm:'13:00'}));});
+  rows.sort((a,b)=>(a.late===b.late?a.t.localeCompare(b.t):(a.late?-1:1)));state._today=rows;
+  if(!rows.length){box.innerHTML='<div class="empty" style="padding:8px 0">Rien à publier aujourd\'hui 🎉</div>';return;}
+  box.innerHTML=rows.map((r,i)=>{const it=r.it,ch=CHAN[r.net]||['•',r.net,'#eee','#333'],u=mediaList(it)[0],pub=it.status==='published',ok=it.status==='approved';
+    const st=pub?'<span class="ct-status s-published">Publié</span>':r.late?'<span class="td-late">En retard</span>':ok?'<span class="ct-status s-approved">Prêt</span>':'<span class="td-warn">⚠ pas encore validé</span>';
+    return `<div class="td-row${pub?' done':''}"><div class="tm">${esc(r.t.replace(':','h'))}</div><div class="td-main"><div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:3px"><span class="td-cl">${esc(nm(it.client_id))}</span><span class="td-net" style="background:${ch[2]};color:${ch[3]}">${ch[0]} ${esc(ch[1])}${r.net==='instagram'?' + Facebook':''}</span>${st}</div><b>${esc(it.title)}</b>${(it.brief||{}).sound?`<small style="display:block;color:var(--muted)">🎵 ${esc(it.brief.sound)}</small>`:''}</div><div class="td-act">${u?`<a class="sbtn ghost" href="${esc(u)}" target="_blank" rel="noopener" download>Télécharger</a>`:'<span class="td-warn">Pas de fichier</span>'}<button class="sbtn ghost" onclick="tdCopy(${i})">Copier la légende</button>${pub?'':`<button class="sbtn ok" onclick="tdDone(${i})">✅ Publié</button>`}</div></div>`;}).join('');}
+function tdCopy(i){const r=(state._today||[])[i];if(!r)return;navigator.clipboard.writeText(capFor(r.it,r.net)||'').then(()=>toast('Légende copiée'),()=>toast('Copie impossible'));}
+async function tdDone(i){const r=(state._today||[])[i];if(!r)return;const {error}=await sb.from('content_items').update({status:'published',published_at:new Date().toISOString()}).eq('id',r.it.id);if(error){toast('Erreur : '+error.message);return;}const c=(state.data.content||[]).find(x=>x.id===r.it.id);if(c)c.status='published';state._allContent=null;toast('✓ Marqué publié');loadToday();}
+
 function statusLabel(s){return {idea:'Idée',produced:'Produit',pending:'À valider',approved:'Validé',changes_requested:'Modif demandée',published:'Publié'}[s]||s;}
 function ctBadge(t){return t==='Reel'?'<span class="ct-badge ct-reel">🎥 Reel</span>':(t==='Motion'?'<span class="ct-badge" style="background:#efeaff;color:#5b3fd6">✨ Motion</span>':'<span class="ct-badge ct-carr">🖼️ Carrousel</span>');}
 function typeNo(it){

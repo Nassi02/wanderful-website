@@ -242,7 +242,7 @@ async function saveInspiration(m: any) {
   if (error || !row) { await tg("sendMessage", { chat_id: m.chat.id, text: "⚠️ Je n'ai pas pu enregistrer cette idée : " + (error?.message || "erreur") }); return; }
   await setCfg("last_idea", row.id);
   const { data: clients } = await sb.from("clients").select("id, name").order("name");
-  const others = (clients || []).filter((c) => c.id !== WANDERFUL_ID && !/test/i.test(c.name));
+  const others = (clients || []).filter((c) => c.id !== WANDERFUL_ID && c.id !== "11111111-1111-1111-1111-111111111111" && !/test/i.test(c.name));
   await tg("sendMessage", {
     chat_id: m.chat.id, parse_mode: "HTML", reply_to_message_id: m.message_id,
     text: `💡 <b>Idée enregistrée</b> chez <b>Wanderful</b>, dans « Sans date » du calendrier.\nAjoute un mot avec le lien la prochaine fois (ex. « format à refaire pour Gary ») pour qu'il apparaisse dans le titre.\n\nC'est pour un autre client ?`,
