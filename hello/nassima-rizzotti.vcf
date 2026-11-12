@@ -1,0 +1,14 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Rizzotti;Nassima;;;
+FN:Nassima Rizzotti
+ORG:Wanderful Marketing Sàrl
+TITLE:Founder · Marketing Strategist
+EMAIL;TYPE=WORK:hello@wanderful-marketing.com
+TEL;TYPE=CELL:+41788082797
+URL:https://wanderful-marketing.com/
+X-SOCIALPROFILE;TYPE=linkedin:https://www.linkedin.com/in/nassima-rizzotti-58b4a6226/
+X-SOCIALPROFILE;TYPE=instagram:https://www.instagram.com/wanderful_marketing
+ADR;TYPE=WORK:;;Chemin des Cerisiers 26;Yvonand;;1462;Suisse
+NOTE:Rencontrée en networking — agence marketing digital IA, Suisse romande.
+END:VCARD
