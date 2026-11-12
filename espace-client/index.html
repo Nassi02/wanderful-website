@@ -671,6 +671,8 @@
 .kb-foot{display:flex;align-items:center;gap:6px;font-size:11.5px}.kb-date{margin-left:auto}
 .kb-date input{font:inherit;font-size:11.5px;border:1px solid var(--line);border-radius:6px;padding:2px 4px}
 .kb-act{display:flex;gap:6px;flex-wrap:wrap}.kb-act .sbtn{font-size:12px;cursor:pointer}
+.thw{position:relative;flex-shrink:0}.thw .nb{position:absolute;left:2px;bottom:2px;font-style:normal;font-size:8.5px;font-weight:800;color:#fff;border-radius:4px;padding:1px 3px;line-height:1.2}
+.mk-pub{margin-top:3px;font:inherit;font-size:10.5px;font-weight:700;border:0;border-radius:6px;padding:3px 6px;background:#1fb57a;color:#fff;cursor:pointer;align-self:flex-start}
 </style>
 </head>
 <body>
@@ -2725,7 +2727,7 @@ function monthCal(items){
   const nd=items.filter(i=>!itDay(i));
   let h=`<div class="mcal-nav"><button onclick="calShift(-1)">‹</button><b>${m.toLocaleDateString('fr-FR',{month:'long',year:'numeric'})}</b><button onclick="calShift(1)">›</button><button style="width:auto;padding:0 12px;font-size:12px;font-weight:700" onclick="state.calMonth=null;go('calendar')">Aujourd'hui</button></div><div class="mcal">`+['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'].map(x=>`<div class="mcal-h">${x}</div>`).join('');
   const dim=new Date(m.getFullYear(),m.getMonth()+1,0).getDate(),cells=Math.ceil((((first.getDay()+6)%7)+dim)/7)*7;for(let i=0;i<cells;i++){const d=new Date(start);d.setDate(start.getDate()+i);const k=ymd(d),L=by[k]||[];
-    h+=`<div class="mcal-d${d.getMonth()!==m.getMonth()?' out':''}${k===today?' today':''}${L.length?'':' empty'}" ondragover="event.preventDefault();this.classList.add('drop')" ondragleave="this.classList.remove('drop')" ondrop="dropOn(event,'${k}')"><div class="mcal-n">${d.toLocaleDateString('fr-FR',{weekday:'short'}).replace('.','')} ${d.getDate()}</div>${L.map(it=>{const ml=mediaList(it),u=ml[0],ch=chansOf(it),ic=(CHAN[ch[0]]||['•'])[0];const th=u&&!isVideo(u,it)&&!/\.pdf(\?|$)/i.test(u)?`<img src="${esc(u)}" loading="lazy" alt="">`:`<div class="ph">${u&&isVideo(u,it)?'🎥':(u&&/\.pdf/i.test(u)?'📄':ic)}</div>`;const na=nextAct(it),tm=String((it.brief||{}).time||'');return `<div class="mcal-i s-${esc(it.status)} st-${na[0]}" draggable="${it.status==='published'?'false':'true'}" ondragstart="dragIt(event,'${it.id}')" title="${esc(it.title)} — ${esc(na[1])}" onclick="calOpen('${it.id}','${it.client_id}')">${th}<div class="mi-txt"><span>${state.calAll&&isAgencyView()?'<i class="ctag">'+esc(cliTag(it.client_id))+'</i>':''}${/^\d{2}:\d{2}$/.test(tm)?'<b>'+esc(tm.replace(':','h'))+'</b> ':''}${esc(ic)} ${esc(it.title)}</span><em class="na">${esc(na[1])}</em></div></div>`;}).join('')}</div>`;}
+    h+=`<div class="mcal-d${d.getMonth()!==m.getMonth()?' out':''}${k===today?' today':''}${L.length?'':' empty'}" ondragover="event.preventDefault();this.classList.add('drop')" ondragleave="this.classList.remove('drop')" ondrop="dropOn(event,'${k}')"><div class="mcal-n">${d.toLocaleDateString('fr-FR',{weekday:'short'}).replace('.','')} ${d.getDate()}</div>${L.map(it=>{const ml=mediaList(it),u=ml[0],ch=chansOf(it),ic=(CHAN[ch[0]]||['•'])[0];const th=u&&!isVideo(u,it)&&!/\.pdf(\?|$)/i.test(u)?`<img src="${esc(u)}" loading="lazy" alt="">`:`<div class="ph">${u&&isVideo(u,it)?'🎥':(u&&/\.pdf/i.test(u)?'📄':ic)}</div>`;const na=nextAct(it),tm=String((it.brief||{}).time||'');return `<div class="mcal-i s-${esc(it.status)} st-${na[0]}" draggable="${it.status==='published'?'false':'true'}" ondragstart="dragIt(event,'${it.id}')" title="${esc(it.title)} — ${esc(na[1])}" onclick="calOpen('${it.id}','${it.client_id}')"><div class="thw">${th}<i class="nb" style="background:${netShort(it)[1]}">${netShort(it)[0]}</i></div><div class="mi-txt"><span>${state.calAll&&isAgencyView()?'<i class="ctag">'+esc(cliTag(it.client_id))+'</i>':''}${/^\d{2}:\d{2}$/.test(tm)?'<b>'+esc(tm.replace(':','h'))+'</b> ':''}${esc(ic)} ${esc(it.title)}</span><em class="na">${esc(na[1])}</em>${na[0]==='late'&&isAgencyView()?`<button class="mk-pub" onclick="event.stopPropagation();markPub('${it.id}')">✓ C'est publié</button>`:''}</div></div>`;}).join('')}</div>`;}
   h+=`</div><div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:10px"><span class="lg st-idee">Idée</span><span class="lg st-prod">À produire / modif</span><span class="lg st-val">Chez le client</span><span class="lg st-pret">Prêt (le bot s'en charge)</span><span class="lg st-pub">Publié</span><span class="lg st-late">En retard</span></div>`;
   
   return h;
@@ -2842,16 +2844,25 @@ async function kbDrop(ev,col){ev.preventDefault();ev.currentTarget.classList.rem
   if(col==='produced'){if(!mediaList(it).length){toast('Dépose d\'abord la vidéo ou les photos sur la carte');return;}await kbSetStatus(id,'produced');}
   if(col==='idea')await kbSetStatus(id,'idea');
   go(state.section);}
+
+function netShort(it){const p=String(it.platform||'').toLowerCase(),st=/story/i.test(it.type||'');
+  if(p.includes('tiktok'))return ['TT','#16161d','TikTok'];if(p.includes('linkedin'))return ['in','#0a66c2','LinkedIn'];if(p.includes('face'))return ['FB','#1b4bb8','Facebook'];
+  return st?['ST','#d6249f','Instagram (story)']:['IG','#b8317a','Instagram + Facebook'];}
+async function markPub(id){const it=(state.data.content||[]).concat(state._allContent||[]).find(x=>x.id===id);if(!it)return;
+  const upd={status:'published',published_at:new Date().toISOString()};
+  if(!DEMO){const {error}=await sb.from('content_items').update(upd).eq('id',id);if(error){toast('Erreur : '+error.message);return;}}
+  [state.data.content,state._allContent].forEach(a=>(a||[]).forEach(x=>{if(x.id===id)Object.assign(x,upd);}));toast('✓ Marqué publié sur '+netShort(it)[2]);go(state.section);}
 function socTabs(k){if(k!=='plan')state.plFull=0;if(k!=='ideas')state.ideasOld=0;const c=(state.data&&state.data.content)||[];const pend=c.filter(x=>x.status==='pending'||x.status==='changes_requested').length;
   return `<div class="soc-tabs">`+SOC_TABS.filter(t=>(!t[2]||isAgencyView())&&isUnlocked(t[0])).map(t=>`<button class="${t[0]===k?'on':''}" onclick="go('${t[0]}')">${t[1]}${t[0]==='validation'&&pend?` <span class="badge">${pend}</span>`:''}</button>`).join('')+`</div>`;}
 function nextAct(it){const ag=isAgencyView(),d=itDay(it),tm=String((it.brief||{}).time||''),past=d&&d<ymd(new Date()),h=/^\d{2}:\d{2}$/.test(tm)?' à '+tm.replace(':','h'):'';
+  if(past&&it.status!=='published'&&it.status!=='idea')return ['late',it.status==='approved'?(ag?'En retard : publié ?':'Validé'):'Date passée · pas publié'];
   switch(it.status){
     case 'idea':return ['idee',ag?'À toi : on la fait ?':'Idée'];
     case 'produced':return ['prod',ag?'À toi : envoyer en validation':'En préparation'];
     case 'changes_requested':return ['prod',ag?'À toi : modif demandée':'Modif demandée'];
     case 'pending':return ['val',ag?'Chez le client':'À vous de valider'];
     case 'approved':return past?['late',ag?'En retard : publié ?':'Validé']:['pret',ag?"Le bot t'écrit"+h:'Validé, prêt'];
-    case 'published':return ['pub','Publié'];}
+    case 'published':return ['pub','Publié sur '+netShort(it)[2]];}
   return ['idee',statusLabel(it.status)];}
 function stageBar(items){const today=ymd(new Date());const c={late:0,idee:0,prod:0,val:0,pret:0};
   (items||[]).forEach(it=>{const d=itDay(it);if(it.status==='published')return;const k=nextAct(it)[0];if(k==='pret'&&d&&d<today)c.late++;else if(c[k]!=null)c[k]++;});
