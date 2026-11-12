@@ -68,9 +68,13 @@ svg{width:18px;height:18px;flex:none}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg>
     <span data-fr="Enregistrer mon contact" data-en="Save my contact" data-de="Kontakt speichern">Enregistrer mon contact</span></a>
 
-  <a class="btn ghost" id="book" href="/contact/?utm_source=carte&utm_medium=qr">
+  <a class="btn ghost" id="book" href="https://calendar.app.google/eGQ1Qci8t8Vc9xas7" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-    <span data-fr="Réserver un appel découverte" data-en="Book a discovery call" data-de="Kennenlerngespräch buchen">Réserver un appel découverte</span></a>
+    <span data-fr="Choisir un créneau (appel 30 min)" data-en="Pick a time slot (30-min call)" data-de="Termin wählen (30-Min.-Gespräch)">Choisir un créneau (appel 30 min)</span></a>
+
+  <a class="btn ghost" id="msg" href="/contact/?utm_source=carte&utm_medium=qr#contact-form">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a8 8 0 01-11.6 7.1L4 20l1-4.6A8 8 0 1121 12z"/></svg>
+    <span data-fr="Plutôt m'écrire un message" data-en="Rather send me a message" data-de="Lieber eine Nachricht schreiben">Plutôt m'écrire un message</span></a>
 
   <div class="row">
     <a class="btn ghost" id="li" href="https://www.linkedin.com/in/nassima-rizzotti-58b4a6226/" target="_blank" rel="noopener">
@@ -89,33 +93,34 @@ svg{width:18px;height:18px;flex:none}
 <script>
 (function(){
   var qs = new URLSearchParams(location.search);
-  var book=document.getElementById('book'), save=document.getElementById('save');
+  var book=document.getElementById('book'), save=document.getElementById('save'), msg=document.getElementById('msg');
   /* Codes promo par lieu partenaire : ajouter une ligne par nouvelle affiche */
   var CODES = { neopilates: 'NEO30' };
   var poster = qs.get('utm_source') === 'affiche';
   var contact = '/contact/?utm_source=carte&utm_medium=qr';
   if(poster){
     var hi=document.querySelector('.hi');
-    hi.setAttribute('data-fr','Bonjour&nbsp;! Vous avez scanné mon affiche chez un partenaire. Voici votre offre&nbsp;: réservez un appel découverte en mentionnant votre code.');
-    hi.setAttribute('data-en','Hello! You scanned my poster at one of my partners. Here is your offer: book a discovery call and mention your code.');
-    hi.setAttribute('data-de','Hallo! Sie haben mein Plakat bei einem Partner gescannt. Hier ist Ihr Angebot: Buchen Sie ein Kennenlerngespräch und nennen Sie Ihren Code.');
+    hi.setAttribute('data-fr','Bonjour&nbsp;! Vous avez scanné mon affiche chez un partenaire. Voici votre offre&nbsp;: choisissez un créneau et indiquez votre code lors de la réservation.');
+    hi.setAttribute('data-en','Hello! You scanned my poster at one of my partners. Here is your offer: pick a time slot and add your code when booking.');
+    hi.setAttribute('data-de','Hallo! Sie haben mein Plakat bei einem Partner gescannt. Hier ist Ihr Angebot: Wählen Sie einen Termin und geben Sie bei der Buchung Ihren Code an.');
     var code = CODES[qs.get('utm_campaign')] || 'WANDER30';
     document.getElementById('code').textContent = code;
     document.getElementById('offer').hidden = false;
     book.className='btn primary'; save.className='btn ghost';
     book.parentNode.insertBefore(book, save);
+    book.parentNode.insertBefore(msg, save);
     contact = '/contact/?utm_source=affiche&utm_medium=qr&utm_campaign=' + encodeURIComponent(qs.get('utm_campaign')||'') + '&code=' + code;
     var sp=book.querySelector('span');
-    sp.setAttribute('data-fr','Réserver mon appel avec l\'offre');
-    sp.setAttribute('data-en','Book my call with the offer');
-    sp.setAttribute('data-de','Gespräch mit Angebot buchen');
+    sp.setAttribute('data-fr','Choisir mon créneau (offre ' + code + ')');
+    sp.setAttribute('data-en','Pick my time slot (offer ' + code + ')');
+    sp.setAttribute('data-de','Termin wählen (Angebot ' + code + ')');
   }
   /* Langue : choix mémorisé, sinon langue du téléphone (FR par défaut) */
   function apply(l){
     document.documentElement.lang=l;
     document.querySelectorAll('[data-fr]').forEach(function(el){ el.innerHTML = el.getAttribute('data-'+l) || el.getAttribute('data-fr'); });
     /* Pas de page contact en allemand : EN pour DE */
-    book.href = l==='fr' ? contact : contact.replace('/contact/','/en/contact/');
+    msg.href = (l==='fr' ? contact : contact.replace('/contact/','/en/contact/')) + '#contact-form';
     document.querySelectorAll('.lang button').forEach(function(b){ b.setAttribute('aria-pressed', b.dataset.l===l); });
   }
   var saved=null; try{ saved=localStorage.getItem('wf_lang'); }catch(e){}
@@ -127,7 +132,7 @@ svg{width:18px;height:18px;flex:none}
       try{ gtag('event','carte_langue',{langue:b.dataset.l}); }catch(e){} });
   });
   /* Événements GA4 : quel bouton est utilisé après un scan */
-  var map={save:'carte_enregistrer_contact',book:'carte_reserver_appel',li:'carte_linkedin',ig:'carte_instagram',site:'carte_site'};
+  var map={save:'carte_enregistrer_contact',book:'carte_choisir_creneau',msg:'carte_message',li:'carte_linkedin',ig:'carte_instagram',site:'carte_site'};
   Object.keys(map).forEach(function(id){
     var el=document.getElementById(id);
     el && el.addEventListener('click',function(){ try{ gtag('event', map[id], {source: poster?'affiche':'carte_visite'}); }catch(e){} });
