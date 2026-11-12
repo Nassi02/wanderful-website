@@ -402,6 +402,9 @@ nav a:hover{color:var(--p1);}
 <div class="contact-card">
 <div class="card-label">Contact form</div>
 <form action="https://formspree.io/f/xqabevew" id="contact-form" method="POST">
+        <input type="hidden" name="provenance" id="f-provenance" value="">
+        <input type="hidden" name="code_promo" id="f-code" value="">
+
 <div class="form-row">
 <div class="field">
 <label>First name</label>
@@ -555,5 +558,20 @@ form.addEventListener('submit', async e => {
 
 </script>
 <script defer="" src="/assistant.js"></script>
+<script>
+/* Provenance du contact (QR carte / affiche partenaire / site) : envoyée avec le formulaire */
+(function(){
+  try{
+    var qs=new URLSearchParams(location.search), p={};
+    try{ p=JSON.parse(localStorage.getItem('wf_provenance')||'{}'); }catch(e){}
+    var src = qs.get('utm_source') || p.source || document.referrer.replace(/^https?:\/\//,'').split('/')[0] || 'direct';
+    var lieu = qs.get('utm_campaign') || p.lieu || '';
+    var code = qs.get('code') || p.code || '';
+    var f1=document.getElementById('f-provenance'), f2=document.getElementById('f-code');
+    if(f1) f1.value = src + (lieu ? ' / '+lieu : '');
+    if(f2) f2.value = code;
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
