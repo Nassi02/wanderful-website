@@ -2748,7 +2748,7 @@ async function loadToday(){
   if(r1.error){box.innerHTML='Erreur : '+esc(r1.error.message);return;}
   const nm=id=>(((r2.data||[]).find(c=>c.id===id)||{}).name||'').replace(/\s*Sàrl$/,'');
   const rows=[];
-  (r1.data||[]).forEach(it=>{const d=zd(it.scheduled_at);const late=it.status==='approved'&&d<today;if(d!==today&&!late)return;let n=netsOf(it);if(n.includes('instagram'))n=n.filter(x=>x!=='facebook');const tm=String((it.brief||{}).time||'');n.forEach(net=>rows.push({it,net,late,t:/^\d{2}:\d{2}$/.test(tm)?tm:'13:00'}));});
+  (r1.data||[]).forEach(it=>{const d=zd(it.scheduled_at);const late=it.status==='approved'&&d<today;if(d!==today&&!late)return;const pl=String(it.platform||'instagram').toLowerCase();const n=[pl.includes('tiktok')?'tiktok':pl.includes('linkedin')?'linkedin':pl.includes('face')?'facebook':'instagram'];const tm=String((it.brief||{}).time||'');n.forEach(net=>rows.push({it,net,late,t:/^\d{2}:\d{2}$/.test(tm)?tm:'13:00'}));});
   rows.sort((a,b)=>(a.late===b.late?a.t.localeCompare(b.t):(a.late?-1:1)));state._today=rows;
   if(!rows.length){box.innerHTML='<div class="empty" style="padding:8px 0">Rien à publier aujourd\'hui 🎉</div>';return;}
   box.innerHTML=rows.map((r,i)=>{const it=r.it,ch=CHAN[r.net]||['•',r.net,'#eee','#333'],u=mediaList(it)[0],pub=it.status==='published',ok=it.status==='approved';

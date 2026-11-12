@@ -38,15 +38,10 @@ const londonHM = (d: Date) => new Intl.DateTimeFormat("fr-CH", { timeZone: "Euro
 const swissHM = (d: Date) => zParts(d).hm.replace(":", "h");
 
 function netsOf(it: any): string[] {
-  const b = it.brief || {};
-  let r: string[] = Array.isArray(b.nets) && b.nets.length ? b.nets.map((x: string) => String(x).toLowerCase()) : [];
-  if (!r.length) {
-    const p = String(it.platform || "instagram").toLowerCase();
-    r = [p.includes("face") ? "facebook" : p.includes("linkedin") ? "linkedin" : p.includes("tiktok") ? "tiktok" : "instagram"];
-  }
-  // Facebook suit Instagram via le partage automatique Instagram -> Facebook
-  if (r.includes("instagram")) r = r.filter((n) => n !== "facebook");
-  return [...new Set(r)];
+  // Un contenu = un réseau, d'après sa plateforme (les versions TikTok sont des contenus séparés ;
+  // Facebook suit Instagram via le partage automatique Instagram -> Facebook)
+  const p = String(it.platform || "instagram").toLowerCase();
+  return [p.includes("tiktok") ? "tiktok" : p.includes("linkedin") ? "linkedin" : p.includes("face") ? "facebook" : "instagram"];
 }
 function capFor(it: any, n: string) {
   const b = it.brief || {};
