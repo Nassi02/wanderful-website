@@ -237,7 +237,7 @@ async function saveInspiration(m: any) {
   const title = `💡 Inspiration ${platform}${note ? " · " + note.slice(0, 60) : ""}`;
   const { data: row, error } = await sb.from("content_items").insert({
     client_id: WANDERFUL_ID, platform, title, status: "idea",
-    brief: { inspiration: link, notes: note ? `Inspiration envoyée via Telegram : ${note}` : "Inspiration envoyée via Telegram", nets: [platform.toLowerCase()] },
+    brief: { inspiration: link, idea_note: note || "Envoyée via Telegram", chans: [platform.toLowerCase()] },
   }).select("id").single();
   if (error || !row) { await tg("sendMessage", { chat_id: m.chat.id, text: "⚠️ Je n'ai pas pu enregistrer cette idée : " + (error?.message || "erreur") }); return; }
   await setCfg("last_idea", row.id);

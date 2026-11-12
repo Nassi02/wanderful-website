@@ -658,6 +658,19 @@
 .pr:first-of-type{border-top:0}.pr-bar{height:8px;background:#efeafe;border-radius:99px;overflow:hidden}.pr-bar i{display:block;height:100%;background:#6a52d8;border-radius:99px}
 .pr-n{font-weight:700}
 @media(max-width:600px){.pr{grid-template-columns:1fr auto}.pr-bar{grid-column:1/-1;order:3}}
+.kb{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+@media(max-width:900px){.kb{grid-template-columns:1fr}}
+.kb-col{background:#f6f4fc;border:1px solid var(--line);border-radius:14px;padding:12px;min-height:220px}
+.kb-col.drop{outline:2px dashed #6a52d8;outline-offset:-2px;background:#efeafe}
+.kb-h{font-size:14px}.kb-help{display:block;line-height:1.35;margin:2px 0 6px}
+.kb-empty{font-size:12.5px;color:var(--muted);padding:16px 0;text-align:center}
+.kb-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-top:10px;cursor:grab;font-size:13px;display:flex;flex-direction:column;gap:5px}
+.kb-card.req{border-color:#f2b230}.kb-card.fdrop{outline:2px dashed #1fb57a;background:#f2fbf7}
+.kb-card b{line-height:1.3}.kb-card a{font-size:12px}
+.kb-img{width:100%;max-height:140px;object-fit:cover;border-radius:8px}.kb-th{font-size:12px;font-weight:600;background:#463b66;color:#fff;border-radius:8px;padding:10px;text-align:center}
+.kb-foot{display:flex;align-items:center;gap:6px;font-size:11.5px}.kb-date{margin-left:auto}
+.kb-date input{font:inherit;font-size:11.5px;border:1px solid var(--line);border-radius:6px;padding:2px 4px}
+.kb-act{display:flex;gap:6px;flex-wrap:wrap}.kb-act .sbtn{font-size:12px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -2444,6 +2457,7 @@ const VIEWS={
   plan(){return '<div class="s2-wrap">'+(state.plFull?planView():planSimple())+'</div>';},
   published(){return '<div class="s2-wrap">'+publishedView()+'</div>';},
   ideas(){
+    if(isAgencyView()&&!state.ideasOld)return ideasBoard();
     const items=(state.data.content||[]).slice().sort((a,b)=>(new Date(a.scheduled_at))-(new Date(b.scheduled_at)));
     if(!items.length)return `<div class="sec-head"><h3>Idées de contenu</h3><p>Les contenus scénarisés apparaîtront ici.</p></div><div class="card empty">Aucune idée de contenu pour le moment.</div>`;
     const ic=(state.client&&state.client.strategy&&state.client.strategy.ideas)||{};
@@ -2463,7 +2477,7 @@ const VIEWS={
     const allMode=isAgencyView()&&state.calAll;if(allMode&&!state._allContent){loadAllContent();return socAllToggle()+'<div class="card">Chargement de tous les clients…</div>';}
     const items=(allMode?state._allContent:(state.data.content||[])).slice().sort((a,b)=>(new Date(a.scheduled_at))-(new Date(b.scheduled_at)));
     if(!items.length)return `<div class="sec-head"><h3>Calendrier éditorial</h3><p>Ton planning apparaîtra ici.</p></div><div class="card empty">Aucun contenu planifié.</div>`;
-    const fitems=applyChanFilter(items);const byWeek={};fitems.forEach(it=>{const w=it.week||0;(byWeek[w]=byWeek[w]||[]).push(it);});
+    const fitems=applyChanFilter(items).filter(i=>!state.calOk||['approved','published'].includes(i.status));const byWeek={};fitems.forEach(it=>{const w=it.week||0;(byWeek[w]=byWeek[w]||[]).push(it);});
     const view=state.calView||'month';
     let h=`<div class="sec-head"><h3>Calendrier</h3><p><b>Glisse</b> une idée sur un jour pour la planifier, ou un post d'un jour à l'autre. Clique sur un post pour le montage et la légende.</p></div>${socAllToggle()}<div class="vt"><button class="${view==='month'?'on':''}" onclick="state.calView='month';go('calendar')">📅 Mois</button><button class="${view==='list'?'on':''}" onclick="state.calView='list';go('calendar')">☰ Liste</button></div>`+chanFilterBar(items);
     if(view==='month')return h+stageBar(items)+quickIdea()+'<div class="cal-wrap"><div style="min-width:0">'+monthCal(fitems)+'</div>'+ideaCol(fitems.filter(i=>!itDay(i)))+'</div>';
@@ -2743,7 +2757,7 @@ function planView(){
 const SOC_TABS=[['today',"Aujourd'hui",1],['calendar','Calendrier'],['validation','À valider'],['ideas','Idées'],['plan','Plan'],['feed','Feed'],['published','Publiés'],['social','Réseaux',1]];
 const SOC_KEYS=SOC_TABS.map(t=>t[0]);
 
-function socAllToggle(){if(!isAgencyView())return '';const a=!!state.calAll;return `<div class="vt" style="margin-bottom:10px"><button class="${a?'':'on'}" onclick="state.calAll=false;go('calendar')">Ce client</button><button class="${a?'on':''}" onclick="state.calAll=true;state._allContent=null;go('calendar')">👥 Tous les clients</button></div>`;}
+function socAllToggle(){const ok=!!state.calOk,f=`<button class="${ok?'':'on'}" onclick="state.calOk=false;go('calendar')">Tout</button><button class="${ok?'on':''}" onclick="state.calOk=true;go('calendar')">✅ Validés seulement</button>`;if(!isAgencyView())return `<div class="vt" style="margin-bottom:10px">${f}</div>`;const a=!!state.calAll;return `<div style="display:flex;gap:8px;flex-wrap:wrap"><div class="vt" style="margin-bottom:10px">${f}</div><div class="vt" style="margin-bottom:10px"><button class="${a?'':'on'}" onclick="state.calAll=false;go('calendar')">Ce client</button><button class="${a?'on':''}" onclick="state.calAll=true;state._allContent=null;go('calendar')">👥 Tous les clients</button></div></div>`;}
 async function loadAllContent(){if(DEMO){state._allContent=state.data.content||[];go('calendar');return;}
   const [r1,r2]=await Promise.all([sb.from('content_items').select('*'),sb.from('clients').select('id,name,initials')]);
   if(r1.error){toast('Erreur : '+r1.error.message);state.calAll=false;go('calendar');return;}
@@ -2758,7 +2772,7 @@ async function qiAdd(){const el=document.getElementById('qiIn');const t=(el.valu
   const link=(t.match(/https?:\/\/\S+/)||[''])[0];const note=t.replace(link,'').trim();let [type,platform]=document.getElementById('qiType').value.split('|');
   if(link&&/tiktok/i.test(link)&&platform==='Instagram'&&type!=='Story')platform='TikTok';
   const src=/tiktok/i.test(link)?'TikTok':/instagram|instagr\.am/i.test(link)?'Instagram':'web';
-  const brief={chans:[type==='Story'?'stories':platform.toLowerCase()]};if(link)brief.inspiration=link;if(note)brief.notes=note;
+  const brief={chans:[type==='Story'?'stories':platform.toLowerCase()]};if(link)brief.inspiration=link;if(note)brief.idea_note=note;
   const row={client_id:state.client.id,title:(note||('Inspiration '+src)).slice(0,120),status:'idea',platform,type,brief};
   if(DEMO){row.id='d'+Date.now();state.data.content.push(row);go(state.section);return;}
   const {data,error}=await sb.from('content_items').insert(row).select('*').single();if(error){toast('Erreur : '+error.message);return;}
@@ -2776,7 +2790,7 @@ async function dropOn(ev,day,idArg){if(ev){ev.preventDefault();ev.currentTarget.
   if(day){if(!/^\d{2}:\d{2}$/.test(b.time||''))b.time=/story/i.test(it.type||'')?'10:00':'13:00';upd={scheduled_at:day+'T12:00:00+01:00',brief:b};}else upd={scheduled_at:null};
   if(!DEMO){const {error}=await sb.from('content_items').update(upd).eq('id',id);if(error){toast('Erreur : '+error.message);return;}}
   [state.data.content,state._allContent].forEach(a=>(a||[]).forEach(x=>{if(x.id===id){Object.assign(x,upd);if(upd.scheduled_at)x.scheduled_at=day+'T11:00:00+00:00';}}));
-  toast(day?'📅 Planifié le '+new Date(day+'T12:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}):'💡 Remis dans les idées');go('calendar');}
+  toast(day?'📅 Planifié le '+new Date(day+'T12:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'}):'💡 Sans date');go(state.section);}
 function planSimple(){
   const P=state.client&&state.client.strategy&&state.client.strategy.plan_reseaux;
   if(!P)return `<div class="sec-head"><h3>Plan</h3><p>Le plan apparaîtra ici une fois la stratégie validée.</p></div>`;
@@ -2794,7 +2808,41 @@ function planSimple(){
   <div class="card" style="margin-bottom:14px"><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:6px"><b>${state.plWeek?'Semaine du '+dd(a):'Cette semaine'}</b><small class="muted">${dd(a)} → ${dd(b)}</small><span style="margin-left:auto;display:flex;gap:6px"><button class="sbtn" aria-label="Semaine précédente" onclick="state.plWeek=(state.plWeek||0)-1;go('plan')">‹</button>${state.plWeek?`<button class="sbtn" onclick="state.plWeek=0;go('plan')">Cette semaine</button>`:''}<button class="sbtn" aria-label="Semaine suivante" onclick="state.plWeek=(state.plWeek||0)+1;go('plan')">›</button></span></div>${rows||'<small class="muted">Aucun rythme défini.</small>'}</div>
   ${obj?`<div class="card" style="margin-bottom:14px"><b>Abonnés</b>${obj}</div>`:''}
   <button class="sbtn ghost" onclick="state.plFull=1;go('plan')">Voir le plan détaillé</button>`;}
-function socTabs(k){if(k!=='plan')state.plFull=0;const c=(state.data&&state.data.content)||[];const pend=c.filter(x=>x.status==='pending'||x.status==='changes_requested').length;
+
+/* ==== V4 : tableau des idées (Idée -> Contenu -> Validation) ==== */
+const KB_COLS=[['idea','💡 Idées','Tes idées, sans date obligatoire. Glisse-les sur un jour depuis le Calendrier, ou choisis une date ici.'],['produced','🎬 Contenu prêt','Dépose la vidéo ou les photos sur la carte : elle passe ici toute seule.'],['pending','👀 Chez le client','Glisse une carte ici pour l\'envoyer en validation. Une fois validée, elle part dans le calendrier comme « Prêt ».']];
+function kbCol(it){if(it.status==='produced'||it.status==='changes_requested')return 'produced';if(it.status==='pending')return 'pending';if(it.status==='idea')return 'idea';return null;}
+function ideasBoard(){
+  const all=(state.data.content||[]).filter(i=>kbCol(i)).sort((a,b)=>(itDay(a)||'0').localeCompare(itDay(b)||'0'));
+  return `<div class="sec-head"><h3>Idées</h3><p>Ajoute une idée en une ligne, dépose le contenu dessus quand il est prêt, puis envoie-le au client. <a href="#" onclick="state.ideasOld=1;go('ideas');return false">Voir les fiches détaillées</a></p></div><div class="kb">`
+  +KB_COLS.map(([k,t,h])=>{const L=all.filter(i=>kbCol(i)===k);return `<div class="kb-col" ondragover="event.preventDefault();this.classList.add('drop')" ondragleave="this.classList.remove('drop')" ondrop="kbDrop(event,'${k}')"><div class="kb-h"><b>${t}</b> <span class="muted">${L.length}</span></div><small class="muted kb-help">${h}</small>${L.map(kbCard).join('')||'<div class="kb-empty">Rien ici</div>'}</div>`;}).join('')+`</div>`;}
+function kbCard(it){const insp=(it.brief||{}).inspiration,note=(it.brief||{}).idea_note,ml=mediaList(it),d=itDay(it),u=ml[0];
+  const thumb=u?(isVideo(u,it)?'<div class="kb-th">🎥 Contenu déposé</div>':`<img class="kb-img" src="${esc(u)}" alt="" loading="lazy">`):'';
+  return `<div class="kb-card${it.status==='changes_requested'?' req':''}" draggable="true" ondragstart="dragIt(event,'${it.id}')" ondragover="if([...event.dataTransfer.types].includes('Files')){event.preventDefault();event.stopPropagation();this.classList.add('fdrop')}" ondragleave="this.classList.remove('fdrop')" ondrop="kbFileDrop(event,'${it.id}')" onclick="openContentModal('${it.id}')">
+  ${it.status==='changes_requested'?'<span class="td-warn">Modif demandée</span>':''}<b>${esc(it.title)}</b>${note&&note!==it.title?`<small class="muted" style="display:block">${esc(note)}</small>`:''}${insp?`<a href="${esc(insp)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Voir l'inspiration ↗</a>`:''}${thumb}
+  <div class="kb-foot" onclick="event.stopPropagation()"><span class="muted">${esc(it.type||'')}</span><label class="kb-date">📅 <input type="date" value="${d||''}" aria-label="Date" onchange="dropOn(null,this.value||null,'${it.id}')"></label></div>
+  ${it.status!=='pending'?`<div class="kb-act" onclick="event.stopPropagation()"><label class="sbtn ghost">${u?'Changer le fichier':'📎 Ajouter le contenu'}<input type="file" hidden multiple accept="image/*,video/*,application/pdf" onchange="kbUpload('${it.id}',this.files)"></label>${u?`<button class="sbtn ok" onclick="kbSend('${it.id}')">Envoyer au client</button>`:''}</div>`:''}</div>`;}
+async function kbFileDrop(ev,id){const fs=ev.dataTransfer.files;if(!fs||!fs.length)return;ev.preventDefault();ev.stopPropagation();ev.currentTarget.classList.remove('fdrop');kbUpload(id,fs);}
+async function kbUpload(id,files){const fs=[...files];if(!fs.length)return;const it=state.data.content.find(c=>c.id===id);if(!it)return;
+  if(DEMO){toast('Envoi indisponible en démo');return;}
+  const total=fs.reduce((a,f)=>a+f.size,0);let done=0;const urls=[];
+  try{for(let n=0;n<fs.length;n++){const f=fs[n],ext=(f.name.split('.').pop()||'bin').toLowerCase().replace(/[^a-z0-9]/g,''),path=state.client.id+'/'+id+(fs.length>1?('/'+(n+1)):'')+'.'+ext;
+      await uploadXhr(path,f,(loaded)=>toast('Envoi du contenu… '+Math.round((done+loaded)/total*100)+' %'));done+=f.size;
+      urls.push(sb.storage.from('content').getPublicUrl(path).data.publicUrl+'?t='+Date.now());}
+    const upd={media_url:urls.length>1?JSON.stringify(urls):urls[0],media_type:fs[0].type,status:(it.status==='idea'||!it.status)?'produced':it.status};
+    const {error}=await sb.from('content_items').update(upd).eq('id',id);if(error)throw error;Object.assign(it,upd);toast('✓ Contenu déposé');go(state.section);
+  }catch(e){toast('Erreur : '+(e.message||e));}}
+async function kbSetStatus(id,st){const it=state.data.content.find(c=>c.id===id);if(!it)return;
+  if(!DEMO){const {error}=await sb.from('content_items').update({status:st}).eq('id',id);if(error){toast('Erreur : '+error.message);return;}}it.status=st;}
+async function kbSend(id){const it=state.data.content.find(c=>c.id===id);if(!it)return;if(!mediaList(it).length){toast('Ajoute d\'abord le contenu');return;}
+  await kbSetStatus(id,'pending');toast('✓ Envoyé au client pour validation');go(state.section);}
+async function kbDrop(ev,col){ev.preventDefault();ev.currentTarget.classList.remove('drop');if(ev.dataTransfer.files&&ev.dataTransfer.files.length)return;
+  const id=ev.dataTransfer.getData('text/plain');const it=state.data.content.find(c=>c.id===id);if(!it||kbCol(it)===col)return;
+  if(col==='pending')return kbSend(id);
+  if(col==='produced'){if(!mediaList(it).length){toast('Dépose d\'abord la vidéo ou les photos sur la carte');return;}await kbSetStatus(id,'produced');}
+  if(col==='idea')await kbSetStatus(id,'idea');
+  go(state.section);}
+function socTabs(k){if(k!=='plan')state.plFull=0;if(k!=='ideas')state.ideasOld=0;const c=(state.data&&state.data.content)||[];const pend=c.filter(x=>x.status==='pending'||x.status==='changes_requested').length;
   return `<div class="soc-tabs">`+SOC_TABS.filter(t=>(!t[2]||isAgencyView())&&isUnlocked(t[0])).map(t=>`<button class="${t[0]===k?'on':''}" onclick="go('${t[0]}')">${t[1]}${t[0]==='validation'&&pend?` <span class="badge">${pend}</span>`:''}</button>`).join('')+`</div>`;}
 function nextAct(it){const ag=isAgencyView(),d=itDay(it),tm=String((it.brief||{}).time||''),past=d&&d<ymd(new Date()),h=/^\d{2}:\d{2}$/.test(tm)?' à '+tm.replace(':','h'):'';
   switch(it.status){
@@ -3088,7 +3136,7 @@ var POST_STATUSES=[['idea','Idee'],['produced','Produit'],['pending','A valider'
 function peOpt(v,cur,l){return '<option value="'+v+'"'+(v===cur?' selected':'')+'>'+l+'</option>';}
 function agencyToolbar(k){
   if(!isAgencyView()||(k!=='ideas'&&k!=='calendar'))return '';
-  return '<div class="ag-toolbar"><button class="btn" style="width:auto;padding:10px 18px" onclick="openPostEditor(null)">+ Nouveau post</button></div>';
+  return '<div class="ag-toolbar"><button class="sbtn ghost" onclick="openPostEditor(null)">Formulaire complet (brief, script…)</button></div>';
 }
 function openPostEditor(id){
   var editing=(id!=null&&id!=='null');
