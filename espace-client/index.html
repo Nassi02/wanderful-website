@@ -400,7 +400,9 @@
   .modal-ov{position:fixed;inset:0;background:rgba(70,59,102,.45);backdrop-filter:blur(3px);z-index:100;display:flex;align-items:flex-start;justify-content:center;padding:30px 16px;overflow-y:auto}
   .modal{background:var(--surface);border-radius:20px;box-shadow:0 20px 60px rgba(70,59,102,.3);width:100%;max-width:940px;position:relative;padding:26px}
   .modal-x{position:absolute;right:16px;top:16px;width:32px;height:32px;border-radius:50%;background:var(--bg);color:var(--muted);font-size:15px;display:grid;place-items:center}
-  .modal-head{margin-bottom:18px;padding-right:40px}.modal-head h3{font-size:18px;margin:8px 0 3px}.modal-head small{font-size:12.5px;color:var(--muted)}
+  .mh-title{display:block;width:100%;font:inherit;font-size:18px;font-weight:700;margin:8px 0 3px;padding:4px 8px;margin-left:-8px;border:1px solid transparent;border-radius:8px;background:transparent;color:inherit}.mh-title:hover{border-color:var(--line)}.mh-title:focus{border-color:#6A55D6;outline:none;background:#fff}
+.insp-box{background:#F6F3FF;border:1px solid #E4DEFA;border-radius:12px;padding:12px;margin-bottom:16px}.insp-box video,.insp-box img{display:block;width:100%;max-height:420px;object-fit:contain;background:#000;border-radius:10px}
+.modal-head{margin-bottom:18px;padding-right:40px}.modal-head h3{font-size:18px;margin:8px 0 3px}.modal-head small{font-size:12.5px;color:var(--muted)}
   .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
   .modal-brief{max-height:460px;overflow-y:auto;padding-right:8px}
   .prod-media video,.prod-media img{display:block}
@@ -2788,6 +2790,13 @@ async function inspUpload(id,f){const it=(state.data.content||[]).find(c=>c.id==
     const {error}=await sb.from('content_items').update({brief:b}).eq('id',id);if(error)throw error;it.brief=b;
     (state._allContent||[]).forEach(x=>{if(x.id===id)x.brief=b;});toast('🎞 Inspiration ajoutée');go(state.section);
   }catch(e){toast('Erreur : '+(e.message||e));}}
+function inspBlock(it){const b=it.brief||{},f=b.inspiration_file,l=b.inspiration;
+  const vid=f&&/\.(mp4|mov|m4v|webm|3gp)(\?|$)/i.test(f);
+  const pick=`<label class="sbtn ghost" style="cursor:pointer;font-size:12px">${f?'🔁 Remplacer la vidéo':'🎞 Ajouter une vidéo / capture'}<input type="file" hidden accept="video/*,image/*" onchange="inspUpload('${it.id}',this.files[0]).then(()=>openContentModal('${it.id}'))"></label>`;
+  return `<div class="insp-box"><div class="bd-lbl" style="margin-bottom:8px">✨ Inspiration</div>${f?(vid?`<video src="${esc(f)}" controls playsinline preload="metadata"></video>`:`<img src="${esc(f)}" alt="Inspiration">`):''}${l?`<a href="${esc(l)}" target="_blank" rel="noopener" style="display:block;margin-top:6px">Voir le post d'origine ↗</a>`:''}${!f&&!l?'<small class="muted" style="display:block;margin-bottom:6px">Aucune inspiration pour l\'instant.</small>':''}<div style="margin-top:8px">${pick}</div></div>`;}
+async function saveTitle(id,v){v=(v||'').trim();const it=(state.data.content||[]).find(c=>String(c.id)===String(id));if(!it||!v||v===it.title)return;
+  if(!DEMO){const {error}=await sb.from('content_items').update({title:v}).eq('id',id);if(error){toast('Erreur : '+error.message);return;}}
+  it.title=v;(state._allContent||[]).forEach(x=>{if(x.id===id)x.title=v;});toast('✓ Titre enregistré');const y=window.scrollY;go(state.section);setTimeout(()=>window.scrollTo(0,y),0);}
 function inspLinks(it){const b=it.brief||{};return (b.inspiration?`<a href="${esc(b.inspiration)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Voir l'inspiration ↗</a>`:'')+(b.inspiration_file?`<a href="${esc(b.inspiration_file)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🎞 Revoir la vidéo d'inspiration</a>`:'');}
 function ideaCol(nd){const ag=state.calAll&&isAgencyView();
   return `<aside class="idea-col" ondragover="event.preventDefault();this.classList.add('drop')" ondragleave="this.classList.remove('drop')" ondrop="dropOn(event,null)"><div style="font-weight:700;font-size:14px">💡 Idées <span class="muted" style="font-weight:500">(${nd.length})</span></div><small class="muted" style="display:block;line-height:1.35;margin-top:2px">Glisse une idée sur un jour pour la planifier. Glisse un post ici pour le retirer du calendrier.</small>`
@@ -3125,9 +3134,9 @@ function openContentModal(id){
   const prodLocked=`<div class="prod-empty">Le dépôt de fichier se fait depuis la vue client. Utilise « Voir la vue client » pour tester.</div>`;
   const el=document.getElementById('modalRoot');
   el.innerHTML=`<div class="modal-ov" onclick="if(event.target===this)closeContentModal()"><div class="modal"><button class="modal-x" onclick="closeContentModal()">✕</button>
-    <div class="modal-head">${ctBadgeN(it)} <span class="ct-status s-${it.status}" style="margin-left:6px">${statusLabel(it.status)}</span><h3>${esc(it.title)}</h3><small>Semaine ${it.week||'—'} · ${fmtDate(it.scheduled_at)} · ${esc(it.pillar||'')}</small></div>${isAgencyView()?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin:-4px 0 14px"><button class="sbtn ghost" onclick="openPostEditor('${it.id}')">✏️ Modifier le post (statut, type, date…)</button><button class="sbtn danger" data-del="0" onclick="deletePost('${it.id}',this)">🗑️ Supprimer</button></div>`:''}
+    <div class="modal-head">${ctBadgeN(it)} <span class="ct-status s-${it.status}" style="margin-left:6px">${statusLabel(it.status)}</span><input class="mh-title" value="${esc(it.title)}" aria-label="Titre" title="Clique pour modifier le titre" onchange="saveTitle('${it.id}',this.value)" onkeydown="if(event.key==='Enter')this.blur()"><small>Semaine ${it.week||'—'} · ${fmtDate(it.scheduled_at)} · ${esc(it.pillar||'')}</small></div>${isAgencyView()?`<div style="display:flex;gap:8px;flex-wrap:wrap;margin:-4px 0 14px"><button class="sbtn ghost" onclick="openPostEditor('${it.id}')">✏️ Modifier le post (statut, type, date…)</button><button class="sbtn danger" data-del="0" onclick="deletePost('${it.id}',this)">🗑️ Supprimer</button></div>`:''}
     <div class="modal-grid">
-      <div class="modal-col"><div class="bd-lbl" style="margin-bottom:8px">📋 Le brief</div><div class="modal-brief">${it.brief&&it.brief.obj?`<div class="idea-obj">🎯 ${esc(it.brief.obj)}</div>`:''}${briefDetail(it)}</div></div>
+      <div class="modal-col">${inspBlock(it)}<div class="bd-lbl" style="margin-bottom:8px">📋 Le brief</div><div class="modal-brief">${it.brief&&it.brief.obj?`<div class="idea-obj">🎯 ${esc(it.brief.obj)}</div>`:''}${briefDetail(it)}</div></div>
       <div class="modal-col">${prod}</div>
     </div></div></div>`;
   ['instagram','facebook','linkedin','tiktok'].forEach(function(n){var ce=document.getElementById('net_'+n);if(ce)netPaint(ce);});
@@ -3171,6 +3180,7 @@ function openPostEditor(id){
   var H=[];
   H.push('<div class="modal-ov" onclick="if(event.target===this)closeContentModal()"><div class="modal modal-form"><button class="modal-x" onclick="closeContentModal()">✕</button>');
   H.push('<div class="modal-head"><h3>'+(editing?'Modifier le post':'Nouveau post')+'</h3><small>'+esc(state.client?state.client.name:'')+'</small></div>');
+  if(editing)H.push(inspBlock(it));
   H.push('<div class="pe-grid">');
   H.push('<div class="field"><label>Type</label><select id="pe_type">'+peOpt('Reel',typeCur,'🎥 Reel')+peOpt('Carrousel',typeCur,'🖼️ Carrousel')+peOpt('Post',typeCur,'📷 Photo')+peOpt('Story',typeCur,'⭕ Story')+'</select></div>');
   H.push('<div class="field"><label>Statut</label><select id="pe_status">'+POST_STATUSES.map(function(s){return peOpt(s[0],statusCur,s[1]);}).join('')+'</select></div>');
