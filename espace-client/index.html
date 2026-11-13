@@ -401,6 +401,7 @@
   .modal{background:var(--surface);border-radius:20px;box-shadow:0 20px 60px rgba(70,59,102,.3);width:100%;max-width:940px;position:relative;padding:26px}
   .modal-x{position:absolute;right:16px;top:16px;width:32px;height:32px;border-radius:50%;background:var(--bg);color:var(--muted);font-size:15px;display:grid;place-items:center}
   .mh-title{display:block;width:100%;font:inherit;font-size:18px;font-weight:700;margin:8px 0 3px;padding:4px 8px;margin-left:-8px;border:1px solid transparent;border-radius:8px;background:transparent;color:inherit}.mh-title:hover{border-color:var(--line)}.mh-title:focus{border-color:#6A55D6;outline:none;background:#fff}
+.idea-modal{max-width:560px}.idea-modal .mh-title{margin-bottom:12px}
 .insp-box{background:#F6F3FF;border:1px solid #E4DEFA;border-radius:12px;padding:12px;margin-bottom:16px}.insp-box video,.insp-box img{display:block;width:100%;max-height:420px;object-fit:contain;background:#000;border-radius:10px}
 .modal-head{margin-bottom:18px;padding-right:40px}.modal-head h3{font-size:18px;margin:8px 0 3px}.modal-head small{font-size:12.5px;color:var(--muted)}
   .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
@@ -2792,13 +2793,14 @@ async function inspUpload(id,f){const it=(state.data.content||[]).find(c=>c.id==
   }catch(e){toast('Erreur : '+(e.message||e));}}
 function inspBlock(it){const b=it.brief||{},f=b.inspiration_file,l=b.inspiration;
   const vid=f&&/\.(mp4|mov|m4v|webm|3gp)(\?|$)/i.test(f);
-  const pick=`<label class="sbtn ghost" style="cursor:pointer;font-size:12px">${f?'🔁 Remplacer la vidéo':'🎞 Ajouter une vidéo / capture'}<input type="file" hidden accept="video/*,image/*" onchange="inspUpload('${it.id}',this.files[0]).then(()=>openContentModal('${it.id}'))"></label>`;
+  const pick=`<label class="sbtn ghost" style="cursor:pointer;font-size:12px">${f?'🔁 Remplacer la vidéo':'🎞 Ajouter une vidéo / capture'}<input type="file" hidden accept="video/*,image/*" onchange="inspUpload('${it.id}',this.files[0]).then(()=>openContentModal('${it.id}'))></label>`;
   return `<div class="insp-box"><div class="bd-lbl" style="margin-bottom:8px">✨ Inspiration</div>${f?(vid?`<video src="${esc(f)}" controls playsinline preload="metadata"></video>`:`<img src="${esc(f)}" alt="Inspiration">`):''}${l?`<a href="${esc(l)}" target="_blank" rel="noopener" style="display:block;margin-top:6px">Voir le post d'origine ↗</a>`:''}${!f&&!l?'<small class="muted" style="display:block;margin-bottom:6px">Aucune inspiration pour l\'instant.</small>':''}<div style="margin-top:8px">${pick}</div></div>`;}
 async function saveTitle(id,v){v=(v||'').trim();const it=(state.data.content||[]).find(c=>String(c.id)===String(id));if(!it||!v||v===it.title)return;
   if(!DEMO){const {error}=await sb.from('content_items').update({title:v}).eq('id',id);if(error){toast('Erreur : '+error.message);return;}}
   it.title=v;(state._allContent||[]).forEach(x=>{if(x.id===id)x.title=v;});toast('✓ Titre enregistré');const y=window.scrollY;go(state.section);setTimeout(()=>window.scrollTo(0,y),0);}
 function inspLinks(it){const b=it.brief||{};return (b.inspiration?`<a href="${esc(b.inspiration)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">Voir l'inspiration ↗</a>`:'')+(b.inspiration_file?`<a href="${esc(b.inspiration_file)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">🎞 Revoir la vidéo d'inspiration</a>`:'');}
-function ideaCol(nd){const ag=state.calAll&&isAgencyView();
+function ideaSort(L){return L.map((x,i)=>[x,i]).sort((a,b)=>String(b[0].created_at||'').localeCompare(String(a[0].created_at||''))||b[1]-a[1]).map(x=>x[0]);}
+function ideaCol(nd){const ag=state.calAll&&isAgencyView();nd=ideaSort(nd);
   return `<aside class="idea-col" ondragover="event.preventDefault();this.classList.add('drop')" ondragleave="this.classList.remove('drop')" ondrop="dropOn(event,null)"><div style="font-weight:700;font-size:14px">💡 Idées <span class="muted" style="font-weight:500">(${nd.length})</span></div><small class="muted" style="display:block;line-height:1.35;margin-top:2px">Glisse une idée sur un jour pour la planifier. Glisse un post ici pour le retirer du calendrier.</small>`
   +(nd.length?nd.map(it=>{const insp=(it.brief||{}).inspiration;return `<div class="ic" draggable="true" ondragstart="dragIt(event,'${it.id}')" onclick="calOpen('${it.id}','${it.client_id}')">${ag?'<i class="ctag">'+esc(cliTag(it.client_id))+'</i>':''}<b>${esc(it.title)}</b>${inspLinks(it)}<div class="icp" onclick="event.stopPropagation()">${esc(it.type||'')}<label style="margin-left:auto">📅 <input type="date" aria-label="Planifier le" onchange="dropOn(null,this.value,'${it.id}')"></label></div></div>`;}).join(''):'<div class="muted" style="margin-top:10px;font-size:12.5px">Aucune idée pour l\'instant. Ajoute-en une avec le champ au-dessus, ou envoie un lien au bot Telegram.</div>')+`</aside>`;}
 function dragIt(ev,id){ev.dataTransfer.setData('text/plain',id);ev.dataTransfer.effectAllowed='move';}
@@ -2836,7 +2838,7 @@ function kbCol(it){if(it.status==='produced'||it.status==='changes_requested')re
 function ideasBoard(){
   const all=(state.data.content||[]).filter(i=>kbCol(i)).sort((a,b)=>(itDay(a)||'0').localeCompare(itDay(b)||'0'));
   return `<div class="sec-head"><h3>Idées</h3><p>Ajoute une idée en une ligne, dépose le contenu dessus quand il est prêt, puis envoie-le au client. <a href="#" onclick="state.ideasOld=1;go('ideas');return false">Voir les fiches détaillées</a></p></div><div class="kb">`
-  +KB_COLS.map(([k,t,h])=>{const L=all.filter(i=>kbCol(i)===k);return `<div class="kb-col" ondragover="event.preventDefault();this.classList.add('drop')" ondragleave="this.classList.remove('drop')" ondrop="kbDrop(event,'${k}')"><div class="kb-h"><b>${t}</b> <span class="muted">${L.length}</span></div><small class="muted kb-help">${h}</small>${L.map(kbCard).join('')||'<div class="kb-empty">Rien ici</div>'}</div>`;}).join('')+`</div>`;}
+  +KB_COLS.map(([k,t,h])=>{let L=all.filter(i=>kbCol(i)===k);if(k==='idea')L=ideaSort(L);return `<div class="kb-col" ondragover="event.preventDefault();this.classList.add('drop')" ondragleave="this.classList.remove('drop')" ondrop="kbDrop(event,'${k}')"><div class="kb-h"><b>${t}</b> <span class="muted">${L.length}</span></div><small class="muted kb-help">${h}</small>${L.map(kbCard).join('')||'<div class="kb-empty">Rien ici</div>'}</div>`;}).join('')+`</div>`;}
 function kbCard(it){const insp=(it.brief||{}).inspiration,note=(it.brief||{}).idea_note,ml=mediaList(it),d=itDay(it),u=ml[0];
   const thumb=u?(isVideo(u,it)?'<div class="kb-th">🎥 Contenu déposé</div>':`<img class="kb-img" src="${esc(u)}" alt="" loading="lazy">`):'';
   return `<div class="kb-card${it.status==='changes_requested'?' req':''}" draggable="true" ondragstart="dragIt(event,'${it.id}')" ondragover="if([...event.dataTransfer.types].includes('Files')){event.preventDefault();event.stopPropagation();this.classList.add('fdrop')}" ondragleave="this.classList.remove('fdrop')" ondrop="kbFileDrop(event,'${it.id}')" onclick="openContentModal('${it.id}')">
@@ -3100,8 +3102,25 @@ function renderMedia(it){
   h+='</div></div>';
   return h;
 }
-function openContentModal(id){
+function openIdeaModal(id){const it=(state.data.content||[]).find(c=>String(c.id)===String(id));if(!it)return;const b=it.brief||{};
+  document.getElementById('modalRoot').innerHTML=`<div class="modal-ov" onclick="if(event.target===this)ideaClose('${it.id}')"><div class="modal idea-modal"><button class="modal-x" onclick="ideaClose('${it.id}')">✕</button>
+    <div class="bd-lbl">💡 Idée</div><input class="mh-title" id="idTitle" value="${esc(it.title)}" aria-label="Titre" placeholder="Titre de l'idée" onkeydown="if(event.key==='Enter')this.blur()">
+    ${inspBlock(it)}
+    <div class="field"><label>📝 Notes</label><textarea id="idNote" style="min-height:110px" placeholder="Ce qui te plaît dans cette vidéo, comment l'adapter, une phrase d'accroche…">${esc(b.idea_note&&b.idea_note!==it.title?b.idea_note:'')}</textarea></div>
+    <div class="field" style="margin-top:10px"><label>🔗 Lien d'inspiration</label><input id="idLink" value="${esc(b.inspiration||'')}" placeholder="https://www.instagram.com/reel/…"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center"><button class="sbtn ok" onclick="ideaSave('${it.id}',true)">💾 Enregistrer</button><button class="sbtn danger" data-del="0" onclick="deletePost('${it.id}',this)">🗑️ Supprimer</button><a href="#" style="margin-left:auto;font-size:12.5px" onclick="ideaSave('${it.id}').then(()=>openContentModal('${it.id}',1));return false">Passer en production →</a></div>
+  </div></div>`;setTimeout(()=>{const t=document.getElementById('idTitle');if(t&&/^Inspiration/.test(t.value))t.select();},30);}
+async function ideaSave(id,close){const it=(state.data.content||[]).find(c=>String(c.id)===String(id));if(!it)return;const g=k=>(document.getElementById(k)||{}).value;
+  const title=(g('idTitle')||'').trim()||it.title,note=(g('idNote')||'').trim(),link=(g('idLink')||'').trim(),b=Object.assign({},it.brief||{});
+  if(note)b.idea_note=note;else delete b.idea_note;if(link)b.inspiration=link;else delete b.inspiration;
+  if(title!==it.title||JSON.stringify(b)!==JSON.stringify(it.brief||{})){
+    if(!DEMO){const {error}=await sb.from('content_items').update({title,brief:b}).eq('id',id);if(error){toast('Erreur : '+error.message);return;}}
+    [state.data.content,state._allContent].forEach(a=>(a||[]).forEach(x=>{if(x.id===id){x.title=title;x.brief=b;}}));toast('✓ Idée enregistrée');}
+  if(close){closeContentModal();const y=window.scrollY;go(state.section);setTimeout(()=>window.scrollTo(0,y),0);}}
+function ideaClose(id){ideaSave(id,true);}
+function openContentModal(id,full){
   const it=(state.data.content||[]).find(c=>String(c.id)===String(id));if(!it)return;
+  if(it.status==='idea'&&!full){openIdeaModal(id);return;}
   const canEdit=!isAgencyView();
   const media=renderMedia(it);
   const NETS=netsOf(it);
