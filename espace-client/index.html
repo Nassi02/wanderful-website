@@ -401,7 +401,7 @@
   .modal{background:var(--surface);border-radius:20px;box-shadow:0 20px 60px rgba(70,59,102,.3);width:100%;max-width:940px;position:relative;padding:26px}
   .modal-x{position:absolute;right:16px;top:16px;width:32px;height:32px;border-radius:50%;background:var(--bg);color:var(--muted);font-size:15px;display:grid;place-items:center}
   .mh-title{display:block;width:100%;font:inherit;font-size:18px;font-weight:700;margin:8px 0 3px;padding:4px 8px;margin-left:-8px;border:1px solid transparent;border-radius:8px;background:transparent;color:inherit}.mh-title:hover{border-color:var(--line)}.mh-title:focus{border-color:#6A55D6;outline:none;background:#fff}
-.idea-modal{max-width:560px}.idea-modal .mh-title{margin-bottom:12px}
+.idea-modal{max-width:640px}.idea-modal .mh-title{margin-bottom:12px}
 .insp-box{background:#F6F3FF;border:1px solid #E4DEFA;border-radius:12px;padding:12px;margin-bottom:16px}.insp-box video,.insp-box img{display:block;width:100%;max-height:420px;object-fit:contain;background:#000;border-radius:10px}
 .modal-head{margin-bottom:18px;padding-right:40px}.modal-head h3{font-size:18px;margin:8px 0 3px}.modal-head small{font-size:12.5px;color:var(--muted)}
   .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
@@ -3106,7 +3106,7 @@ function openIdeaModal(id){const it=(state.data.content||[]).find(c=>String(c.id
   document.getElementById('modalRoot').innerHTML=`<div class="modal-ov" onclick="if(event.target===this)ideaClose('${it.id}')"><div class="modal idea-modal"><button class="modal-x" onclick="ideaClose('${it.id}')">✕</button>
     <div class="bd-lbl">💡 Idée</div><input class="mh-title" id="idTitle" value="${esc(it.title)}" aria-label="Titre" placeholder="Titre de l'idée" onkeydown="if(event.key==='Enter')this.blur()">
     ${inspBlock(it)}
-    <div class="field"><label>📝 Notes</label><textarea id="idNote" style="min-height:110px" placeholder="Ce qui te plaît dans cette vidéo, comment l'adapter, une phrase d'accroche…">${esc(b.idea_note&&b.idea_note!==it.title?b.idea_note:'')}</textarea></div>
+    <div class="field"><label>📝 Ton commentaire</label><textarea id="idNote" rows="7" style="min-height:180px;font-size:15px;line-height:1.5" oninput="this.style.height='auto';this.style.height=Math.max(180,this.scrollHeight+2)+'px'" placeholder="Écris librement : ce qui te plaît dans cette vidéo, comment l'adapter pour Wanderful, l'accroche, le texte à mettre à l'écran, la légende…">${esc(b.idea_note&&b.idea_note!==it.title?b.idea_note:'')}</textarea></div>
     <div class="field" style="margin-top:10px"><label>🔗 Lien d'inspiration</label><input id="idLink" value="${esc(b.inspiration||'')}" placeholder="https://www.instagram.com/reel/…"></div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center"><button class="sbtn ok" onclick="ideaSave('${it.id}',true)">💾 Enregistrer</button><button class="sbtn danger" data-del="0" onclick="deletePost('${it.id}',this)">🗑️ Supprimer</button><a href="#" style="margin-left:auto;font-size:12.5px" onclick="ideaSave('${it.id}').then(()=>openContentModal('${it.id}',1));return false">Passer en production →</a></div>
   </div></div>`;setTimeout(()=>{const t=document.getElementById('idTitle');if(t&&/^Inspiration/.test(t.value))t.select();},30);}
