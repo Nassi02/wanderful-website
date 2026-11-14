@@ -2738,7 +2738,7 @@ function itDay(it){return it&&it.scheduled_at?String(it.scheduled_at).slice(0,10
 function calShift(n){const m=state.calMonth||new Date();state.calMonth=new Date(m.getFullYear(),m.getMonth()+n,1);go('calendar');}
 function semPlan(){const P=state.client&&state.client.strategy&&state.client.strategy.plan_reseaux;return P&&P.semaine&&P.semaine.slots?P.semaine:null;}
 function slotsFor(k){const S=semPlan();if(!S||k<S.from||k>S.until)return [];const d=new Date(k+'T12:00'),wd=((d.getDay()+6)%7)+1;
-  const mon=new Date(d);mon.setDate(d.getDate()-wd+1);const wi=Math.round((mon-new Date(S.anchor+'T12:00'))/6048e5),ab=((wi%2)+2)%2===0?'A':'B';
+  const mon=new Date(d);mon.setDate(d.getDate()-wd+1);const an=((S.periods||[]).filter(x=>k>=x.from).slice(-1)[0]||S).anchor,wi=Math.round((mon-new Date(an+'T12:00'))/6048e5),ab=((wi%2)+2)%2===0?'A':'B';
   return S.slots.map((x,i)=>Object.assign({i},x)).filter(x=>x.d===wd&&(!x.w||x.w===ab)&&(!x.m||d.getDate()<=7));}
 function slotFree(x,L){const st=i=>/story/i.test(i.type||'');return !L.some(i=>x.k==='story'?st(i):(!st(i)&&!chansOf(i).every(c=>c==='linkedin')));}
 function slotCard(k,x){return `<div class="mcal-slot" title="${esc(x.t)} — ${esc(x.tip||'')}" onclick="slotFill('${k}',${x.i})"><span>${x.k==='story'?'⭕':'🎬'} ${esc(x.time.replace(':','h'))}${x.tt?' · 🎵 '+esc(x.tt.replace(':','h')):''}</span><b>${esc(x.t)}</b></div>`;}
