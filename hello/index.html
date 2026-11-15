@@ -96,13 +96,21 @@ svg{width:18px;height:18px;flex:none}
   var book=document.getElementById('book'), save=document.getElementById('save'), msg=document.getElementById('msg');
   /* Codes promo par lieu partenaire : ajouter une ligne par nouvelle affiche */
   var CODES = { neopilates: 'NEO30' };
-  var poster = qs.get('utm_source') === 'affiche';
+  var src = qs.get('utm_source');
+  var newsletter = src === 'newsletter';
+  var poster = src === 'affiche' || newsletter;
   var contact = '/contact/';
   if(poster){
     var hi=document.querySelector('.hi');
+    if(newsletter){
+      hi.setAttribute('data-fr','Bonjour&nbsp;! Vous venez de la newsletter de mon partenaire. Voici votre offre&nbsp;: choisissez un créneau et indiquez votre code lors de la réservation.');
+      hi.setAttribute('data-en','Hello! You came from my partner\'s newsletter. Here is your offer: pick a time slot and add your code when booking.');
+      hi.setAttribute('data-de','Hallo! Sie kommen aus dem Newsletter meines Partners. Hier ist Ihr Angebot: Wählen Sie einen Termin und geben Sie bei der Buchung Ihren Code an.');
+    } else {
     hi.setAttribute('data-fr','Bonjour&nbsp;! Vous avez scanné mon affiche chez un partenaire. Voici votre offre&nbsp;: choisissez un créneau et indiquez votre code lors de la réservation.');
     hi.setAttribute('data-en','Hello! You scanned my poster at one of my partners. Here is your offer: pick a time slot and add your code when booking.');
     hi.setAttribute('data-de','Hallo! Sie haben mein Plakat bei einem Partner gescannt. Hier ist Ihr Angebot: Wählen Sie einen Termin und geben Sie bei der Buchung Ihren Code an.');
+    }
     var code = CODES[qs.get('utm_campaign')] || 'WANDER30';
     document.getElementById('code').textContent = code;
     document.getElementById('offer').hidden = false;
