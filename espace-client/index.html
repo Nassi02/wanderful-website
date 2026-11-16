@@ -900,7 +900,7 @@ async function doLogin(){
   const btn=document.getElementById('loginBtn');btn.disabled=true;btn.textContent='Connexion…';
   if(DEMO){if(password!=='demo'){showMsg('msg1','Mot de passe démo : demo','err');btn.disabled=false;btn.textContent='Se connecter';return;}const ag=email.toLowerCase().startsWith('agence@');state.profile={email,role:ag?'agency':'client',client_id:ag?null:'cv'};await bootApp();return;}
   const {error}=await sb.auth.signInWithPassword({email,password});btn.disabled=false;btn.textContent='Se connecter';
-  if(error){showMsg('msg1','Email ou mot de passe incorrect. Première fois ? Utilisez le lien d'invitation reçu par e-mail.','err');return;}
+  if(error){showMsg('msg1','Email ou mot de passe incorrect. Première fois ? Utilisez le lien d’invitation reçu par e-mail.','err');return;}
   await loadProfileAndBoot();
 }
 async function doSignup(){
