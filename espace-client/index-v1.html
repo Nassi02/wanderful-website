@@ -628,7 +628,7 @@
       <div class="field"><label>Email</label><input id="email" type="email" placeholder="vous@exemple.com" autocomplete="email"></div>
       <div class="field"><label>Mot de passe</label><input id="password" type="password" placeholder="••••••••" autocomplete="current-password"></div>
       <button id="loginBtn" class="btn" onclick="doLogin()">Se connecter</button>
-      <div class="login-links"><a onclick="showStep('stepSignup')">Première connexion ?</a><span>·</span><a onclick="forgotPw()">Mot de passe oublié ?</a></div>
+      <div class="login-links"><a onclick="forgotPw()">Mot de passe oublié ?</a></div>
     </div>
     <div id="stepSignup" class="hidden">
       <h2>Créer votre accès</h2><p class="sub">Choisissez un mot de passe. Un email de confirmation vous sera envoyé une seule fois.</p>
@@ -690,7 +690,7 @@ if(!DEMO && window.supabase){ sb = window.supabase.createClient(CFG.SUPABASE_URL
 document.getElementById('demoBanner').classList.toggle('hidden', !DEMO);
 document.getElementById('demoHint').innerHTML = DEMO
   ? "Mode démo : email au choix + mot de passe <b>demo</b>. Vue agence : <b>agence@wanderful.co</b>."
-  : "Connexion sécurisée par mot de passe. Première fois ? Cliquez « Première connexion ».";
+  : "Connexion sécurisée par mot de passe. Première fois ? Utilisez le lien d'invitation reçu par e-mail.";
 let state = { profile:null, client:null, allClients:[], section:'home', data:null, onb:{}, preview:false };
 
 /* =================== ONBOARDING QUESTIONNAIRE =================== */
@@ -824,7 +824,7 @@ async function doLogin(){
   const btn=document.getElementById('loginBtn');btn.disabled=true;btn.textContent='Connexion…';
   if(DEMO){if(password!=='demo'){showMsg('msg1','Mot de passe démo : demo','err');btn.disabled=false;btn.textContent='Se connecter';return;}const ag=email.toLowerCase().startsWith('agence@');state.profile={email,role:ag?'agency':'client',client_id:ag?null:'cv'};await bootApp();return;}
   const {error}=await sb.auth.signInWithPassword({email,password});btn.disabled=false;btn.textContent='Se connecter';
-  if(error){showMsg('msg1','Email ou mot de passe incorrect. Première fois ? Utilisez « Première connexion ».','err');return;}
+  if(error){showMsg('msg1','Email ou mot de passe incorrect. Première fois ? Utilisez le lien d'invitation reçu par e-mail.','err');return;}
   await loadProfileAndBoot();
 }
 async function doSignup(){
@@ -908,7 +908,7 @@ async function createClient(){
       <div style="font-weight:700;color:var(--green);margin-bottom:8px">✓ ${esc(name)} a été créé !</div>
       <div style="font-size:13px;color:var(--ink);line-height:1.6">Envoie ce lien à <b>${esc(name)}</b> :</div>
       <div style="display:flex;gap:8px;align-items:center;margin:8px 0"><input readonly value="${esc(link)}" onclick="this.select()" style="flex:1;font-size:12.5px;padding:9px 11px;border:1px solid var(--line);border-radius:9px;background:#fff"><button class="sbtn ok" onclick="navigator.clipboard&&navigator.clipboard.writeText('${esc(link)}');toast('Lien copié')">Copier</button></div>
-      <div style="font-size:12.5px;color:var(--muted);line-height:1.6">Il clique sur <b>« Première connexion »</b>, entre son email <b>${esc(email)}</b> et choisit son mot de passe. Il sera automatiquement relié à sa fiche. Ensuite, débloque ses sections depuis « Accès &amp; cadenas ».</div>
+      <div style="font-size:12.5px;color:var(--muted);line-height:1.6">Envoie-lui l'invitation : Supabase → Authentication → Users → <b>Add user → Send invitation</b> → <b>${esc(email)}</b>. Il clique sur le lien reçu et choisit son mot de passe ; il sera automatiquement relié à sa fiche. Ensuite, débloque ses sections depuis « Accès &amp; cadenas ».</div>
     </div>`;
 }
 async function toggleAccess(k){
@@ -2352,7 +2352,7 @@ const VIEWS={
       var msg=internal
         ? "Aucune connexion enregistrée pour l'instant."
         : (c.invite_email
-            ? "Ce client n'a encore jamais ouvert son espace. Son adresse <b>"+esc(c.invite_email)+"</b> est bien enregistrée : il lui suffit de cliquer sur « Première connexion » pour choisir son mot de passe."
+            ? "Ce client n'a encore jamais ouvert son espace. Son adresse <b>"+esc(c.invite_email)+"</b> est bien enregistrée : envoie-lui l'invitation depuis Supabase (Authentication → Users → Add user → Send invitation) ; il choisira son mot de passe via le lien reçu."
             : "Aucune adresse e-mail n'est enregistrée pour ce client — il ne peut donc pas encore se connecter.");
       return head+'<div class="card empty">'+msg+'</div>';
     }
@@ -3247,7 +3247,7 @@ function wfStopIdleWatch(){
 /* =================== SESSION RESTORE =================== */
 (async function(){
   if(!DEMO&&sb){
-    let recovery=location.hash.includes('type=recovery');
+    let recovery=location.hash.includes('type=recovery')||location.hash.includes('type=invite');
     sb.auth.onAuthStateChange((event,session)=>{
       if(event==='PASSWORD_RECOVERY'){recovery=true;showStep('stepReset');return;}
       if(session&&!recovery&&document.getElementById('appView').classList.contains('hidden')){loadProfileAndBoot();}
